@@ -30,7 +30,7 @@ export class Dex {
     }
 
     /**
-     * Transfer asset to the destination account
+     * remove liquidity
      * @param assetId The id or symbol (for reserved asset) of the transferred asset
      * @param dest The address of the destination account
      * @param amount The amount to be transferred
