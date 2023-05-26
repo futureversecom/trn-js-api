@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "lib": ["esnext"],
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "target": "esnext",
+    "skipLibCheck": true,
+    "strict": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "declaration": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "composite": true,
+    "paths": {
+      "@therootnetwork/api": ["packages/api/src"],
+      "@therootnetwork/api/*": ["packages/api/src/*"],
+      "@therootnetwork/types": ["packages/types/src"],
+      "@therootnetwork/types/*": ["packages/types/src/*"],
+      "@therootnetwork/api-derive": ["packages/api-derive/src"],
+      "@therootnetwork/api-derive/*": ["packages/api-derive/src/*"],
+      "@therootnetwork/type-definitions": ["packages/type-definitions/src"],
+      "@therootnetwork/type-definitions/*": ["packages/type-definitions/src/*"],
+      "@therootnetwork/types/lookup": ["packages/types/src/lookup/types-rootnet.ts"],
+      "@therootnetwork/api/augment": ["packages/types/src/argument/api.ts"],
+    }
+  },
+  "exclude": [
+    "build/**/*",
+    "**/build/**/*"
+  ]
+}

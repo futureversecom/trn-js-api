@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "private": true,
+  "bugs": "https://github.com/futureversecom/trn-js-api/issues",
+  "engines": {
+    "node": ">=16"
+  },
+  "homepage": "https://github.com/futureversecom/trn-js-api/#readme",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/futureversecom/trn-js-api.git"
+  },
+  "sideEffects": false,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "yarn build:interfaces; yarn workspaces foreach -pvit run build",
+    "build:interfaces": "ts-node -r tsconfig-paths/register packages/types/scripts/generateTypes.ts && ts-node -r tsconfig-paths/register packages/type-definitions/scripts/generate.ts",
+    "build:release": "polkadot-ci-ghact-build",
+    "check-deps": "./node_modules/@open-web3/util/scripts/check-deps.js yarn.lock @polkadot/ @open-web3/",
+    "clean": "polkadot-dev-clean-build",
+    "lint": "polkadot-dev-run-lint",
+    "postinstall": "polkadot-dev-yarn-only",
+    "test": "echo noop",
+    "update-metadata": "ts-node --project ./tsconfig.json packages/types/scripts/updateMetadata.ts"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/register": "^7.21.0",
+    "@babel/runtime": "^7.21.5",
+    "@open-web3/util": "^2.0.1",
+    "@polkadot/api": "^10.5.1",
+    "@polkadot/dev": "^0.73.11",
+    "@polkadot/typegen": "^10.5.1",
+    "@types/jest": "^29.5.1",
+    "jest-config": "^29.5.0",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.0.4"
+  },
+  "packageManager": "yarn@3.5.0",
+  "versions": {
+    "npm": "5.1.1-3",
+    "git": "5.1.1-3"
+  }
+}

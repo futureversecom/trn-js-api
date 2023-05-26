@@ -1,0 +1,36 @@
+{
+  "name": "@therootnetwork/types",
+  "version": "1.0.0",
+  "description": "Polkadot.js type definitions for Root Network",
+  "main": "index.js",
+  "author": "Rootnet Developers <support@centrality.ai>",
+  "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "repository": {
+    "directory": "packages/types",
+    "type": "git",
+    "url": "https://github.com/futureversecom/trn-js-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/futureversecom/trn-js-api/issues"
+  },
+  "homepage": "https://github.com/futureversecom/trn-js-api",
+  "scripts": {
+    "build": "tsc --build tsconfig.json"
+  },
+  "dependencies": {
+    "@therootnetwork/type-definitions": "1.0.0",
+    "@open-web3/orml-types": "^2.0.1"
+  },
+  "peerDependencies": {
+    "@polkadot/api": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/websocket": "^1.0.5",
+    "typescript": "^5.0.4",
+    "websocket": "^1.0.34"
+  }
+}
