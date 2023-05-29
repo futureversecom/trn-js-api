@@ -177,7 +177,7 @@
                                 "type": "AssetId"
                             }
                         ],
-                        "type": "hex",
+                        "type": "Json",
                         "isSubscription": false,
                         "jsonrpc": "dex_getTradingPairStatus",
                         "method": "getTradingPairStatus",
@@ -211,6 +211,23 @@
                         "isSubscription": false,
                         "jsonrpc": "ethy_getXrplTxProof",
                         "method": "getXrplTxProof",
+                        "section": "ethy"
+                    },
+                    "subscribeEventProofs": {
+                        "alias": [
+                            "ethy_subscribeEventProofs",
+                            "ethy_unsubscribeEventProofs"
+                        ],
+                        "description": "Subscribe to Eth event proof.",
+                        "params": [],
+                        "pubsub": [
+                            "subscribeEventProofs",
+                            "unsubscribeEventProofs"
+                        ],
+                        "type": "Null",
+                        "isSubscription": true,
+                        "jsonrpc": "ethy_subscribeEventProofs",
+                        "method": "subscribeEventProofs",
                         "section": "ethy"
                     }
                 },
@@ -349,6 +366,15 @@
                         "ExtrinsicSignature": "EthereumSignature",
                         "EthyId": "[u8; 32]",
                         "EthyEventId": "u64",
+                        "EthEventProofResponse": {
+                            "event_id": "EventProofId",
+                            "signatures": "Vec<Bytes>",
+                            "validators": "Vec<AccountId20>",
+                            "validator_set_id": "ValidatorSetId",
+                            "block": "H256",
+                            "tag": "Option<Bytes>"
+                        },
+                        "EventProofId": "u64",
                         "EthereumSignature": {
                             "r": "H256",
                             "s": "H256",
@@ -370,6 +396,14 @@
                                 }
                             }
                         },
+                        "XrplEventProofResponse": {
+                            "event_id": "EventProofId",
+                            "signatures": "Vec<Bytes>",
+                            "validators": "Vec<Bytes>",
+                            "validator_set_id": "ValidatorSetId",
+                            "block": "H256",
+                            "tag": "Option<Bytes>"
+                        },
                         "CollectionUuid": "u32",
                         "SerialNumber": "u32",
                         "TokenId": "(CollectionUuid, SerialNumber)",
@@ -381,24 +415,7 @@
                         "Lookup0": "AccountId",
                         "AssetId": "u32",
                         "Balance": "u128",
-                        "EventProofId": "u64",
-                        "ValidatorSetId": "u64",
-                        "EthEventProofResponse": {
-                            "event_id": "EventProofId",
-                            "signatures": "Vec<Bytes>",
-                            "validators": "Vec<AccountId20>",
-                            "validator_set_id": "ValidatorSetId",
-                            "block": "H256",
-                            "tag": "Option<Bytes>"
-                        },
-                        "XrplEventProofResponse": {
-                            "event_id": "EventProofId",
-                            "signatures": "Vec<Bytes>",
-                            "validators": "Vec<Bytes>",
-                            "validator_set_id": "ValidatorSetId",
-                            "block": "H256",
-                            "tag": "Option<Bytes>"
-                        }
+                        "ValidatorSetId": "u64"
                     }
                 }
             ],
@@ -586,7 +603,7 @@
                                 "type": "AssetId"
                             }
                         ],
-                        "type": "hex",
+                        "type": "Json",
                         "isSubscription": false,
                         "jsonrpc": "dex_getTradingPairStatus",
                         "method": "getTradingPairStatus",
@@ -620,6 +637,23 @@
                         "isSubscription": false,
                         "jsonrpc": "ethy_getXrplTxProof",
                         "method": "getXrplTxProof",
+                        "section": "ethy"
+                    },
+                    "subscribeEventProofs": {
+                        "alias": [
+                            "ethy_subscribeEventProofs",
+                            "ethy_unsubscribeEventProofs"
+                        ],
+                        "description": "Subscribe to Eth event proof.",
+                        "params": [],
+                        "pubsub": [
+                            "subscribeEventProofs",
+                            "unsubscribeEventProofs"
+                        ],
+                        "type": "Null",
+                        "isSubscription": true,
+                        "jsonrpc": "ethy_subscribeEventProofs",
+                        "method": "subscribeEventProofs",
                         "section": "ethy"
                     }
                 },
@@ -758,6 +792,15 @@
                         "ExtrinsicSignature": "EthereumSignature",
                         "EthyId": "[u8; 32]",
                         "EthyEventId": "u64",
+                        "EthEventProofResponse": {
+                            "event_id": "EventProofId",
+                            "signatures": "Vec<Bytes>",
+                            "validators": "Vec<AccountId20>",
+                            "validator_set_id": "ValidatorSetId",
+                            "block": "H256",
+                            "tag": "Option<Bytes>"
+                        },
+                        "EventProofId": "u64",
                         "EthereumSignature": {
                             "r": "H256",
                             "s": "H256",
@@ -779,6 +822,14 @@
                                 }
                             }
                         },
+                        "XrplEventProofResponse": {
+                            "event_id": "EventProofId",
+                            "signatures": "Vec<Bytes>",
+                            "validators": "Vec<Bytes>",
+                            "validator_set_id": "ValidatorSetId",
+                            "block": "H256",
+                            "tag": "Option<Bytes>"
+                        },
                         "CollectionUuid": "u32",
                         "SerialNumber": "u32",
                         "TokenId": "(CollectionUuid, SerialNumber)",
@@ -790,24 +841,7 @@
                         "Lookup0": "AccountId",
                         "AssetId": "u32",
                         "Balance": "u128",
-                        "EventProofId": "u64",
-                        "ValidatorSetId": "u64",
-                        "EthEventProofResponse": {
-                            "event_id": "EventProofId",
-                            "signatures": "Vec<Bytes>",
-                            "validators": "Vec<AccountId20>",
-                            "validator_set_id": "ValidatorSetId",
-                            "block": "H256",
-                            "tag": "Option<Bytes>"
-                        },
-                        "XrplEventProofResponse": {
-                            "event_id": "EventProofId",
-                            "signatures": "Vec<Bytes>",
-                            "validators": "Vec<Bytes>",
-                            "validator_set_id": "ValidatorSetId",
-                            "block": "H256",
-                            "tag": "Option<Bytes>"
-                        }
+                        "ValidatorSetId": "u64"
                     }
                 }
             ],

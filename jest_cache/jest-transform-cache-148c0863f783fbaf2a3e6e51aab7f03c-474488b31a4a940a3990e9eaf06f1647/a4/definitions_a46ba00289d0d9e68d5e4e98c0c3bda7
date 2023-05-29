@@ -1,0 +1,14 @@
+3534adc4e23165938a9184108fbad4d4
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    rpc: {},
+    types: {
+        UncleEntryItem: {
+            _enum: {
+                InclusionHeight: 'BlockNumber',
+                Uncle: '(Hash, Option<AccountId>)'
+            }
+        }
+    }
+};

@@ -1,0 +1,14 @@
+4114fa4c3dd89f0cfaa1d1ba0eae216b
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    rpc: {},
+    types: {
+        WeightToFeeCoefficient: {
+            coeffInteger: 'Balance',
+            coeffFrac: 'Perbill',
+            negative: 'bool',
+            degree: 'u8'
+        }
+    }
+};

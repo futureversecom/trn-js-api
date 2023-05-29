@@ -1,0 +1,6 @@
+9268be2a7b73ef0d3c8157b6047d8394
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const x_textdecoder_1 = require("@polkadot/x-textdecoder");
+const x_textencoder_1 = require("@polkadot/x-textencoder");
+exports.default = [x_textdecoder_1.packageInfo, x_textencoder_1.packageInfo];

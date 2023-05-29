@@ -174,7 +174,7 @@
                     "type": "AssetId"
                 }
             ],
-            "type": "hex",
+            "type": "Json",
             "isSubscription": false,
             "jsonrpc": "dex_getTradingPairStatus",
             "method": "getTradingPairStatus",
@@ -208,6 +208,23 @@
             "isSubscription": false,
             "jsonrpc": "ethy_getXrplTxProof",
             "method": "getXrplTxProof",
+            "section": "ethy"
+        },
+        "subscribeEventProofs": {
+            "alias": [
+                "ethy_subscribeEventProofs",
+                "ethy_unsubscribeEventProofs"
+            ],
+            "description": "Subscribe to Eth event proof.",
+            "params": [],
+            "pubsub": [
+                "subscribeEventProofs",
+                "unsubscribeEventProofs"
+            ],
+            "type": "Null",
+            "isSubscription": true,
+            "jsonrpc": "ethy_subscribeEventProofs",
+            "method": "subscribeEventProofs",
             "section": "ethy"
         }
     },

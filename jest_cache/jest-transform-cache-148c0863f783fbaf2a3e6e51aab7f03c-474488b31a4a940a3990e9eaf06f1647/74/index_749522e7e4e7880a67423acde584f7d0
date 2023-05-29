@@ -1,0 +1,38 @@
+db2639ebf450a1facadbdf27d254651f
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.typesBundle = exports.typesAlias = exports.rpc = exports.types = exports.lookupTypes = void 0;
+require("@polkadot/types/lookup");
+require("./augment/api");
+require("./lookup/rootnet");
+const type_definitions_1 = require("@therootnetwork/type-definitions");
+exports.lookupTypes = __importStar(require("./lookup/rootnet"));
+exports.types = type_definitions_1.types;
+exports.rpc = type_definitions_1.rpc;
+exports.typesAlias = type_definitions_1.typesAlias;
+exports.typesBundle = type_definitions_1.typesBundle;
+// export const signedExtensions = rootnetSignedExtensions;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL1VzZXJzL2thcmlzaG1hL3dvcmsvZnV0dXJldmVyc2UvdHJuLXJvb3RuZXQtYXBpL3BhY2thZ2VzL3R5cGVzL3NyYy9pbmRleC50cyIsIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLGtDQUFnQztBQUNoQyx5QkFBdUI7QUFDdkIsNEJBQTBCO0FBSTFCLHVFQUErSjtBQUUvSixnRUFBZ0Q7QUFFbkMsUUFBQSxLQUFLLEdBQWtCLHdCQUFZLENBQUM7QUFFcEMsUUFBQSxHQUFHLEdBQXFFLHNCQUFVLENBQUM7QUFFbkYsUUFBQSxVQUFVLEdBQXVDLDZCQUFnQixDQUFDO0FBRWxFLFFBQUEsV0FBVyxHQUFHLDhCQUFtRCxDQUFDO0FBRS9FLDJEQUEyRCIsIm5hbWVzIjpbXSwic291cmNlcyI6WyIvVXNlcnMva2FyaXNobWEvd29yay9mdXR1cmV2ZXJzZS90cm4tcm9vdG5ldC1hcGkvcGFja2FnZXMvdHlwZXMvc3JjL2luZGV4LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCAnQHBvbGthZG90L3R5cGVzL2xvb2t1cCc7XG5pbXBvcnQgJy4vYXVnbWVudC9hcGknO1xuaW1wb3J0ICcuL2xvb2t1cC9yb290bmV0JztcblxuaW1wb3J0IHR5cGUgeyBEZWZpbml0aW9uUnBjLCBEZWZpbml0aW9uUnBjU3ViLCBPdmVycmlkZUJ1bmRsZVR5cGUsIE92ZXJyaWRlTW9kdWxlVHlwZSwgUmVnaXN0cnlUeXBlcyB9IGZyb20gJ0Bwb2xrYWRvdC90eXBlcy90eXBlcyc7XG5cbmltcG9ydCB7IHJwYyBhcyByb290bmV0UnBjLCB0eXBlcyBhcyByb290bmV0VHlwZXMsIHR5cGVzQWxpYXMgYXMgcm9vdG5ldFR5cGVBbGlhcywgdHlwZXNCdW5kbGUgYXMgcm9vdG5ldFR5cGVzQnVuZGxlIH0gZnJvbSAnQHRoZXJvb3RuZXR3b3JrL3R5cGUtZGVmaW5pdGlvbnMnO1xuXG5leHBvcnQgKiBhcyBsb29rdXBUeXBlcyBmcm9tICcuL2xvb2t1cC9yb290bmV0JztcblxuZXhwb3J0IGNvbnN0IHR5cGVzOiBSZWdpc3RyeVR5cGVzID0gcm9vdG5ldFR5cGVzO1xuXG5leHBvcnQgY29uc3QgcnBjOiBSZWNvcmQ8c3RyaW5nLCBSZWNvcmQ8c3RyaW5nLCBEZWZpbml0aW9uUnBjIHwgRGVmaW5pdGlvblJwY1N1Yj4+ID0gcm9vdG5ldFJwYztcblxuZXhwb3J0IGNvbnN0IHR5cGVzQWxpYXM6IFJlY29yZDxzdHJpbmcsIE92ZXJyaWRlTW9kdWxlVHlwZT4gPSByb290bmV0VHlwZUFsaWFzO1xuXG5leHBvcnQgY29uc3QgdHlwZXNCdW5kbGUgPSByb290bmV0VHlwZXNCdW5kbGUgYXMgdW5rbm93biBhcyBPdmVycmlkZUJ1bmRsZVR5cGU7XG5cbi8vIGV4cG9ydCBjb25zdCBzaWduZWRFeHRlbnNpb25zID0gcm9vdG5ldFNpZ25lZEV4dGVuc2lvbnM7XG4iXSwidmVyc2lvbiI6M30=

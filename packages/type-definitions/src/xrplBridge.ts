@@ -15,5 +15,13 @@ export default {
       },
       //eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any,
+    XrplEventProofResponse: {
+      "event_id": "EventProofId",
+      "signatures": "Vec<Bytes>",
+      "validators": "Vec<Bytes>",
+      "validator_set_id": "ValidatorSetId",
+      "block": "H256",
+      "tag": "Option<Bytes>"
+    },
   }
 };

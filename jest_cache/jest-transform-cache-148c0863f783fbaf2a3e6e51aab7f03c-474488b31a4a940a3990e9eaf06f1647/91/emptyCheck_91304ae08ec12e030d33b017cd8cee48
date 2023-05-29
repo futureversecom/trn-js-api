@@ -1,0 +1,8 @@
+233a0005fcdb1bac7179091bec4381da
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.emptyCheck = void 0;
+exports.emptyCheck = {
+    extrinsic: {},
+    payload: {}
+};

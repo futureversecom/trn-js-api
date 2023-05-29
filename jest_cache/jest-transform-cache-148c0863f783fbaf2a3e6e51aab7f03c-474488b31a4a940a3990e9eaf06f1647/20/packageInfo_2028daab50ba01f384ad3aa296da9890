@@ -1,0 +1,5 @@
+a9c8d8f9765d3fa370ef0089cbff5420
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.packageInfo = void 0;
+exports.packageInfo = { name: '@polkadot/types-create', path: typeof __dirname === 'string' ? __dirname : 'auto', type: 'cjs', version: '10.7.2' };

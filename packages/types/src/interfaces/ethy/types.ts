@@ -1,8 +1,9 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Enum, Struct, U8, U8aFixed, u64 } from '@polkadot/types-codec';
-import type { H256 } from '@therootnetwork/types/interfaces/runtime';
+import type { Bytes, Enum, Option, Struct, U8, U8aFixed, Vec, u64 } from '@polkadot/types-codec';
+import type { ValidatorSetId } from '@polkadot/types/interfaces/beefy';
+import type { AccountId20, H256 } from '@therootnetwork/types/interfaces/runtime';
 
 /** @name EthereumSignature */
 export interface EthereumSignature extends Struct {
@@ -11,11 +12,24 @@ export interface EthereumSignature extends Struct {
   readonly v: U8;
 }
 
+/** @name EthEventProofResponse */
+export interface EthEventProofResponse extends Struct {
+  readonly event_id: EventProofId;
+  readonly signatures: Vec<Bytes>;
+  readonly validators: Vec<AccountId20>;
+  readonly validator_set_id: ValidatorSetId;
+  readonly block: H256;
+  readonly tag: Option<Bytes>;
+}
+
 /** @name EthyEventId */
 export interface EthyEventId extends u64 {}
 
 /** @name EthyId */
 export interface EthyId extends U8aFixed {}
+
+/** @name EventProofId */
+export interface EventProofId extends u64 {}
 
 /** @name ExtrinsicSignature */
 export interface ExtrinsicSignature extends EthereumSignature {}

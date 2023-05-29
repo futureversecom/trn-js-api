@@ -79,6 +79,15 @@
     "ExtrinsicSignature": "EthereumSignature",
     "EthyId": "[u8; 32]",
     "EthyEventId": "u64",
+    "EthEventProofResponse": {
+        "event_id": "EventProofId",
+        "signatures": "Vec<Bytes>",
+        "validators": "Vec<AccountId20>",
+        "validator_set_id": "ValidatorSetId",
+        "block": "H256",
+        "tag": "Option<Bytes>"
+    },
+    "EventProofId": "u64",
     "EthereumSignature": {
         "r": "H256",
         "s": "H256",
@@ -99,6 +108,14 @@
                 "currencyId": "H256"
             }
         }
+    },
+    "XrplEventProofResponse": {
+        "event_id": "EventProofId",
+        "signatures": "Vec<Bytes>",
+        "validators": "Vec<Bytes>",
+        "validator_set_id": "ValidatorSetId",
+        "block": "H256",
+        "tag": "Option<Bytes>"
     },
     "CollectionUuid": "u32",
     "SerialNumber": "u32",

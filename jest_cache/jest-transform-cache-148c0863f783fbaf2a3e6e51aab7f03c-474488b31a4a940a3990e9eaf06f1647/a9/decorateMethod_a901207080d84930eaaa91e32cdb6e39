@@ -1,0 +1,8 @@
+74bab42d5ec49f72980757c426dce658
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.toRxMethod = void 0;
+function toRxMethod(method) {
+    return method;
+}
+exports.toRxMethod = toRxMethod;

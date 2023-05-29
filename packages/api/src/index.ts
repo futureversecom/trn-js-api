@@ -1,9 +1,7 @@
 import type { ApiOptions } from '@polkadot/api/types';
 import type { RegistryTypes } from '@polkadot/types/types';
 
-import { derive as rootnetDerives } from '@therootnetwork/api-derive';
-import { lookupTypes as rootnetLookupTypes, rpc as rootnetRpc, signedExtensions as rootnetSignedExtensions, types as rootnetTypes, typesAlias as rootnetTypesAlias, typesBundle as rootnetTypesBundle } from '@therootnetwork/types';
-import { derive as ormlDerives } from '@open-web3/orml-api-derive';
+import { lookupTypes as rootnetLookupTypes, rpc as rootnetRpc, types as rootnetTypes, typesAlias as rootnetTypesAlias, typesBundle as rootnetTypesBundle } from '@therootnetwork/types';
 
 // import { runtime as rootnetRuntime } from './runtime';
 
@@ -32,11 +30,6 @@ export const options = ({ rpc = {},
     ...rootnetTypesAlias,
     ...typesAlias
   },
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-  derives: {
-    ...rootnetDerives,
-    ...ormlDerives
-  },
   typesBundle: {
     ...typesBundle,
     spec: {
@@ -45,19 +38,11 @@ export const options = ({ rpc = {},
         ...rootnetTypesBundle?.spec?.rootnet,
         ...typesBundle?.spec?.rootnet
       },
-      mandala: {
-        ...rootnetTypesBundle?.spec?.mandala,
-        ...typesBundle?.spec?.mandala
+      porcini: {
+        ...rootnetTypesBundle?.spec?.porcini,
+        ...typesBundle?.spec?.porcini
       },
-      karura: {
-        ...rootnetTypesBundle?.spec?.karura,
-        ...typesBundle?.spec?.mandala
-      }
     }
-  },
-  signedExtensions: {
-    ...rootnetSignedExtensions,
-    ...signedExtensions
   },
   // runtime: {
   //   ...rootnetRuntime,

@@ -1,0 +1,12 @@
+7a00a98fb0434e51df0674d8897e556a
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.objectKeys = void 0;
+/**
+ * @name objectKeys
+ * @summary A version of Object.keys that is typed for TS
+ */
+function objectKeys(value) {
+    return Object.keys(value);
+}
+exports.objectKeys = objectKeys;

@@ -1,0 +1,6 @@
+df618f280a0e2fdd2a4e598e2de32a64
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const packageInfo_1 = require("@polkadot/types-codec/cjs/packageInfo");
+const packageInfo_2 = require("@polkadot/types-create/cjs/packageInfo");
+exports.default = [packageInfo_1.packageInfo, packageInfo_2.packageInfo];

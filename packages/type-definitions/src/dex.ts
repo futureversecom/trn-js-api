@@ -86,7 +86,7 @@ export default {
           "type": "AssetId"
         }
       ],
-      "type": "hex"
+      "type": "Json"
     }
   },
   types: {}

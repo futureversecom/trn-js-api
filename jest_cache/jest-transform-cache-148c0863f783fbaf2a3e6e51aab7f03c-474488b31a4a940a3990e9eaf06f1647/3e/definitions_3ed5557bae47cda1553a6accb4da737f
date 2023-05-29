@@ -1,0 +1,10 @@
+443402bce44cba9f8d19a321d1f19e7e
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    rpc: {},
+    types: {
+        AuthorityId: 'AccountId',
+        RawVRFOutput: '[u8; 32]'
+    }
+};

@@ -1,0 +1,9 @@
+d00151a1612bc6e51750531613d59690
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    rpc: {},
+    types: {
+        Multiplier: 'Fixed128'
+    }
+};

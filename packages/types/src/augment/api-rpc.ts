@@ -28,8 +28,10 @@ import type { RpcMethods } from '@polkadot/types/interfaces/rpc';
 import type { MigrationStatusResult, ReadProof, RuntimeVersion, TraceBlockResponse } from '@polkadot/types/interfaces/state';
 import type { ApplyExtrinsicResult, ChainProperties, ChainType, Health, NetworkState, NodeRole, PeerInfo, SyncState } from '@polkadot/types/interfaces/system';
 import type { IExtrinsic, Observable } from '@polkadot/types/types';
+import type { EthEventProofResponse, EventProofId } from '@therootnetwork/types/interfaces/ethy';
 import type { CollectionUuid, SerialNumber, TokenId } from '@therootnetwork/types/interfaces/nft';
 import type { AccountId, AssetId, Balance, BlockNumber, H160, H256, H64, Hash, Header, Index, Justification, KeyValue, SignedBlock, StorageData } from '@therootnetwork/types/interfaces/runtime';
+import type { XrplEventProofResponse } from '@therootnetwork/types/interfaces/xrplBridge';
 
 export type __AugmentedRpc = AugmentedRpc<() => unknown>;
 
@@ -194,7 +196,7 @@ declare module '@polkadot/rpc-core/types/jsonrpc' {
       /**
        * Given two AssetIds, return whether trading pair is enabled or disabled
        **/
-      getTradingPairStatus: AugmentedRpc<(assetA: AssetId | AnyNumber | Uint8Array, assetB: AssetId | AnyNumber | Uint8Array) => Observable<hex>>;
+      getTradingPairStatus: AugmentedRpc<(assetA: AssetId | AnyNumber | Uint8Array, assetB: AssetId | AnyNumber | Uint8Array) => Observable<Json>>;
       /**
        * Given some amount of an asset and pair reserves, returns an equivalent amount of the other asset
        **/
@@ -388,11 +390,15 @@ declare module '@polkadot/rpc-core/types/jsonrpc' {
       /**
        * Get ETH event proof for event Id
        **/
-      getEventProof: AugmentedRpc<(eventId: EventProofId) => Observable<Option<EthEventProofResponse>>>;
+      getEventProof: AugmentedRpc<(eventId: EventProofId | AnyNumber | Uint8Array) => Observable<Option<EthEventProofResponse>>>;
       /**
        * Get XRPL event proof for event Id
        **/
-      getXrplTxProof: AugmentedRpc<(eventId: EventProofId) => Observable<Option<XrplEventProofResponse>>>;
+      getXrplTxProof: AugmentedRpc<(eventId: EventProofId | AnyNumber | Uint8Array) => Observable<Option<XrplEventProofResponse>>>;
+      /**
+       * Subscribe to Eth event proof.
+       **/
+      subscribeEventProofs: AugmentedRpc<() => Observable<Null>>;
     };
     grandpa: {
       /**

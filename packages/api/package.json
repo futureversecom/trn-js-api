@@ -22,9 +22,7 @@
     "build": "tsc --build tsconfig.json"
   },
   "dependencies": {
-    "@therootnetwork/api-derive": "1.0.0",
-    "@therootnetwork/types": "1.0.0",
-    "@open-web3/orml-api-derive": "^2.0.1"
+    "@therootnetwork/types": "1.0.0"
   },
   "peerDependencies": {
     "@polkadot/api": "^10.5.1"

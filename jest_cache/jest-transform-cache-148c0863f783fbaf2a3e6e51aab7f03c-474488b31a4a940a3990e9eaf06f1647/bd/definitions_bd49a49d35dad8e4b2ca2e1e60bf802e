@@ -1,0 +1,8 @@
+10b324251c746d3458f7450a27c0fc91
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const rpc_js_1 = require("./rpc.js");
+exports.default = {
+    rpc: rpc_js_1.rpc,
+    types: {}
+};

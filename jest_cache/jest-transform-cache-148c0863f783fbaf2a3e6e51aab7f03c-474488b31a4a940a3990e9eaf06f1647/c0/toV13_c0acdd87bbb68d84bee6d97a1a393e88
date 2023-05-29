@@ -1,0 +1,11 @@
+dd2bbe1165427c657eee368e25b3b056
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.toV13 = void 0;
+/**
+ * @internal
+ **/
+function toV13(registry, v12) {
+    return registry.createTypeUnsafe('MetadataV13', [v12]);
+}
+exports.toV13 = toV13;

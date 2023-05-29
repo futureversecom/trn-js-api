@@ -1,0 +1,18 @@
+12e902c52b8e0d96d336cd88e9b4cb76
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.flattenUniq = void 0;
+/** @internal */
+function flattenUniq(list, result = []) {
+    for (let i = 0, count = list.length; i < count; i++) {
+        const entry = list[i];
+        if (Array.isArray(entry)) {
+            flattenUniq(entry, result);
+        }
+        else {
+            result.push(entry);
+        }
+    }
+    return [...new Set(result)];
+}
+exports.flattenUniq = flattenUniq;

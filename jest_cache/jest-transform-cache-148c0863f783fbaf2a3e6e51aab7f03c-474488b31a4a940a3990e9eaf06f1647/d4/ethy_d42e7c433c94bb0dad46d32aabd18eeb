@@ -1,0 +1,63 @@
+74f62f1d471710a5bb743bb4f45bc029
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    rpc: {
+        "getEventProof": {
+            "description": "Get ETH event proof for event Id",
+            "params": [
+                {
+                    "name": "eventId",
+                    "type": "EventProofId"
+                }
+            ],
+            "type": "Option<EthEventProofResponse>"
+        },
+        "getXrplTxProof": {
+            "description": "Get XRPL event proof for event Id",
+            "params": [
+                {
+                    "name": "eventId",
+                    "type": "EventProofId"
+                }
+            ],
+            "type": "Option<XrplEventProofResponse>"
+        },
+        subscribeEventProofs: {
+            description: 'Subscribe to Eth event proof.',
+            params: [],
+            pubsub: [
+                'subscription',
+                'subscribe',
+                'unsubscribe'
+            ],
+            type: 'Null'
+        },
+    },
+    types: {
+        VersionedEventProof: {
+            _enum: {
+                sentinel: null,
+                EventProof: "EventProof",
+            },
+        },
+        ExtrinsicSignature: "EthereumSignature",
+        EthyId: "[u8; 32]",
+        EthyEventId: "u64",
+        EthEventProofResponse: {
+            "event_id": "EventProofId",
+            "signatures": "Vec<Bytes>",
+            "validators": "Vec<AccountId20>",
+            "validator_set_id": "ValidatorSetId",
+            "block": "H256",
+            "tag": "Option<Bytes>"
+        },
+        EventProofId: "u64",
+        EthereumSignature: {
+            r: "H256",
+            s: "H256",
+            v: "U8",
+        },
+    }
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL1VzZXJzL2thcmlzaG1hL3dvcmsvZnV0dXJldmVyc2UvdHJuLXJvb3RuZXQtYXBpL3BhY2thZ2VzL3R5cGUtZGVmaW5pdGlvbnMvc3JjL2V0aHkudHMiLCJtYXBwaW5ncyI6Ijs7QUFBQSxrQkFBZTtJQUNiLEdBQUcsRUFBRTtRQUNILGVBQWUsRUFBRTtZQUNmLGFBQWEsRUFBRSxrQ0FBa0M7WUFDakQsUUFBUSxFQUFFO2dCQUNSO29CQUNFLE1BQU0sRUFBRSxTQUFTO29CQUNqQixNQUFNLEVBQUUsY0FBYztpQkFDdkI7YUFDRjtZQUNELE1BQU0sRUFBRSwrQkFBK0I7U0FDeEM7UUFDRCxnQkFBZ0IsRUFBRTtZQUNoQixhQUFhLEVBQUUsbUNBQW1DO1lBQ2xELFFBQVEsRUFBRTtnQkFDUjtvQkFDRSxNQUFNLEVBQUUsU0FBUztvQkFDakIsTUFBTSxFQUFFLGNBQWM7aUJBQ3ZCO2FBQ0Y7WUFDRCxNQUFNLEVBQUUsZ0NBQWdDO1NBQ3pDO1FBQ0Qsb0JBQW9CLEVBQUU7WUFDcEIsV0FBVyxFQUFFLCtCQUErQjtZQUM1QyxNQUFNLEVBQUUsRUFBRTtZQUNWLE1BQU0sRUFBRTtnQkFDTixjQUFjO2dCQUNkLFdBQVc7Z0JBQ1gsYUFBYTthQUNkO1lBQ0QsSUFBSSxFQUFFLE1BQU07U0FDYjtLQUNGO0lBQ0QsS0FBSyxFQUFFO1FBQ0wsbUJBQW1CLEVBQUU7WUFDbkIsS0FBSyxFQUFFO2dCQUNMLFFBQVEsRUFBRSxJQUFJO2dCQUNkLFVBQVUsRUFBRSxZQUFZO2FBQ3pCO1NBQ0Y7UUFDRCxrQkFBa0IsRUFBRSxtQkFBbUI7UUFDdkMsTUFBTSxFQUFFLFVBQVU7UUFDbEIsV0FBVyxFQUFFLEtBQUs7UUFDbEIscUJBQXFCLEVBQUU7WUFDckIsVUFBVSxFQUFFLGNBQWM7WUFDMUIsWUFBWSxFQUFFLFlBQVk7WUFDMUIsWUFBWSxFQUFFLGtCQUFrQjtZQUNoQyxrQkFBa0IsRUFBRSxnQkFBZ0I7WUFDcEMsT0FBTyxFQUFFLE1BQU07WUFDZixLQUFLLEVBQUUsZUFBZTtTQUN2QjtRQUNELFlBQVksRUFBRSxLQUFLO1FBQ25CLGlCQUFpQixFQUFFO1lBQ2pCLENBQUMsRUFBRSxNQUFNO1lBQ1QsQ0FBQyxFQUFFLE1BQU07WUFDVCxDQUFDLEVBQUUsSUFBSTtTQUNSO0tBQ0Y7Q0FDRixDQUFDIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIi9Vc2Vycy9rYXJpc2htYS93b3JrL2Z1dHVyZXZlcnNlL3Rybi1yb290bmV0LWFwaS9wYWNrYWdlcy90eXBlLWRlZmluaXRpb25zL3NyYy9ldGh5LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBkZWZhdWx0IHtcbiAgcnBjOiB7XG4gICAgXCJnZXRFdmVudFByb29mXCI6IHtcbiAgICAgIFwiZGVzY3JpcHRpb25cIjogXCJHZXQgRVRIIGV2ZW50IHByb29mIGZvciBldmVudCBJZFwiLFxuICAgICAgXCJwYXJhbXNcIjogW1xuICAgICAgICB7XG4gICAgICAgICAgXCJuYW1lXCI6IFwiZXZlbnRJZFwiLFxuICAgICAgICAgIFwidHlwZVwiOiBcIkV2ZW50UHJvb2ZJZFwiXG4gICAgICAgIH1cbiAgICAgIF0sXG4gICAgICBcInR5cGVcIjogXCJPcHRpb248RXRoRXZlbnRQcm9vZlJlc3BvbnNlPlwiXG4gICAgfSxcbiAgICBcImdldFhycGxUeFByb29mXCI6IHtcbiAgICAgIFwiZGVzY3JpcHRpb25cIjogXCJHZXQgWFJQTCBldmVudCBwcm9vZiBmb3IgZXZlbnQgSWRcIixcbiAgICAgIFwicGFyYW1zXCI6IFtcbiAgICAgICAge1xuICAgICAgICAgIFwibmFtZVwiOiBcImV2ZW50SWRcIixcbiAgICAgICAgICBcInR5cGVcIjogXCJFdmVudFByb29mSWRcIlxuICAgICAgICB9XG4gICAgICBdLFxuICAgICAgXCJ0eXBlXCI6IFwiT3B0aW9uPFhycGxFdmVudFByb29mUmVzcG9uc2U+XCJcbiAgICB9LFxuICAgIHN1YnNjcmliZUV2ZW50UHJvb2ZzOiB7XG4gICAgICBkZXNjcmlwdGlvbjogJ1N1YnNjcmliZSB0byBFdGggZXZlbnQgcHJvb2YuJyxcbiAgICAgIHBhcmFtczogW10sXG4gICAgICBwdWJzdWI6IFtcbiAgICAgICAgJ3N1YnNjcmlwdGlvbicsXG4gICAgICAgICdzdWJzY3JpYmUnLFxuICAgICAgICAndW5zdWJzY3JpYmUnXG4gICAgICBdLFxuICAgICAgdHlwZTogJ051bGwnXG4gICAgfSxcbiAgfSxcbiAgdHlwZXM6IHtcbiAgICBWZXJzaW9uZWRFdmVudFByb29mOiB7XG4gICAgICBfZW51bToge1xuICAgICAgICBzZW50aW5lbDogbnVsbCxcbiAgICAgICAgRXZlbnRQcm9vZjogXCJFdmVudFByb29mXCIsXG4gICAgICB9LFxuICAgIH0sXG4gICAgRXh0cmluc2ljU2lnbmF0dXJlOiBcIkV0aGVyZXVtU2lnbmF0dXJlXCIsXG4gICAgRXRoeUlkOiBcIlt1ODsgMzJdXCIsXG4gICAgRXRoeUV2ZW50SWQ6IFwidTY0XCIsXG4gICAgRXRoRXZlbnRQcm9vZlJlc3BvbnNlOiB7XG4gICAgICBcImV2ZW50X2lkXCI6IFwiRXZlbnRQcm9vZklkXCIsXG4gICAgICBcInNpZ25hdHVyZXNcIjogXCJWZWM8Qnl0ZXM+XCIsXG4gICAgICBcInZhbGlkYXRvcnNcIjogXCJWZWM8QWNjb3VudElkMjA+XCIsXG4gICAgICBcInZhbGlkYXRvcl9zZXRfaWRcIjogXCJWYWxpZGF0b3JTZXRJZFwiLFxuICAgICAgXCJibG9ja1wiOiBcIkgyNTZcIixcbiAgICAgIFwidGFnXCI6IFwiT3B0aW9uPEJ5dGVzPlwiXG4gICAgfSxcbiAgICBFdmVudFByb29mSWQ6IFwidTY0XCIsXG4gICAgRXRoZXJldW1TaWduYXR1cmU6IHtcbiAgICAgIHI6IFwiSDI1NlwiLFxuICAgICAgczogXCJIMjU2XCIsXG4gICAgICB2OiBcIlU4XCIsXG4gICAgfSxcbiAgfVxufTtcbiJdLCJ2ZXJzaW9uIjozfQ==

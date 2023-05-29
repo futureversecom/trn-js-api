@@ -1,8 +1,20 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
 /* eslint-disable */
 
-import type { Enum, Struct } from '@polkadot/types-codec';
+import type { Bytes, Enum, Option, Struct, Vec } from '@polkadot/types-codec';
+import type { ValidatorSetId } from '@polkadot/types/interfaces/beefy';
+import type { EventProofId } from '@therootnetwork/types/interfaces/ethy';
 import type { Balance, H160, H256 } from '@therootnetwork/types/interfaces/runtime';
+
+/** @name XrplEventProofResponse */
+export interface XrplEventProofResponse extends Struct {
+  readonly event_id: EventProofId;
+  readonly signatures: Vec<Bytes>;
+  readonly validators: Vec<Bytes>;
+  readonly validator_set_id: ValidatorSetId;
+  readonly block: H256;
+  readonly tag: Option<Bytes>;
+}
 
 /** @name XRPLTxData */
 export interface XRPLTxData extends Enum {

@@ -1,0 +1,1 @@
+{"file":"/Users/karishma/work/futureverse/trn-rootnet-api/packages/type-definitions/src/spec/porcini.ts","mappings":";;;;;AAAA,wDAAkC;AAElC,kBAAe,iBAAS,CAAC","names":[],"sources":["/Users/karishma/work/futureverse/trn-rootnet-api/packages/type-definitions/src/spec/porcini.ts"],"sourcesContent":["import versioned from './rootnet';\n\nexport default versioned;\n"],"version":3}

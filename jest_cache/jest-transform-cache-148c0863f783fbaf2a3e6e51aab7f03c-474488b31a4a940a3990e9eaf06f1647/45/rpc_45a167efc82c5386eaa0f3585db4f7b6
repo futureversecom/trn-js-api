@@ -1,0 +1,18 @@
+d09395fd67b8f1c6bf6b8a41dee9ba88
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rpc = void 0;
+exports.rpc = {
+    getBlockStats: {
+        description: 'Reexecute the specified `block_hash` and gather statistics while doing so',
+        isUnsafe: true,
+        params: [
+            {
+                isHistoric: true,
+                name: 'at',
+                type: 'Hash'
+            }
+        ],
+        type: 'Option<BlockStats>'
+    }
+};

@@ -1,0 +1,21 @@
+3b54cd7c363b22d3a338e71ae823edf9
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.rpc = void 0;
+exports.rpc = {
+    getFinalizedHead: {
+        description: 'Returns hash of the latest BEEFY finalized block as seen by this client.',
+        params: [],
+        type: 'H256'
+    },
+    subscribeJustifications: {
+        description: 'Returns the block most recently finalized by BEEFY, alongside side its justification.',
+        params: [],
+        pubsub: [
+            'justifications',
+            'subscribeJustifications',
+            'unsubscribeJustifications'
+        ],
+        type: 'BeefySignedCommitment'
+    }
+};

@@ -1,0 +1,39 @@
+56ff5750cd2cead021902e0f017b38f2
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    rpc: {
+        "ownedTokens": {
+            "description": "Get all NFTs owned by an account",
+            "params": [
+                {
+                    "name": "collectionId",
+                    "type": "CollectionUuid"
+                },
+                {
+                    "name": "who",
+                    "type": "AccountId"
+                },
+                { "name": "cursor", "type": "SerialNumber" },
+                { "name": "limit", "type": "u16" }
+            ],
+            "type": "Json"
+        },
+        "tokenUri": {
+            "description": "Get the URI of a token",
+            "params": [
+                {
+                    "name": "tokenId",
+                    "type": "TokenId"
+                }
+            ],
+            "type": "Json"
+        }
+    },
+    types: {
+        "CollectionUuid": "u32",
+        "SerialNumber": "u32",
+        "TokenId": "(CollectionUuid, SerialNumber)"
+    },
+};
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJmaWxlIjoiL1VzZXJzL2thcmlzaG1hL3dvcmsvZnV0dXJldmVyc2UvdHJuLXJvb3RuZXQtYXBpL3BhY2thZ2VzL3R5cGUtZGVmaW5pdGlvbnMvc3JjL25mdC50cyIsIm1hcHBpbmdzIjoiOztBQUFBLGtCQUFlO0lBQ2IsR0FBRyxFQUFFO1FBQ0gsYUFBYSxFQUFFO1lBQ2IsYUFBYSxFQUFFLGtDQUFrQztZQUNqRCxRQUFRLEVBQUU7Z0JBQ1I7b0JBQ0UsTUFBTSxFQUFFLGNBQWM7b0JBQ3RCLE1BQU0sRUFBRSxnQkFBZ0I7aUJBQ3pCO2dCQUNEO29CQUNFLE1BQU0sRUFBRSxLQUFLO29CQUNiLE1BQU0sRUFBRSxXQUFXO2lCQUNwQjtnQkFDRCxFQUFFLE1BQU0sRUFBRSxRQUFRLEVBQUUsTUFBTSxFQUFFLGNBQWMsRUFBRTtnQkFDNUMsRUFBRSxNQUFNLEVBQUUsT0FBTyxFQUFFLE1BQU0sRUFBRSxLQUFLLEVBQUU7YUFDbkM7WUFDRCxNQUFNLEVBQUUsTUFBTTtTQUNmO1FBQ0QsVUFBVSxFQUFFO1lBQ1YsYUFBYSxFQUFFLHdCQUF3QjtZQUN2QyxRQUFRLEVBQUU7Z0JBQ1I7b0JBQ0UsTUFBTSxFQUFFLFNBQVM7b0JBQ2pCLE1BQU0sRUFBRSxTQUFTO2lCQUNsQjthQUNGO1lBQ0QsTUFBTSxFQUFFLE1BQU07U0FDZjtLQUNGO0lBQ0QsS0FBSyxFQUFFO1FBQ0wsZ0JBQWdCLEVBQUUsS0FBSztRQUN2QixjQUFjLEVBQUUsS0FBSztRQUNyQixTQUFTLEVBQUUsZ0NBQWdDO0tBQzVDO0NBQ0YsQ0FBQyIsIm5hbWVzIjpbXSwic291cmNlcyI6WyIvVXNlcnMva2FyaXNobWEvd29yay9mdXR1cmV2ZXJzZS90cm4tcm9vdG5ldC1hcGkvcGFja2FnZXMvdHlwZS1kZWZpbml0aW9ucy9zcmMvbmZ0LnRzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBkZWZhdWx0IHtcbiAgcnBjOiB7XG4gICAgXCJvd25lZFRva2Vuc1wiOiB7XG4gICAgICBcImRlc2NyaXB0aW9uXCI6IFwiR2V0IGFsbCBORlRzIG93bmVkIGJ5IGFuIGFjY291bnRcIixcbiAgICAgIFwicGFyYW1zXCI6IFtcbiAgICAgICAge1xuICAgICAgICAgIFwibmFtZVwiOiBcImNvbGxlY3Rpb25JZFwiLFxuICAgICAgICAgIFwidHlwZVwiOiBcIkNvbGxlY3Rpb25VdWlkXCJcbiAgICAgICAgfSxcbiAgICAgICAge1xuICAgICAgICAgIFwibmFtZVwiOiBcIndob1wiLFxuICAgICAgICAgIFwidHlwZVwiOiBcIkFjY291bnRJZFwiXG4gICAgICAgIH0sXG4gICAgICAgIHsgXCJuYW1lXCI6IFwiY3Vyc29yXCIsIFwidHlwZVwiOiBcIlNlcmlhbE51bWJlclwiIH0sXG4gICAgICAgIHsgXCJuYW1lXCI6IFwibGltaXRcIiwgXCJ0eXBlXCI6IFwidTE2XCIgfVxuICAgICAgXSxcbiAgICAgIFwidHlwZVwiOiBcIkpzb25cIlxuICAgIH0sXG4gICAgXCJ0b2tlblVyaVwiOiB7XG4gICAgICBcImRlc2NyaXB0aW9uXCI6IFwiR2V0IHRoZSBVUkkgb2YgYSB0b2tlblwiLFxuICAgICAgXCJwYXJhbXNcIjogW1xuICAgICAgICB7XG4gICAgICAgICAgXCJuYW1lXCI6IFwidG9rZW5JZFwiLFxuICAgICAgICAgIFwidHlwZVwiOiBcIlRva2VuSWRcIlxuICAgICAgICB9XG4gICAgICBdLFxuICAgICAgXCJ0eXBlXCI6IFwiSnNvblwiXG4gICAgfVxuICB9LFxuICB0eXBlczoge1xuICAgIFwiQ29sbGVjdGlvblV1aWRcIjogXCJ1MzJcIixcbiAgICBcIlNlcmlhbE51bWJlclwiOiBcInUzMlwiLFxuICAgIFwiVG9rZW5JZFwiOiBcIihDb2xsZWN0aW9uVXVpZCwgU2VyaWFsTnVtYmVyKVwiXG4gIH0sXG59O1xuIl0sInZlcnNpb24iOjN9

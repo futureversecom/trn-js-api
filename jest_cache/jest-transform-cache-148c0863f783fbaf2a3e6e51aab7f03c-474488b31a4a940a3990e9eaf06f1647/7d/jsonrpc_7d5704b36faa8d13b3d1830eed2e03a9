@@ -1,0 +1,5 @@
+36fb855b4852a706398e96b682cd0b78
+"use strict";
+/* eslint-disable */
+Object.defineProperty(exports, "__esModule", { value: true });
+require("@polkadot/rpc-core/types/jsonrpc");

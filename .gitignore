@@ -71,3 +71,4 @@ build/
 
 *.tsbuildinfo
 CONTRIBUTORS
+.idea

@@ -1,0 +1,5 @@
+62503e9ea5356a85fcdc84ee35b93342
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.packageInfo = void 0;
+exports.packageInfo = { name: '@polkadot/x-global', path: typeof __dirname === 'string' ? __dirname : 'auto', type: 'cjs', version: '12.2.1' };

@@ -19,7 +19,17 @@ export default {
         }
       ],
       "type": "Option<XrplEventProofResponse>"
-    }
+    },
+    subscribeEventProofs: {
+      alias: ['ethy_subscribeEventProofs', 'ethy_unsubscribeEventProofs'],
+      description: 'Subscribe to Eth event proof.',
+      params: [],
+      pubsub: [
+        'subscribeEventProofs',
+        'unsubscribeEventProofs',
+      ],
+      type: 'Null'
+    },
   },
   types: {
     VersionedEventProof: {
@@ -31,6 +41,15 @@ export default {
     ExtrinsicSignature: "EthereumSignature",
     EthyId: "[u8; 32]",
     EthyEventId: "u64",
+    EthEventProofResponse: {
+      "event_id": "EventProofId",
+      "signatures": "Vec<Bytes>",
+      "validators": "Vec<AccountId20>",
+      "validator_set_id": "ValidatorSetId",
+      "block": "H256",
+      "tag": "Option<Bytes>"
+    },
+    EventProofId: "u64",
     EthereumSignature: {
       r: "H256",
       s: "H256",

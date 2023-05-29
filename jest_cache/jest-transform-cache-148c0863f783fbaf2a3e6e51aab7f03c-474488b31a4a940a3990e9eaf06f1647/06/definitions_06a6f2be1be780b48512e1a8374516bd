@@ -1,0 +1,19 @@
+091cbebdaf79de2a1e538f5bb0df4d7b
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    rpc: {},
+    types: {
+        ActiveRecovery: {
+            created: 'BlockNumber',
+            deposit: 'Balance',
+            friends: 'Vec<AccountId>'
+        },
+        RecoveryConfig: {
+            delayPeriod: 'BlockNumber',
+            deposit: 'Balance',
+            friends: 'Vec<AccountId>',
+            threshold: 'u16'
+        }
+    }
+};
