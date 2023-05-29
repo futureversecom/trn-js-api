@@ -1,6 +1,0 @@
-ca1618c1b48de048e53d3526b1fed5e6
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-require("./detectPackage.js");
-tslib_1.__exportStar(require("./bundle.js"), exports);

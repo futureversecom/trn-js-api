@@ -1,9 +1,0 @@
-1a708ccbc3b493c2064546949b6d88fc
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.hasEq = void 0;
-const util_1 = require("@polkadot/util");
-function hasEq(o) {
-    return (0, util_1.isFunction)(o.eq);
-}
-exports.hasEq = hasEq;

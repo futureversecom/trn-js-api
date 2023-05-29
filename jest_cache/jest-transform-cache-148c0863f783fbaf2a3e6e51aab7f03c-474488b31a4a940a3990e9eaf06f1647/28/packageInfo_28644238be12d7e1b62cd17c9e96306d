@@ -1,5 +1,0 @@
-3fe652b47407bd77a7d351afda36377b
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.packageInfo = void 0;
-exports.packageInfo = { name: '@polkadot/wasm-crypto', path: typeof __dirname === 'string' ? __dirname : 'auto', type: 'cjs', version: '7.2.1' };

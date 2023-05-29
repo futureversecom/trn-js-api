@@ -1,5 +1,0 @@
-2ae0060cc5a32774024263ffceea7fd2
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.packageInfo = void 0;
-exports.packageInfo = { name: '@polkadot/x-randomvalues', path: typeof __dirname === 'string' ? __dirname : 'auto', type: 'cjs', version: '12.2.1' };

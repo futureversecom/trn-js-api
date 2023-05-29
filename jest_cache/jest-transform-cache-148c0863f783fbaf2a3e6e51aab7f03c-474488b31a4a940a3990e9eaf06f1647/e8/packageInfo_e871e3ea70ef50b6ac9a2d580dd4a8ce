@@ -1,5 +1,0 @@
-bafda8b271dbeac714b0dd43fa51706c
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.packageInfo = void 0;
-exports.packageInfo = { name: '@polkadot/api-derive', path: typeof __dirname === 'string' ? __dirname : 'auto', type: 'cjs', version: '10.7.2' };

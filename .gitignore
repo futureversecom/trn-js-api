@@ -72,3 +72,4 @@ build/
 *.tsbuildinfo
 CONTRIBUTORS
 .idea
+jest_cache
