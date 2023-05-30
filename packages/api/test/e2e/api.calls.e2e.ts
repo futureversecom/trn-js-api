@@ -11,65 +11,64 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import { Hash, Block, AccountId } from "@therootnetwork/types/interfaces";
-import { createHeaderExtended } from '@polkadot/api-derive/type';
-import { ApiPromise, WsProvider } from '@polkadot/api';
-import { options } from '@therootnetwork/api';
+import { ApiPromise, WsProvider } from "@polkadot/api";
+import { createHeaderExtended } from "@polkadot/api-derive/type";
+import { options } from "@therootnetwork/api";
+import { AccountId, Block, Hash } from "@therootnetwork/types/interfaces";
 
-describe('e2e api calls', () => {
-  let api;
-  let blockHash: Hash;
-  beforeAll(async () => {
-    const providerUrl = 'wss://porcini.rootnet.app/archive/ws';
-    const provider = new WsProvider(providerUrl);
-    console.log('providerUrl', providerUrl);
-    api = new ApiPromise(options({ provider }));
-    await api.isReady;
-    blockHash = await api.rpc.chain.getBlockHash();
-  });
+describe("e2e api calls", () => {
+	let api;
+	let blockHash: Hash;
+	beforeAll(async () => {
+		const providerUrl = "wss://porcini.rootnet.app/archive/ws";
+		const provider = new WsProvider(providerUrl);
+		console.log("providerUrl", providerUrl);
+		api = new ApiPromise(options({ provider }));
+		await api.isReady;
+		blockHash = await api.rpc.chain.getBlockHash();
+	});
 
-  afterAll(async () => {
-    if (api) {
-      return await api.disconnect();
-    }
-  });
+	afterAll(async () => {
+		if (api) {
+			return await api.disconnect();
+		}
+	});
 
-  it('Get correct block', async () => {
-    const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
-    expect(block.header.hash.toString()).toEqual(blockHash.toString());
-  });
+	it("Get correct block", async () => {
+		const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
+		expect(block.header.hash.toString()).toEqual(blockHash.toString());
+	});
 
-  it('Get correct validators', async () => {
-    const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
-    expect(validators.length).toBeGreaterThan(0);
-  });
+	it("Get correct validators", async () => {
+		const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
+		expect(validators.length).toBeGreaterThan(0);
+	});
 
-  it('Expect author is in validators', async () => {
-    const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
-    const header = block.header;
-    const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
-    // console.log('validators:',validators);
-    const extHeader = createHeaderExtended(api.registry, header, validators);
-    const author: AccountId = extHeader.author;
-    expect(validators).toEqual(expect.arrayContaining([expect.objectContaining(author)]));
-  });
+	it("Expect author is in validators", async () => {
+		const block: Block = await api.rpc.chain.getBlock(blockHash).then((r: any) => r.block);
+		const header = block.header;
+		const validators: AccountId[] = (await api.query.session.validators.at(blockHash)) as any;
+		// console.log('validators:',validators);
+		const extHeader = createHeaderExtended(api.registry, header, validators);
+		const author: AccountId = extHeader.author;
+		expect(validators).toEqual(expect.arrayContaining([expect.objectContaining(author)]));
+	});
 
-  it('Expect at least one event', async () => {
-    const events = (await api.query.system.events.at(blockHash)) as any;
-    expect(events.length).toBeGreaterThan(0);
-  });
+	it("Expect at least one event", async () => {
+		const events = (await api.query.system.events.at(blockHash)) as any;
+		expect(events.length).toBeGreaterThan(0);
+	});
 
-  describe('Get session info', () => {
-    it('Get correct session information (length, last length, era, current index, session per era', async () => {
-      const currentSession = await api.derive.session.info();
-      expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.isEpoch).toBe(true);
-      expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
-      expect(currentSession.validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
-    });
-  });
-
+	describe("Get session info", () => {
+		it("Get correct session information (length, last length, era, current index, session per era", async () => {
+			const currentSession = await api.derive.session.info();
+			expect(currentSession.currentEra.toNumber()).toBeGreaterThanOrEqual(0);
+			expect(currentSession.currentIndex.toNumber()).toBeGreaterThanOrEqual(0);
+			expect(currentSession.eraLength.toNumber()).toBeGreaterThanOrEqual(0);
+			expect(currentSession.isEpoch).toBe(true);
+			expect(currentSession.sessionLength.toNumber()).toBeGreaterThanOrEqual(0);
+			expect(currentSession.sessionsPerEra.toNumber()).toBeGreaterThanOrEqual(0);
+			expect(currentSession.validatorCount.toNumber()).toBeGreaterThanOrEqual(0);
+		});
+	});
 });

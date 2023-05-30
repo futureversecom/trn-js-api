@@ -22,11 +22,10 @@
     "build": "tsc --build tsconfig.json"
   },
   "dependencies": {
-    "@therootnetwork/type-definitions": "1.0.0",
-    "@open-web3/orml-types": "^2.0.1"
+    "@therootnetwork/type-definitions": "1.0.0"
   },
   "peerDependencies": {
-    "@polkadot/api": "^1.0.0"
+    "@polkadot/api": "^10.5.1"
   },
   "devDependencies": {
     "@types/websocket": "^1.0.5",

@@ -28,11 +28,8 @@
       "@therootnetwork/type-definitions": ["packages/type-definitions/src"],
       "@therootnetwork/type-definitions/*": ["packages/type-definitions/src/*"],
       "@therootnetwork/types/lookup": ["packages/types/src/lookup/types-rootnet.ts"],
-      "@therootnetwork/api/augment": ["packages/types/src/argument/api.ts"],
+      "@therootnetwork/api/augment": ["packages/types/src/argument/api.ts"]
     }
   },
-  "exclude": [
-    "build/**/*",
-    "**/build/**/*"
-  ]
+  "exclude": ["build/**/*", "**/build/**/*"]
 }

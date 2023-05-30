@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "format": "prettier --config .prettierrc.js --write .",
-    "build": "yarn build:interfaces; yarn workspaces foreach -pvit run build",
+    "build": "yarn build:interfaces; yarn workspaces run build",
     "build:interfaces": "ts-node -r tsconfig-paths/register packages/types/scripts/generateTypes.ts && ts-node -r tsconfig-paths/register packages/type-definitions/scripts/generate.ts",
     "build:release": "polkadot-ci-ghact-build",
     "clean": "polkadot-dev-clean-build",
@@ -31,7 +31,6 @@
     "@babel/core": "^7.21.8",
     "@babel/register": "^7.21.0",
     "@babel/runtime": "^7.21.5",
-    "@open-web3/util": "^2.0.1",
     "@polkadot/api": "^10.5.1",
     "@polkadot/dev": "^0.73.11",
     "@polkadot/typegen": "^10.5.1",

@@ -25,7 +25,6 @@
     "@polkadot/types": "^10.5.1"
   },
   "devDependencies": {
-    "@open-web3/orml-type-definitions": "^2.0.1",
     "typescript": "^5.0.4"
   }
 }

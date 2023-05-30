@@ -1,856 +1,144 @@
 {
-    "spec": {
-        "root": {
-            "rpc": {
-                "oracle": {
-                    "getValue": {
-                        "description": "Retrieves the oracle value for a given key.",
-                        "params": [
-                            {
-                                "name": "providerId",
-                                "type": "RpcDataProviderId"
-                            },
-                            {
-                                "name": "key",
-                                "type": "OracleKey"
-                            },
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "Option<TimestampedValue>",
-                        "isSubscription": false,
-                        "jsonrpc": "oracle_getValue",
-                        "method": "getValue",
-                        "section": "oracle"
-                    },
-                    "getAllValues": {
-                        "description": "Retrieves all oracle values.",
-                        "params": [
-                            {
-                                "name": "providerId",
-                                "type": "RpcDataProviderId"
-                            },
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "Vec<(OracleKey, Option<TimestampedValue>)>",
-                        "isSubscription": false,
-                        "jsonrpc": "oracle_getAllValues",
-                        "method": "getAllValues",
-                        "section": "oracle"
-                    }
-                },
-                "tokens": {
-                    "queryExistentialDeposit": {
-                        "description": "Query Existential Deposit for a given currency.",
-                        "params": [
-                            {
-                                "name": "currencyId",
-                                "type": "CurrencyId"
-                            },
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "NumberOrHex",
-                        "isSubscription": false,
-                        "jsonrpc": "tokens_queryExistentialDeposit",
-                        "method": "queryExistentialDeposit",
-                        "section": "tokens"
-                    }
-                },
-                "dex": {
-                    "quote": {
-                        "description": "Given some amount of an asset and pair reserves, returns an equivalent amount of the other asset",
-                        "params": [
-                            {
-                                "name": "amountA",
-                                "type": "u128"
-                            },
-                            {
-                                "name": "reserveA",
-                                "type": "u128"
-                            },
-                            {
-                                "name": "reserveB",
-                                "type": "u128"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_quote",
-                        "method": "quote",
-                        "section": "dex"
-                    },
-                    "getAmountsOut": {
-                        "description": "Given an array of AssetIds, return amounts out for an amount in",
-                        "params": [
-                            {
-                                "name": "amountIn",
-                                "type": "Balance"
-                            },
-                            {
-                                "name": "path",
-                                "type": "Vec<AssetId>"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getAmountsOut",
-                        "method": "getAmountsOut",
-                        "section": "dex"
-                    },
-                    "getAmountsIn": {
-                        "description": "Given an array of AssetIds, return amounts in for an amount out",
-                        "params": [
-                            {
-                                "name": "amountOut",
-                                "type": "Balance"
-                            },
-                            {
-                                "name": "path",
-                                "type": "Vec<AssetId>"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getAmountsIn",
-                        "method": "getAmountsIn",
-                        "section": "dex"
-                    },
-                    "getLPTokenID": {
-                        "description": "Given two AssetIds, return liquidity token created for the pair",
-                        "params": [
-                            {
-                                "name": "assetA",
-                                "type": "AssetId"
-                            },
-                            {
-                                "name": "assetB",
-                                "type": "AssetId"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getLPTokenID",
-                        "method": "getLPTokenID",
-                        "section": "dex"
-                    },
-                    "getLiquidity": {
-                        "description": "Given two AssetIds, return liquidity",
-                        "params": [
-                            {
-                                "name": "assetA",
-                                "type": "AssetId"
-                            },
-                            {
-                                "name": "assetB",
-                                "type": "AssetId"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getLiquidity",
-                        "method": "getLiquidity",
-                        "section": "dex"
-                    },
-                    "getTradingPairStatus": {
-                        "description": "Given two AssetIds, return whether trading pair is enabled or disabled",
-                        "params": [
-                            {
-                                "name": "assetA",
-                                "type": "AssetId"
-                            },
-                            {
-                                "name": "assetB",
-                                "type": "AssetId"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getTradingPairStatus",
-                        "method": "getTradingPairStatus",
-                        "section": "dex"
-                    }
-                },
-                "ethy": {
-                    "getEventProof": {
-                        "description": "Get ETH event proof for event Id",
-                        "params": [
-                            {
-                                "name": "eventId",
-                                "type": "EventProofId"
-                            }
-                        ],
-                        "type": "Option<EthEventProofResponse>",
-                        "isSubscription": false,
-                        "jsonrpc": "ethy_getEventProof",
-                        "method": "getEventProof",
-                        "section": "ethy"
-                    },
-                    "getXrplTxProof": {
-                        "description": "Get XRPL event proof for event Id",
-                        "params": [
-                            {
-                                "name": "eventId",
-                                "type": "EventProofId"
-                            }
-                        ],
-                        "type": "Option<XrplEventProofResponse>",
-                        "isSubscription": false,
-                        "jsonrpc": "ethy_getXrplTxProof",
-                        "method": "getXrplTxProof",
-                        "section": "ethy"
-                    },
-                    "subscribeEventProofs": {
-                        "alias": [
-                            "ethy_subscribeEventProofs",
-                            "ethy_unsubscribeEventProofs"
-                        ],
-                        "description": "Subscribe to Eth event proof.",
-                        "params": [],
-                        "pubsub": [
-                            "subscribeEventProofs",
-                            "unsubscribeEventProofs"
-                        ],
-                        "type": "Null",
-                        "isSubscription": true,
-                        "jsonrpc": "ethy_subscribeEventProofs",
-                        "method": "subscribeEventProofs",
-                        "section": "ethy"
-                    }
-                },
-                "nft": {
-                    "ownedTokens": {
-                        "description": "Get all NFTs owned by an account",
-                        "params": [
-                            {
-                                "name": "collectionId",
-                                "type": "CollectionUuid"
-                            },
-                            {
-                                "name": "who",
-                                "type": "AccountId"
-                            },
-                            {
-                                "name": "cursor",
-                                "type": "SerialNumber"
-                            },
-                            {
-                                "name": "limit",
-                                "type": "u16"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "nft_ownedTokens",
-                        "method": "ownedTokens",
-                        "section": "nft"
-                    },
-                    "tokenUri": {
-                        "description": "Get the URI of a token",
-                        "params": [
-                            {
-                                "name": "tokenId",
-                                "type": "TokenId"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "nft_tokenUri",
-                        "method": "tokenUri",
-                        "section": "nft"
-                    }
-                }
+  "spec": {
+    "root": {
+      "instances": {
+        "council": ["generalCouncil"]
+      },
+      "types": [
+        {
+          "minmax": [0, null],
+          "types": {
+            "AccountId": "EthereumAccountId",
+            "AccountId20": "EthereumAccountId",
+            "AccountId32": "EthereumAccountId",
+            "Address": "AccountId",
+            "LookupSource": "AccountId",
+            "Lookup0": "AccountId",
+            "AssetId": "u32",
+            "Balance": "u128",
+            "EventProofId": "u64",
+            "ValidatorSetId": "u64",
+            "EthereumSignature": {
+              "r": "H256",
+              "s": "H256",
+              "v": "U8"
             },
-            "instances": {
-                "council": [
-                    "generalCouncil"
-                ]
+            "ExtrinsicSignature": "EthereumSignature",
+            "EthyId": "[u8; 32]",
+            "EthWalletCall": {
+              "nonce": "u32"
             },
-            "types": [
-                {
-                    "minmax": [
-                        0,
-                        null
-                    ],
-                    "types": {
-                        "CallOf": "Call",
-                        "DispatchTime": {
-                            "_enum": {
-                                "At": "BlockNumber",
-                                "After": "BlockNumber"
-                            }
-                        },
-                        "ScheduleTaskIndex": "u32",
-                        "DelayedOrigin": {
-                            "delay": "BlockNumber",
-                            "origin": "PalletsOrigin"
-                        },
-                        "AuthorityOrigin": "DelayedOrigin",
-                        "StorageValue": "Vec<u8>",
-                        "GraduallyUpdate": {
-                            "key": "StorageKey",
-                            "targetValue": "StorageValue",
-                            "perBlock": "StorageValue"
-                        },
-                        "StorageKeyBytes": "Vec<u8>",
-                        "StorageValueBytes": "Vec<u8>",
-                        "RpcDataProviderId": "Text",
-                        "DataProviderId": "u8",
-                        "TimestampedValue": {
-                            "value": "OracleValue",
-                            "timestamp": "Moment"
-                        },
-                        "TimestampedValueOf": "TimestampedValue",
-                        "OrderedSet": "Vec<AccountId>",
-                        "OrmlAccountData": {
-                            "free": "Balance",
-                            "reserved": "Balance",
-                            "frozen": "Balance"
-                        },
-                        "OrmlBalanceLock": {
-                            "amount": "Balance",
-                            "id": "LockIdentifier"
-                        },
-                        "AuctionInfo": {
-                            "bid": "Option<(AccountId, Balance)>",
-                            "start": "BlockNumber",
-                            "end": "Option<BlockNumber>"
-                        },
-                        "DelayedDispatchTime": {
-                            "_enum": {
-                                "At": "BlockNumber",
-                                "After": "BlockNumber"
-                            }
-                        },
-                        "DispatchId": "u32",
-                        "Price": "FixedU128",
-                        "OrmlVestingSchedule": {
-                            "start": "BlockNumber",
-                            "period": "BlockNumber",
-                            "periodCount": "u32",
-                            "perPeriod": "Compact<Balance>"
-                        },
-                        "VestingScheduleOf": "OrmlVestingSchedule",
-                        "OrmlCurrencyId": "u8",
-                        "PoolInfo": {
-                            "totalShares": "Share",
-                            "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
-                        },
-                        "CompactBalance": "Compact<Balance>",
-                        "PoolInfoV0": {
-                            "totalShares": "Compact<Share>",
-                            "totalRewards": "CompactBalance",
-                            "totalWithdrawnRewards": "CompactBalance"
-                        },
-                        "Share": "u128",
-                        "OracleValue": "FixedU128",
-                        "VersionedEventProof": {
-                            "_enum": {
-                                "sentinel": null,
-                                "EventProof": "EventProof"
-                            }
-                        },
-                        "ExtrinsicSignature": "EthereumSignature",
-                        "EthyId": "[u8; 32]",
-                        "EthyEventId": "u64",
-                        "EthEventProofResponse": {
-                            "event_id": "EventProofId",
-                            "signatures": "Vec<Bytes>",
-                            "validators": "Vec<AccountId20>",
-                            "validator_set_id": "ValidatorSetId",
-                            "block": "H256",
-                            "tag": "Option<Bytes>"
-                        },
-                        "EventProofId": "u64",
-                        "EthereumSignature": {
-                            "r": "H256",
-                            "s": "H256",
-                            "v": "U8"
-                        },
-                        "EthWalletCall": {
-                            "nonce": "u32"
-                        },
-                        "XRPLTxData": {
-                            "_enum": {
-                                "Payment": {
-                                    "amount": "Balance",
-                                    "destination": "H160"
-                                },
-                                "CurrencyPayment": {
-                                    "amount": "Balance",
-                                    "address": "H160",
-                                    "currencyId": "H256"
-                                }
-                            }
-                        },
-                        "XrplEventProofResponse": {
-                            "event_id": "EventProofId",
-                            "signatures": "Vec<Bytes>",
-                            "validators": "Vec<Bytes>",
-                            "validator_set_id": "ValidatorSetId",
-                            "block": "H256",
-                            "tag": "Option<Bytes>"
-                        },
-                        "CollectionUuid": "u32",
-                        "SerialNumber": "u32",
-                        "TokenId": "(CollectionUuid, SerialNumber)",
-                        "AccountId": "EthereumAccountId",
-                        "AccountId20": "EthereumAccountId",
-                        "AccountId32": "EthereumAccountId",
-                        "Address": "AccountId",
-                        "LookupSource": "AccountId",
-                        "Lookup0": "AccountId",
-                        "AssetId": "u32",
-                        "Balance": "u128",
-                        "ValidatorSetId": "u64"
-                    }
+            "XRPLTxData": {
+              "_enum": {
+                "Payment": {
+                  "amount": "Balance",
+                  "destination": "H160"
+                },
+                "CurrencyPayment": {
+                  "amount": "Balance",
+                  "address": "H160",
+                  "currencyId": "H256"
                 }
-            ],
-            "alias": {
-                "tokens": {
-                    "AccountData": "OrmlAccountData",
-                    "BalanceLock": "OrmlBalanceLock"
-                }
-            }
-        },
-        "porcini": {
-            "rpc": {
-                "oracle": {
-                    "getValue": {
-                        "description": "Retrieves the oracle value for a given key.",
-                        "params": [
-                            {
-                                "name": "providerId",
-                                "type": "RpcDataProviderId"
-                            },
-                            {
-                                "name": "key",
-                                "type": "OracleKey"
-                            },
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "Option<TimestampedValue>",
-                        "isSubscription": false,
-                        "jsonrpc": "oracle_getValue",
-                        "method": "getValue",
-                        "section": "oracle"
-                    },
-                    "getAllValues": {
-                        "description": "Retrieves all oracle values.",
-                        "params": [
-                            {
-                                "name": "providerId",
-                                "type": "RpcDataProviderId"
-                            },
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "Vec<(OracleKey, Option<TimestampedValue>)>",
-                        "isSubscription": false,
-                        "jsonrpc": "oracle_getAllValues",
-                        "method": "getAllValues",
-                        "section": "oracle"
-                    }
-                },
-                "tokens": {
-                    "queryExistentialDeposit": {
-                        "description": "Query Existential Deposit for a given currency.",
-                        "params": [
-                            {
-                                "name": "currencyId",
-                                "type": "CurrencyId"
-                            },
-                            {
-                                "name": "at",
-                                "type": "BlockHash",
-                                "isHistoric": true,
-                                "isOptional": true
-                            }
-                        ],
-                        "type": "NumberOrHex",
-                        "isSubscription": false,
-                        "jsonrpc": "tokens_queryExistentialDeposit",
-                        "method": "queryExistentialDeposit",
-                        "section": "tokens"
-                    }
-                },
-                "dex": {
-                    "quote": {
-                        "description": "Given some amount of an asset and pair reserves, returns an equivalent amount of the other asset",
-                        "params": [
-                            {
-                                "name": "amountA",
-                                "type": "u128"
-                            },
-                            {
-                                "name": "reserveA",
-                                "type": "u128"
-                            },
-                            {
-                                "name": "reserveB",
-                                "type": "u128"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_quote",
-                        "method": "quote",
-                        "section": "dex"
-                    },
-                    "getAmountsOut": {
-                        "description": "Given an array of AssetIds, return amounts out for an amount in",
-                        "params": [
-                            {
-                                "name": "amountIn",
-                                "type": "Balance"
-                            },
-                            {
-                                "name": "path",
-                                "type": "Vec<AssetId>"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getAmountsOut",
-                        "method": "getAmountsOut",
-                        "section": "dex"
-                    },
-                    "getAmountsIn": {
-                        "description": "Given an array of AssetIds, return amounts in for an amount out",
-                        "params": [
-                            {
-                                "name": "amountOut",
-                                "type": "Balance"
-                            },
-                            {
-                                "name": "path",
-                                "type": "Vec<AssetId>"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getAmountsIn",
-                        "method": "getAmountsIn",
-                        "section": "dex"
-                    },
-                    "getLPTokenID": {
-                        "description": "Given two AssetIds, return liquidity token created for the pair",
-                        "params": [
-                            {
-                                "name": "assetA",
-                                "type": "AssetId"
-                            },
-                            {
-                                "name": "assetB",
-                                "type": "AssetId"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getLPTokenID",
-                        "method": "getLPTokenID",
-                        "section": "dex"
-                    },
-                    "getLiquidity": {
-                        "description": "Given two AssetIds, return liquidity",
-                        "params": [
-                            {
-                                "name": "assetA",
-                                "type": "AssetId"
-                            },
-                            {
-                                "name": "assetB",
-                                "type": "AssetId"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getLiquidity",
-                        "method": "getLiquidity",
-                        "section": "dex"
-                    },
-                    "getTradingPairStatus": {
-                        "description": "Given two AssetIds, return whether trading pair is enabled or disabled",
-                        "params": [
-                            {
-                                "name": "assetA",
-                                "type": "AssetId"
-                            },
-                            {
-                                "name": "assetB",
-                                "type": "AssetId"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "dex_getTradingPairStatus",
-                        "method": "getTradingPairStatus",
-                        "section": "dex"
-                    }
-                },
-                "ethy": {
-                    "getEventProof": {
-                        "description": "Get ETH event proof for event Id",
-                        "params": [
-                            {
-                                "name": "eventId",
-                                "type": "EventProofId"
-                            }
-                        ],
-                        "type": "Option<EthEventProofResponse>",
-                        "isSubscription": false,
-                        "jsonrpc": "ethy_getEventProof",
-                        "method": "getEventProof",
-                        "section": "ethy"
-                    },
-                    "getXrplTxProof": {
-                        "description": "Get XRPL event proof for event Id",
-                        "params": [
-                            {
-                                "name": "eventId",
-                                "type": "EventProofId"
-                            }
-                        ],
-                        "type": "Option<XrplEventProofResponse>",
-                        "isSubscription": false,
-                        "jsonrpc": "ethy_getXrplTxProof",
-                        "method": "getXrplTxProof",
-                        "section": "ethy"
-                    },
-                    "subscribeEventProofs": {
-                        "alias": [
-                            "ethy_subscribeEventProofs",
-                            "ethy_unsubscribeEventProofs"
-                        ],
-                        "description": "Subscribe to Eth event proof.",
-                        "params": [],
-                        "pubsub": [
-                            "subscribeEventProofs",
-                            "unsubscribeEventProofs"
-                        ],
-                        "type": "Null",
-                        "isSubscription": true,
-                        "jsonrpc": "ethy_subscribeEventProofs",
-                        "method": "subscribeEventProofs",
-                        "section": "ethy"
-                    }
-                },
-                "nft": {
-                    "ownedTokens": {
-                        "description": "Get all NFTs owned by an account",
-                        "params": [
-                            {
-                                "name": "collectionId",
-                                "type": "CollectionUuid"
-                            },
-                            {
-                                "name": "who",
-                                "type": "AccountId"
-                            },
-                            {
-                                "name": "cursor",
-                                "type": "SerialNumber"
-                            },
-                            {
-                                "name": "limit",
-                                "type": "u16"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "nft_ownedTokens",
-                        "method": "ownedTokens",
-                        "section": "nft"
-                    },
-                    "tokenUri": {
-                        "description": "Get the URI of a token",
-                        "params": [
-                            {
-                                "name": "tokenId",
-                                "type": "TokenId"
-                            }
-                        ],
-                        "type": "Json",
-                        "isSubscription": false,
-                        "jsonrpc": "nft_tokenUri",
-                        "method": "tokenUri",
-                        "section": "nft"
-                    }
-                }
+              }
             },
-            "instances": {
-                "council": [
-                    "generalCouncil"
-                ]
+            "EthEventProofResponse": {
+              "event_id": "EventProofId",
+              "signatures": "Vec<Bytes>",
+              "validators": "Vec<AccountId20>",
+              "validator_set_id": "ValidatorSetId",
+              "block": "H256",
+              "tag": "Option<Bytes>"
             },
-            "types": [
-                {
-                    "minmax": [
-                        0,
-                        null
-                    ],
-                    "types": {
-                        "CallOf": "Call",
-                        "DispatchTime": {
-                            "_enum": {
-                                "At": "BlockNumber",
-                                "After": "BlockNumber"
-                            }
-                        },
-                        "ScheduleTaskIndex": "u32",
-                        "DelayedOrigin": {
-                            "delay": "BlockNumber",
-                            "origin": "PalletsOrigin"
-                        },
-                        "AuthorityOrigin": "DelayedOrigin",
-                        "StorageValue": "Vec<u8>",
-                        "GraduallyUpdate": {
-                            "key": "StorageKey",
-                            "targetValue": "StorageValue",
-                            "perBlock": "StorageValue"
-                        },
-                        "StorageKeyBytes": "Vec<u8>",
-                        "StorageValueBytes": "Vec<u8>",
-                        "RpcDataProviderId": "Text",
-                        "DataProviderId": "u8",
-                        "TimestampedValue": {
-                            "value": "OracleValue",
-                            "timestamp": "Moment"
-                        },
-                        "TimestampedValueOf": "TimestampedValue",
-                        "OrderedSet": "Vec<AccountId>",
-                        "OrmlAccountData": {
-                            "free": "Balance",
-                            "reserved": "Balance",
-                            "frozen": "Balance"
-                        },
-                        "OrmlBalanceLock": {
-                            "amount": "Balance",
-                            "id": "LockIdentifier"
-                        },
-                        "AuctionInfo": {
-                            "bid": "Option<(AccountId, Balance)>",
-                            "start": "BlockNumber",
-                            "end": "Option<BlockNumber>"
-                        },
-                        "DelayedDispatchTime": {
-                            "_enum": {
-                                "At": "BlockNumber",
-                                "After": "BlockNumber"
-                            }
-                        },
-                        "DispatchId": "u32",
-                        "Price": "FixedU128",
-                        "OrmlVestingSchedule": {
-                            "start": "BlockNumber",
-                            "period": "BlockNumber",
-                            "periodCount": "u32",
-                            "perPeriod": "Compact<Balance>"
-                        },
-                        "VestingScheduleOf": "OrmlVestingSchedule",
-                        "OrmlCurrencyId": "u8",
-                        "PoolInfo": {
-                            "totalShares": "Share",
-                            "rewards": "BTreeMap<OrmlCurrencyId, (Balance, Balance)>"
-                        },
-                        "CompactBalance": "Compact<Balance>",
-                        "PoolInfoV0": {
-                            "totalShares": "Compact<Share>",
-                            "totalRewards": "CompactBalance",
-                            "totalWithdrawnRewards": "CompactBalance"
-                        },
-                        "Share": "u128",
-                        "OracleValue": "FixedU128",
-                        "VersionedEventProof": {
-                            "_enum": {
-                                "sentinel": null,
-                                "EventProof": "EventProof"
-                            }
-                        },
-                        "ExtrinsicSignature": "EthereumSignature",
-                        "EthyId": "[u8; 32]",
-                        "EthyEventId": "u64",
-                        "EthEventProofResponse": {
-                            "event_id": "EventProofId",
-                            "signatures": "Vec<Bytes>",
-                            "validators": "Vec<AccountId20>",
-                            "validator_set_id": "ValidatorSetId",
-                            "block": "H256",
-                            "tag": "Option<Bytes>"
-                        },
-                        "EventProofId": "u64",
-                        "EthereumSignature": {
-                            "r": "H256",
-                            "s": "H256",
-                            "v": "U8"
-                        },
-                        "EthWalletCall": {
-                            "nonce": "u32"
-                        },
-                        "XRPLTxData": {
-                            "_enum": {
-                                "Payment": {
-                                    "amount": "Balance",
-                                    "destination": "H160"
-                                },
-                                "CurrencyPayment": {
-                                    "amount": "Balance",
-                                    "address": "H160",
-                                    "currencyId": "H256"
-                                }
-                            }
-                        },
-                        "XrplEventProofResponse": {
-                            "event_id": "EventProofId",
-                            "signatures": "Vec<Bytes>",
-                            "validators": "Vec<Bytes>",
-                            "validator_set_id": "ValidatorSetId",
-                            "block": "H256",
-                            "tag": "Option<Bytes>"
-                        },
-                        "CollectionUuid": "u32",
-                        "SerialNumber": "u32",
-                        "TokenId": "(CollectionUuid, SerialNumber)",
-                        "AccountId": "EthereumAccountId",
-                        "AccountId20": "EthereumAccountId",
-                        "AccountId32": "EthereumAccountId",
-                        "Address": "AccountId",
-                        "LookupSource": "AccountId",
-                        "Lookup0": "AccountId",
-                        "AssetId": "u32",
-                        "Balance": "u128",
-                        "ValidatorSetId": "u64"
-                    }
-                }
-            ],
-            "alias": {
-                "tokens": {
-                    "AccountData": "OrmlAccountData",
-                    "BalanceLock": "OrmlBalanceLock"
-                }
-            }
+            "XrplEventProofResponse": {
+              "event_id": "EventProofId",
+              "signatures": "Vec<Bytes>",
+              "validators": "Vec<Bytes>",
+              "validator_set_id": "ValidatorSetId",
+              "block": "H256",
+              "tag": "Option<Bytes>"
+            },
+            "VersionedEventProof": {
+              "_enum": {
+                "sentinel": null,
+                "EventProof": "EventProof"
+              }
+            },
+            "CollectionUuid": "u32",
+            "SerialNumber": "u32",
+            "TokenId": "(CollectionUuid, SerialNumber)"
+          }
         }
+      ]
+    },
+    "porcini": {
+      "instances": {
+        "council": ["generalCouncil"]
+      },
+      "types": [
+        {
+          "minmax": [0, null],
+          "types": {
+            "AccountId": "EthereumAccountId",
+            "AccountId20": "EthereumAccountId",
+            "AccountId32": "EthereumAccountId",
+            "Address": "AccountId",
+            "LookupSource": "AccountId",
+            "Lookup0": "AccountId",
+            "AssetId": "u32",
+            "Balance": "u128",
+            "EventProofId": "u64",
+            "ValidatorSetId": "u64",
+            "EthereumSignature": {
+              "r": "H256",
+              "s": "H256",
+              "v": "U8"
+            },
+            "ExtrinsicSignature": "EthereumSignature",
+            "EthyId": "[u8; 32]",
+            "EthWalletCall": {
+              "nonce": "u32"
+            },
+            "XRPLTxData": {
+              "_enum": {
+                "Payment": {
+                  "amount": "Balance",
+                  "destination": "H160"
+                },
+                "CurrencyPayment": {
+                  "amount": "Balance",
+                  "address": "H160",
+                  "currencyId": "H256"
+                }
+              }
+            },
+            "EthEventProofResponse": {
+              "event_id": "EventProofId",
+              "signatures": "Vec<Bytes>",
+              "validators": "Vec<AccountId20>",
+              "validator_set_id": "ValidatorSetId",
+              "block": "H256",
+              "tag": "Option<Bytes>"
+            },
+            "XrplEventProofResponse": {
+              "event_id": "EventProofId",
+              "signatures": "Vec<Bytes>",
+              "validators": "Vec<Bytes>",
+              "validator_set_id": "ValidatorSetId",
+              "block": "H256",
+              "tag": "Option<Bytes>"
+            },
+            "VersionedEventProof": {
+              "_enum": {
+                "sentinel": null,
+                "EventProof": "EventProof"
+              }
+            },
+            "CollectionUuid": "u32",
+            "SerialNumber": "u32",
+            "TokenId": "(CollectionUuid, SerialNumber)"
+          }
+        }
+      ]
     }
+  }
 }

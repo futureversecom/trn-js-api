@@ -1,3 +1,3 @@
-import versioned from './rootnet';
+import versioned from "./rootnet";
 
 export default versioned;
