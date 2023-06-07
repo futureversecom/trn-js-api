@@ -3,19 +3,15 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      // note: output globs are relative to each package's `package.json`
-      // (and not the monorepo root)
       "outputs": ["dist/**"]
     },
     "deploy": {
       "dependsOn": ["build", "test", "lint"]
     },
-    // "test": {
-    //   "dependsOn": ["build"],
-    //   "inputs": ["src/**/*.tsx", "src/**/*.ts", "test/**/*.ts", "test/**/*.tsx"]
-    // },
-    // A package's `lint` script has no dependencies and
-    // can be run whenever. It also has no filesystem outputs.
+    "test": {
+      "dependsOn": ["build"],
+      "inputs": ["**/*.ts", "**/*.test.ts"]
+    },
     "lint": {},
     "dev": {
       "cache": false,
