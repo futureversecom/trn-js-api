@@ -9,8 +9,6 @@
       "dependsOn": ["build", "test", "lint"]
     },
     "test": {
-      "dependsOn": ["build"],
-      "inputs": ["**/*.ts", "**/*.test.ts"]
     },
     "lint": {},
     "dev": {
