@@ -12,7 +12,9 @@
     "_tsup": "tsup",
     "dev": "run-s _clean \"_tsup src/index.ts --watch\"",
     "build": "run-s _clean \"_tsup src/index.ts --dts --sourcemap --minify\"",
-    "lint": "dprint check && eslint . --ext .ts"
+    "lint": "dprint check && eslint . --ext .ts",
+    "test": "jest -c ../../jest.config.js .*.test.ts",
+    "test:watch": "pnpm test -- --watch --coverage"
   },
   "devDependencies": {
     "@polkadot/api": "^10.8.1",
