@@ -6,7 +6,7 @@ export type HttpProviderUrl = `http${string}`;
 export function getProvider(url: WsProviderUrl | HttpProviderUrl): WsProvider | HttpProvider {
 	if (url.indexOf("http") === 0) return new HttpProvider(url);
 	if (url.indexOf("ws") === 0) return new WsProvider(url);
-	throw new Error(`Unregconize provider url: "${url}"`);
+	throw new Error(`Unrecognized provider url: "${url}"`);
 }
 
 export type NetworkName = "root" | "porcini";
