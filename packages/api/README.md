@@ -18,7 +18,7 @@ async function main() {
 	const provider = getPublicProvider("root");
 	const api = await ApiPromise.create({
 		...getApiOptions(),
-		provider: getPublicProvider("root")
+		...getPublicProvider("root")
 	});
 
 	// use the api

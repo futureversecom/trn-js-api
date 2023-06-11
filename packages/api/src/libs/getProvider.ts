@@ -1,11 +1,14 @@
 import { HttpProvider, WsProvider } from "@polkadot/api";
+import { ApiOptions } from "@polkadot/api/types";
 
 export type WsProviderUrl = `ws${string}`;
 export type HttpProviderUrl = `http${string}`;
 
-export function getProvider(url: WsProviderUrl | HttpProviderUrl): WsProvider | HttpProvider {
-	if (url.indexOf("http") === 0) return new HttpProvider(url);
-	if (url.indexOf("ws") === 0) return new WsProvider(url);
+export function getProvider(
+	url: WsProviderUrl | HttpProviderUrl,
+): { provider: ApiOptions["provider"] } {
+	if (url.indexOf("http") === 0) return { provider: new HttpProvider(url) };
+	if (url.indexOf("ws") === 0) return { provider: new WsProvider(url) };
 	throw new Error(`Unrecognized provider url: "${url}"`);
 }
 

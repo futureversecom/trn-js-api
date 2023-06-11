@@ -23,15 +23,17 @@ describe("getProvider", () => {
 	});
 
 	test("creates an instance of WsProvider", () => {
-		getProvider("ws://localhost");
+		const { provider } = getProvider("ws://localhost");
 		expect(WsProviderMock).toHaveBeenCalledTimes(1);
 		expect(WsProviderMock.mock.calls[0][0]).toBe("ws://localhost");
+		expect(provider).toBeTruthy();
 	});
 
 	test("creates an instance of HttpProvider", async () => {
-		getProvider("http://localhost");
+		const { provider } = getProvider("http://localhost");
 		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
 		expect(HttpProviderMock.mock.calls[0][0]).toBe("http://localhost");
+		expect(provider).toBeTruthy();
 	});
 
 	test("throws error if `url` parameter is unrecognizable", () => {
