@@ -170,7 +170,7 @@ export function getRpcOptions(): ApiOptions["rpc"] {
 						type: "AssetId",
 					},
 				],
-				type: "hex",
+				type: "Text",
 			},
 		},
 		ethy: {
