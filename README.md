@@ -1,2 +1,1 @@
-# trn-rootnet-api
-The rootnet javascript API library for browsers and Node.js.
+# trn-js-api
