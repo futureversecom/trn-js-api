@@ -13,12 +13,12 @@ export function getProvider(
 }
 
 export type NetworkName = "root" | "porcini";
-export function getPublicProvider(network: NetworkName) {
+export function getPublicProvider(network: NetworkName): ReturnType<typeof getProvider> {
 	if (network === "root") return getProvider("wss://root.rootnet.live/ws");
 	if (network === "porcini") return getProvider("wss://porcini.rootnet.app/ws");
 	throw new Error(`Unrecognized network name: "${network}"`);
 }
 
-export function getLocalProvider() {
+export function getLocalProvider(): ReturnType<typeof getProvider> {
 	return getProvider("ws://127.0.0.1:9944");
 }
