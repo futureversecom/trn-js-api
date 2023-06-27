@@ -121,7 +121,7 @@ export function getRpcOptions(): ApiOptions["rpc"] {
 				params: [
 					{
 						name: "amountOut",
-						type: "balance",
+						type: "Balance",
 					},
 					{
 						name: "path",
@@ -170,7 +170,7 @@ export function getRpcOptions(): ApiOptions["rpc"] {
 						type: "AssetId",
 					},
 				],
-				type: "hex",
+				type: "Text",
 			},
 		},
 		ethy: {
