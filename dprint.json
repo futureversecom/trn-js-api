@@ -6,9 +6,7 @@
   "json": {
     "useTabs": false
   },
-  "markdown": {
-    "useTabs": false
-  },
+  "markdown": {},
   "dockerfile": {},
   "includes": ["**/*.{ts,tsx,js,jsx,cjs,mjs,json,md,dockerfile}"],
   "excludes": [

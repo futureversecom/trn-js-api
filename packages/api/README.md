@@ -15,12 +15,12 @@ import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 
 async function main() {
-  const api = await ApiPromise.create({
-    ...getApiOptions(),
-    ...getPublicProvider("root"),
-  });
+	const api = await ApiPromise.create({
+		...getApiOptions(),
+		...getPublicProvider("root"),
+	});
 
-  // use the api
+	// use the api
 }
 
 main();
