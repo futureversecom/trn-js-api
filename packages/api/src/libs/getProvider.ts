@@ -13,12 +13,32 @@ export function getProvider(
 }
 
 export type NetworkName = "root" | "porcini";
-export function getPublicProvider(network: NetworkName): ReturnType<typeof getProvider> {
-	if (network === "root") return getProvider("wss://root.rootnet.live/ws");
-	if (network === "porcini") return getProvider("wss://porcini.rootnet.app/ws");
+export function getPublicProvider(
+	network: NetworkName,
+	useWsProvider = true,
+): ReturnType<typeof getProvider> {
+	return getProvider(getPublicProviderUrl(network, useWsProvider));
+}
+
+export function getPublicProviderUrl(
+	network: NetworkName,
+	useWsProvider = true,
+): WsProviderUrl | HttpProviderUrl {
+	if (network === "root") {
+		return useWsProvider
+			? "wss://root.rootnet.live/archive/ws"
+			: "https://root.rootnet.live/archive";
+	}
+	if (network === "porcini") {
+		return useWsProvider
+			? "wss://porcini.rootnet.app/archive/ws"
+			: "https://porcini.rootnet.app/archive";
+	}
 	throw new Error(`Unrecognized network name: "${network}"`);
 }
 
-export function getLocalProvider(): ReturnType<typeof getProvider> {
-	return getProvider("ws://127.0.0.1:9944");
+export function getLocalProvider(
+	useWsProvider = true,
+): ReturnType<typeof getProvider> {
+	return getProvider(useWsProvider ? "ws://127.0.0.1:9944" : "http://127.0.0.1:9933");
 }
