@@ -17,19 +17,22 @@ export function getPublicProvider(
 	network: NetworkName,
 	useWsProvider = true,
 ): ReturnType<typeof getProvider> {
+	return getProvider(getPublicProviderUrl(network, useWsProvider));
+}
+
+export function getPublicProviderUrl(
+	network: NetworkName,
+	useWsProvider = true,
+): WsProviderUrl | HttpProviderUrl {
 	if (network === "root") {
-		return getProvider(
-			useWsProvider
-				? "wss://root.rootnet.live/archive/ws"
-				: "https://root.rootnet.live/archive",
-		);
+		return useWsProvider
+			? "wss://root.rootnet.live/archive/ws"
+			: "https://root.rootnet.live/archive";
 	}
 	if (network === "porcini") {
-		return getProvider(
-			useWsProvider
-				? "wss://porcini.rootnet.app/archive/ws"
-				: "https://porcini.rootnet.app/archive",
-		);
+		return useWsProvider
+			? "wss://porcini.rootnet.app/archive/ws"
+			: "https://porcini.rootnet.app/archive";
 	}
 	throw new Error(`Unrecognized network name: "${network}"`);
 }
