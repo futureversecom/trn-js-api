@@ -50,13 +50,25 @@ describe("getPublicProvider", () => {
 	test("creates an instance of WsProvider for `root` network", async () => {
 		getPublicProvider("root");
 		expect(WsProviderMock).toHaveBeenCalledTimes(1);
-		expect(WsProviderMock.mock.calls[0][0]).toBe("wss://root.rootnet.live/ws");
+		expect(WsProviderMock.mock.calls[0][0]).toBe("wss://root.rootnet.live/archive/ws");
+	});
+
+	test("creates an instance of HttpProvider for `root` network", async () => {
+		getPublicProvider("root", false);
+		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://root.rootnet.live/archive");
 	});
 
 	test("creates an instance of WsProvider for `porcini` network", async () => {
 		getPublicProvider("porcini");
 		expect(WsProviderMock).toHaveBeenCalledTimes(1);
-		expect(WsProviderMock.mock.calls[0][0]).toBe("wss://porcini.rootnet.app/ws");
+		expect(WsProviderMock.mock.calls[0][0]).toBe("wss://porcini.rootnet.app/archive/ws");
+	});
+
+	test("creates an instance of HttpProvider for `porcini` network", async () => {
+		getPublicProvider("porcini", false);
+		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://porcini.rootnet.app/archive");
 	});
 
 	test("throws error if `network` parameter is unrecognizable", async () => {
@@ -69,5 +81,11 @@ describe("getLocalProvider", () => {
 		getLocalProvider();
 		expect(WsProviderMock).toHaveBeenCalledTimes(1);
 		expect(WsProviderMock.mock.calls[0][0]).toBe("ws://127.0.0.1:9944");
+	});
+
+	test("creates an instance of HttpProvider", () => {
+		getLocalProvider(false);
+		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("http://127.0.0.1:9933");
 	});
 });
