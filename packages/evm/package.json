@@ -1,0 +1,9 @@
+{
+  "name": "@therootnetwork/evm",
+  "version": "1.0.2",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "devDependencies": {
+    "ethers": "^6.6.5"
+  }
+}
