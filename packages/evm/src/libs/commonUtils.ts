@@ -1,4 +1,4 @@
-import { getAddress } from "ethers/lib/utils";
+import { getAddress } from "ethers";
 
 export const assetIdToERC20ContractAddress = (assetId: string | number): string => {
 	const asset_id_hex = (+assetId).toString(16).padStart(8, "0");

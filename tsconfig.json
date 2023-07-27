@@ -8,7 +8,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@trnja/api/*": ["./packages/api/src/*"]
+      "@trnja/api/*": ["./packages/api/src/*"],
+      "@trnja/evm/*": ["./packages/evm/src/*"]
     }
   }
 }
