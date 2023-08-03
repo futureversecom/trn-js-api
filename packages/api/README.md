@@ -1,27 +1,41 @@
 # @therootnetwork/api
 
-## Getting Started
+An utility package that complements the `@polkadot/api` to connect and interact with the Root Network node.
 
-- Install dependencies
+## Install
 
 ```bash
 yarn add @polkadot/api @therootnetwork/api
 ```
 
-- Create API instance
+## Usage
+
+- Create an API instance
 
 ```typescript
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 
-async function main() {
-	const api = await ApiPromise.create({
-		...getApiOptions(),
-		...getPublicProvider("root"),
-	});
-
-	// use the api
-}
-
-main();
+const api = await ApiPromise.create({
+  ...getApiOptions(),
+  ...getPublicProvider("root"),
+});
 ```
+
+- Use `api` instance to interact with node
+
+```typescript
+// query and display account data
+const data = await api.query.system.account("0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b");
+console.log(data.toHuman())
+```
+
+## API
+
+### `function getApiOptions()`
+
+Returns an `ApiOptions` object that contains necessary types, rpc methods to connect the Root Network
+
+### `function getPublicProvider(network: NetworkName, useWsProvider?: boolean)`
+
+Returns an `provider` instance of either `WsProvider` or `HttpProvider` that connects to TRN mainnet `"root"` or testnet `"porcini"`
