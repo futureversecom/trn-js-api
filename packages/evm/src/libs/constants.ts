@@ -22,7 +22,7 @@ export const FEE_PROXY_ABI = [
 	"function callWithFeePreferences(address asset, uint128 maxPayment, address target, bytes input)",
 ];
 
-export const ERC20_ABI = [
+export const ERC20_PRECOMPILE_ABI = [
 	"event Transfer(address indexed from, address indexed to, uint256 value)",
 	"event Approval(address indexed owner, address indexed spender, uint256 value)",
 	"function approve(address spender, uint256 amount) public returns (bool)",
