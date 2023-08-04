@@ -1,6 +1,6 @@
 # @therootnetwork/evm
 
-An utility package that simplifies EVM development on the Root Network.
+A utility package that simplifies EVM development on The Root Network.
 
 ## Install
 
