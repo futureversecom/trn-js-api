@@ -19,7 +19,7 @@ An utility package that simplifies EVM development on the Root Network.
 
 ## Provide Feedback
 
-- [Start a Discussion](https://github.com/futureversecom/trn-js-api/discussions) with a question, piece of feedback, or idea you want to share with the team.
+- [Start a Discussion](https://github.com/futureversecom/trn-js-api/discussions) with a question, a piece of feedback, or an idea you want to share with the team.
 - [Open an Issue](https://github.com/futureversecom/trn-js-api/issues) if you believe you've encountered a bug that you want to flag for the team.
 
 ## Contribution
