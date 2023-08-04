@@ -15,7 +15,7 @@ A utility package that complements the `@polkadot/api` to connect and interact w
 
 ### [`@therootnetwork/evm`](./packages/evm)
 
-An utility package that simplifies EVM development on the Root Network.
+A utility package that simplifies EVM development on the Root Network.
 
 ## Provide Feedback
 
