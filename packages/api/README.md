@@ -1,6 +1,6 @@
 # @therootnetwork/api
 
-An utility package that complements the `@polkadot/api` to connect and interact with the Root Network node.
+A utility package that complements the `@polkadot/api` to connect and interact with the Root Network node.
 
 ## Install
 
