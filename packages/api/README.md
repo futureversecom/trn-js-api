@@ -38,4 +38,4 @@ Returns an `ApiOptions` object that contains necessary types, rpc methods to con
 
 ### `function getPublicProvider(network: NetworkName, useWsProvider?: boolean)`
 
-Returns an `provider` instance of either `WsProvider` or `HttpProvider` that connects to TRN mainnet `"root"` or testnet `"porcini"`
+Returns a `provider` instance of either `WsProvider` or `HttpProvider` that connects to TRN mainnet `"root"` or testnet `"porcini"`
