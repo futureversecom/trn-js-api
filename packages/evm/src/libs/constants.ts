@@ -22,7 +22,7 @@ export const FEE_PROXY_ABI = [
 	"function callWithFeePreferences(address asset, uint128 maxPayment, address target, bytes input)",
 ];
 
-export const ERC20_ABI = [
+export const ERC20_PRECOMPILE_ABI = [
 	"event Transfer(address indexed from, address indexed to, uint256 value)",
 	"event Approval(address indexed owner, address indexed spender, uint256 value)",
 	"function approve(address spender, uint256 amount) public returns (bool)",
@@ -115,6 +115,23 @@ export const ERC1155_PRECOMPILE_ABI = [
 	"function mintBatch(address owner, uint256[] ids, uint256[] amounts) external",
 	"function setMaxSupply(uint256 id, uint32 maxSupply) external",
 	"function setBaseURI(bytes baseURI) external",
+
+	// Ownable
+	...OWNABLE_ABI,
+];
+
+export const FUTUREPASS_PRECOMPILE_ABI = [
+	// Futurepass
+	"event FuturepassDelegateRegistered(address indexed futurepass, address indexed delegate, uint8 proxyType)",
+	"event FuturepassDelegateUnregistered(address indexed futurepass, address delegate)",
+	"event Executed(uint8 indexed callType, address indexed target, uint256 indexed value, bytes4 data)",
+	"event ContractCreated(uint8 indexed callType, address indexed contractAddress, uint256 indexed value, bytes32 salt)",
+
+	"function delegateType(address delegate) external view returns (uint8)",
+
+	"function registerDelegate(address delegate, uint8 proxyType) external",
+	"function unregisterDelegate(address delegate) external",
+	"function proxyCall(uint8 callType, address callTo, uint256 value, bytes memory callData) external payable",
 
 	// Ownable
 	...OWNABLE_ABI,
