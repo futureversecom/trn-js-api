@@ -9,14 +9,11 @@
   "scripts": {
     "_clean": "rm -rdf dist",
     "_tsup": "tsup",
-    "dev": "run-s _clean \"_tsup src/index.ts --watch\"",
-    "build": "run-s _clean \"_tsup src/index.ts --dts --sourcemap --minify\"",
+    "build": "run-s gen:defs gen:meta format",
     "lint": "dprint check && eslint . --ext .ts",
-    "test": "jest -c ../../jest.config.js .*.test.ts",
-    "test:watch": "jest -c ../../jest.config.js --watch --coverage",
-    "gen-types": "run-s gen-types:defs gen-types:meta",
-    "gen-types:defs": "pnpm polkadot-types-from-defs --package @trnja/api-types --endpoint wss://root.rootnet.live/ws --input ./src/interfaces",
-    "gen-types:meta": "pnpm polkadot-types-from-chain --package @trnja/api-types --endpoint wss://root.rootnet.live/ws --output ./src/interfaces --strict"
+    "format": "dprint fmt --incremental",
+    "gen:defs": "pnpm polkadot-from-defs --package @trnja/api --endpoint wss://root.rootnet.live/ws --input ./src/interfaces",
+    "gen:meta": "pnpm polkadot-from-chain --package @trnja/api --endpoint wss://root.rootnet.live/ws --output ./src/interfaces --strict"
   },
   "devDependencies": {
     "@polkadot/typegen": "^10.9.1",
