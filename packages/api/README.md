@@ -17,8 +17,8 @@ import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 
 const api = await ApiPromise.create({
-  ...getApiOptions(),
-  ...getPublicProvider("root"),
+	...getApiOptions(),
+	...getPublicProvider("root"),
 });
 ```
 
@@ -27,7 +27,7 @@ const api = await ApiPromise.create({
 ```typescript
 // query and display account data
 const data = await api.query.system.account("0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b");
-console.log(data.toHuman())
+console.log(data.toHuman());
 ```
 
 ## API
