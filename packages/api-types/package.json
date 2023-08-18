@@ -7,13 +7,11 @@
     "@polkadot/types": "^10.9.1"
   },
   "scripts": {
-    "_clean": "rm -rdf dist",
-    "_tsup": "tsup",
     "build": "run-s gen:defs gen:meta format",
     "lint": "dprint check && eslint . --ext .ts",
     "format": "dprint fmt --incremental",
-    "gen:defs": "pnpm polkadot-from-defs --package @trnja/api --endpoint wss://root.rootnet.live/ws --input ./src/interfaces",
-    "gen:meta": "pnpm polkadot-from-chain --package @trnja/api --endpoint wss://root.rootnet.live/ws --output ./src/interfaces --strict"
+    "gen:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package @trnja/api --endpoint ./rootnet.json --input ./src/interfaces",
+    "gen:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package @trnja/api --endpoint ./rootnet.json --output ./src/interfaces --strict"
   },
   "devDependencies": {
     "@polkadot/typegen": "^10.9.1",
@@ -23,9 +21,6 @@
   },
   "compilerOptions": {
     "paths": {
-      "@trnja/api-types/*": [
-        "src/*"
-      ],
       "@polkadot/api/augment": [
         "src/interfaces/augment-api.ts"
       ],
