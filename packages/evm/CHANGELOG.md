@@ -1,5 +1,12 @@
 # @therootnetwork/evm
 
+## 1.0.2
+
+### Patch Changes
+
+- - Add a few more constants
+  - Add `collectionIdToERC1155Address` util function
+
 ## 1.0.1
 
 ### Patch Changes
