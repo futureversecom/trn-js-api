@@ -13,12 +13,28 @@
     "build": "run-s _clean \"_tsup src/index.ts --dts --sourcemap --minify\"",
     "lint": "dprint check && eslint . --ext .ts",
     "test": "jest -c ../../jest.config.js .*.test.ts",
-    "test:watch": "jest -c ../../jest.config.js --watch --coverage"
+    "test:watch": "jest -c ../../jest.config.js --watch --coverage",
+    "gen-types": "run-s gen-types:defs gen-types:meta",
+    "gen-types:defs": "pnpm polkadot-types-from-defs --package @trnja/api-types --endpoint wss://root.rootnet.live/ws --input ./src/interfaces",
+    "gen-types:meta": "pnpm polkadot-types-from-chain --package @trnja/api-types --endpoint wss://root.rootnet.live/ws --output ./src/interfaces --strict"
   },
   "devDependencies": {
+    "@polkadot/typegen": "^10.9.1",
     "@polkadot/api-base": "^10.9.1",
     "@polkadot/rpc-core": "^10.9.1",
-    "@polkadot/types": "^10.9.1",
     "@polkadot/types-codec": "^10.9.1"
+  },
+  "compilerOptions": {
+    "paths": {
+      "@trnja/api-types/*": [
+        "src/*"
+      ],
+      "@polkadot/api/augment": [
+        "src/interfaces/augment-api.ts"
+      ],
+      "@polkadot/types/augment": [
+        "src/interfaces/augment-types.ts"
+      ]
+    }
   }
 }
