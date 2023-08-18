@@ -11,6 +11,9 @@ export const PEG_PRECOMPILE_ADDRESS = "0x000000000000000000000000000000000000079
 // Precompile address for dex precompile
 export const DEX_PRECOMPILE_ADDRESS = "0x000000000000000000000000000000000000DDDD";
 
+// Precompile address for fee proxy
+export const FEE_PROXY_PRECOMPILE_ADDRESS = "0x00000000000000000000000000000000000004bb";
+
 /** ABIs */
 
 export const SFT_PRECOMPILE_ABI = [
@@ -18,7 +21,7 @@ export const SFT_PRECOMPILE_ABI = [
 	"function initializeCollection(address owner, bytes name, bytes metadataPath, address[] royaltyAddresses, uint32[] royaltyEntitlements) returns (address, uint32)",
 ];
 
-export const FEE_PROXY_ABI = [
+export const FEE_PROXY_PRECOMPILE_ABI = [
 	"function callWithFeePreferences(address asset, uint128 maxPayment, address target, bytes input)",
 ];
 
@@ -41,7 +44,6 @@ export const NFT_PRECOMPILE_ABI = [
 
 const OWNABLE_ABI = [
 	"event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
-
 	"function owner() public view returns (address)",
 	"function renounceOwnership()",
 	"function transferOwnership(address owner)",
@@ -135,4 +137,28 @@ export const FUTUREPASS_PRECOMPILE_ABI = [
 
 	// Ownable
 	...OWNABLE_ABI,
+];
+
+export const FUTUREPASS_REGISTRAR_PRECOMPILE_ABI = [
+	"event FuturepassCreated(address indexed futurepass, address owner)",
+	"function futurepassOf(address owner) external view returns (address)",
+	"function create(address owner) external returns (address)",
+];
+
+export const DEX_PRECOMPILE_ABI = [
+	"function addLiquidity(address tokenA, address tokenB, uint256 amountADesired, uint256 amountBDesired, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline) returns (uint256 amountA, uint256 amountB, uint256 liquidity)",
+	"function addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) payable returns (uint256 amountToken, uint256 amountETH, uint256 liquidity)",
+	"function getAmountIn(uint256 amountOut, uint256 reserveIn, uint256 reserveOut) pure returns (uint256 amountIn)",
+	"function getAmountOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) pure returns (uint256 amountOut)",
+	"function getAmountsIn(uint256 amountOut, address[] path) view returns (uint256[] amounts)",
+	"function getAmountsOut(uint256 amountIn, address[] path) view returns (uint256[] amounts)",
+	"function quote(uint256 amountA, uint256 reserveA, uint256 reserveB) pure returns (uint256 amountB)",
+	"function removeLiquidity(address tokenA, address tokenB, uint256 liquidity, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline) returns (uint256 amountA, uint256 amountB)",
+	"function removeLiquidityETH(address token, uint256 liquidity, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline) returns (uint256 amountToken, uint256 amountETH)",
+	"function swapETHForExactTokens(uint256 amountOut, address[] path, address to, uint256 deadline) payable returns (uint256[] amounts)",
+	"function swapExactETHForTokens(uint256 amountOutMin, address[] path, address to, uint256 deadline) payable returns (uint256[] amounts)",
+	"function swapExactTokensForETH(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline) returns (uint256[] amounts)",
+	"function swapExactTokensForTokens(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline) returns (uint256[] amounts)",
+	"function swapTokensForExactETH(uint256 amountOut, uint256 amountInMax, address[] path, address to, uint256 deadline) returns (uint256[] amounts)",
+	"function swapTokensForExactTokens(uint256 amountOut, uint256 amountInMax, address[] path, address to, uint256 deadline) returns (uint256[] amounts)",
 ];

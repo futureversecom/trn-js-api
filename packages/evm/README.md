@@ -35,6 +35,10 @@ Converts native asset id to ERC-20 contract address
 
 Converts native nft collection id to ERC-721 contract address
 
+### `function getPublicProviderUrl(network: NetworkName): HttpProviderUrl`
+
+Returns the Public RPC URls for the corresponding `network`
+
 ## Constants
 
 ### Addresses
@@ -46,6 +50,7 @@ Converts native nft collection id to ERC-721 contract address
 | `FUTUREPASS_REGISTRAR_PRECOMPILE_ADDRESS: string` | Precompile address for `futurepass` pallet |
 | `PEG_PRECOMPILE_ADDRESS: string` | Precompile address for `erc20Peg` and `nftPeg` pallets |
 | `DEX_PRECOMPILE_ADDRESS: string` | Precompile address for `dex` pallet |
+| `FEE_PROXY_PRECOMPILE_ADDRESS` | Precompile address for `feeProxy` pallet |
 
 ### ABIs
 
@@ -54,6 +59,11 @@ Converts native nft collection id to ERC-721 contract address
 | `ERC20_ABI: string[]` | ABI for the ERC-20 standard |
 | `ERC721_ABI: string[]` | ABI for the ERC-721 standard |
 | `ERC1155_ABI: string[]` | ABI for the ERC-1155 standard |
-| `NFT_PRECOMPILE_ABI: string[]` | ABI for `nft` precompile |
-| `SFT_PRECOMPILE_ABI: string[]` | ABI for `sft` precompile |
-| `FEE_PROXY_ABI: string[]` | ABI for `feeProxy` precompile |
+| `NFT_PRECOMPILE_ABI: string[]` | ABI for the `nft` pallet |
+| `SFT_PRECOMPILE_ABI: string[]` | ABI for the `sft` pallet |
+| `FEE_PROXY_PRECOMPILE_ABI: string[]` | ABI for `feeProxy` pallet |
+| `FUTUREPASS_PRECOMPILE_ABI: string[]` | ABI for `futurepass` account |
+| `FUTUREPASS_REGISTRAR_PRECOMPILE_ABI: string[]` | ABI for `futurepass` pallet |
+| `DEX_PRECOMPILE_ABI: string[]` | ABI for the `dex` pallet |
+
+> NOTE: All exported ABIs are in human-readable format
