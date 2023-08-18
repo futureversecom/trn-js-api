@@ -13,6 +13,10 @@ Visit https://docs.rootnet.live to get started with TRN JavaScript API
 
 A utility package that complements the `@polkadot/api` to connect and interact with the Root Network node.
 
+### [`@therootnetwork/api-types`](./packages/api-types)
+
+A utility package that supplements `@therootnetwork/api`, and makes Root Network specific types available from `@polkadot/{api, types}/augment`.
+
 ### [`@therootnetwork/evm`](./packages/evm)
 
 A utility package that simplifies EVM development on the Root Network.
