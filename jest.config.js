@@ -4,6 +4,7 @@ module.exports = {
 	testEnvironment: "node",
 	moduleNameMapper: {
 		"@trnja/api/(.*)$": ["<rootDir>/packages/api/src/$1"],
+		"@trnja/api-types/(.*)$": ["<rootDir>/packages/api-types/src/$1"],
 		"@trnja/evm/(.*)$": ["<rootDir>/packages/evm/src/$1"],
 	},
 };

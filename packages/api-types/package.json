@@ -1,0 +1,24 @@
+{
+  "name": "@therootnetwork/api-types",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "peerDependencies": {
+    "@polkadot/types": "^10.9.1"
+  },
+  "scripts": {
+    "_clean": "rm -rdf dist",
+    "_tsup": "tsup",
+    "dev": "run-s _clean \"_tsup src/index.ts --watch\"",
+    "build": "run-s _clean \"_tsup src/index.ts --dts --sourcemap --minify\"",
+    "lint": "dprint check && eslint . --ext .ts",
+    "test": "jest -c ../../jest.config.js .*.test.ts",
+    "test:watch": "jest -c ../../jest.config.js --watch --coverage"
+  },
+  "devDependencies": {
+    "@polkadot/api-base": "^10.9.1",
+    "@polkadot/rpc-core": "^10.9.1",
+    "@polkadot/types": "^10.9.1",
+    "@polkadot/types-codec": "^10.9.1"
+  }
+}

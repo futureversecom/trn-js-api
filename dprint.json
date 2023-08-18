@@ -6,15 +6,9 @@
   "json": {
     "useTabs": false
   },
-  "markdown": {
-    "useTabs": false
-  },
   "dockerfile": {},
   "includes": ["**/*.{ts,tsx,js,jsx,cjs,mjs,json,md,dockerfile}"],
-  "excludes": [
-    "**/node_modules",
-    "**/*-lock.json"
-  ],
+  "excludes": ["**/node_modules", "**/*-lock.json"],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.84.4.wasm",
     "https://plugins.dprint.dev/json-0.17.2.wasm",

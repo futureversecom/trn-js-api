@@ -9,6 +9,7 @@
     "baseUrl": ".",
     "paths": {
       "@trnja/api/*": ["./packages/api/src/*"],
+      "@trnja/api-types/*": ["./packages/api-types/src/*"],
       "@trnja/evm/*": ["./packages/evm/src/*"]
     }
   }
