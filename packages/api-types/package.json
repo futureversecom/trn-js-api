@@ -7,26 +7,23 @@
     "@polkadot/types": "^10.9.1"
   },
   "scripts": {
-    "build": "run-s gen:defs gen:meta format",
+    "_clean": "rm -rdf dist",
+    "_build": "tsc --build tsconfig.json",
+    "build": "run-s _clean _build",
     "lint": "dprint check && eslint . --ext .ts",
     "format": "dprint fmt --incremental",
-    "gen:defs": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package @trnja/api --endpoint ./rootnet.json --input ./src/interfaces",
-    "gen:meta": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --package @trnja/api --endpoint ./rootnet.json --output ./src/interfaces --strict"
+    "upd:meta": "ts-node scripts/updateMeta.ts",
+    "_gen": "ts-node scripts/generateTypes.ts",
+    "gen": "run-s _gen format"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^10.9.1",
     "@polkadot/api-base": "^10.9.1",
     "@polkadot/rpc-core": "^10.9.1",
-    "@polkadot/types-codec": "^10.9.1"
-  },
-  "compilerOptions": {
-    "paths": {
-      "@polkadot/api/augment": [
-        "src/interfaces/augment-api.ts"
-      ],
-      "@polkadot/types/augment": [
-        "src/interfaces/augment-types.ts"
-      ]
-    }
+    "@polkadot/typegen": "^10.9.1",
+    "@polkadot/types-codec": "^10.9.1",
+    "@polkadot/types-create": "^10.9.1",
+    "@types/websocket": "^1.0.5",
+    "handlebars": "^4.7.8",
+    "websocket": "^1.0.34"
   }
 }

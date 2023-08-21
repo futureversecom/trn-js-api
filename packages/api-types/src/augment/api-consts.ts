@@ -7,8 +7,15 @@ import "@polkadot/api-base/types/consts";
 
 import type { ApiTypes, AugmentedConst } from "@polkadot/api-base/types";
 import type { Option, u128, u16, u32, u64, u8, Vec } from "@polkadot/types-codec";
-import type { ITuple } from "@polkadot/types-codec/types";
+import type { Codec, ITuple } from "@polkadot/types-codec/types";
 import type { Perbill } from "@polkadot/types/interfaces/runtime";
+import type {
+	FrameSupportPalletId,
+	FrameSupportWeightsRuntimeDbWeight,
+	FrameSystemLimitsBlockLength,
+	FrameSystemLimitsBlockWeights,
+	SpVersionRuntimeVersion,
+} from "@polkadot/types/lookup";
 
 export type __AugmentedConst<ApiType extends ApiTypes> = AugmentedConst<ApiType>;
 
@@ -41,6 +48,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * The maximum length of a name or symbol stored on-chain.
 			 */
 			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		assetsExt: {
 			/**
@@ -55,6 +66,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * This pallet's Id, used for deriving a sovereign account ID
 			 */
 			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		authorship: {
 			/**
@@ -63,6 +78,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * `UncleGenerations + 1` before `now`.
 			 */
 			uncleGenerations: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		babe: {
 			/**
@@ -83,6 +102,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Max number of authorities allowed
 			 */
 			maxAuthorities: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		balances: {
 			/**
@@ -98,6 +121,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * The maximum number of named reserves that can exist on an account.
 			 */
 			maxReserves: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		dex: {
 			/**
@@ -124,12 +151,20 @@ declare module "@polkadot/api-base/types/consts" {
 			 * The limit for length of trading path
 			 */
 			tradingPathLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		echo: {
 			/**
 			 * This pallet's Id, used for deriving a sovereign account ID
 			 */
 			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		electionProviderMultiPhase: {
 			/**
@@ -209,18 +244,30 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Duration of the unsigned phase.
 			 */
 			unsignedPhase: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		feeProxy: {
 			/**
 			 * The native token asset Id (managed by pallet-balances)
 			 */
 			feeAssetId: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		grandpa: {
 			/**
 			 * Max Authorities in use
 			 */
 			maxAuthorities: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		imOnline: {
 			/**
@@ -230,6 +277,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * multiple pallets send unsigned transactions.
 			 */
 			unsignedPriority: u64 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		nft: {
 			/**
@@ -248,9 +299,17 @@ declare module "@polkadot/api-base/types/consts" {
 			 * The maximum length of a collection name, stored on-chain
 			 */
 			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		nftPeg: {
 			delayLength: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		proxy: {
 			/**
@@ -290,6 +349,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * into account `32 + proxy_type.encode().len()` bytes of data.
 			 */
 			proxyDepositFactor: u128 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		recovery: {
 			/**
@@ -326,6 +389,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * threshold.
 			 */
 			recoveryDeposit: u128 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		scheduler: {
 			/**
@@ -338,6 +405,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Not strictly enforced, but used for weight estimation.
 			 */
 			maxScheduledPerBlock: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		sft: {
 			/**
@@ -360,6 +431,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * The maximum length of a collection or token name, stored on-chain
 			 */
 			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		staking: {
 			/**
@@ -393,6 +468,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * should be applied immediately, without opportunity for intervention.
 			 */
 			slashDeferDuration: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		system: {
 			/**
@@ -423,6 +502,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Get the chain's current version.
 			 */
 			version: SpVersionRuntimeVersion & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		timestamp: {
 			/**
@@ -432,6 +515,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * double this period on default settings.
 			 */
 			minimumPeriod: u64 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		transactionPayment: {
 			/**
@@ -458,15 +545,27 @@ declare module "@polkadot/api-base/types/consts" {
 			 * transactions.
 			 */
 			operationalFeeMultiplier: u8 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		txFeePot: {
 			txFeePotId: FrameSupportPalletId & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		utility: {
 			/**
 			 * The limit on the number of batched calls.
 			 */
 			batchedCallsLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		voterList: {
 			/**
@@ -515,6 +614,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * With that `List::migrate` can be called, which will perform the appropriate migration.
 			 */
 			bagThresholds: Vec<u64> & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 		xrplBridge: {
 			/**
@@ -529,6 +632,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * XRP Asset Id set at runtime
 			 */
 			xrpAssetId: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 */
+			[key: string]: Codec;
 		};
 	} // AugmentedConsts
 } // declare module

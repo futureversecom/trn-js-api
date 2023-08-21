@@ -74,6 +74,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The source account would not survive the transfer and it needs to stay alive.
 			 */
 			WouldDie: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		assetsExt: {
 			/**
@@ -100,6 +104,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Operation would overflow
 			 */
 			Overflow: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		authorship: {
 			/**
@@ -130,6 +138,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Uncles already set in the block.
 			 */
 			UnclesAlreadySet: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		babe: {
 			/**
@@ -148,6 +160,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * A key ownership proof provided as part of an equivocation report is invalid.
 			 */
 			InvalidKeyOwnershipProof: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		balances: {
 			/**
@@ -182,6 +198,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Vesting balance too high to send value
 			 */
 			VestingBalance: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		dex: {
 			/**
@@ -273,6 +293,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The target amount is zero
 			 */
 			ZeroTargetAmount: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		echo: {
 			/**
@@ -287,6 +311,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * There are no remaining session ids
 			 */
 			NoAvailableIds: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		electionProviderMultiPhase: {
 			/**
@@ -337,6 +365,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The signed submission consumes too much weight
 			 */
 			SignedTooMuchWeight: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		erc20Peg: {
 			/**
@@ -371,6 +403,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Withdrawals are inactive
 			 */
 			WithdrawalsPaused: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		ethBridge: {
 			/**
@@ -433,6 +469,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 */
 			OcwConfig: AugmentedError<ApiType>;
 			OffchainUnsignedTxSignedPayload: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		ethereum: {
 			BalanceLow: AugmentedError<ApiType>;
@@ -449,6 +489,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 */
 			PreLogExists: AugmentedError<ApiType>;
 			Undefined: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		evm: {
 			/**
@@ -487,6 +531,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Withdraw fee failed
 			 */
 			WithdrawFailed: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		feeProxy: {
 			/**
@@ -497,6 +545,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The inner call is a fee preference call
 			 */
 			NestedFeePreferenceCall: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		futurepass: {
 			/**
@@ -551,6 +603,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * RegisterDelegateSignerMismatch
 			 */
 			RegisterDelegateSignerMismatch: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		grandpa: {
 			/**
@@ -583,6 +639,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Cannot signal forced change so soon after last.
 			 */
 			TooSoon: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		imOnline: {
 			/**
@@ -593,6 +653,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Non existent public key.
 			 */
 			InvalidKey: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		nft: {
 			/**
@@ -724,6 +788,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Offer amount needs to be greater than 0
 			 */
 			ZeroOffer: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		nftPeg: {
 			/**
@@ -767,6 +835,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Multiple tokens were passed from contract, but amounts were unqeual per each array
 			 */
 			TokenListLengthMismatch: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		proxy: {
 			/**
@@ -801,6 +873,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * A call which is incompatible with the proxy type's filter was attempted.
 			 */
 			Unproxyable: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		recovery: {
 			/**
@@ -867,6 +943,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Threshold must be greater than zero
 			 */
 			ZeroThreshold: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		scheduler: {
 			/**
@@ -885,6 +965,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Given target block number is in the past.
 			 */
 			TargetBlockNumberInPast: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		session: {
 			/**
@@ -907,6 +991,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * No keys are associated with this account.
 			 */
 			NoKeys: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		sft: {
 			/**
@@ -962,6 +1050,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Total royalties would exceed 100% of sale or an empty vec is supplied
 			 */
 			RoyaltiesInvalid: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		staking: {
 			/**
@@ -1064,12 +1156,20 @@ declare module "@polkadot/api-base/types/errors" {
 			 * settings to keep things safe for the runtime.
 			 */
 			TooManyValidators: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		sudo: {
 			/**
 			 * Sender must be the Sudo account
 			 */
 			RequireSudo: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		system: {
 			/**
@@ -1100,6 +1200,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * and the new runtime.
 			 */
 			SpecVersionNeedsToIncrease: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		tokenApprovals: {
 			/**
@@ -1134,18 +1238,30 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The account is not the owner of the token or an approved account
 			 */
 			NotTokenOwnerOrApproved: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		utility: {
 			/**
 			 * Too many calls batched.
 			 */
 			TooManyCalls: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		voterList: {
 			/**
 			 * A error in the list interface implementation.
 			 */
 			List: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		xls20: {
 			/**
@@ -1172,6 +1288,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The supplied fee for minting XLS-20 tokens is too low
 			 */
 			Xls20MintFeeTooLow: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 		xrplBridge: {
 			/**
@@ -1212,6 +1332,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Withdraw amount must be non-zero and <= u64
 			 */
 			WithdrawInvalidAmount: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 */
+			[key: string]: AugmentedError<ApiType>;
 		};
 	} // AugmentedErrors
 } // declare module

@@ -22,6 +22,30 @@ import type {
 } from "@polkadot/types-codec";
 import type { ITuple } from "@polkadot/types-codec/types";
 import type { H160, H256, H512, Permill } from "@polkadot/types/interfaces/runtime";
+import type {
+	EthereumLog,
+	EvmCoreErrorExitReason,
+	FrameSupportScheduleLookupError,
+	FrameSupportTokensMiscBalanceStatus,
+	FrameSupportWeightsDispatchInfo,
+	PalletDexTradingPair,
+	PalletElectionProviderMultiPhaseElectionCompute,
+	PalletEthyEthySigningRequest,
+	PalletEthyEventClaim,
+	PalletImOnlineSr25519AppSr25519Public,
+	PalletNftAuctionClosureReason,
+	PalletNftCrossChainCompatibility,
+	PalletNftFixedPriceClosureReason,
+	PalletStakingExposure,
+	PalletStakingValidatorPrefs,
+	SeedPalletCommonEventRouterError,
+	SeedPrimitivesNftOriginChain,
+	SeedPrimitivesNftRoyaltiesSchedule,
+	SeedPrimitivesSignatureAccountId20,
+	SeedRuntimeImplsProxyType,
+	SpFinalityGrandpaAppPublic,
+	SpRuntimeDispatchError,
+} from "@polkadot/types/lookup";
 
 export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
@@ -211,6 +235,10 @@ declare module "@polkadot/api-base/types/events" {
 					amount: u128;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		assetsExt: {
 			/**
@@ -287,6 +315,10 @@ declare module "@polkadot/api-base/types/events" {
 					transfers: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		balances: {
 			/**
@@ -389,6 +421,10 @@ declare module "@polkadot/api-base/types/events" {
 				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
 				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		dex: {
 			/**
@@ -463,6 +499,10 @@ declare module "@polkadot/api-base/types/events" {
 					SeedPrimitivesSignatureAccountId20,
 				]
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		echo: {
 			/**
@@ -497,6 +537,10 @@ declare module "@polkadot/api-base/types/events" {
 				[sessionId: u64, source: H160, destination: H160, eventProofId: u64],
 				{ sessionId: u64; source: H160; destination: H160; eventProofId: u64 }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		electionProviderMultiPhase: {
 			/**
@@ -545,6 +589,10 @@ declare module "@polkadot/api-base/types/events" {
 			 * The unsigned phase of the given round has started.
 			 */
 			UnsignedPhaseStarted: AugmentedEvent<ApiType, [round: u32], { round: u32 }>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		erc20Peg: {
 			/**
@@ -590,6 +638,10 @@ declare module "@polkadot/api-base/types/events" {
 			 * The peg contract address has been set
 			 */
 			SetContractAddress: AugmentedEvent<ApiType, [H160]>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		ethBridge: {
 			/**
@@ -670,6 +722,10 @@ declare module "@polkadot/api-base/types/events" {
 			 * Xrpl Door signers are set
 			 */
 			XrplDoorSignersSet: AugmentedEvent<ApiType, []>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		ethereum: {
 			/**
@@ -680,6 +736,10 @@ declare module "@polkadot/api-base/types/events" {
 				[from: H160, to: H160, transactionHash: H256, exitReason: EvmCoreErrorExitReason],
 				{ from: H160; to: H160; transactionHash: H256; exitReason: EvmCoreErrorExitReason }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		evm: {
 			/**
@@ -702,11 +762,24 @@ declare module "@polkadot/api-base/types/events" {
 			 * Ethereum events from contracts.
 			 */
 			Log: AugmentedEvent<ApiType, [log: EthereumLog], { log: EthereumLog }>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		evmChainId: {
 			ChainIdSet: AugmentedEvent<ApiType, [u64]>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
-		feeControl: {};
+		feeControl: {
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
+		};
 		feeProxy: {
 			/**
 			 * A call was made with specified payment asset
@@ -716,6 +789,10 @@ declare module "@polkadot/api-base/types/events" {
 				[who: SeedPrimitivesSignatureAccountId20, paymentAsset: u32, maxPayment: u128],
 				{ who: SeedPrimitivesSignatureAccountId20; paymentAsset: u32; maxPayment: u128 }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		futurepass: {
 			/**
@@ -832,6 +909,10 @@ declare module "@polkadot/api-base/types/events" {
 					result: Result<Null, SpRuntimeDispatchError>;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		grandpa: {
 			/**
@@ -850,6 +931,10 @@ declare module "@polkadot/api-base/types/events" {
 			 * Current authority set has been resumed.
 			 */
 			Resumed: AugmentedEvent<ApiType, []>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		imOnline: {
 			/**
@@ -872,6 +957,10 @@ declare module "@polkadot/api-base/types/events" {
 				[offline: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, PalletStakingExposure]>>],
 				{ offline: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, PalletStakingExposure]>> }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		nft: {
 			/**
@@ -1182,6 +1271,10 @@ declare module "@polkadot/api-base/types/events" {
 					newOwner: SeedPrimitivesSignatureAccountId20;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		nftPeg: {
 			/**
@@ -1222,6 +1315,10 @@ declare module "@polkadot/api-base/types/events" {
 					destination: H160;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		offences: {
 			/**
@@ -1234,6 +1331,10 @@ declare module "@polkadot/api-base/types/events" {
 				[kind: U8aFixed, timeslot: Bytes],
 				{ kind: U8aFixed; timeslot: Bytes }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		proxy: {
 			/**
@@ -1315,6 +1416,10 @@ declare module "@polkadot/api-base/types/events" {
 					delay: u32;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		recovery: {
 			/**
@@ -1391,6 +1496,10 @@ declare module "@polkadot/api-base/types/events" {
 					sender: SeedPrimitivesSignatureAccountId20;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		scheduler: {
 			/**
@@ -1421,6 +1530,10 @@ declare module "@polkadot/api-base/types/events" {
 			 * Scheduled some task.
 			 */
 			Scheduled: AugmentedEvent<ApiType, [when: u32, index: u32], { when: u32; index: u32 }>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		session: {
 			/**
@@ -1428,6 +1541,10 @@ declare module "@polkadot/api-base/types/events" {
 			 * block number as the type might suggest.
 			 */
 			NewSession: AugmentedEvent<ApiType, [sessionIndex: u32], { sessionIndex: u32 }>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		sft: {
 			/**
@@ -1560,6 +1677,10 @@ declare module "@polkadot/api-base/types/events" {
 					newOwner: SeedPrimitivesSignatureAccountId20;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		staking: {
 			/**
@@ -1629,6 +1750,10 @@ declare module "@polkadot/api-base/types/events" {
 			 * from the unlocking queue. \[stash, amount\]
 			 */
 			Withdrawn: AugmentedEvent<ApiType, [SeedPrimitivesSignatureAccountId20, u128]>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		sudo: {
 			/**
@@ -1655,6 +1780,10 @@ declare module "@polkadot/api-base/types/events" {
 				[sudoResult: Result<Null, SpRuntimeDispatchError>],
 				{ sudoResult: Result<Null, SpRuntimeDispatchError> }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		system: {
 			/**
@@ -1701,6 +1830,10 @@ declare module "@polkadot/api-base/types/events" {
 				[sender: SeedPrimitivesSignatureAccountId20, hash_: H256],
 				{ sender: SeedPrimitivesSignatureAccountId20; hash_: H256 }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		transactionPayment: {
 			/**
@@ -1712,6 +1845,10 @@ declare module "@polkadot/api-base/types/events" {
 				[who: SeedPrimitivesSignatureAccountId20, actualFee: u128, tip: u128],
 				{ who: SeedPrimitivesSignatureAccountId20; actualFee: u128; tip: u128 }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		utility: {
 			/**
@@ -1751,6 +1888,10 @@ declare module "@polkadot/api-base/types/events" {
 				[error: SpRuntimeDispatchError],
 				{ error: SpRuntimeDispatchError }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		voterList: {
 			/**
@@ -1769,6 +1910,10 @@ declare module "@polkadot/api-base/types/events" {
 				[who: SeedPrimitivesSignatureAccountId20, newScore: u64],
 				{ who: SeedPrimitivesSignatureAccountId20; newScore: u64 }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		xls20: {
 			/**
@@ -1815,6 +1960,10 @@ declare module "@polkadot/api-base/types/events" {
 				[collectionId: u32, serialNumbers: Vec<u32>, tokenUris: Vec<Bytes>],
 				{ collectionId: u32; serialNumbers: Vec<u32>; tokenUris: Vec<Bytes> }
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 		xrplBridge: {
 			DoorAddressSet: AugmentedEvent<ApiType, [H160]>;
@@ -1858,6 +2007,10 @@ declare module "@polkadot/api-base/types/events" {
 					destination: H160;
 				}
 			>;
+			/**
+			 * Generic event
+			 */
+			[key: string]: AugmentedEvent<ApiType>;
 		};
 	} // AugmentedEvents
 } // declare module
