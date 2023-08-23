@@ -1,11 +1,10 @@
 {
   "name": "@therootnetwork/api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "peerDependencies": {
-    "@polkadot/api": "^10.8.1",
-    "@polkadot/types": "^10.8.1"
+    "@polkadot/api": "^10.8.1"
   },
   "scripts": {
     "_clean": "rm -rdf dist",
@@ -16,8 +15,7 @@
     "test": "jest -c ../../jest.config.js .*.test.ts",
     "test:watch": "jest -c ../../jest.config.js --watch --coverage"
   },
-  "devDependencies": {
-    "@polkadot/api": "^10.8.1",
-    "@polkadot/types": "^10.8.1"
+  "dependencies": {
+    "@therootnetwork/api-types": "1.0.0"
   }
 }
