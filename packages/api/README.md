@@ -15,6 +15,7 @@ yarn add @polkadot/api @therootnetwork/api
 ```typescript
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
+import "@therootnetwork/api-types";
 
 const api = await ApiPromise.create({
 	...getApiOptions(),
