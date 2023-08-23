@@ -4,10 +4,8 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "_clean": "rm -rdf dist",
-    "_tsup": "tsup",
-    "dev": "run-s _clean \"_tsup src/index.ts --watch\"",
-    "build": "run-s _clean \"_tsup src/index.ts --dts --sourcemap --minify\"",
+    "build": "tsup",
+    "dev": "tsup --watch",
     "lint": "dprint check && eslint . --ext .ts",
     "test": "jest -c ../../jest.config.js .*.test.ts",
     "test:watch": "jest -c ../../jest.config.js --watch --coverage"
