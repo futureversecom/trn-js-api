@@ -1,14 +1,8 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "declaration": true,
-    "rootDir": "./src",
     "outDir": "./dist",
-    "paths": {
-      "@polkadot/types/lookup": ["src/interfaces/types-rootnet.ts"],
-      "@polkadot/api/augment": ["src/interfaces/augment/api.ts"]
-    }
+    "rootDir": "./src"
   },
-  "include": ["src/**/*"],
-  "exclude": ["dist/**/*", "**/dist/**/*"]
+  "include": ["src/**/*"]
 }

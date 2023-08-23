@@ -3,8 +3,8 @@
 /* eslint-disable */
 import type { Bytes, Enum, Option, Struct, Vec } from "@polkadot/types-codec";
 import type { ValidatorSetId } from "@polkadot/types/interfaces/beefy";
-import type { EventProofId } from "@therootnetwork/types/interfaces/ethy";
-import type { Balance, H160, H256 } from "@therootnetwork/types/interfaces/runtime";
+import type { EventProofId } from "@therootnetwork/api-types/interfaces/ethy";
+import type { Balance, H160, H256 } from "@therootnetwork/api-types/interfaces/runtime";
 
 /** @name XrplEventProofResponse */
 export interface XrplEventProofResponse extends Struct {

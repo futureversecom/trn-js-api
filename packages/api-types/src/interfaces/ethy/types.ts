@@ -3,7 +3,7 @@
 /* eslint-disable */
 import type { Bytes, Enum, Option, Struct, u64, U8, U8aFixed, Vec } from "@polkadot/types-codec";
 import type { ValidatorSetId } from "@polkadot/types/interfaces/beefy";
-import type { AccountId20, H256 } from "@therootnetwork/types/interfaces/runtime";
+import type { AccountId20, H256 } from "@therootnetwork/api-types/interfaces/runtime";
 
 /** @name EthereumSignature */
 export interface EthereumSignature extends Struct {

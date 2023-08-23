@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@trnja/api/*": ["./packages/api/src/*"],
+      "@trnja/evm/*": ["./packages/evm/src/*"],
+
+		"@therootnetwork/api-types/*": ["./packages/api-types/src/*"],
+		"@polkadot/api/augment": ["./packages/types/src/augment/api.ts"],
+		"@polkadot/types/lookup": ["./packages/types/src/lookup/types-rootnet.ts"]
+    }
+  },
+  "exclude": [
+    "dist/**/*",
+    "**/dist/**/*"
+  ]
+}
+
