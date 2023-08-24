@@ -62,9 +62,6 @@ importers:
       '@polkadot/api':
         specifier: ^10.8.1
         version: 10.9.1
-      '@therootnetwork/api-types':
-        specifier: 1.0.0
-        version: link:../api-types
 
   packages/api-types:
     dependencies:

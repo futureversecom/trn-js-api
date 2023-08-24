@@ -1,6 +1,6 @@
 import { ApiOptions } from "@polkadot/api/types";
 
-import { lookupTypes } from "@therootnetwork/api-types";
+import { lookupTypes } from "@therootnetwork/api-types/index";
 import * as definitions from "@therootnetwork/api-types/interfaces/definitions";
 
 export function getApiOptions(): ApiOptions {
