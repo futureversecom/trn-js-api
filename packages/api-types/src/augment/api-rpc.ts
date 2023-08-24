@@ -16,6 +16,7 @@ import type {
 	Null,
 	Option,
 	Text,
+	u16,
 	U256,
 	u32,
 	U64,
@@ -66,20 +67,6 @@ import type { StorageKind } from "@polkadot/types/interfaces/offchain";
 import type { FeeDetails, RuntimeDispatchInfoV1 } from "@polkadot/types/interfaces/payment";
 import type { RpcMethods } from "@polkadot/types/interfaces/rpc";
 import type {
-	AccountId,
-	BlockNumber,
-	H160,
-	H256,
-	H64,
-	Hash,
-	Header,
-	Index,
-	Justification,
-	KeyValue,
-	SignedBlock,
-	StorageData,
-} from "@polkadot/types/interfaces/runtime";
-import type {
 	MigrationStatusResult,
 	ReadProof,
 	RuntimeVersion,
@@ -96,6 +83,30 @@ import type {
 	SyncState,
 } from "@polkadot/types/interfaces/system";
 import type { IExtrinsic, Observable } from "@polkadot/types/types";
+import type {
+	EthEventProofResponse,
+	EventProofId,
+} from "@therootnetwork/api-types/interfaces/ethy";
+import type {
+	CollectionUuid,
+	SerialNumber,
+	TokenId,
+} from "@therootnetwork/api-types/interfaces/nft";
+import type {
+	AccountId,
+	BlockNumber,
+	H160,
+	H256,
+	H64,
+	Hash,
+	Header,
+	Index,
+	Justification,
+	KeyValue,
+	SignedBlock,
+	StorageData,
+} from "@therootnetwork/api-types/interfaces/runtime";
+import type { XrplEventProofResponse } from "@therootnetwork/api-types/interfaces/xrplBridge";
 
 export type __AugmentedRpc = AugmentedRpc<() => unknown>;
 
@@ -702,6 +713,28 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 */
 			uninstallFilter: AugmentedRpc<(index: U256 | AnyNumber | Uint8Array) => Observable<bool>>;
 		};
+		ethy: {
+			/**
+			 * Get ETH event proof for event Id
+			 */
+			getEventProof: AugmentedRpc<
+				(
+					eventId: EventProofId | AnyNumber | Uint8Array,
+				) => Observable<Option<EthEventProofResponse>>
+			>;
+			/**
+			 * Get XRPL event proof for event Id
+			 */
+			getXrplTxProof: AugmentedRpc<
+				(
+					eventId: EventProofId | AnyNumber | Uint8Array,
+				) => Observable<Option<XrplEventProofResponse>>
+			>;
+			/**
+			 * Subscribe to Eth event proof.
+			 */
+			subscribeEventProofs: AugmentedRpc<() => Observable<Null>>;
+		};
 		grandpa: {
 			/**
 			 * Prove finality for the given block number, returning the Justification for the last block in the set.
@@ -774,6 +807,23 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 * Returns protocol version.
 			 */
 			version: AugmentedRpc<() => Observable<Text>>;
+		};
+		nft: {
+			/**
+			 * Get all NFTs owned by an account
+			 */
+			ownedTokens: AugmentedRpc<
+				(
+					collectionId: CollectionUuid | AnyNumber | Uint8Array,
+					who: AccountId | string | Uint8Array,
+					cursor: SerialNumber | AnyNumber | Uint8Array,
+					limit: u16 | AnyNumber | Uint8Array,
+				) => Observable<Json>
+			>;
+			/**
+			 * Get the URI of a token
+			 */
+			tokenUri: AugmentedRpc<(tokenId: TokenId) => Observable<Json>>;
 		};
 		offchain: {
 			/**

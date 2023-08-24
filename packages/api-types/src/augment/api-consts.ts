@@ -8,7 +8,6 @@ import "@polkadot/api-base/types/consts";
 import type { ApiTypes, AugmentedConst } from "@polkadot/api-base/types";
 import type { Option, u128, u16, u32, u64, u8, Vec } from "@polkadot/types-codec";
 import type { Codec, ITuple } from "@polkadot/types-codec/types";
-import type { Perbill } from "@polkadot/types/interfaces/runtime";
 import type {
 	FrameSupportPalletId,
 	FrameSupportWeightsRuntimeDbWeight,
@@ -16,6 +15,7 @@ import type {
 	FrameSystemLimitsBlockWeights,
 	SpVersionRuntimeVersion,
 } from "@polkadot/types/lookup";
+import type { Perbill } from "@therootnetwork/api-types/interfaces/runtime";
 
 export type __AugmentedConst<ApiType extends ApiTypes> = AugmentedConst<ApiType>;
 

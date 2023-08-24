@@ -760,108 +760,6 @@ import type { AccountStatus, AccountValidity } from "@polkadot/types/interfaces/
 import type { ActiveRecovery, RecoveryConfig } from "@polkadot/types/interfaces/recovery";
 import type { RpcMethods } from "@polkadot/types/interfaces/rpc";
 import type {
-	AccountId,
-	AccountId20,
-	AccountId32,
-	AccountId33,
-	AccountIdOf,
-	AccountIndex,
-	Address,
-	AssetId,
-	Balance,
-	BalanceOf,
-	Block,
-	BlockNumber,
-	BlockNumberFor,
-	BlockNumberOf,
-	Call,
-	CallHash,
-	CallHashOf,
-	ChangesTrieConfiguration,
-	ChangesTrieSignal,
-	CodecHash,
-	Consensus,
-	ConsensusEngineId,
-	CrateVersion,
-	Digest,
-	DigestItem,
-	EncodedJustification,
-	ExtrinsicsWeight,
-	Fixed128,
-	Fixed64,
-	FixedI128,
-	FixedI64,
-	FixedU128,
-	FixedU64,
-	H1024,
-	H128,
-	H160,
-	H2048,
-	H256,
-	H32,
-	H512,
-	H64,
-	Hash,
-	Header,
-	HeaderPartial,
-	I32F32,
-	Index,
-	IndicesLookupSource,
-	Justification,
-	Justifications,
-	KeyTypeId,
-	KeyValue,
-	LockIdentifier,
-	LookupSource,
-	LookupTarget,
-	ModuleId,
-	Moment,
-	MultiAddress,
-	MultiSigner,
-	OpaqueCall,
-	Origin,
-	OriginCaller,
-	PalletId,
-	PalletsOrigin,
-	PalletVersion,
-	Pays,
-	Perbill,
-	Percent,
-	Permill,
-	Perquintill,
-	PerU16,
-	Phantom,
-	PhantomData,
-	PreRuntime,
-	Releases,
-	RuntimeCall,
-	RuntimeDbWeight,
-	RuntimeEvent,
-	Seal,
-	SealV0,
-	SignedBlock,
-	SignedBlockWithJustification,
-	SignedBlockWithJustifications,
-	Slot,
-	SlotDuration,
-	StorageData,
-	StorageInfo,
-	StorageProof,
-	TransactionInfo,
-	TransactionLongevity,
-	TransactionPriority,
-	TransactionStorageProof,
-	TransactionTag,
-	U32F32,
-	ValidatorId,
-	ValidatorIdOf,
-	Weight,
-	WeightMultiplier,
-	WeightV0,
-	WeightV1,
-	WeightV2,
-} from "@polkadot/types/interfaces/runtime";
-import type {
 	Si0Field,
 	Si0LookupTypeId,
 	Si0Path,
@@ -1221,6 +1119,127 @@ import type {
 	XcmV2,
 	XcmVersion,
 } from "@polkadot/types/interfaces/xcm";
+import type { EthWalletCall } from "@therootnetwork/api-types/interfaces/ethWallet";
+import type {
+	EthEventProofResponse,
+	EthyEventId,
+	EthyId,
+	EventProof,
+	EventProofId,
+	VersionedEventProof,
+} from "@therootnetwork/api-types/interfaces/ethy";
+import type {
+	CollectionUuid,
+	SerialNumber,
+	TokenId,
+} from "@therootnetwork/api-types/interfaces/nft";
+import type {
+	AccountId,
+	AccountId20,
+	AccountId32,
+	AccountId33,
+	AccountIdOf,
+	AccountIndex,
+	Address,
+	AssetId,
+	Balance,
+	BalanceOf,
+	Block,
+	BlockNumber,
+	BlockNumberFor,
+	BlockNumberOf,
+	Call,
+	CallHash,
+	CallHashOf,
+	ChangesTrieConfiguration,
+	ChangesTrieSignal,
+	CodecHash,
+	Consensus,
+	ConsensusEngineId,
+	CrateVersion,
+	Digest,
+	DigestItem,
+	EncodedJustification,
+	ExtrinsicsWeight,
+	Fixed128,
+	Fixed64,
+	FixedI128,
+	FixedI64,
+	FixedU128,
+	FixedU64,
+	H1024,
+	H128,
+	H160,
+	H2048,
+	H256,
+	H32,
+	H512,
+	H64,
+	Hash,
+	Header,
+	HeaderPartial,
+	I32F32,
+	Index,
+	IndicesLookupSource,
+	Justification,
+	Justifications,
+	KeyTypeId,
+	KeyValue,
+	LockIdentifier,
+	Lookup0,
+	LookupSource,
+	LookupTarget,
+	ModuleId,
+	Moment,
+	MultiAddress,
+	MultiSigner,
+	OpaqueCall,
+	Origin,
+	OriginCaller,
+	PalletId,
+	PalletsOrigin,
+	PalletVersion,
+	Pays,
+	Perbill,
+	Percent,
+	Permill,
+	Perquintill,
+	PerU16,
+	Phantom,
+	PhantomData,
+	PreRuntime,
+	Releases,
+	RuntimeCall,
+	RuntimeDbWeight,
+	RuntimeEvent,
+	Seal,
+	SealV0,
+	SignedBlock,
+	SignedBlockWithJustification,
+	SignedBlockWithJustifications,
+	Slot,
+	SlotDuration,
+	StorageData,
+	StorageInfo,
+	StorageProof,
+	TransactionInfo,
+	TransactionLongevity,
+	TransactionPriority,
+	TransactionStorageProof,
+	TransactionTag,
+	U32F32,
+	ValidatorId,
+	ValidatorIdOf,
+	Weight,
+	WeightMultiplier,
+	WeightV0,
+	WeightV1,
+	WeightV2,
+} from "@therootnetwork/api-types/interfaces/runtime";
+import type {
+	XrplEventProofResponse,
+	XRPLTxData,
+} from "@therootnetwork/api-types/interfaces/xrplBridge";
 
 declare module "@polkadot/types/types/registry" {
 	interface InterfaceTypes {
@@ -1384,6 +1403,7 @@ declare module "@polkadot/types/types/registry" {
 		CollationInfoV1: CollationInfoV1;
 		CollatorId: CollatorId;
 		CollatorSignature: CollatorSignature;
+		CollectionUuid: CollectionUuid;
 		CollectiveOrigin: CollectiveOrigin;
 		CommittedCandidateReceipt: CommittedCandidateReceipt;
 		CompactAssignments: CompactAssignments;
@@ -1552,6 +1572,7 @@ declare module "@polkadot/types/types/registry" {
 		EthereumAddress: EthereumAddress;
 		EthereumLookupSource: EthereumLookupSource;
 		EthereumSignature: EthereumSignature;
+		EthEventProofResponse: EthEventProofResponse;
 		EthFeeHistory: EthFeeHistory;
 		EthFilter: EthFilter;
 		EthFilterAddress: EthFilterAddress;
@@ -1578,7 +1599,10 @@ declare module "@polkadot/types/types/registry" {
 		EthTransactionRequest: EthTransactionRequest;
 		EthTransactionSignature: EthTransactionSignature;
 		EthTransactionStatus: EthTransactionStatus;
+		EthWalletCall: EthWalletCall;
 		EthWork: EthWork;
+		EthyEventId: EthyEventId;
+		EthyId: EthyId;
 		Event: Event;
 		EventId: EventId;
 		EventIndex: EventIndex;
@@ -1589,6 +1613,8 @@ declare module "@polkadot/types/types/registry" {
 		EventMetadataV13: EventMetadataV13;
 		EventMetadataV14: EventMetadataV14;
 		EventMetadataV9: EventMetadataV9;
+		EventProof: EventProof;
+		EventProofId: EventProofId;
 		EventRecord: EventRecord;
 		EvmAccount: EvmAccount;
 		EvmCallInfo: EvmCallInfo;
@@ -1778,6 +1804,7 @@ declare module "@polkadot/types/types/registry" {
 		LimitsTo264: LimitsTo264;
 		LocalValidationData: LocalValidationData;
 		LockIdentifier: LockIdentifier;
+		Lookup0: Lookup0;
 		LookupSource: LookupSource;
 		LookupTarget: LookupTarget;
 		LotteryConfig: LotteryConfig;
@@ -2077,6 +2104,7 @@ declare module "@polkadot/types/types/registry" {
 		SealV0: SealV0;
 		SeatHolder: SeatHolder;
 		SeedOf: SeedOf;
+		SerialNumber: SerialNumber;
 		ServiceQuality: ServiceQuality;
 		SessionIndex: SessionIndex;
 		SessionInfo: SessionInfo;
@@ -2235,6 +2263,7 @@ declare module "@polkadot/types/types/registry" {
 		Text: Text;
 		Timepoint: Timepoint;
 		TokenError: TokenError;
+		TokenId: TokenId;
 		TombstoneContractInfo: TombstoneContractInfo;
 		TraceBlockResponse: TraceBlockResponse;
 		TraceError: TraceError;
@@ -2302,6 +2331,7 @@ declare module "@polkadot/types/types/registry" {
 		ValidityAttestation: ValidityAttestation;
 		ValidTransaction: ValidTransaction;
 		VecInboundHrmpMessage: VecInboundHrmpMessage;
+		VersionedEventProof: VersionedEventProof;
 		VersionedMultiAsset: VersionedMultiAsset;
 		VersionedMultiAssets: VersionedMultiAssets;
 		VersionedMultiLocation: VersionedMultiLocation;
@@ -2366,5 +2396,7 @@ declare module "@polkadot/types/types/registry" {
 		XcmV1: XcmV1;
 		XcmV2: XcmV2;
 		XcmVersion: XcmVersion;
+		XrplEventProofResponse: XrplEventProofResponse;
+		XRPLTxData: XRPLTxData;
 	} // InterfaceTypes
 } // declare module

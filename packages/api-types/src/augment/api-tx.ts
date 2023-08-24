@@ -27,15 +27,6 @@ import type {
 } from "@polkadot/types-codec";
 import type { AnyNumber, IMethod, ITuple } from "@polkadot/types-codec/types";
 import type {
-	Call,
-	H160,
-	H256,
-	H512,
-	Perbill,
-	Percent,
-	Permill,
-} from "@polkadot/types/interfaces/runtime";
-import type {
 	EthereumTransactionTransactionV2,
 	FrameSupportScheduleMaybeHashed,
 	PalletAssetsDestroyWitness,
@@ -68,6 +59,15 @@ import type {
 	SpRuntimeHeader,
 	SpSessionMembershipProof,
 } from "@polkadot/types/lookup";
+import type {
+	Call,
+	H160,
+	H256,
+	H512,
+	Perbill,
+	Percent,
+	Permill,
+} from "@therootnetwork/api-types/interfaces/runtime";
 
 export type __AugmentedSubmittable = AugmentedSubmittable<() => unknown>;
 export type __SubmittableExtrinsic<ApiType extends ApiTypes> = SubmittableExtrinsic<ApiType>;

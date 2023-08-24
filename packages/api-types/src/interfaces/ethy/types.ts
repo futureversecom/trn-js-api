@@ -1,6 +1,6 @@
 // Auto-generated via `yarn polkadot-types-from-defs`, do not edit
-
 /* eslint-disable */
+
 import type { Bytes, Enum, Option, Struct, u64, U8, U8aFixed, Vec } from "@polkadot/types-codec";
 import type { ValidatorSetId } from "@polkadot/types/interfaces/beefy";
 import type { AccountId20, H256 } from "@therootnetwork/api-types/interfaces/runtime";

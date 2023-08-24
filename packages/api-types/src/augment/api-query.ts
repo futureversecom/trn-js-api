@@ -21,7 +21,6 @@ import type {
 	WrapperOpaque,
 } from "@polkadot/types-codec";
 import type { AnyNumber, ITuple } from "@polkadot/types-codec/types";
-import type { H160, H256, H512, Perbill, Percent } from "@polkadot/types/interfaces/runtime";
 import type {
 	EthereumBlock,
 	EthereumReceiptReceiptV3,
@@ -102,6 +101,13 @@ import type {
 	SpStakingOffenceOffenceDetails,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
+import type {
+	H160,
+	H256,
+	H512,
+	Perbill,
+	Percent,
+} from "@therootnetwork/api-types/interfaces/runtime";
 
 export type __AugmentedQuery<ApiType extends ApiTypes> = AugmentedQuery<ApiType, () => unknown>;
 export type __QueryableStorageEntry<ApiType extends ApiTypes> = QueryableStorageEntry<ApiType>;

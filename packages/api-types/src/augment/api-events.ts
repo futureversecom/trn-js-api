@@ -21,7 +21,6 @@ import type {
 	Vec,
 } from "@polkadot/types-codec";
 import type { ITuple } from "@polkadot/types-codec/types";
-import type { H160, H256, H512, Permill } from "@polkadot/types/interfaces/runtime";
 import type {
 	EthereumLog,
 	EvmCoreErrorExitReason,
@@ -46,6 +45,7 @@ import type {
 	SpFinalityGrandpaAppPublic,
 	SpRuntimeDispatchError,
 } from "@polkadot/types/lookup";
+import type { H160, H256, H512, Permill } from "@therootnetwork/api-types/interfaces/runtime";
 
 export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
