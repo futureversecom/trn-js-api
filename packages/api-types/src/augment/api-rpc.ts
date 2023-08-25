@@ -16,6 +16,7 @@ import type {
 	Null,
 	Option,
 	Text,
+	u128,
 	u16,
 	U256,
 	u32,
@@ -94,6 +95,8 @@ import type {
 } from "@therootnetwork/api-types/interfaces/nft";
 import type {
 	AccountId,
+	AssetId,
+	Balance,
 	BlockNumber,
 	H160,
 	H256,
@@ -354,6 +357,63 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 */
 			getBlockStats: AugmentedRpc<
 				(at: Hash | string | Uint8Array) => Observable<Option<BlockStats>>
+			>;
+		};
+		dex: {
+			/**
+			 * Given an array of AssetIds, return amounts in for an amount out
+			 */
+			getAmountsIn: AugmentedRpc<
+				(
+					amountOut: Balance | AnyNumber | Uint8Array,
+					path: Vec<AssetId> | (AssetId | AnyNumber | Uint8Array)[],
+				) => Observable<Json>
+			>;
+			/**
+			 * Given an array of AssetIds, return amounts out for an amount in
+			 */
+			getAmountsOut: AugmentedRpc<
+				(
+					amountIn: Balance | AnyNumber | Uint8Array,
+					path: Vec<AssetId> | (AssetId | AnyNumber | Uint8Array)[],
+				) => Observable<Json>
+			>;
+			/**
+			 * Given two AssetIds, return liquidity token created for the pair
+			 */
+			getLPTokenID: AugmentedRpc<
+				(
+					assetA: AssetId | AnyNumber | Uint8Array,
+					assetB: AssetId | AnyNumber | Uint8Array,
+				) => Observable<Json>
+			>;
+			/**
+			 * Given two AssetIds, return liquidity
+			 */
+			getLiquidity: AugmentedRpc<
+				(
+					assetA: AssetId | AnyNumber | Uint8Array,
+					assetB: AssetId | AnyNumber | Uint8Array,
+				) => Observable<Json>
+			>;
+			/**
+			 * Given two AssetIds, return whether trading pair is enabled or disabled
+			 */
+			getTradingPairStatus: AugmentedRpc<
+				(
+					assetA: AssetId | AnyNumber | Uint8Array,
+					assetB: AssetId | AnyNumber | Uint8Array,
+				) => Observable<Text>
+			>;
+			/**
+			 * Given some amount of an asset and pair reserves, returns an equivalent amount of the other asset
+			 */
+			quote: AugmentedRpc<
+				(
+					amountA: u128 | AnyNumber | Uint8Array,
+					reserveA: u128 | AnyNumber | Uint8Array,
+					reserveB: u128 | AnyNumber | Uint8Array,
+				) => Observable<Json>
 			>;
 		};
 		engine: {

@@ -1,3 +1,4 @@
+export { default as dex } from "./dex/definitions";
 export { default as ethWallet } from "./ethWallet/definitions";
 export { default as ethy } from "./ethy/definitions";
 export { default as nft } from "./nft/definitions";
