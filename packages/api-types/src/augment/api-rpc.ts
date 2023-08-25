@@ -96,7 +96,6 @@ import type {
 import type {
 	AccountId,
 	AssetId,
-	Balance,
 	BlockNumber,
 	H160,
 	H256,
@@ -365,7 +364,7 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 */
 			getAmountsIn: AugmentedRpc<
 				(
-					amountOut: Balance | AnyNumber | Uint8Array,
+					amountOut: u128 | AnyNumber | Uint8Array,
 					path: Vec<AssetId> | (AssetId | AnyNumber | Uint8Array)[],
 				) => Observable<Json>
 			>;
@@ -374,7 +373,7 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 */
 			getAmountsOut: AugmentedRpc<
 				(
-					amountIn: Balance | AnyNumber | Uint8Array,
+					amountIn: u128 | AnyNumber | Uint8Array,
 					path: Vec<AssetId> | (AssetId | AnyNumber | Uint8Array)[],
 				) => Observable<Json>
 			>;

@@ -24,7 +24,7 @@ export default {
 			params: [
 				{
 					name: "amountIn",
-					type: "Balance",
+					type: "u128",
 				},
 				{
 					name: "path",
@@ -38,7 +38,7 @@ export default {
 			params: [
 				{
 					name: "amountOut",
-					type: "Balance",
+					type: "u128",
 				},
 				{
 					name: "path",
