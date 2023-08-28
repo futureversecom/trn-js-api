@@ -4,11 +4,9 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "_clean": "rm -rdf dist",
-    "_tsup": "tsup",
-    "dev": "run-s _clean \"_tsup src/index.ts --watch\"",
-    "build": "run-s _clean \"_tsup src/index.ts --dts --sourcemap --minify\"",
-    "lint": "dprint check && eslint . --ext .ts",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts",
     "test": "jest -c ../../jest.config.js .*.test.ts",
     "test:watch": "jest -c ../../jest.config.js --watch --coverage"
   },

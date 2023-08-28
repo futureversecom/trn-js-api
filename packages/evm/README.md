@@ -25,6 +25,7 @@ const providerUrl = getPublicProviderUrl("porcini");
 const provider = getDefaultProvider();
 const contract = new Contract(collectionAddress, ERC721_PRECOMPILE_ABI, provider);
 ```
+
 ## API
 
 ### `function assetIdToERC20Address(assetId: string | number)`
@@ -54,16 +55,16 @@ Returns the Public RPC URls for the corresponding `network`
 
 ### ABIs
 
-| Constant | Description |
-| --- | --- |
-| `ERC20_ABI: string[]` | ABI for the ERC-20 standard |
-| `ERC721_ABI: string[]` | ABI for the ERC-721 standard |
-| `ERC1155_ABI: string[]` | ABI for the ERC-1155 standard |
-| `NFT_PRECOMPILE_ABI: string[]` | ABI for the `nft` pallet |
-| `SFT_PRECOMPILE_ABI: string[]` | ABI for the `sft` pallet |
-| `FEE_PROXY_PRECOMPILE_ABI: string[]` | ABI for `feeProxy` pallet |
-| `FUTUREPASS_PRECOMPILE_ABI: string[]` | ABI for `futurepass` account |
-| `FUTUREPASS_REGISTRAR_PRECOMPILE_ABI: string[]` | ABI for `futurepass` pallet |
-| `DEX_PRECOMPILE_ABI: string[]` | ABI for the `dex` pallet |
+| Constant                                        | Description                   |
+| ----------------------------------------------- | ----------------------------- |
+| `ERC20_ABI: string[]`                           | ABI for the ERC-20 standard   |
+| `ERC721_ABI: string[]`                          | ABI for the ERC-721 standard  |
+| `ERC1155_ABI: string[]`                         | ABI for the ERC-1155 standard |
+| `NFT_PRECOMPILE_ABI: string[]`                  | ABI for the `nft` pallet      |
+| `SFT_PRECOMPILE_ABI: string[]`                  | ABI for the `sft` pallet      |
+| `FEE_PROXY_PRECOMPILE_ABI: string[]`            | ABI for `feeProxy` pallet     |
+| `FUTUREPASS_PRECOMPILE_ABI: string[]`           | ABI for `futurepass` account  |
+| `FUTUREPASS_REGISTRAR_PRECOMPILE_ABI: string[]` | ABI for `futurepass` pallet   |
+| `DEX_PRECOMPILE_ABI: string[]`                  | ABI for the `dex` pallet      |
 
 > NOTE: All exported ABIs are in human-readable format

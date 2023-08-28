@@ -1,0 +1,28 @@
+{
+  "name": "@therootnetwork/api-types",
+  "version": "1.0.0",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "_clean": "rm -rdf dist",
+    "_build": "tsc --build tsconfig.json",
+    "_gen": "ts-node scripts/generateTypes.ts",
+    "build": "run-s _clean _build",
+    "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts",
+    "update:meta": "ts-node scripts/updateMeta.ts",
+    "generate:types": "run-s _gen format"
+  },
+  "dependencies": {
+    "@polkadot/types": "^10.9.1"
+  },
+  "devDependencies": {
+    "@polkadot/api-base": "^10.9.1",
+    "@polkadot/rpc-core": "^10.9.1",
+    "@polkadot/typegen": "^10.9.1",
+    "@polkadot/types-codec": "^10.9.1",
+    "@polkadot/types-create": "^10.9.1",
+    "@types/websocket": "^1.0.5",
+    "handlebars": "^4.7.8",
+    "websocket": "^1.0.34"
+  }
+}

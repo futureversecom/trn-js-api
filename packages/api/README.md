@@ -6,6 +6,7 @@ A utility package that complements the `@polkadot/api` to connect and interact w
 
 ```bash
 yarn add @polkadot/api @therootnetwork/api
+yarn add -D @therootnetwork/api-types # optional, for Typescript support
 ```
 
 ## Usage
@@ -13,6 +14,7 @@ yarn add @polkadot/api @therootnetwork/api
 - Create an API instance
 
 ```typescript
+import "@therootnetwork/api-types"; // optional, for Typescript support
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 
@@ -27,7 +29,7 @@ const api = await ApiPromise.create({
 ```typescript
 // query and display account data
 const data = await api.query.system.account("0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b");
-console.log(data.toHuman())
+console.log(data.toHuman());
 ```
 
 ## API
