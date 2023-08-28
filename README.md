@@ -5,7 +5,7 @@
 
 ## Getting Started
 
-Visit https://docs.rootnet.live to get started with TRN JavaScript API
+Visit https://docs-beta.therootnetwork.com to get started with TRN JavaScript API
 
 ## Packages
 
