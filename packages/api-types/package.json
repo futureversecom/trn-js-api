@@ -9,11 +9,10 @@
   "scripts": {
     "_clean": "rm -rdf dist",
     "_build": "tsc --build tsconfig.json",
-    "build": "run-s _clean _build",
-    "lint": "dprint check && eslint . --ext .ts",
-    "format": "dprint fmt --incremental",
-    "update:meta": "ts-node scripts/updateMeta.ts",
     "_gen": "ts-node scripts/generateTypes.ts",
+    "build": "run-s _clean _build",
+    "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts",
+    "update:meta": "ts-node scripts/updateMeta.ts",
     "generate:types": "run-s _gen format"
   },
   "devDependencies": {
