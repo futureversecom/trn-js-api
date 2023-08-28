@@ -9,8 +9,8 @@
     "declaration": true,
     "baseUrl": ".",
     "paths": {
-      "@trnja/api/*": ["./packages/api/src/*"],
-      "@trnja/evm/*": ["./packages/evm/src/*"],
+      "@therootnetwork/api/*": ["./packages/api/src/*"],
+      "@therootnetwork/evm/*": ["./packages/evm/src/*"],
       "@therootnetwork/api-types/*": ["./packages/api-types/src/*"]
     }
   },

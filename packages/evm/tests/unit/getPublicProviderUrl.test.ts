@@ -1,5 +1,5 @@
 import { describe, expect, test } from "@jest/globals";
-import { getPublicProviderUrl } from "@trnja/evm/libs/getPublicProviderUrl";
+import { getPublicProviderUrl } from "@therootnetwork/evm/libs/getPublicProviderUrl";
 
 describe("getPublicProviderUrl", () => {
 	test("returns provider url for `root` network", async () => {

@@ -3,7 +3,7 @@ import {
 	assetIdToERC20Address,
 	collectionIdToERC1155Address,
 	collectionIdToERC721Address,
-} from "@trnja/evm/libs/commonUtils";
+} from "@therootnetwork/evm/libs/commonUtils";
 
 describe("assetIdToERC20Address", () => {
 	test("returns contract address for asset id", () => {

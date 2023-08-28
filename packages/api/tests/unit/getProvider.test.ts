@@ -1,5 +1,9 @@
 import { beforeEach, describe, expect, jest, test } from "@jest/globals";
-import { getLocalProvider, getProvider, getPublicProvider } from "@trnja/api/libs/getProvider";
+import {
+	getLocalProvider,
+	getProvider,
+	getPublicProvider,
+} from "@therootnetwork/api/libs/getProvider";
 
 const HttpProviderMock = jest.fn();
 const WsProviderMock = jest.fn();
