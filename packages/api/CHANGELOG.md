@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+## 1.0.4
+
+### Patch Changes
+
+- Update README with more details
+
 ## 1.0.3
 
 ### Patch Changes
