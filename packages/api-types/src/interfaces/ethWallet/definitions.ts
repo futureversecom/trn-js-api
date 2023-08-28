@@ -1,8 +1,8 @@
 export default {
-  rpc: {},
-  types: {
-    EthWalletCall: {
-      nonce: "u32",
-    },
-  },
+	rpc: {},
+	types: {
+		EthWalletCall: {
+			nonce: "u32",
+		},
+	},
 };
