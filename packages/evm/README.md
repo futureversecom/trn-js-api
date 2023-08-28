@@ -14,9 +14,9 @@ yarn add @therootnetwork/evm
 
 ```typescript
 import {
-	collectionIdToERC721Address,
-	ERC721_PRECOMPILE_ABI,
-	getPublicProviderUrl,
+  collectionIdToERC721Address,
+  ERC721_PRECOMPILE_ABI,
+  getPublicProviderUrl,
 } from "@therootnetwork/evm";
 import { Contract, getDefaultProvider } from "ethers";
 
@@ -44,14 +44,14 @@ Returns the Public RPC URls for the corresponding `network`
 
 ### Addresses
 
-| Constant                                          | Description                                            |
-| ------------------------------------------------- | ------------------------------------------------------ |
-| `NFT_PRECOMPILE_ADDRESS: string`                  | Precompile address for `nft` pallet                    |
-| `SFT_PRECOMPILE_ADDRESS: string`                  | Precompile address for `sft` pallet                    |
-| `FUTUREPASS_REGISTRAR_PRECOMPILE_ADDRESS: string` | Precompile address for `futurepass` pallet             |
-| `PEG_PRECOMPILE_ADDRESS: string`                  | Precompile address for `erc20Peg` and `nftPeg` pallets |
-| `DEX_PRECOMPILE_ADDRESS: string`                  | Precompile address for `dex` pallet                    |
-| `FEE_PROXY_PRECOMPILE_ADDRESS`                    | Precompile address for `feeProxy` pallet               |
+| Constant | Description |
+| --- | --- |
+| `NFT_PRECOMPILE_ADDRESS: string` | Precompile address for `nft` pallet |
+| `SFT_PRECOMPILE_ADDRESS: string` | Precompile address for `sft` pallet |
+| `FUTUREPASS_REGISTRAR_PRECOMPILE_ADDRESS: string` | Precompile address for `futurepass` pallet |
+| `PEG_PRECOMPILE_ADDRESS: string` | Precompile address for `erc20Peg` and `nftPeg` pallets |
+| `DEX_PRECOMPILE_ADDRESS: string` | Precompile address for `dex` pallet |
+| `FEE_PROXY_PRECOMPILE_ADDRESS` | Precompile address for `feeProxy` pallet |
 
 ### ABIs
 
