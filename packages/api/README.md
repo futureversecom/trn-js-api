@@ -6,6 +6,7 @@ A utility package that complements the `@polkadot/api` to connect and interact w
 
 ```bash
 yarn add @polkadot/api @therootnetwork/api
+yarn add -D @therootnetwork/api-types # optional, for Typescript support
 ```
 
 ## Usage
@@ -13,6 +14,7 @@ yarn add @polkadot/api @therootnetwork/api
 - Create an API instance
 
 ```typescript
+import "@therootnetwork/api-types"; // optional, for Typescript support
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 
