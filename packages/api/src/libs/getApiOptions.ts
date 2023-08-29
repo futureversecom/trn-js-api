@@ -47,7 +47,7 @@ export function getRpcOptions(): ApiOptions["rpc"] {
 				params: [
 					{
 						name: "amountIn",
-						type: "Balance",
+						type: "u128",
 					},
 					{
 						name: "path",
@@ -61,7 +61,7 @@ export function getRpcOptions(): ApiOptions["rpc"] {
 				params: [
 					{
 						name: "amountOut",
-						type: "Balance",
+						type: "u128",
 					},
 					{
 						name: "path",
