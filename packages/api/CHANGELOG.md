@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+# 1.0.5
+
+### Patch Changes
+
+- Fix DEX type for getAmountsIn and getAmountsOut
+
 ## 1.0.4
 
 ### Patch Changes
