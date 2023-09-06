@@ -11,6 +11,7 @@
     "dev": "tsup --watch",
     "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts",
     "test": "jest -c ../../jest.config.js .*.test.ts",
+    "jest": "jest -c ../../jest.config.js",
     "test:watch": "jest -c ../../jest.config.js --watch --coverage"
   }
 }

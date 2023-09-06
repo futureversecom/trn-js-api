@@ -4,6 +4,6 @@ import { getApiOptions } from "@therootnetwork/api/libs/getApiOptions";
 describe("getApiOptions", () => {
 	test("returns expected options", () => {
 		const options = getApiOptions();
-		expect(Object.keys(options)).toEqual(["types", "rpc"]);
+		expect(options).toMatchSnapshot();
 	});
 });
