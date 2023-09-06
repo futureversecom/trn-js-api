@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+## 1.0.5
+
+### Patch Changes
+
+- Fix type for `dex_getAmountsIn` and `dex_getAmountsOut` RPC calls
+
 ## 1.0.4
 
 ### Patch Changes
