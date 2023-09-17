@@ -1,0 +1,4091 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getApiOptions returns expected options 1`] = `
+{
+  "rpc": {
+    "dex": {
+      "getAmountsIn": {
+        "description": "Given an array of AssetIds, return amounts in for an amount out",
+        "params": [
+          {
+            "name": "amountOut",
+            "type": "u128",
+          },
+          {
+            "name": "path",
+            "type": "Vec<AssetId>",
+          },
+        ],
+        "type": "Json",
+      },
+      "getAmountsOut": {
+        "description": "Given an array of AssetIds, return amounts out for an amount in",
+        "params": [
+          {
+            "name": "amountIn",
+            "type": "u128",
+          },
+          {
+            "name": "path",
+            "type": "Vec<AssetId>",
+          },
+        ],
+        "type": "Json",
+      },
+      "getLPTokenID": {
+        "description": "Given two AssetIds, return liquidity token created for the pair",
+        "params": [
+          {
+            "name": "assetA",
+            "type": "AssetId",
+          },
+          {
+            "name": "assetB",
+            "type": "AssetId",
+          },
+        ],
+        "type": "Json",
+      },
+      "getLiquidity": {
+        "description": "Given two AssetIds, return liquidity",
+        "params": [
+          {
+            "name": "assetA",
+            "type": "AssetId",
+          },
+          {
+            "name": "assetB",
+            "type": "AssetId",
+          },
+        ],
+        "type": "Json",
+      },
+      "getTradingPairStatus": {
+        "description": "Given two AssetIds, return whether trading pair is enabled or disabled",
+        "params": [
+          {
+            "name": "assetA",
+            "type": "AssetId",
+          },
+          {
+            "name": "assetB",
+            "type": "AssetId",
+          },
+        ],
+        "type": "Text",
+      },
+      "quote": {
+        "description": "Given some amount of an asset and pair reserves, returns an equivalent amount of the other asset",
+        "params": [
+          {
+            "name": "amountA",
+            "type": "u128",
+          },
+          {
+            "name": "reserveA",
+            "type": "u128",
+          },
+          {
+            "name": "reserveB",
+            "type": "u128",
+          },
+        ],
+        "type": "Json",
+      },
+    },
+    "ethy": {
+      "getEventProof": {
+        "description": "Get ETH event proof for event Id",
+        "params": [
+          {
+            "name": "eventId",
+            "type": "EventProofId",
+          },
+        ],
+        "type": "Option<EthEventProofResponse>",
+      },
+      "getXrplTxProof": {
+        "description": "Get XRPL event proof for event Id",
+        "params": [
+          {
+            "name": "eventId",
+            "type": "EventProofId",
+          },
+        ],
+        "type": "Option<XrplEventProofResponse>",
+      },
+      "subscribeEventProofs": {
+        "alias": [
+          "ethy_subscribeEventProofs",
+          "ethy_unsubscribeEventProofs",
+        ],
+        "description": "Subscribe to Eth event proof.",
+        "params": [],
+        "pubsub": [
+          "subscribeEventProofs",
+          "unsubscribeEventProofs",
+        ],
+        "type": "Null",
+      },
+    },
+    "nft": {
+      "ownedTokens": {
+        "description": "Get all NFTs owned by an account",
+        "params": [
+          {
+            "name": "collectionId",
+            "type": "CollectionUuid",
+          },
+          {
+            "name": "who",
+            "type": "AccountId",
+          },
+          {
+            "name": "cursor",
+            "type": "SerialNumber",
+          },
+          {
+            "name": "limit",
+            "type": "u16",
+          },
+        ],
+        "type": "Json",
+      },
+      "tokenUri": {
+        "description": "Get the URI of a token",
+        "params": [
+          {
+            "name": "tokenId",
+            "type": "TokenId",
+          },
+        ],
+        "type": "Json",
+      },
+    },
+  },
+  "types": {
+    "AccountId": "EthereumAccountId",
+    "AccountId20": "EthereumAccountId",
+    "AccountId32": "EthereumAccountId",
+    "AccountId33": "GenericAccountId33",
+    "AccountIdOf": "AccountId",
+    "AccountIndex": "GenericAccountIndex",
+    "Address": "AccountId",
+    "AssetId": "u32",
+    "Balance": "u128",
+    "BalanceOf": "Balance",
+    "Block": "GenericBlock",
+    "BlockNumber": "u32",
+    "BlockNumberFor": "BlockNumber",
+    "BlockNumberOf": "BlockNumber",
+    "Call": "GenericCall",
+    "CallHash": "Hash",
+    "CallHashOf": "CallHash",
+    "ChangesTrieConfiguration": {
+      "digestInterval": "u32",
+      "digestLevels": "u32",
+    },
+    "ChangesTrieSignal": {
+      "_enum": {
+        "NewConfiguration": "Option<ChangesTrieConfiguration>",
+      },
+    },
+    "CodecHash": "Hash",
+    "CollectionUuid": "u32",
+    "Consensus": "(ConsensusEngineId, Bytes)",
+    "ConsensusEngineId": "GenericConsensusEngineId",
+    "CrateVersion": {
+      "major": "u16",
+      "minor": "u8",
+      "patch": "u8",
+    },
+    "Digest": {
+      "logs": "Vec<DigestItem>",
+    },
+    "DigestItem": {
+      "_enum": {
+        "AuthoritiesChange": "Vec<AuthorityId>",
+        "ChangesTrieRoot": "Hash",
+        "ChangesTrieSignal": "ChangesTrieSignal",
+        "Consensus": "Consensus",
+        "Other": "Bytes",
+        "PreRuntime": "PreRuntime",
+        "RuntimeEnvironmentUpdated": "Null",
+        "Seal": "Seal",
+        "SealV0": "SealV0",
+      },
+    },
+    "EncodedJustification": "Bytes",
+    "EthEventProofResponse": {
+      "block": "H256",
+      "event_id": "EventProofId",
+      "signatures": "Vec<Bytes>",
+      "tag": "Option<Bytes>",
+      "validator_set_id": "ValidatorSetId",
+      "validators": "Vec<AccountId20>",
+    },
+    "EthWalletCall": {
+      "nonce": "u32",
+    },
+    "EthereumSignature": {
+      "r": "H256",
+      "s": "H256",
+      "v": "U8",
+    },
+    "EthyEventId": "u64",
+    "EthyId": "[u8; 32]",
+    "EventProof": {
+      "block": "[u8; 32]",
+      "digest": "EthyId",
+      "eventId": "EventProofId",
+      "signatures": "Vec<Bytes>",
+      "validatorSetId": "ValidatorSetId",
+    },
+    "EventProofId": "u64",
+    "ExtrinsicSignature": "EthereumSignature",
+    "ExtrinsicsWeight": {
+      "normal": "Weight",
+      "operational": "Weight",
+    },
+    "Fixed128": "Int<128, Fixed128>",
+    "Fixed64": "Int<64, Fixed64>",
+    "FixedI128": "Int<128, FixedI128>",
+    "FixedI64": "Int<64, FixedI64>",
+    "FixedU128": "UInt<128, FixedU128>",
+    "FixedU64": "UInt<64, FixedU64>",
+    "H1024": "[u8; 128; H1024]",
+    "H128": "[u8; 16; H128]",
+    "H160": "[u8; 20; H160]",
+    "H2048": "[u8; 256; H2048]",
+    "H256": "[u8; 32; H256]",
+    "H32": "[u8; 4; H32]",
+    "H512": "[u8; 64; H512]",
+    "H64": "[u8; 8; H64]",
+    "Hash": "H256",
+    "Header": {
+      "digest": "Digest",
+      "extrinsicsRoot": "Hash",
+      "number": "Compact<BlockNumber>",
+      "parentHash": "Hash",
+      "stateRoot": "Hash",
+    },
+    "HeaderPartial": {
+      "number": "BlockNumber",
+      "parentHash": "Hash",
+    },
+    "I32F32": "Int<64, I32F32>",
+    "Index": "u32",
+    "IndicesLookupSource": "GenericLookupSource",
+    "Justification": "(ConsensusEngineId, EncodedJustification)",
+    "Justifications": "Vec<Justification>",
+    "KeyTypeId": "u32",
+    "KeyValue": "(StorageKey, StorageData)",
+    "LockIdentifier": "[u8; 8]",
+    "Lookup0": "AccountId",
+    "LookupSource": "AccountId",
+    "LookupTarget": "AccountId",
+    "ModuleId": "LockIdentifier",
+    "Moment": "UInt<64, Moment>",
+    "MultiAddress": "GenericMultiAddress",
+    "MultiSigner": {
+      "_enum": {
+        "Ecdsa": "[u8; 33]",
+        "Ed25519": "[u8; 32]",
+        "Sr25519": "[u8; 32]",
+      },
+    },
+    "OpaqueCall": "Bytes",
+    "Origin": "DoNotConstruct<Origin>",
+    "OriginCaller": {
+      "_enum": {
+        "System": "SystemOrigin",
+      },
+    },
+    "PalletId": "LockIdentifier",
+    "PalletVersion": {
+      "major": "u16",
+      "minor": "u8",
+      "patch": "u8",
+    },
+    "PalletsOrigin": "OriginCaller",
+    "Pays": {
+      "_enum": [
+        "Yes",
+        "No",
+      ],
+    },
+    "PerU16": "UInt<16, PerU16>",
+    "Perbill": "UInt<32, Perbill>",
+    "Percent": "UInt<8, Percent>",
+    "Permill": "UInt<32, Permill>",
+    "Perquintill": "UInt<64, Perquintill>",
+    "Phantom": "Null",
+    "PhantomData": "Null",
+    "PreRuntime": "(ConsensusEngineId, Bytes)",
+    "Releases": {
+      "_enum": [
+        "V1",
+        "V2",
+        "V3",
+        "V4",
+        "V5",
+        "V6",
+        "V7",
+        "V8",
+        "V9",
+        "V10",
+      ],
+    },
+    "RuntimeCall": "Call",
+    "RuntimeDbWeight": {
+      "read": "Weight",
+      "write": "Weight",
+    },
+    "RuntimeEvent": "Event",
+    "Seal": "(ConsensusEngineId, Bytes)",
+    "SealV0": "(u64, Signature)",
+    "SerialNumber": "u32",
+    "SignedBlock": "SignedBlockWithJustifications",
+    "SignedBlockWithJustification": {
+      "block": "Block",
+      "justification": "Option<EncodedJustification>",
+    },
+    "SignedBlockWithJustifications": {
+      "block": "Block",
+      "justifications": "Option<Justifications>",
+    },
+    "Slot": "u64",
+    "SlotDuration": "u64",
+    "StorageData": "Bytes",
+    "StorageInfo": {
+      "maxSize": "Option<u32>",
+      "maxValues": "Option<u32>",
+      "palletName": "Bytes",
+      "prefix": "Bytes",
+      "storage_name": "Bytes",
+    },
+    "StorageProof": {
+      "trieNodes": "Vec<Bytes>",
+    },
+    "TokenId": "(CollectionUuid, SerialNumber)",
+    "TransactionInfo": {
+      "_alias": {
+        "dataSize": "size",
+      },
+      "blockChunks": "u32",
+      "chunkRoot": "H256",
+      "contentHash": "H256",
+      "dataSize": "u32",
+    },
+    "TransactionLongevity": "u64",
+    "TransactionPriority": "u64",
+    "TransactionStorageProof": {
+      "chunk": "Vec<u8>",
+      "proof": "Vec<Vec<u8>>",
+    },
+    "TransactionTag": "Bytes",
+    "U32F32": "UInt<64, U32F32>",
+    "ValidatorId": "AccountId",
+    "ValidatorIdOf": "ValidatorId",
+    "VersionedEventProof": {
+      "_enum": {
+        "EventProof": "EventProof",
+        "sentinel": null,
+      },
+    },
+    "Weight": "WeightV2",
+    "WeightMultiplier": "Fixed64",
+    "WeightV0": "u32",
+    "WeightV1": "u64",
+    "WeightV2": {
+      "proofSize": "Compact<u64>",
+      "refTime": "Compact<u64>",
+    },
+    "XRPLTxData": {
+      "_enum": {
+        "CurrencyPayment": {
+          "address": "H160",
+          "amount": "Balance",
+          "currencyId": "H256",
+        },
+        "Payment": {
+          "amount": "Balance",
+          "destination": "H160",
+        },
+      },
+    },
+    "XrplEventProofResponse": {
+      "block": "H256",
+      "event_id": "EventProofId",
+      "signatures": "Vec<Bytes>",
+      "tag": "Option<Bytes>",
+      "validator_set_id": "ValidatorSetId",
+      "validators": "Vec<Bytes>",
+    },
+    "default": {
+      "EthbloomBloom": "[u8;256]",
+      "EthereumBlock": {
+        "header": "EthereumHeader",
+        "ommers": "Vec<EthereumHeader>",
+        "transactions": "Vec<EthereumTransactionTransactionV2>",
+      },
+      "EthereumHeader": {
+        "beneficiary": "H160",
+        "difficulty": "U256",
+        "extraData": "Bytes",
+        "gasLimit": "U256",
+        "gasUsed": "U256",
+        "logsBloom": "EthbloomBloom",
+        "mixHash": "H256",
+        "nonce": "EthereumTypesHashH64",
+        "number": "U256",
+        "ommersHash": "H256",
+        "parentHash": "H256",
+        "receiptsRoot": "H256",
+        "stateRoot": "H256",
+        "timestamp": "u64",
+        "transactionsRoot": "H256",
+      },
+      "EthereumLog": {
+        "address": "H160",
+        "data": "Bytes",
+        "topics": "Vec<H256>",
+      },
+      "EthereumReceiptEip658ReceiptData": {
+        "logs": "Vec<EthereumLog>",
+        "logsBloom": "EthbloomBloom",
+        "statusCode": "u8",
+        "usedGas": "U256",
+      },
+      "EthereumReceiptReceiptV3": {
+        "_enum": {
+          "EIP1559": "EthereumReceiptEip658ReceiptData",
+          "EIP2930": "EthereumReceiptEip658ReceiptData",
+          "Legacy": "EthereumReceiptEip658ReceiptData",
+        },
+      },
+      "EthereumTransactionAccessListItem": {
+        "address": "H160",
+        "storageKeys": "Vec<H256>",
+      },
+      "EthereumTransactionEip1559Transaction": {
+        "accessList": "Vec<EthereumTransactionAccessListItem>",
+        "action": "EthereumTransactionTransactionAction",
+        "chainId": "u64",
+        "gasLimit": "U256",
+        "input": "Bytes",
+        "maxFeePerGas": "U256",
+        "maxPriorityFeePerGas": "U256",
+        "nonce": "U256",
+        "oddYParity": "bool",
+        "r": "H256",
+        "s": "H256",
+        "value": "U256",
+      },
+      "EthereumTransactionEip2930Transaction": {
+        "accessList": "Vec<EthereumTransactionAccessListItem>",
+        "action": "EthereumTransactionTransactionAction",
+        "chainId": "u64",
+        "gasLimit": "U256",
+        "gasPrice": "U256",
+        "input": "Bytes",
+        "nonce": "U256",
+        "oddYParity": "bool",
+        "r": "H256",
+        "s": "H256",
+        "value": "U256",
+      },
+      "EthereumTransactionLegacyTransaction": {
+        "action": "EthereumTransactionTransactionAction",
+        "gasLimit": "U256",
+        "gasPrice": "U256",
+        "input": "Bytes",
+        "nonce": "U256",
+        "signature": "EthereumTransactionTransactionSignature",
+        "value": "U256",
+      },
+      "EthereumTransactionTransactionAction": {
+        "_enum": {
+          "Call": "H160",
+          "Create": "Null",
+        },
+      },
+      "EthereumTransactionTransactionSignature": {
+        "r": "H256",
+        "s": "H256",
+        "v": "u64",
+      },
+      "EthereumTransactionTransactionV2": {
+        "_enum": {
+          "EIP1559": "EthereumTransactionEip1559Transaction",
+          "EIP2930": "EthereumTransactionEip2930Transaction",
+          "Legacy": "EthereumTransactionLegacyTransaction",
+        },
+      },
+      "EthereumTypesHashH64": "[u8;8]",
+      "EvmCoreErrorExitError": {
+        "_enum": {
+          "CallTooDeep": "Null",
+          "CreateCollision": "Null",
+          "CreateContractLimit": "Null",
+          "CreateEmpty": "Null",
+          "DesignatedInvalid": "Null",
+          "InvalidCode": "Null",
+          "InvalidJump": "Null",
+          "InvalidRange": "Null",
+          "Other": "Text",
+          "OutOfFund": "Null",
+          "OutOfGas": "Null",
+          "OutOfOffset": "Null",
+          "PCUnderflow": "Null",
+          "StackOverflow": "Null",
+          "StackUnderflow": "Null",
+        },
+      },
+      "EvmCoreErrorExitFatal": {
+        "_enum": {
+          "CallErrorAsFatal": "EvmCoreErrorExitError",
+          "NotSupported": "Null",
+          "Other": "Text",
+          "UnhandledInterrupt": "Null",
+        },
+      },
+      "EvmCoreErrorExitReason": {
+        "_enum": {
+          "Error": "EvmCoreErrorExitError",
+          "Fatal": "EvmCoreErrorExitFatal",
+          "Revert": "EvmCoreErrorExitRevert",
+          "Succeed": "EvmCoreErrorExitSucceed",
+        },
+      },
+      "EvmCoreErrorExitRevert": {
+        "_enum": [
+          "Reverted",
+        ],
+      },
+      "EvmCoreErrorExitSucceed": {
+        "_enum": [
+          "Stopped",
+          "Returned",
+          "Suicided",
+        ],
+      },
+      "FinalityGrandpaEquivocationPrecommit": {
+        "first": "(FinalityGrandpaPrecommit,SpFinalityGrandpaAppSignature)",
+        "identity": "SpFinalityGrandpaAppPublic",
+        "roundNumber": "u64",
+        "second": "(FinalityGrandpaPrecommit,SpFinalityGrandpaAppSignature)",
+      },
+      "FinalityGrandpaEquivocationPrevote": {
+        "first": "(FinalityGrandpaPrevote,SpFinalityGrandpaAppSignature)",
+        "identity": "SpFinalityGrandpaAppPublic",
+        "roundNumber": "u64",
+        "second": "(FinalityGrandpaPrevote,SpFinalityGrandpaAppSignature)",
+      },
+      "FinalityGrandpaPrecommit": {
+        "targetHash": "H256",
+        "targetNumber": "u32",
+      },
+      "FinalityGrandpaPrevote": {
+        "targetHash": "H256",
+        "targetNumber": "u32",
+      },
+      "FpRpcTransactionStatus": {
+        "contractAddress": "Option<H160>",
+        "from": "H160",
+        "logs": "Vec<EthereumLog>",
+        "logsBloom": "EthbloomBloom",
+        "to": "Option<H160>",
+        "transactionHash": "H256",
+        "transactionIndex": "u32",
+      },
+      "FrameSupportDispatchRawOrigin": {
+        "_enum": {
+          "None": "Null",
+          "Root": "Null",
+          "Signed": "SeedPrimitivesSignatureAccountId20",
+        },
+      },
+      "FrameSupportPalletId": "[u8;8]",
+      "FrameSupportScheduleLookupError": {
+        "_enum": [
+          "Unknown",
+          "BadFormat",
+        ],
+      },
+      "FrameSupportScheduleMaybeHashed": {
+        "_enum": {
+          "Hash": "H256",
+          "Value": "Call",
+        },
+      },
+      "FrameSupportTokensMiscBalanceStatus": {
+        "_enum": [
+          "Free",
+          "Reserved",
+        ],
+      },
+      "FrameSupportWeightsDispatchClass": {
+        "_enum": [
+          "Normal",
+          "Operational",
+          "Mandatory",
+        ],
+      },
+      "FrameSupportWeightsDispatchInfo": {
+        "class": "FrameSupportWeightsDispatchClass",
+        "paysFee": "FrameSupportWeightsPays",
+        "weight": "u64",
+      },
+      "FrameSupportWeightsPays": {
+        "_enum": [
+          "Yes",
+          "No",
+        ],
+      },
+      "FrameSupportWeightsPerDispatchClassU32": {
+        "mandatory": "u32",
+        "normal": "u32",
+        "operational": "u32",
+      },
+      "FrameSupportWeightsPerDispatchClassU64": {
+        "mandatory": "u64",
+        "normal": "u64",
+        "operational": "u64",
+      },
+      "FrameSupportWeightsPerDispatchClassWeightsPerClass": {
+        "mandatory": "FrameSystemLimitsWeightsPerClass",
+        "normal": "FrameSystemLimitsWeightsPerClass",
+        "operational": "FrameSystemLimitsWeightsPerClass",
+      },
+      "FrameSupportWeightsRuntimeDbWeight": {
+        "read": "u64",
+        "write": "u64",
+      },
+      "FrameSystemAccountInfo": {
+        "consumers": "u32",
+        "data": "PalletBalancesAccountData",
+        "nonce": "u32",
+        "providers": "u32",
+        "sufficients": "u32",
+      },
+      "FrameSystemCall": {
+        "_enum": {
+          "fill_block": {
+            "ratio": "Perbill",
+          },
+          "kill_prefix": {
+            "prefix": "Bytes",
+            "subkeys": "u32",
+          },
+          "kill_storage": {
+            "_alias": {
+              "keys_": "keys",
+            },
+            "keys_": "Vec<Bytes>",
+          },
+          "remark": {
+            "remark": "Bytes",
+          },
+          "remark_with_event": {
+            "remark": "Bytes",
+          },
+          "set_code": {
+            "code": "Bytes",
+          },
+          "set_code_without_checks": {
+            "code": "Bytes",
+          },
+          "set_heap_pages": {
+            "pages": "u64",
+          },
+          "set_storage": {
+            "items": "Vec<(Bytes,Bytes)>",
+          },
+        },
+      },
+      "FrameSystemError": {
+        "_enum": [
+          "InvalidSpecName",
+          "SpecVersionNeedsToIncrease",
+          "FailedToExtractRuntimeVersion",
+          "NonDefaultComposite",
+          "NonZeroRefCount",
+          "CallFiltered",
+        ],
+      },
+      "FrameSystemEvent": {
+        "_enum": {
+          "CodeUpdated": "Null",
+          "ExtrinsicFailed": {
+            "dispatchError": "SpRuntimeDispatchError",
+            "dispatchInfo": "FrameSupportWeightsDispatchInfo",
+          },
+          "ExtrinsicSuccess": {
+            "dispatchInfo": "FrameSupportWeightsDispatchInfo",
+          },
+          "KilledAccount": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+          },
+          "NewAccount": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Remarked": {
+            "_alias": {
+              "hash_": "hash",
+            },
+            "hash_": "H256",
+            "sender": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "FrameSystemEventRecord": {
+        "event": "Event",
+        "phase": "FrameSystemPhase",
+        "topics": "Vec<H256>",
+      },
+      "FrameSystemExtensionsCheckGenesis": "Null",
+      "FrameSystemExtensionsCheckNonZeroSender": "Null",
+      "FrameSystemExtensionsCheckNonce": "Compact<u32>",
+      "FrameSystemExtensionsCheckSpecVersion": "Null",
+      "FrameSystemExtensionsCheckTxVersion": "Null",
+      "FrameSystemExtensionsCheckWeight": "Null",
+      "FrameSystemLastRuntimeUpgradeInfo": {
+        "specName": "Text",
+        "specVersion": "Compact<u32>",
+      },
+      "FrameSystemLimitsBlockLength": {
+        "max": "FrameSupportWeightsPerDispatchClassU32",
+      },
+      "FrameSystemLimitsBlockWeights": {
+        "baseBlock": "u64",
+        "maxBlock": "u64",
+        "perClass": "FrameSupportWeightsPerDispatchClassWeightsPerClass",
+      },
+      "FrameSystemLimitsWeightsPerClass": {
+        "baseExtrinsic": "u64",
+        "maxExtrinsic": "Option<u64>",
+        "maxTotal": "Option<u64>",
+        "reserved": "Option<u64>",
+      },
+      "FrameSystemPhase": {
+        "_enum": {
+          "ApplyExtrinsic": "u32",
+          "Finalization": "Null",
+          "Initialization": "Null",
+        },
+      },
+      "PalletAssetsApproval": {
+        "amount": "u128",
+        "deposit": "u128",
+      },
+      "PalletAssetsAssetAccount": {
+        "balance": "u128",
+        "extra": "Null",
+        "isFrozen": "bool",
+        "reason": "PalletAssetsExistenceReason",
+      },
+      "PalletAssetsAssetDetails": {
+        "accounts": "u32",
+        "admin": "SeedPrimitivesSignatureAccountId20",
+        "approvals": "u32",
+        "deposit": "u128",
+        "freezer": "SeedPrimitivesSignatureAccountId20",
+        "isFrozen": "bool",
+        "isSufficient": "bool",
+        "issuer": "SeedPrimitivesSignatureAccountId20",
+        "minBalance": "u128",
+        "owner": "SeedPrimitivesSignatureAccountId20",
+        "sufficients": "u32",
+        "supply": "u128",
+      },
+      "PalletAssetsAssetMetadata": {
+        "decimals": "u8",
+        "deposit": "u128",
+        "isFrozen": "bool",
+        "name": "Bytes",
+        "symbol": "Bytes",
+      },
+      "PalletAssetsCall": {
+        "_enum": {
+          "approve_transfer": {
+            "amount": "Compact<u128>",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+          },
+          "burn": {
+            "amount": "Compact<u128>",
+            "id": "Compact<u32>",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "cancel_approval": {
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+          },
+          "clear_metadata": {
+            "id": "Compact<u32>",
+          },
+          "create": {
+            "admin": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+            "minBalance": "u128",
+          },
+          "destroy": {
+            "id": "Compact<u32>",
+            "witness": "PalletAssetsDestroyWitness",
+          },
+          "force_asset_status": {
+            "admin": "SeedPrimitivesSignatureAccountId20",
+            "freezer": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+            "isFrozen": "bool",
+            "isSufficient": "bool",
+            "issuer": "SeedPrimitivesSignatureAccountId20",
+            "minBalance": "Compact<u128>",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "force_cancel_approval": {
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "force_clear_metadata": {
+            "id": "Compact<u32>",
+          },
+          "force_create": {
+            "id": "Compact<u32>",
+            "isSufficient": "bool",
+            "minBalance": "Compact<u128>",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "force_set_metadata": {
+            "decimals": "u8",
+            "id": "Compact<u32>",
+            "isFrozen": "bool",
+            "name": "Bytes",
+            "symbol": "Bytes",
+          },
+          "force_transfer": {
+            "amount": "Compact<u128>",
+            "dest": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+            "source": "SeedPrimitivesSignatureAccountId20",
+          },
+          "freeze": {
+            "id": "Compact<u32>",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "freeze_asset": {
+            "id": "Compact<u32>",
+          },
+          "mint": {
+            "amount": "Compact<u128>",
+            "beneficiary": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+          },
+          "refund": {
+            "allowBurn": "bool",
+            "id": "Compact<u32>",
+          },
+          "set_metadata": {
+            "decimals": "u8",
+            "id": "Compact<u32>",
+            "name": "Bytes",
+            "symbol": "Bytes",
+          },
+          "set_team": {
+            "admin": "SeedPrimitivesSignatureAccountId20",
+            "freezer": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+            "issuer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "thaw": {
+            "id": "Compact<u32>",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "thaw_asset": {
+            "id": "Compact<u32>",
+          },
+          "touch": {
+            "id": "Compact<u32>",
+          },
+          "transfer": {
+            "amount": "Compact<u128>",
+            "id": "Compact<u32>",
+            "target": "SeedPrimitivesSignatureAccountId20",
+          },
+          "transfer_approved": {
+            "amount": "Compact<u128>",
+            "destination": "SeedPrimitivesSignatureAccountId20",
+            "id": "Compact<u32>",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "transfer_keep_alive": {
+            "amount": "Compact<u128>",
+            "id": "Compact<u32>",
+            "target": "SeedPrimitivesSignatureAccountId20",
+          },
+          "transfer_ownership": {
+            "id": "Compact<u32>",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletAssetsDestroyWitness": {
+        "accounts": "Compact<u32>",
+        "approvals": "Compact<u32>",
+        "sufficients": "Compact<u32>",
+      },
+      "PalletAssetsError": {
+        "_enum": [
+          "BalanceLow",
+          "NoAccount",
+          "NoPermission",
+          "Unknown",
+          "Frozen",
+          "InUse",
+          "BadWitness",
+          "MinBalanceZero",
+          "NoProvider",
+          "BadMetadata",
+          "Unapproved",
+          "WouldDie",
+          "AlreadyExists",
+          "NoDeposit",
+          "WouldBurn",
+        ],
+      },
+      "PalletAssetsEvent": {
+        "_enum": {
+          "ApprovalCancelled": {
+            "assetId": "u32",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "ApprovedTransfer": {
+            "amount": "u128",
+            "assetId": "u32",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "source": "SeedPrimitivesSignatureAccountId20",
+          },
+          "AssetFrozen": {
+            "assetId": "u32",
+          },
+          "AssetStatusChanged": {
+            "assetId": "u32",
+          },
+          "AssetThawed": {
+            "assetId": "u32",
+          },
+          "Burned": {
+            "assetId": "u32",
+            "balance": "u128",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Created": {
+            "assetId": "u32",
+            "creator": "SeedPrimitivesSignatureAccountId20",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Destroyed": {
+            "assetId": "u32",
+          },
+          "ForceCreated": {
+            "assetId": "u32",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Frozen": {
+            "assetId": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Issued": {
+            "assetId": "u32",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+            "totalSupply": "u128",
+          },
+          "MetadataCleared": {
+            "assetId": "u32",
+          },
+          "MetadataSet": {
+            "assetId": "u32",
+            "decimals": "u8",
+            "isFrozen": "bool",
+            "name": "Bytes",
+            "symbol": "Bytes",
+          },
+          "OwnerChanged": {
+            "assetId": "u32",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "TeamChanged": {
+            "admin": "SeedPrimitivesSignatureAccountId20",
+            "assetId": "u32",
+            "freezer": "SeedPrimitivesSignatureAccountId20",
+            "issuer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Thawed": {
+            "assetId": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Transferred": {
+            "amount": "u128",
+            "assetId": "u32",
+            "from": "SeedPrimitivesSignatureAccountId20",
+            "to": "SeedPrimitivesSignatureAccountId20",
+          },
+          "TransferredApproved": {
+            "amount": "u128",
+            "assetId": "u32",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "destination": "SeedPrimitivesSignatureAccountId20",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletAssetsExistenceReason": {
+        "_enum": {
+          "Consumer": "Null",
+          "DepositHeld": "u128",
+          "DepositRefunded": "Null",
+          "Sufficient": "Null",
+        },
+      },
+      "PalletAssetsExtCall": {
+        "_enum": {
+          "create_asset": {
+            "decimals": "u8",
+            "minBalance": "Option<u128>",
+            "name": "Bytes",
+            "owner": "Option<SeedPrimitivesSignatureAccountId20>",
+            "symbol": "Bytes",
+          },
+        },
+      },
+      "PalletAssetsExtError": {
+        "_enum": [
+          "NoAvailableIds",
+          "BalanceLow",
+          "NoAccount",
+          "Overflow",
+          "MaxHolds",
+          "CreateAssetFailed",
+        ],
+      },
+      "PalletAssetsExtEvent": {
+        "_enum": {
+          "CreateAsset": {
+            "assetId": "u32",
+            "creator": "SeedPrimitivesSignatureAccountId20",
+            "initialBalance": "u128",
+          },
+          "InternalDeposit": {
+            "amount": "u128",
+            "assetId": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "InternalWithdraw": {
+            "amount": "u128",
+            "assetId": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "PlaceHold": {
+            "amount": "u128",
+            "assetId": "u32",
+            "palletId": "[u8;8]",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "ReleaseHold": {
+            "amount": "u128",
+            "assetId": "u32",
+            "palletId": "[u8;8]",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "SpendHold": {
+            "assetId": "u32",
+            "palletId": "[u8;8]",
+            "spends": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "SplitTransfer": {
+            "assetId": "u32",
+            "transfers": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletAuthorshipCall": {
+        "_enum": {
+          "set_uncles": {
+            "newUncles": "Vec<SpRuntimeHeader>",
+          },
+        },
+      },
+      "PalletAuthorshipError": {
+        "_enum": [
+          "InvalidUncleParent",
+          "UnclesAlreadySet",
+          "TooManyUncles",
+          "GenesisUncle",
+          "TooHighUncle",
+          "UncleAlreadyIncluded",
+          "OldUncle",
+        ],
+      },
+      "PalletAuthorshipUncleEntryItem": {
+        "_enum": {
+          "InclusionHeight": "u32",
+          "Uncle": "(H256,Option<SeedPrimitivesSignatureAccountId20>)",
+        },
+      },
+      "PalletBabeCall": {
+        "_enum": {
+          "plan_config_change": {
+            "config": "SpConsensusBabeDigestsNextConfigDescriptor",
+          },
+          "report_equivocation": {
+            "equivocationProof": "SpConsensusSlotsEquivocationProof",
+            "keyOwnerProof": "SpSessionMembershipProof",
+          },
+          "report_equivocation_unsigned": {
+            "equivocationProof": "SpConsensusSlotsEquivocationProof",
+            "keyOwnerProof": "SpSessionMembershipProof",
+          },
+        },
+      },
+      "PalletBabeError": {
+        "_enum": [
+          "InvalidEquivocationProof",
+          "InvalidKeyOwnershipProof",
+          "DuplicateOffenceReport",
+          "InvalidConfiguration",
+        ],
+      },
+      "PalletBagsListCall": {
+        "_enum": {
+          "put_in_front_of": {
+            "lighter": "SeedPrimitivesSignatureAccountId20",
+          },
+          "rebag": {
+            "dislocated": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletBagsListError": {
+        "_enum": {
+          "List": "PalletBagsListListListError",
+        },
+      },
+      "PalletBagsListEvent": {
+        "_enum": {
+          "Rebagged": {
+            "from": "u64",
+            "to": "u64",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "ScoreUpdated": {
+            "newScore": "u64",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletBagsListListBag": {
+        "head": "Option<SeedPrimitivesSignatureAccountId20>",
+        "tail": "Option<SeedPrimitivesSignatureAccountId20>",
+      },
+      "PalletBagsListListListError": {
+        "_enum": [
+          "Duplicate",
+          "NotHeavier",
+          "NotInSameBag",
+          "NodeNotFound",
+        ],
+      },
+      "PalletBagsListListNode": {
+        "bagUpper": "u64",
+        "id": "SeedPrimitivesSignatureAccountId20",
+        "next": "Option<SeedPrimitivesSignatureAccountId20>",
+        "prev": "Option<SeedPrimitivesSignatureAccountId20>",
+        "score": "u64",
+      },
+      "PalletBalancesAccountData": {
+        "feeFrozen": "u128",
+        "free": "u128",
+        "miscFrozen": "u128",
+        "reserved": "u128",
+      },
+      "PalletBalancesBalanceLock": {
+        "amount": "u128",
+        "id": "[u8;8]",
+        "reasons": "PalletBalancesReasons",
+      },
+      "PalletBalancesCall": {
+        "_enum": {
+          "force_transfer": {
+            "dest": "SeedPrimitivesSignatureAccountId20",
+            "source": "SeedPrimitivesSignatureAccountId20",
+            "value": "Compact<u128>",
+          },
+          "force_unreserve": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "set_balance": {
+            "newFree": "Compact<u128>",
+            "newReserved": "Compact<u128>",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "transfer": {
+            "dest": "SeedPrimitivesSignatureAccountId20",
+            "value": "Compact<u128>",
+          },
+          "transfer_all": {
+            "dest": "SeedPrimitivesSignatureAccountId20",
+            "keepAlive": "bool",
+          },
+          "transfer_keep_alive": {
+            "dest": "SeedPrimitivesSignatureAccountId20",
+            "value": "Compact<u128>",
+          },
+        },
+      },
+      "PalletBalancesError": {
+        "_enum": [
+          "VestingBalance",
+          "LiquidityRestrictions",
+          "InsufficientBalance",
+          "ExistentialDeposit",
+          "KeepAlive",
+          "ExistingVestingSchedule",
+          "DeadAccount",
+          "TooManyReserves",
+        ],
+      },
+      "PalletBalancesEvent": {
+        "_enum": {
+          "BalanceSet": {
+            "free": "u128",
+            "reserved": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Deposit": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "DustLost": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "amount": "u128",
+          },
+          "Endowed": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "freeBalance": "u128",
+          },
+          "ReserveRepatriated": {
+            "amount": "u128",
+            "destinationStatus": "FrameSupportTokensMiscBalanceStatus",
+            "from": "SeedPrimitivesSignatureAccountId20",
+            "to": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Reserved": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Slashed": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Transfer": {
+            "amount": "u128",
+            "from": "SeedPrimitivesSignatureAccountId20",
+            "to": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Unreserved": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Withdraw": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletBalancesReasons": {
+        "_enum": [
+          "Fee",
+          "Misc",
+          "All",
+        ],
+      },
+      "PalletBalancesReleases": {
+        "_enum": [
+          "V1_0_0",
+          "V2_0_0",
+        ],
+      },
+      "PalletBalancesReserveData": {
+        "amount": "u128",
+        "id": "[u8;8]",
+      },
+      "PalletDexCall": {
+        "_enum": {
+          "add_liquidity": {
+            "amountADesired": "Compact<u128>",
+            "amountAMin": "Compact<u128>",
+            "amountBDesired": "Compact<u128>",
+            "amountBMin": "Compact<u128>",
+            "deadline": "Option<u32>",
+            "to": "Option<SeedPrimitivesSignatureAccountId20>",
+            "tokenA": "u32",
+            "tokenB": "u32",
+          },
+          "disable_trading_pair": {
+            "tokenA": "u32",
+            "tokenB": "u32",
+          },
+          "reenable_trading_pair": {
+            "tokenA": "u32",
+            "tokenB": "u32",
+          },
+          "remove_liquidity": {
+            "amountAMin": "Compact<u128>",
+            "amountBMin": "Compact<u128>",
+            "deadline": "Option<u32>",
+            "liquidity": "Compact<u128>",
+            "to": "Option<SeedPrimitivesSignatureAccountId20>",
+            "tokenA": "u32",
+            "tokenB": "u32",
+          },
+          "set_fee_to": {
+            "feeTo": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "swap_with_exact_supply": {
+            "amountIn": "Compact<u128>",
+            "amountOutMin": "Compact<u128>",
+            "deadline": "Option<u32>",
+            "path": "Vec<u32>",
+            "to": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "swap_with_exact_target": {
+            "amountInMax": "Compact<u128>",
+            "amountOut": "Compact<u128>",
+            "deadline": "Option<u32>",
+            "path": "Vec<u32>",
+            "to": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+        },
+      },
+      "PalletDexError": {
+        "_enum": [
+          "MustBeEnabled",
+          "MustBeNotEnabled",
+          "InsufficientInputAmount",
+          "InvalidInputAmounts",
+          "InsufficientAmount",
+          "InsufficientAmountA",
+          "InsufficientAmountB",
+          "InsufficientLiquidityBurnt",
+          "InsufficientWithdrawnAmountA",
+          "InsufficientWithdrawnAmountB",
+          "InsufficientOutputAmount",
+          "InvalidLiquidityIncrement",
+          "InvalidConstantProduct",
+          "IdenticalTokenAddress",
+          "InvalidAssetId",
+          "InvalidTradingPathLength",
+          "InsufficientTargetAmount",
+          "ExcessiveSupplyAmount",
+          "InsufficientLiquidity",
+          "ZeroSupplyAmount",
+          "ZeroTargetAmount",
+          "LiquidityProviderTokenNotCreated",
+          "ExpiredDeadline",
+        ],
+      },
+      "PalletDexEvent": {
+        "_enum": {
+          "AddLiquidity": "(SeedPrimitivesSignatureAccountId20,u32,u128,u32,u128,u128,SeedPrimitivesSignatureAccountId20)",
+          "AddProvision": "(SeedPrimitivesSignatureAccountId20,u32,u128,u32,u128)",
+          "DisableTradingPair": "PalletDexTradingPair",
+          "EnableTradingPair": "PalletDexTradingPair",
+          "FeeToSet": "Option<SeedPrimitivesSignatureAccountId20>",
+          "ProvisioningToEnabled": "(PalletDexTradingPair,u128,u128,u128)",
+          "RemoveLiquidity": "(SeedPrimitivesSignatureAccountId20,u32,u128,u32,u128,u128,SeedPrimitivesSignatureAccountId20)",
+          "Swap": "(SeedPrimitivesSignatureAccountId20,Vec<u32>,u128,u128,SeedPrimitivesSignatureAccountId20)",
+        },
+      },
+      "PalletDexTradingPair": "(u32,u32)",
+      "PalletDexTradingPairStatus": {
+        "_enum": [
+          "NotEnabled",
+          "Enabled",
+        ],
+      },
+      "PalletEchoCall": {
+        "_enum": {
+          "ping": {
+            "destination": "H160",
+          },
+        },
+      },
+      "PalletEchoError": {
+        "_enum": [
+          "NoAvailableIds",
+          "InvalidParameter",
+          "InvalidAbiEncoding",
+        ],
+      },
+      "PalletEchoEvent": {
+        "_enum": {
+          "PingReceived": {
+            "data": "Bytes",
+            "sessionId": "u64",
+            "source": "H160",
+          },
+          "PingSent": {
+            "destination": "H160",
+            "eventProofId": "u64",
+            "sessionId": "u64",
+            "source": "H160",
+          },
+          "PongReceived": {
+            "data": "Bytes",
+            "sessionId": "u64",
+            "source": "H160",
+          },
+          "PongSent": {
+            "destination": "H160",
+            "eventProofId": "u64",
+            "sessionId": "u64",
+            "source": "H160",
+          },
+        },
+      },
+      "PalletElectionProviderMultiPhaseCall": {
+        "_enum": {
+          "governance_fallback": {
+            "maybeMaxTargets": "Option<u32>",
+            "maybeMaxVoters": "Option<u32>",
+          },
+          "set_emergency_election_result": {
+            "supports": "Vec<(SeedPrimitivesSignatureAccountId20,SpNposElectionsSupport)>",
+          },
+          "set_minimum_untrusted_score": {
+            "maybeNextScore": "Option<SpNposElectionsElectionScore>",
+          },
+          "submit": {
+            "rawSolution": "PalletElectionProviderMultiPhaseRawSolution",
+          },
+          "submit_unsigned": {
+            "rawSolution": "PalletElectionProviderMultiPhaseRawSolution",
+            "witness": "PalletElectionProviderMultiPhaseSolutionOrSnapshotSize",
+          },
+        },
+      },
+      "PalletElectionProviderMultiPhaseElectionCompute": {
+        "_enum": [
+          "OnChain",
+          "Signed",
+          "Unsigned",
+          "Fallback",
+          "Emergency",
+        ],
+      },
+      "PalletElectionProviderMultiPhaseError": {
+        "_enum": [
+          "PreDispatchEarlySubmission",
+          "PreDispatchWrongWinnerCount",
+          "PreDispatchWeakSubmission",
+          "SignedQueueFull",
+          "SignedCannotPayDeposit",
+          "SignedInvalidWitness",
+          "SignedTooMuchWeight",
+          "OcwCallWrongEra",
+          "MissingSnapshotMetadata",
+          "InvalidSubmissionIndex",
+          "CallNotAllowed",
+          "FallbackFailed",
+        ],
+      },
+      "PalletElectionProviderMultiPhaseEvent": {
+        "_enum": {
+          "ElectionFinalized": {
+            "electionCompute": "Option<PalletElectionProviderMultiPhaseElectionCompute>",
+          },
+          "Rewarded": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "value": "u128",
+          },
+          "SignedPhaseStarted": {
+            "round": "u32",
+          },
+          "Slashed": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "value": "u128",
+          },
+          "SolutionStored": {
+            "electionCompute": "PalletElectionProviderMultiPhaseElectionCompute",
+            "prevEjected": "bool",
+          },
+          "UnsignedPhaseStarted": {
+            "round": "u32",
+          },
+        },
+      },
+      "PalletElectionProviderMultiPhasePhase": {
+        "_enum": {
+          "Emergency": "Null",
+          "Off": "Null",
+          "Signed": "Null",
+          "Unsigned": "(bool,u32)",
+        },
+      },
+      "PalletElectionProviderMultiPhaseRawSolution": {
+        "round": "u32",
+        "score": "SpNposElectionsElectionScore",
+        "solution": "SeedRuntimeNposCompactSolution16",
+      },
+      "PalletElectionProviderMultiPhaseReadySolution": {
+        "compute": "PalletElectionProviderMultiPhaseElectionCompute",
+        "score": "SpNposElectionsElectionScore",
+        "supports": "Vec<(SeedPrimitivesSignatureAccountId20,SpNposElectionsSupport)>",
+      },
+      "PalletElectionProviderMultiPhaseRoundSnapshot": {
+        "targets": "Vec<SeedPrimitivesSignatureAccountId20>",
+        "voters": "Vec<(SeedPrimitivesSignatureAccountId20,u64,Vec<SeedPrimitivesSignatureAccountId20>)>",
+      },
+      "PalletElectionProviderMultiPhaseSignedSignedSubmission": {
+        "callFee": "u128",
+        "deposit": "u128",
+        "rawSolution": "PalletElectionProviderMultiPhaseRawSolution",
+        "who": "SeedPrimitivesSignatureAccountId20",
+      },
+      "PalletElectionProviderMultiPhaseSolutionOrSnapshotSize": {
+        "targets": "Compact<u32>",
+        "voters": "Compact<u32>",
+      },
+      "PalletErc20PegCall": {
+        "_enum": {
+          "activate_deposits": {
+            "activate": "bool",
+          },
+          "activate_withdrawals": {
+            "activate": "bool",
+          },
+          "set_contract_address": {
+            "ethAddress": "H160",
+          },
+          "set_erc20_meta": {
+            "details": "Vec<(H160,Bytes,u8)>",
+          },
+          "set_payment_delay": {
+            "assetId": "u32",
+            "delay": "u32",
+            "minBalance": "u128",
+          },
+          "withdraw": {
+            "amount": "u128",
+            "assetId": "u32",
+            "beneficiary": "H160",
+          },
+        },
+      },
+      "PalletErc20PegErc20DepositEvent": {
+        "amount": "U256",
+        "beneficiary": "H160",
+        "tokenAddress": "H160",
+      },
+      "PalletErc20PegError": {
+        "_enum": [
+          "CreateAssetFailed",
+          "InvalidAmount",
+          "InvalidPalletId",
+          "DepositsPaused",
+          "WithdrawalsPaused",
+          "UnsupportedAsset",
+          "EvmWithdrawalFailed",
+          "InvalidAbiEncoding",
+        ],
+      },
+      "PalletErc20PegPendingPayment": {
+        "_enum": {
+          "Deposit": "PalletErc20PegErc20DepositEvent",
+          "Withdrawal": "PalletErc20PegWithdrawMessage",
+        },
+      },
+      "PalletErc20PegRawEvent": {
+        "_enum": {
+          "DelayedErc20DepositFailed": "(u64,SeedPrimitivesSignatureAccountId20)",
+          "DelayedErc20WithdrawalFailed": "(u32,H160)",
+          "Erc20Deposit": "(u32,u128,SeedPrimitivesSignatureAccountId20)",
+          "Erc20DepositDelayed": "(u64,u32,u128,SeedPrimitivesSignatureAccountId20)",
+          "Erc20DepositFail": "(H160,Bytes)",
+          "Erc20Withdraw": "(u32,u128,H160)",
+          "Erc20WithdrawalDelayed": "(u64,u32,u128,H160)",
+          "NoAvailableDelayedPaymentIds": "Null",
+          "PaymentDelaySet": "(u32,u128,u32)",
+          "SetContractAddress": "H160",
+        },
+      },
+      "PalletErc20PegWithdrawMessage": {
+        "amount": "U256",
+        "beneficiary": "H160",
+        "tokenAddress": "H160",
+      },
+      "PalletEthereumCall": {
+        "_enum": {
+          "transact": {
+            "transaction": "EthereumTransactionTransactionV2",
+          },
+        },
+      },
+      "PalletEthereumError": {
+        "_enum": [
+          "InvalidSignature",
+          "PreLogExists",
+          "GasLimitTooLow",
+          "GasLimitTooHigh",
+          "GasPriceTooLow",
+          "BalanceLow",
+          "InvalidNonce",
+          "Undefined",
+        ],
+      },
+      "PalletEthereumEvent": {
+        "_enum": {
+          "Executed": {
+            "exitReason": "EvmCoreErrorExitReason",
+            "from": "H160",
+            "to": "H160",
+            "transactionHash": "H256",
+          },
+        },
+      },
+      "PalletEthereumRawOrigin": {
+        "_enum": {
+          "EthereumTransaction": "H160",
+        },
+      },
+      "PalletEthyCall": {
+        "_enum": {
+          "deposit_relayer_bond": "Null",
+          "finalise_authorities_change": {
+            "nextNotaryKeys": "Vec<SeedPrimitivesEthyCryptoAppCryptoPublic>",
+          },
+          "set_bridge_paused": {
+            "paused": "bool",
+          },
+          "set_challenge_period": {
+            "blocks": "u32",
+          },
+          "set_contract_address": {
+            "contractAddress": "H160",
+          },
+          "set_delayed_event_proofs_per_block": {
+            "count": "u8",
+          },
+          "set_event_block_confirmations": {
+            "confirmations": "u64",
+          },
+          "set_relayer": {
+            "relayer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "set_xrpl_door_signers": {
+            "newSigners": "Vec<SeedPrimitivesEthyCryptoAppCryptoPublic>",
+          },
+          "submit_challenge": {
+            "eventClaimId": "u64",
+          },
+          "submit_event": {
+            "event": "Bytes",
+            "txHash": "H256",
+          },
+          "submit_notarization": {
+            "payload": "PalletEthyNotarizationPayload",
+            "signature": "SeedPrimitivesEthyCryptoAppCryptoSignature",
+          },
+          "withdraw_relayer_bond": "Null",
+        },
+      },
+      "PalletEthyCheckedEthCallRequest": {
+        "checkTimestamp": "u64",
+        "input": "Bytes",
+        "maxBlockLookBehind": "u64",
+        "target": "H160",
+        "timestamp": "u64",
+        "tryBlockNumber": "u64",
+      },
+      "PalletEthyCheckedEthCallResult": {
+        "_enum": {
+          "DataProviderErr": "Null",
+          "InvalidEthBlock": "Null",
+          "InvalidTimestamp": "Null",
+          "Ok": "([u8;32],u64,u64)",
+          "ReturnDataEmpty": "Null",
+          "ReturnDataExceedsLimit": "Null",
+        },
+      },
+      "PalletEthyError": {
+        "_enum": [
+          "NoLocalSigningAccount",
+          "OffchainUnsignedTxSignedPayload",
+          "InvalidNotarization",
+          "HttpFetch",
+          "InvalidClaim",
+          "OcwConfig",
+          "EventReplayPending",
+          "EventReplayProcessed",
+          "BridgePaused",
+          "Internal",
+          "NoPermission",
+          "NoClaim",
+          "ClaimAlreadyChallenged",
+          "CantUnbondRelayer",
+          "CantBondRelayer",
+          "NoBondPaid",
+          "MaxNewSignersExceeded",
+        ],
+      },
+      "PalletEthyEthereumEventInfo": {
+        "destination": "H160",
+        "eventProofId": "u64",
+        "message": "Bytes",
+        "source": "H160",
+        "validatorSetId": "u64",
+      },
+      "PalletEthyEthySigningRequest": {
+        "_enum": {
+          "Ethereum": "PalletEthyEthereumEventInfo",
+          "XrplTx": "Bytes",
+        },
+      },
+      "PalletEthyEventClaim": {
+        "data": "Bytes",
+        "destination": "H160",
+        "source": "H160",
+        "txHash": "H256",
+      },
+      "PalletEthyEventClaimResult": {
+        "_enum": [
+          "Valid",
+          "DataProviderErr",
+          "TxStatusFailed",
+          "UnexpectedContractAddress",
+          "NoTxLogs",
+          "NotEnoughConfirmations",
+          "UnexpectedData",
+          "NoTxReceipt",
+          "UnexpectedSource",
+        ],
+      },
+      "PalletEthyEventClaimStatus": {
+        "_enum": [
+          "Pending",
+          "Challenged",
+          "ProvenValid",
+        ],
+      },
+      "PalletEthyNotarizationPayload": {
+        "_enum": {
+          "Call": {
+            "authorityIndex": "u16",
+            "callId": "u64",
+            "result": "PalletEthyCheckedEthCallResult",
+          },
+          "Event": {
+            "authorityIndex": "u16",
+            "eventClaimId": "u64",
+            "result": "PalletEthyEventClaimResult",
+          },
+        },
+      },
+      "PalletEthyRawEvent": {
+        "_enum": {
+          "AuthoritySetChange": "(u64,u64)",
+          "Challenged": "(u64,SeedPrimitivesSignatureAccountId20)",
+          "EventSend": {
+            "eventProofId": "u64",
+            "signingRequest": "PalletEthyEthySigningRequest",
+          },
+          "EventSubmit": "(u64,PalletEthyEventClaim,u32)",
+          "FinaliseScheduleFail": "u32",
+          "Invalid": "u64",
+          "ProcessAtExtended": "(u64,u32)",
+          "ProcessingFailed": "(u64,SeedPalletCommonEventRouterError)",
+          "ProcessingOk": "u64",
+          "ProofDelayed": "u64",
+          "RelayerBondDeposit": "(SeedPrimitivesSignatureAccountId20,u128)",
+          "RelayerBondWithdraw": "(SeedPrimitivesSignatureAccountId20,u128)",
+          "RelayerSet": "Option<SeedPrimitivesSignatureAccountId20>",
+          "SetContractAddress": "H160",
+          "Verified": "u64",
+          "XrplAuthoritySetChange": "(u64,u64)",
+          "XrplAuthoritySetChangeRequestFailed": "Null",
+          "XrplDoorSignersSet": "Null",
+        },
+      },
+      "PalletEvmCall": {
+        "_enum": {
+          "call": {
+            "accessList": "Vec<(H160,Vec<H256>)>",
+            "gasLimit": "u64",
+            "input": "Bytes",
+            "maxFeePerGas": "U256",
+            "maxPriorityFeePerGas": "Option<U256>",
+            "nonce": "Option<U256>",
+            "source": "H160",
+            "target": "H160",
+            "value": "U256",
+          },
+          "create": {
+            "accessList": "Vec<(H160,Vec<H256>)>",
+            "gasLimit": "u64",
+            "init": "Bytes",
+            "maxFeePerGas": "U256",
+            "maxPriorityFeePerGas": "Option<U256>",
+            "nonce": "Option<U256>",
+            "source": "H160",
+            "value": "U256",
+          },
+          "create2": {
+            "accessList": "Vec<(H160,Vec<H256>)>",
+            "gasLimit": "u64",
+            "init": "Bytes",
+            "maxFeePerGas": "U256",
+            "maxPriorityFeePerGas": "Option<U256>",
+            "nonce": "Option<U256>",
+            "salt": "H256",
+            "source": "H160",
+            "value": "U256",
+          },
+          "withdraw": {
+            "address": "H160",
+            "value": "u128",
+          },
+        },
+      },
+      "PalletEvmChainIdCall": {
+        "_enum": {
+          "set_chain_id": {
+            "chainId": "Compact<u64>",
+          },
+        },
+      },
+      "PalletEvmChainIdEvent": {
+        "_enum": {
+          "ChainIdSet": "u64",
+        },
+      },
+      "PalletEvmError": {
+        "_enum": [
+          "BalanceLow",
+          "FeeOverflow",
+          "PaymentOverflow",
+          "WithdrawFailed",
+          "GasPriceTooLow",
+          "InvalidNonce",
+          "GasLimitTooLow",
+          "GasLimitTooHigh",
+          "Undefined",
+        ],
+      },
+      "PalletEvmEvent": {
+        "_enum": {
+          "Created": {
+            "address": "H160",
+          },
+          "CreatedFailed": {
+            "address": "H160",
+          },
+          "Executed": {
+            "address": "H160",
+          },
+          "ExecutedFailed": {
+            "address": "H160",
+          },
+          "Log": {
+            "log": "EthereumLog",
+          },
+        },
+      },
+      "PalletFeeControlCall": {
+        "_enum": {
+          "set_evm_base_fee": {
+            "value": "U256",
+          },
+          "set_weight_multiplier": {
+            "value": "Perbill",
+          },
+        },
+      },
+      "PalletFeeControlEvent": "Null",
+      "PalletFeeControlFeeConfig": {
+        "evmBaseFeePerGas": "U256",
+        "lengthMultiplier": "u128",
+        "weightMultiplier": "Perbill",
+      },
+      "PalletFeeProxyCall": {
+        "_enum": {
+          "call_with_fee_preferences": {
+            "call": "Call",
+            "maxPayment": "u128",
+            "paymentAsset": "u32",
+          },
+        },
+      },
+      "PalletFeeProxyError": {
+        "_enum": [
+          "NestedFeePreferenceCall",
+          "FeeTokenIsGasToken",
+        ],
+      },
+      "PalletFeeProxyEvent": {
+        "_enum": {
+          "CallWithFeePreferences": {
+            "maxPayment": "u128",
+            "paymentAsset": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletFuturepassCall": {
+        "_enum": {
+          "create": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+          },
+          "migrate_evm_futurepass": {
+            "assetIds": "Vec<u32>",
+            "collectionIds": "Vec<u32>",
+            "evmFuturepass": "SeedPrimitivesSignatureAccountId20",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "proxy_extrinsic": {
+            "call": "Call",
+            "futurepass": "SeedPrimitivesSignatureAccountId20",
+          },
+          "register_delegate_with_signature": {
+            "deadline": "u32",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "futurepass": "SeedPrimitivesSignatureAccountId20",
+            "proxyType": "SeedRuntimeImplsProxyType",
+            "signature": "[u8;65]",
+          },
+          "set_futurepass_migrator": {
+            "migrator": "SeedPrimitivesSignatureAccountId20",
+          },
+          "transfer_futurepass": {
+            "currentOwner": "SeedPrimitivesSignatureAccountId20",
+            "newOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "unregister_delegate": {
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "futurepass": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletFuturepassError": {
+        "_enum": [
+          "AccountAlreadyRegistered",
+          "DelegateNotRegistered",
+          "DelegateAlreadyExists",
+          "NotFuturepassOwner",
+          "OwnerCannotUnregister",
+          "PermissionDenied",
+          "MigratorNotSet",
+          "InvalidProxyType",
+          "ExpiredDeadline",
+          "InvalidDeadline",
+          "InvalidSignature",
+          "AccountParsingFailure",
+          "RegisterDelegateSignerMismatch",
+        ],
+      },
+      "PalletFuturepassEvent": {
+        "_enum": {
+          "DefaultFuturepassSet": {
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "futurepass": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "DelegateRegistered": {
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "futurepass": "SeedPrimitivesSignatureAccountId20",
+            "proxyType": "SeedRuntimeImplsProxyType",
+          },
+          "DelegateUnregistered": {
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "futurepass": "SeedPrimitivesSignatureAccountId20",
+          },
+          "FuturepassAssetsMigrated": {
+            "assets": "Vec<u32>",
+            "collections": "Vec<u32>",
+            "evmFuturepass": "SeedPrimitivesSignatureAccountId20",
+            "futurepass": "SeedPrimitivesSignatureAccountId20",
+          },
+          "FuturepassCreated": {
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "futurepass": "SeedPrimitivesSignatureAccountId20",
+          },
+          "FuturepassMigratorSet": {
+            "migrator": "SeedPrimitivesSignatureAccountId20",
+          },
+          "FuturepassTransferred": {
+            "futurepass": "SeedPrimitivesSignatureAccountId20",
+            "newOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+            "oldOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "ProxyExecuted": {
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "result": "Result<Null, SpRuntimeDispatchError>",
+          },
+        },
+      },
+      "PalletGrandpaCall": {
+        "_enum": {
+          "note_stalled": {
+            "bestFinalizedBlockNumber": "u32",
+            "delay": "u32",
+          },
+          "report_equivocation": {
+            "equivocationProof": "SpFinalityGrandpaEquivocationProof",
+            "keyOwnerProof": "SpCoreVoid",
+          },
+          "report_equivocation_unsigned": {
+            "equivocationProof": "SpFinalityGrandpaEquivocationProof",
+            "keyOwnerProof": "SpCoreVoid",
+          },
+        },
+      },
+      "PalletGrandpaError": {
+        "_enum": [
+          "PauseFailed",
+          "ResumeFailed",
+          "ChangePending",
+          "TooSoon",
+          "InvalidKeyOwnershipProof",
+          "InvalidEquivocationProof",
+          "DuplicateOffenceReport",
+        ],
+      },
+      "PalletGrandpaEvent": {
+        "_enum": {
+          "NewAuthorities": {
+            "authoritySet": "Vec<(SpFinalityGrandpaAppPublic,u64)>",
+          },
+          "Paused": "Null",
+          "Resumed": "Null",
+        },
+      },
+      "PalletGrandpaStoredPendingChange": {
+        "delay": "u32",
+        "forced": "Option<u32>",
+        "nextAuthorities": "Vec<(SpFinalityGrandpaAppPublic,u64)>",
+        "scheduledAt": "u32",
+      },
+      "PalletGrandpaStoredState": {
+        "_enum": {
+          "Live": "Null",
+          "Paused": "Null",
+          "PendingPause": {
+            "delay": "u32",
+            "scheduledAt": "u32",
+          },
+          "PendingResume": {
+            "delay": "u32",
+            "scheduledAt": "u32",
+          },
+        },
+      },
+      "PalletImOnlineBoundedOpaqueNetworkState": {
+        "externalAddresses": "Vec<Bytes>",
+        "peerId": "Bytes",
+      },
+      "PalletImOnlineCall": {
+        "_enum": {
+          "heartbeat": {
+            "heartbeat": "PalletImOnlineHeartbeat",
+            "signature": "PalletImOnlineSr25519AppSr25519Signature",
+          },
+        },
+      },
+      "PalletImOnlineError": {
+        "_enum": [
+          "InvalidKey",
+          "DuplicatedHeartbeat",
+        ],
+      },
+      "PalletImOnlineEvent": {
+        "_enum": {
+          "AllGood": "Null",
+          "HeartbeatReceived": {
+            "authorityId": "PalletImOnlineSr25519AppSr25519Public",
+          },
+          "SomeOffline": {
+            "offline": "Vec<(SeedPrimitivesSignatureAccountId20,PalletStakingExposure)>",
+          },
+        },
+      },
+      "PalletImOnlineHeartbeat": {
+        "authorityIndex": "u32",
+        "blockNumber": "u32",
+        "networkState": "SpCoreOffchainOpaqueNetworkState",
+        "sessionIndex": "u32",
+        "validatorsLen": "u32",
+      },
+      "PalletImOnlineSr25519AppSr25519Public": "SpCoreSr25519Public",
+      "PalletImOnlineSr25519AppSr25519Signature": "SpCoreSr25519Signature",
+      "PalletMarketplaceCall": {
+        "_enum": {
+          "accept_offer": {
+            "offerId": "u64",
+          },
+          "auction_nft": {
+            "collectionId": "u32",
+            "duration": "Option<u32>",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "reservePrice": "u128",
+            "serialNumbers": "Vec<u32>",
+          },
+          "bid": {
+            "amount": "u128",
+            "listingId": "u128",
+          },
+          "buy": {
+            "listingId": "u128",
+          },
+          "cancel_offer": {
+            "offerId": "u64",
+          },
+          "cancel_sale": {
+            "listingId": "u128",
+          },
+          "make_simple_offer": {
+            "amount": "u128",
+            "assetId": "u32",
+            "marketplaceId": "Option<u32>",
+            "tokenId": "(u32,u32)",
+          },
+          "register_marketplace": {
+            "entitlement": "Permill",
+            "marketplaceAccount": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "sell_nft": {
+            "buyer": "Option<SeedPrimitivesSignatureAccountId20>",
+            "collectionId": "u32",
+            "duration": "Option<u32>",
+            "fixedPrice": "u128",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "serialNumbers": "Vec<u32>",
+          },
+          "update_fixed_price": {
+            "listingId": "u128",
+            "newPrice": "u128",
+          },
+        },
+      },
+      "PalletNftAuctionClosureReason": {
+        "_enum": [
+          "ExpiredNoBids",
+          "SettlementFailed",
+          "VendorCancelled",
+        ],
+      },
+      "PalletNftAuctionListing": {
+        "close": "u32",
+        "collectionId": "u32",
+        "marketplaceId": "Option<u32>",
+        "paymentAsset": "u32",
+        "reservePrice": "u128",
+        "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
+        "seller": "SeedPrimitivesSignatureAccountId20",
+        "serialNumbers": "Vec<u32>",
+      },
+      "PalletNftCall": {
+        "_enum": {
+          "accept_offer": {
+            "offerId": "u64",
+          },
+          "auction": {
+            "collectionId": "u32",
+            "duration": "Option<u32>",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "reservePrice": "u128",
+            "serialNumbers": "Vec<u32>",
+          },
+          "bid": {
+            "amount": "u128",
+            "listingId": "u128",
+          },
+          "burn": {
+            "tokenId": "(u32,u32)",
+          },
+          "buy": {
+            "listingId": "u128",
+          },
+          "cancel_offer": {
+            "offerId": "u64",
+          },
+          "cancel_sale": {
+            "listingId": "u128",
+          },
+          "claim_unowned_collection": {
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "create_collection": {
+            "crossChainCompatibility": "PalletNftCrossChainCompatibility",
+            "initialIssuance": "u32",
+            "maxIssuance": "Option<u32>",
+            "metadataScheme": "Bytes",
+            "name": "Bytes",
+            "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+            "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "make_simple_offer": {
+            "amount": "u128",
+            "assetId": "u32",
+            "marketplaceId": "Option<u32>",
+            "tokenId": "(u32,u32)",
+          },
+          "mint": {
+            "collectionId": "u32",
+            "quantity": "u32",
+            "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "register_marketplace": {
+            "entitlement": "Permill",
+            "marketplaceAccount": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "sell": {
+            "buyer": "Option<SeedPrimitivesSignatureAccountId20>",
+            "collectionId": "u32",
+            "duration": "Option<u32>",
+            "fixedPrice": "u128",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "serialNumbers": "Vec<u32>",
+          },
+          "set_base_uri": {
+            "baseUri": "Bytes",
+            "collectionId": "u32",
+          },
+          "set_fee_to": {
+            "feeTo": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "set_max_issuance": {
+            "collectionId": "u32",
+            "maxIssuance": "u32",
+          },
+          "set_name": {
+            "collectionId": "u32",
+            "name": "Bytes",
+          },
+          "set_owner": {
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "transfer": {
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+          "update_fixed_price": {
+            "listingId": "u128",
+            "newPrice": "u128",
+          },
+        },
+      },
+      "PalletNftCollectionInformation": {
+        "collectionIssuance": "u32",
+        "crossChainCompatibility": "PalletNftCrossChainCompatibility",
+        "maxIssuance": "Option<u32>",
+        "metadataScheme": "Bytes",
+        "name": "Bytes",
+        "nextSerialNumber": "u32",
+        "originChain": "SeedPrimitivesNftOriginChain",
+        "ownedTokens": "Vec<PalletNftTokenOwnership>",
+        "owner": "SeedPrimitivesSignatureAccountId20",
+        "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+      },
+      "PalletNftCrossChainCompatibility": {
+        "xrpl": "bool",
+      },
+      "PalletNftError": {
+        "_enum": [
+          "CollectionNameInvalid",
+          "NoAvailableIds",
+          "NotTokenOwner",
+          "NoToken",
+          "NotForFixedPriceSale",
+          "NotForAuction",
+          "NotCollectionOwner",
+          "TokenNotListed",
+          "MaxOffersReached",
+          "TokenLocked",
+          "RoyaltiesInvalid",
+          "BidTooLow",
+          "MixedBundleSale",
+          "MarketplaceNotRegistered",
+          "NoCollectionFound",
+          "InvalidMetadataPath",
+          "InvalidOffer",
+          "NotBuyer",
+          "NotSeller",
+          "IsTokenOwner",
+          "InvalidNewOwner",
+          "ZeroOffer",
+          "TokenLimitExceeded",
+          "MintLimitExceeded",
+          "TokenOnAuction",
+          "InvalidMaxIssuance",
+          "MaxIssuanceAlreadySet",
+          "MaxIssuanceReached",
+          "AttemptedMintOnBridgedToken",
+          "CannotClaimNonClaimableCollections",
+          "InitialIssuanceNotZero",
+          "CollectionIssuanceNotZero",
+        ],
+      },
+      "PalletNftEvent": {
+        "_enum": {
+          "AuctionClose": {
+            "collectionId": "u32",
+            "listingId": "u128",
+            "reason": "PalletNftAuctionClosureReason",
+          },
+          "AuctionOpen": {
+            "collectionId": "u32",
+            "listingId": "u128",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "reservePrice": "u128",
+            "seller": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+          "AuctionSold": {
+            "collectionId": "u32",
+            "hammerPrice": "u128",
+            "listingId": "u128",
+            "paymentAsset": "u32",
+            "winner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "BaseUriSet": {
+            "baseUri": "Bytes",
+            "collectionId": "u32",
+          },
+          "Bid": {
+            "amount": "u128",
+            "bidder": "SeedPrimitivesSignatureAccountId20",
+            "collectionId": "u32",
+            "listingId": "u128",
+            "serialNumbers": "Vec<u32>",
+          },
+          "BridgedMint": {
+            "collectionId": "u32",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+          "Burn": {
+            "collectionId": "u32",
+            "serialNumber": "u32",
+          },
+          "CollectionClaimed": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "collectionId": "u32",
+          },
+          "CollectionCreate": {
+            "collectionOwner": "SeedPrimitivesSignatureAccountId20",
+            "collectionUuid": "u32",
+            "compatibility": "PalletNftCrossChainCompatibility",
+            "initialIssuance": "u32",
+            "maxIssuance": "Option<u32>",
+            "metadataScheme": "Bytes",
+            "name": "Bytes",
+            "originChain": "SeedPrimitivesNftOriginChain",
+            "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+          },
+          "FeeToSet": {
+            "account": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "FixedPriceSaleClose": {
+            "collectionId": "u32",
+            "listingId": "u128",
+            "reason": "PalletNftFixedPriceClosureReason",
+            "serialNumbers": "Vec<u32>",
+          },
+          "FixedPriceSaleComplete": {
+            "buyer": "SeedPrimitivesSignatureAccountId20",
+            "collectionId": "u32",
+            "listingId": "u128",
+            "paymentAsset": "u32",
+            "price": "u128",
+            "seller": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+          "FixedPriceSaleList": {
+            "collectionId": "u32",
+            "listingId": "u128",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "price": "u128",
+            "seller": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+          "FixedPriceSalePriceUpdate": {
+            "collectionId": "u32",
+            "listingId": "u128",
+            "newPrice": "u128",
+            "serialNumbers": "Vec<u32>",
+          },
+          "MarketplaceRegister": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "entitlement": "Permill",
+            "marketplaceId": "u32",
+          },
+          "MaxIssuanceSet": {
+            "collectionId": "u32",
+            "maxIssuance": "u32",
+          },
+          "Mint": {
+            "collectionId": "u32",
+            "end": "u32",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+            "start": "u32",
+          },
+          "NameSet": {
+            "collectionId": "u32",
+            "name": "Bytes",
+          },
+          "Offer": {
+            "amount": "u128",
+            "assetId": "u32",
+            "buyer": "SeedPrimitivesSignatureAccountId20",
+            "marketplaceId": "Option<u32>",
+            "offerId": "u64",
+          },
+          "OfferAccept": {
+            "amount": "u128",
+            "assetId": "u32",
+            "offerId": "u64",
+            "tokenId": "(u32,u32)",
+          },
+          "OfferCancel": {
+            "offerId": "u64",
+            "tokenId": "(u32,u32)",
+          },
+          "OwnerSet": {
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Transfer": {
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+            "previousOwner": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+        },
+      },
+      "PalletNftFixedPriceClosureReason": {
+        "_enum": [
+          "VendorCancelled",
+          "Expired",
+        ],
+      },
+      "PalletNftFixedPriceListing": {
+        "buyer": "Option<SeedPrimitivesSignatureAccountId20>",
+        "close": "u32",
+        "collectionId": "u32",
+        "fixedPrice": "u128",
+        "marketplaceId": "Option<u32>",
+        "paymentAsset": "u32",
+        "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
+        "seller": "SeedPrimitivesSignatureAccountId20",
+        "serialNumbers": "Vec<u32>",
+      },
+      "PalletNftListing": {
+        "_enum": {
+          "Auction": "PalletNftAuctionListing",
+          "FixedPrice": "PalletNftFixedPriceListing",
+        },
+      },
+      "PalletNftMarketplace": {
+        "account": "SeedPrimitivesSignatureAccountId20",
+        "entitlement": "Permill",
+      },
+      "PalletNftOfferType": {
+        "_enum": {
+          "Simple": "PalletNftSimpleOffer",
+        },
+      },
+      "PalletNftPegCall": {
+        "_enum": {
+          "set_contract_address": {
+            "contract": "H160",
+          },
+          "withdraw": {
+            "collectionIds": "Vec<u32>",
+            "destination": "H160",
+            "serialNumbers": "Vec<Vec<u32>>",
+          },
+        },
+      },
+      "PalletNftPegError": {
+        "_enum": [
+          "ExceedsMaxAddresses",
+          "ExceedsMaxTokens",
+          "InvalidAbiEncoding",
+          "InvalidAbiPrefix",
+          "NoCollectionFound",
+          "NoMappedTokenExists",
+          "NoPermissionToBridge",
+          "StateSyncDisabled",
+          "TokenListLengthMismatch",
+          "ExceedsMaxVecLength",
+        ],
+      },
+      "PalletNftPegEvent": {
+        "_enum": {
+          "ContractAddressSet": {
+            "contract": "H160",
+          },
+          "Erc721Deposit": {
+            "destination": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Erc721Mint": {
+            "collectionId": "u32",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+          "Erc721Withdraw": {
+            "collectionIds": "Vec<u32>",
+            "destination": "H160",
+            "origin": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<Vec<u32>>",
+          },
+        },
+      },
+      "PalletNftSimpleOffer": {
+        "amount": "u128",
+        "assetId": "u32",
+        "buyer": "SeedPrimitivesSignatureAccountId20",
+        "marketplaceId": "Option<u32>",
+        "tokenId": "(u32,u32)",
+      },
+      "PalletNftTokenLockReason": {
+        "_enum": {
+          "Listed": "u128",
+        },
+      },
+      "PalletNftTokenOwnership": {
+        "ownedSerials": "Vec<u32>",
+        "owner": "SeedPrimitivesSignatureAccountId20",
+      },
+      "PalletOffencesEvent": {
+        "_enum": {
+          "Offence": {
+            "kind": "[u8;16]",
+            "timeslot": "Bytes",
+          },
+        },
+      },
+      "PalletProxyAnnouncement": {
+        "callHash": "H256",
+        "height": "u32",
+        "real": "SeedPrimitivesSignatureAccountId20",
+      },
+      "PalletProxyCall": {
+        "_enum": {
+          "add_proxy": {
+            "delay": "u32",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "proxyType": "SeedRuntimeImplsProxyType",
+          },
+          "announce": {
+            "callHash": "H256",
+            "real": "SeedPrimitivesSignatureAccountId20",
+          },
+          "anonymous": {
+            "delay": "u32",
+            "index": "u16",
+            "proxyType": "SeedRuntimeImplsProxyType",
+          },
+          "kill_anonymous": {
+            "extIndex": "Compact<u32>",
+            "height": "Compact<u32>",
+            "index": "u16",
+            "proxyType": "SeedRuntimeImplsProxyType",
+            "spawner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "proxy": {
+            "call": "Call",
+            "forceProxyType": "Option<SeedRuntimeImplsProxyType>",
+            "real": "SeedPrimitivesSignatureAccountId20",
+          },
+          "proxy_announced": {
+            "call": "Call",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "forceProxyType": "Option<SeedRuntimeImplsProxyType>",
+            "real": "SeedPrimitivesSignatureAccountId20",
+          },
+          "reject_announcement": {
+            "callHash": "H256",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+          },
+          "remove_announcement": {
+            "callHash": "H256",
+            "real": "SeedPrimitivesSignatureAccountId20",
+          },
+          "remove_proxies": "Null",
+          "remove_proxy": {
+            "delay": "u32",
+            "delegate": "SeedPrimitivesSignatureAccountId20",
+            "proxyType": "SeedRuntimeImplsProxyType",
+          },
+        },
+      },
+      "PalletProxyError": {
+        "_enum": [
+          "TooMany",
+          "NotFound",
+          "NotProxy",
+          "Unproxyable",
+          "Duplicate",
+          "NoPermission",
+          "Unannounced",
+          "NoSelfProxy",
+        ],
+      },
+      "PalletProxyEvent": {
+        "_enum": {
+          "Announced": {
+            "callHash": "H256",
+            "proxy": "SeedPrimitivesSignatureAccountId20",
+            "real": "SeedPrimitivesSignatureAccountId20",
+          },
+          "AnonymousCreated": {
+            "anonymous": "SeedPrimitivesSignatureAccountId20",
+            "disambiguationIndex": "u16",
+            "proxyType": "SeedRuntimeImplsProxyType",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "ProxyAdded": {
+            "delay": "u32",
+            "delegatee": "SeedPrimitivesSignatureAccountId20",
+            "delegator": "SeedPrimitivesSignatureAccountId20",
+            "proxyType": "SeedRuntimeImplsProxyType",
+          },
+          "ProxyExecuted": {
+            "result": "Result<Null, SpRuntimeDispatchError>",
+          },
+          "ProxyRemoved": {
+            "delay": "u32",
+            "delegatee": "SeedPrimitivesSignatureAccountId20",
+            "delegator": "SeedPrimitivesSignatureAccountId20",
+            "proxyType": "SeedRuntimeImplsProxyType",
+          },
+        },
+      },
+      "PalletProxyProxyDefinition": {
+        "delay": "u32",
+        "delegate": "SeedPrimitivesSignatureAccountId20",
+        "proxyType": "SeedRuntimeImplsProxyType",
+      },
+      "PalletRecoveryActiveRecovery": {
+        "created": "u32",
+        "deposit": "u128",
+        "friends": "Vec<SeedPrimitivesSignatureAccountId20>",
+      },
+      "PalletRecoveryCall": {
+        "_enum": {
+          "as_recovered": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "call": "Call",
+          },
+          "cancel_recovered": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+          },
+          "claim_recovery": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+          },
+          "close_recovery": {
+            "rescuer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "create_recovery": {
+            "delayPeriod": "u32",
+            "friends": "Vec<SeedPrimitivesSignatureAccountId20>",
+            "threshold": "u16",
+          },
+          "initiate_recovery": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+          },
+          "remove_recovery": "Null",
+          "set_recovered": {
+            "lost": "SeedPrimitivesSignatureAccountId20",
+            "rescuer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "vouch_recovery": {
+            "lost": "SeedPrimitivesSignatureAccountId20",
+            "rescuer": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletRecoveryError": {
+        "_enum": [
+          "NotAllowed",
+          "ZeroThreshold",
+          "NotEnoughFriends",
+          "MaxFriends",
+          "NotSorted",
+          "NotRecoverable",
+          "AlreadyRecoverable",
+          "AlreadyStarted",
+          "NotStarted",
+          "NotFriend",
+          "DelayPeriod",
+          "AlreadyVouched",
+          "Threshold",
+          "StillActive",
+          "AlreadyProxy",
+          "BadState",
+        ],
+      },
+      "PalletRecoveryEvent": {
+        "_enum": {
+          "AccountRecovered": {
+            "lostAccount": "SeedPrimitivesSignatureAccountId20",
+            "rescuerAccount": "SeedPrimitivesSignatureAccountId20",
+          },
+          "RecoveryClosed": {
+            "lostAccount": "SeedPrimitivesSignatureAccountId20",
+            "rescuerAccount": "SeedPrimitivesSignatureAccountId20",
+          },
+          "RecoveryCreated": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+          },
+          "RecoveryInitiated": {
+            "lostAccount": "SeedPrimitivesSignatureAccountId20",
+            "rescuerAccount": "SeedPrimitivesSignatureAccountId20",
+          },
+          "RecoveryRemoved": {
+            "lostAccount": "SeedPrimitivesSignatureAccountId20",
+          },
+          "RecoveryVouched": {
+            "lostAccount": "SeedPrimitivesSignatureAccountId20",
+            "rescuerAccount": "SeedPrimitivesSignatureAccountId20",
+            "sender": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletRecoveryRecoveryConfig": {
+        "delayPeriod": "u32",
+        "deposit": "u128",
+        "friends": "Vec<SeedPrimitivesSignatureAccountId20>",
+        "threshold": "u16",
+      },
+      "PalletSchedulerCall": {
+        "_enum": {
+          "cancel": {
+            "index": "u32",
+            "when": "u32",
+          },
+          "cancel_named": {
+            "id": "Bytes",
+          },
+          "schedule": {
+            "call": "FrameSupportScheduleMaybeHashed",
+            "maybePeriodic": "Option<(u32,u32)>",
+            "priority": "u8",
+            "when": "u32",
+          },
+          "schedule_after": {
+            "after": "u32",
+            "call": "FrameSupportScheduleMaybeHashed",
+            "maybePeriodic": "Option<(u32,u32)>",
+            "priority": "u8",
+          },
+          "schedule_named": {
+            "call": "FrameSupportScheduleMaybeHashed",
+            "id": "Bytes",
+            "maybePeriodic": "Option<(u32,u32)>",
+            "priority": "u8",
+            "when": "u32",
+          },
+          "schedule_named_after": {
+            "after": "u32",
+            "call": "FrameSupportScheduleMaybeHashed",
+            "id": "Bytes",
+            "maybePeriodic": "Option<(u32,u32)>",
+            "priority": "u8",
+          },
+        },
+      },
+      "PalletSchedulerError": {
+        "_enum": [
+          "FailedToSchedule",
+          "NotFound",
+          "TargetBlockNumberInPast",
+          "RescheduleNoChange",
+        ],
+      },
+      "PalletSchedulerEvent": {
+        "_enum": {
+          "CallLookupFailed": {
+            "error": "FrameSupportScheduleLookupError",
+            "id": "Option<Bytes>",
+            "task": "(u32,u32)",
+          },
+          "Canceled": {
+            "index": "u32",
+            "when": "u32",
+          },
+          "Dispatched": {
+            "id": "Option<Bytes>",
+            "result": "Result<Null, SpRuntimeDispatchError>",
+            "task": "(u32,u32)",
+          },
+          "Scheduled": {
+            "index": "u32",
+            "when": "u32",
+          },
+        },
+      },
+      "PalletSchedulerScheduledV3": {
+        "call": "FrameSupportScheduleMaybeHashed",
+        "maybeId": "Option<Bytes>",
+        "maybePeriodic": "Option<(u32,u32)>",
+        "origin": "SeedRuntimeOriginCaller",
+        "priority": "u8",
+      },
+      "PalletSessionCall": {
+        "_enum": {
+          "purge_keys": "Null",
+          "set_keys": {
+            "_alias": {
+              "keys_": "keys",
+            },
+            "keys_": "SeedRuntimeSessionKeys",
+            "proof": "Bytes",
+          },
+        },
+      },
+      "PalletSessionError": {
+        "_enum": [
+          "InvalidProof",
+          "NoAssociatedValidatorId",
+          "DuplicatedKey",
+          "NoKeys",
+          "NoAccount",
+        ],
+      },
+      "PalletSessionEvent": {
+        "_enum": {
+          "NewSession": {
+            "sessionIndex": "u32",
+          },
+        },
+      },
+      "PalletSftCall": {
+        "_enum": {
+          "burn": {
+            "collectionId": "u32",
+            "serialNumbers": "Vec<(u32,u128)>",
+          },
+          "create_collection": {
+            "collectionName": "Bytes",
+            "collectionOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+            "metadataScheme": "Bytes",
+            "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+          },
+          "create_token": {
+            "collectionId": "u32",
+            "initialIssuance": "u128",
+            "maxIssuance": "Option<u128>",
+            "tokenName": "Bytes",
+            "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "mint": {
+            "collectionId": "u32",
+            "serialNumbers": "Vec<(u32,u128)>",
+            "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "set_base_uri": {
+            "collectionId": "u32",
+            "metadataScheme": "Bytes",
+          },
+          "set_max_issuance": {
+            "maxIssuance": "u128",
+            "tokenId": "(u32,u32)",
+          },
+          "set_name": {
+            "collectionId": "u32",
+            "collectionName": "Bytes",
+          },
+          "set_owner": {
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "transfer": {
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<(u32,u128)>",
+          },
+        },
+      },
+      "PalletSftError": {
+        "_enum": [
+          "NameInvalid",
+          "NoToken",
+          "NotCollectionOwner",
+          "RoyaltiesInvalid",
+          "NoCollectionFound",
+          "InsufficientBalance",
+          "InvalidQuantity",
+          "InvalidMaxIssuance",
+          "InvalidNewOwner",
+          "MaxIssuanceAlreadySet",
+          "MaxIssuanceReached",
+          "MaxOwnersReached",
+          "Overflow",
+        ],
+      },
+      "PalletSftEvent": {
+        "_enum": {
+          "BaseUriSet": {
+            "collectionId": "u32",
+            "metadataScheme": "Bytes",
+          },
+          "Burn": {
+            "balances": "Vec<u128>",
+            "collectionId": "u32",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+          "CollectionCreate": {
+            "collectionId": "u32",
+            "collectionOwner": "SeedPrimitivesSignatureAccountId20",
+            "metadataScheme": "Bytes",
+            "name": "Bytes",
+            "originChain": "SeedPrimitivesNftOriginChain",
+            "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+          },
+          "MaxIssuanceSet": {
+            "maxIssuance": "u128",
+            "tokenId": "(u32,u32)",
+          },
+          "Mint": {
+            "balances": "Vec<u128>",
+            "collectionId": "u32",
+            "owner": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+          "NameSet": {
+            "collectionId": "u32",
+            "collectionName": "Bytes",
+          },
+          "OwnerSet": {
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "TokenCreate": {
+            "initialIssuance": "u128",
+            "maxIssuance": "Option<u128>",
+            "tokenId": "(u32,u32)",
+            "tokenName": "Bytes",
+            "tokenOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Transfer": {
+            "balances": "Vec<u128>",
+            "collectionId": "u32",
+            "newOwner": "SeedPrimitivesSignatureAccountId20",
+            "previousOwner": "SeedPrimitivesSignatureAccountId20",
+            "serialNumbers": "Vec<u32>",
+          },
+        },
+      },
+      "PalletSftSftCollectionInformation": {
+        "collectionName": "Bytes",
+        "collectionOwner": "SeedPrimitivesSignatureAccountId20",
+        "metadataScheme": "Bytes",
+        "nextSerialNumber": "u32",
+        "originChain": "SeedPrimitivesNftOriginChain",
+        "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+      },
+      "PalletSftSftTokenBalance": {
+        "freeBalance": "u128",
+        "reservedBalance": "u128",
+      },
+      "PalletSftSftTokenInformation": {
+        "maxIssuance": "Option<u128>",
+        "ownedTokens": "Vec<(SeedPrimitivesSignatureAccountId20,PalletSftSftTokenBalance)>",
+        "tokenIssuance": "u128",
+        "tokenName": "Bytes",
+      },
+      "PalletStakingActiveEraInfo": {
+        "index": "u32",
+        "start": "Option<u64>",
+      },
+      "PalletStakingEraRewardPoints": {
+        "individual": "BTreeMap<SeedPrimitivesSignatureAccountId20, u32>",
+        "total": "u32",
+      },
+      "PalletStakingExposure": {
+        "others": "Vec<PalletStakingIndividualExposure>",
+        "own": "Compact<u128>",
+        "total": "Compact<u128>",
+      },
+      "PalletStakingForcing": {
+        "_enum": [
+          "NotForcing",
+          "ForceNew",
+          "ForceNone",
+          "ForceAlways",
+        ],
+      },
+      "PalletStakingIndividualExposure": {
+        "value": "Compact<u128>",
+        "who": "SeedPrimitivesSignatureAccountId20",
+      },
+      "PalletStakingNominations": {
+        "submittedIn": "u32",
+        "suppressed": "bool",
+        "targets": "Vec<SeedPrimitivesSignatureAccountId20>",
+      },
+      "PalletStakingPalletCall": {
+        "_enum": {
+          "bond": {
+            "controller": "SeedPrimitivesSignatureAccountId20",
+            "payee": "PalletStakingRewardDestination",
+            "value": "Compact<u128>",
+          },
+          "bond_extra": {
+            "maxAdditional": "Compact<u128>",
+          },
+          "cancel_deferred_slash": {
+            "era": "u32",
+            "slashIndices": "Vec<u32>",
+          },
+          "chill": "Null",
+          "chill_other": {
+            "controller": "SeedPrimitivesSignatureAccountId20",
+          },
+          "force_apply_min_commission": {
+            "validatorStash": "SeedPrimitivesSignatureAccountId20",
+          },
+          "force_new_era": "Null",
+          "force_new_era_always": "Null",
+          "force_no_eras": "Null",
+          "force_unstake": {
+            "numSlashingSpans": "u32",
+            "stash": "SeedPrimitivesSignatureAccountId20",
+          },
+          "increase_validator_count": {
+            "additional": "Compact<u32>",
+          },
+          "kick": {
+            "who": "Vec<SeedPrimitivesSignatureAccountId20>",
+          },
+          "nominate": {
+            "targets": "Vec<SeedPrimitivesSignatureAccountId20>",
+          },
+          "payout_stakers": {
+            "era": "u32",
+            "validatorStash": "SeedPrimitivesSignatureAccountId20",
+          },
+          "reap_stash": {
+            "numSlashingSpans": "u32",
+            "stash": "SeedPrimitivesSignatureAccountId20",
+          },
+          "rebond": {
+            "value": "Compact<u128>",
+          },
+          "scale_validator_count": {
+            "factor": "Percent",
+          },
+          "set_controller": {
+            "controller": "SeedPrimitivesSignatureAccountId20",
+          },
+          "set_history_depth": {
+            "eraItemsDeleted": "Compact<u32>",
+            "newHistoryDepth": "Compact<u32>",
+          },
+          "set_invulnerables": {
+            "invulnerables": "Vec<SeedPrimitivesSignatureAccountId20>",
+          },
+          "set_payee": {
+            "payee": "PalletStakingRewardDestination",
+          },
+          "set_staking_configs": {
+            "chillThreshold": "PalletStakingPalletConfigOpPercent",
+            "maxNominatorCount": "PalletStakingPalletConfigOpU32",
+            "maxValidatorCount": "PalletStakingPalletConfigOpU32",
+            "minCommission": "PalletStakingPalletConfigOpPerbill",
+            "minNominatorBond": "PalletStakingPalletConfigOpU128",
+            "minValidatorBond": "PalletStakingPalletConfigOpU128",
+          },
+          "set_validator_count": {
+            "_alias": {
+              "new_": "new",
+            },
+            "new_": "Compact<u32>",
+          },
+          "unbond": {
+            "value": "Compact<u128>",
+          },
+          "validate": {
+            "prefs": "PalletStakingValidatorPrefs",
+          },
+          "withdraw_unbonded": {
+            "numSlashingSpans": "u32",
+          },
+        },
+      },
+      "PalletStakingPalletConfigOpPerbill": {
+        "_enum": {
+          "Noop": "Null",
+          "Remove": "Null",
+          "Set": "Perbill",
+        },
+      },
+      "PalletStakingPalletConfigOpPercent": {
+        "_enum": {
+          "Noop": "Null",
+          "Remove": "Null",
+          "Set": "Percent",
+        },
+      },
+      "PalletStakingPalletConfigOpU128": {
+        "_enum": {
+          "Noop": "Null",
+          "Remove": "Null",
+          "Set": "u128",
+        },
+      },
+      "PalletStakingPalletConfigOpU32": {
+        "_enum": {
+          "Noop": "Null",
+          "Remove": "Null",
+          "Set": "u32",
+        },
+      },
+      "PalletStakingPalletError": {
+        "_enum": [
+          "NotController",
+          "NotStash",
+          "AlreadyBonded",
+          "AlreadyPaired",
+          "EmptyTargets",
+          "DuplicateIndex",
+          "InvalidSlashIndex",
+          "InsufficientBond",
+          "NoMoreChunks",
+          "NoUnlockChunk",
+          "FundedTarget",
+          "InvalidEraToReward",
+          "InvalidNumberOfNominations",
+          "NotSortedAndUnique",
+          "AlreadyClaimed",
+          "IncorrectHistoryDepth",
+          "IncorrectSlashingSpans",
+          "BadState",
+          "TooManyTargets",
+          "BadTarget",
+          "CannotChillOther",
+          "TooManyNominators",
+          "TooManyValidators",
+          "CommissionTooLow",
+        ],
+      },
+      "PalletStakingPalletEvent": {
+        "_enum": {
+          "Bonded": "(SeedPrimitivesSignatureAccountId20,u128)",
+          "Chilled": "SeedPrimitivesSignatureAccountId20",
+          "EraPaid": "(u32,u128,u128)",
+          "Kicked": "(SeedPrimitivesSignatureAccountId20,SeedPrimitivesSignatureAccountId20)",
+          "OldSlashingReportDiscarded": "u32",
+          "PayoutStarted": "(u32,SeedPrimitivesSignatureAccountId20)",
+          "Rewarded": "(SeedPrimitivesSignatureAccountId20,u128)",
+          "Slashed": "(SeedPrimitivesSignatureAccountId20,u128)",
+          "StakersElected": "Null",
+          "StakingElectionFailed": "Null",
+          "Unbonded": "(SeedPrimitivesSignatureAccountId20,u128)",
+          "ValidatorPrefsSet": "(SeedPrimitivesSignatureAccountId20,PalletStakingValidatorPrefs)",
+          "Withdrawn": "(SeedPrimitivesSignatureAccountId20,u128)",
+        },
+      },
+      "PalletStakingReleases": {
+        "_enum": [
+          "V1_0_0Ancient",
+          "V2_0_0",
+          "V3_0_0",
+          "V4_0_0",
+          "V5_0_0",
+          "V6_0_0",
+          "V7_0_0",
+          "V8_0_0",
+          "V9_0_0",
+          "V10_0_0",
+        ],
+      },
+      "PalletStakingRewardDestination": {
+        "_enum": {
+          "Account": "SeedPrimitivesSignatureAccountId20",
+          "Controller": "Null",
+          "None": "Null",
+          "Staked": "Null",
+          "Stash": "Null",
+        },
+      },
+      "PalletStakingSlashingSlashingSpans": {
+        "lastNonzeroSlash": "u32",
+        "lastStart": "u32",
+        "prior": "Vec<u32>",
+        "spanIndex": "u32",
+      },
+      "PalletStakingSlashingSpanRecord": {
+        "paidOut": "u128",
+        "slashed": "u128",
+      },
+      "PalletStakingStakingLedger": {
+        "active": "Compact<u128>",
+        "claimedRewards": "Vec<u32>",
+        "stash": "SeedPrimitivesSignatureAccountId20",
+        "total": "Compact<u128>",
+        "unlocking": "Vec<PalletStakingUnlockChunk>",
+      },
+      "PalletStakingUnappliedSlash": {
+        "others": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
+        "own": "u128",
+        "payout": "u128",
+        "reporters": "Vec<SeedPrimitivesSignatureAccountId20>",
+        "validator": "SeedPrimitivesSignatureAccountId20",
+      },
+      "PalletStakingUnlockChunk": {
+        "era": "Compact<u32>",
+        "value": "Compact<u128>",
+      },
+      "PalletStakingValidatorPrefs": {
+        "blocked": "bool",
+        "commission": "Compact<Perbill>",
+      },
+      "PalletSudoCall": {
+        "_enum": {
+          "set_key": {
+            "_alias": {
+              "new_": "new",
+            },
+            "new_": "SeedPrimitivesSignatureAccountId20",
+          },
+          "sudo": {
+            "call": "Call",
+          },
+          "sudo_as": {
+            "call": "Call",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "sudo_unchecked_weight": {
+            "call": "Call",
+            "weight": "u64",
+          },
+        },
+      },
+      "PalletSudoError": {
+        "_enum": [
+          "RequireSudo",
+        ],
+      },
+      "PalletSudoEvent": {
+        "_enum": {
+          "KeyChanged": {
+            "oldSudoer": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "Sudid": {
+            "sudoResult": "Result<Null, SpRuntimeDispatchError>",
+          },
+          "SudoAsDone": {
+            "sudoResult": "Result<Null, SpRuntimeDispatchError>",
+          },
+        },
+      },
+      "PalletTimestampCall": {
+        "_enum": {
+          "set": {
+            "now": "Compact<u64>",
+          },
+        },
+      },
+      "PalletTokenApprovalsCall": {
+        "_enum": {
+          "erc1155_approval_for_all": {
+            "approved": "bool",
+            "caller": "SeedPrimitivesSignatureAccountId20",
+            "collectionUuid": "u32",
+            "operatorAccount": "SeedPrimitivesSignatureAccountId20",
+          },
+          "erc20_approval": {
+            "amount": "u128",
+            "assetId": "u32",
+            "caller": "SeedPrimitivesSignatureAccountId20",
+            "spender": "SeedPrimitivesSignatureAccountId20",
+          },
+          "erc20_update_approval": {
+            "amount": "u128",
+            "assetId": "u32",
+            "caller": "SeedPrimitivesSignatureAccountId20",
+            "spender": "SeedPrimitivesSignatureAccountId20",
+          },
+          "erc721_approval": {
+            "caller": "SeedPrimitivesSignatureAccountId20",
+            "operatorAccount": "SeedPrimitivesSignatureAccountId20",
+            "tokenId": "(u32,u32)",
+          },
+          "erc721_approval_for_all": {
+            "approved": "bool",
+            "caller": "SeedPrimitivesSignatureAccountId20",
+            "collectionUuid": "u32",
+            "operatorAccount": "SeedPrimitivesSignatureAccountId20",
+          },
+          "erc721_remove_approval": {
+            "tokenId": "(u32,u32)",
+          },
+        },
+      },
+      "PalletTokenApprovalsError": {
+        "_enum": [
+          "NoToken",
+          "NotTokenOwner",
+          "NotTokenOwnerOrApproved",
+          "CallerNotOperator",
+          "ApprovedAmountTooLow",
+          "CallerNotApproved",
+          "AlreadyApproved",
+          "ApprovalDoesntExist",
+        ],
+      },
+      "PalletTransactionPaymentChargeTransactionPayment": "Compact<u128>",
+      "PalletTransactionPaymentEvent": {
+        "_enum": {
+          "TransactionFeePaid": {
+            "actualFee": "u128",
+            "tip": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletTransactionPaymentReleases": {
+        "_enum": [
+          "V1Ancient",
+          "V2",
+        ],
+      },
+      "PalletUtilityCall": {
+        "_enum": {
+          "as_derivative": {
+            "call": "Call",
+            "index": "u16",
+          },
+          "batch": {
+            "calls": "Vec<Call>",
+          },
+          "batch_all": {
+            "calls": "Vec<Call>",
+          },
+          "dispatch_as": {
+            "asOrigin": "SeedRuntimeOriginCaller",
+            "call": "Call",
+          },
+          "force_batch": {
+            "calls": "Vec<Call>",
+          },
+        },
+      },
+      "PalletUtilityError": {
+        "_enum": [
+          "TooManyCalls",
+        ],
+      },
+      "PalletUtilityEvent": {
+        "_enum": {
+          "BatchCompleted": "Null",
+          "BatchCompletedWithErrors": "Null",
+          "BatchInterrupted": {
+            "error": "SpRuntimeDispatchError",
+            "index": "u32",
+          },
+          "DispatchedAs": {
+            "result": "Result<Null, SpRuntimeDispatchError>",
+          },
+          "ItemCompleted": "Null",
+          "ItemFailed": {
+            "error": "SpRuntimeDispatchError",
+          },
+        },
+      },
+      "PalletXls20Call": {
+        "_enum": {
+          "enable_xls20_compatibility": {
+            "collectionId": "u32",
+          },
+          "fulfill_xls20_mint": {
+            "collectionId": "u32",
+            "tokenMappings": "Vec<(u32,[u8;64])>",
+          },
+          "re_request_xls20_mint": {
+            "collectionId": "u32",
+            "serialNumbers": "Vec<u32>",
+          },
+          "set_relayer": {
+            "relayer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "set_xls20_fee": {
+            "newFee": "u128",
+          },
+        },
+      },
+      "PalletXls20Error": {
+        "_enum": [
+          "NotRelayer",
+          "MappingAlreadyExists",
+          "Xls20MintFeeTooLow",
+          "NotXLS20Compatible",
+          "NoToken",
+          "NotCollectionOwner",
+        ],
+      },
+      "PalletXls20Event": {
+        "_enum": {
+          "RelayerSet": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Xls20CompatibilityEnabled": {
+            "collectionId": "u32",
+          },
+          "Xls20MappingSet": {
+            "collectionId": "u32",
+            "mappings": "Vec<(u32,[u8;64])>",
+          },
+          "Xls20MintFeePaid": {
+            "collectionOwner": "SeedPrimitivesSignatureAccountId20",
+            "totalFee": "u128",
+          },
+          "Xls20MintFeeSet": {
+            "newFee": "u128",
+          },
+          "Xls20MintRequest": {
+            "collectionId": "u32",
+            "serialNumbers": "Vec<u32>",
+            "tokenUris": "Vec<Bytes>",
+          },
+        },
+      },
+      "PalletXrplBridgeCall": {
+        "_enum": {
+          "add_relayer": {
+            "relayer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "remove_relayer": {
+            "relayer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "set_door_address": {
+            "doorAddress": "H160",
+          },
+          "set_door_tx_fee": {
+            "fee": "u64",
+          },
+          "set_ticket_sequence_current_allocation": {
+            "startTicketSequence": "u32",
+            "ticketBucketSize": "u32",
+            "ticketSequence": "u32",
+          },
+          "set_ticket_sequence_next_allocation": {
+            "startTicketSequence": "u32",
+            "ticketBucketSize": "u32",
+          },
+          "submit_challenge": {
+            "transactionHash": "H512",
+          },
+          "submit_transaction": {
+            "ledgerIndex": "u64",
+            "timestamp": "u64",
+            "transaction": "PalletXrplBridgeHelpersXrplTxData",
+            "transactionHash": "H512",
+          },
+          "withdraw_xrp": {
+            "amount": "u128",
+            "destination": "H160",
+          },
+        },
+      },
+      "PalletXrplBridgeError": {
+        "_enum": [
+          "NotPermitted",
+          "RelayerDoesNotExists",
+          "WithdrawInvalidAmount",
+          "DoorAddressNotSet",
+          "TooManySigners",
+          "InvalidSigners",
+          "TxReplay",
+          "NextTicketSequenceParamsNotSet",
+          "NextTicketSequenceParamsInvalid",
+          "TicketSequenceParamsInvalid",
+          "CannotProcessMoreTransactionsAtThatBlock",
+        ],
+      },
+      "PalletXrplBridgeEvent": {
+        "_enum": {
+          "DoorAddressSet": "H160",
+          "DoorNextTicketSequenceParamSet": {
+            "ticketBucketSizeNext": "u32",
+            "ticketSequenceStartNext": "u32",
+          },
+          "DoorTicketSequenceParamSet": {
+            "ticketBucketSize": "u32",
+            "ticketSequence": "u32",
+            "ticketSequenceStart": "u32",
+          },
+          "NotSupportedTransaction": "Null",
+          "ProcessingFailed": "(u64,H512,SpRuntimeDispatchError)",
+          "ProcessingOk": "(u64,H512)",
+          "RelayerAdded": "SeedPrimitivesSignatureAccountId20",
+          "RelayerRemoved": "SeedPrimitivesSignatureAccountId20",
+          "TicketSequenceThresholdReached": "u32",
+          "TransactionAdded": "(u64,H512)",
+          "TransactionChallenge": "(u64,H512)",
+          "WithdrawRequest": {
+            "amount": "u128",
+            "destination": "H160",
+            "proofId": "u64",
+            "sender": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletXrplBridgeHelpersXrpTransaction": {
+        "timestamp": "u64",
+        "transaction": "PalletXrplBridgeHelpersXrplTxData",
+        "transactionHash": "H512",
+      },
+      "PalletXrplBridgeHelpersXrplTicketSequenceParams": {
+        "bucketSize": "u32",
+        "startSequence": "u32",
+      },
+      "PalletXrplBridgeHelpersXrplTxData": {
+        "_enum": {
+          "CurrencyPayment": {
+            "address": "H160",
+            "amount": "u128",
+            "currencyId": "H256",
+          },
+          "Payment": {
+            "address": "H160",
+            "amount": "u128",
+          },
+          "Xls20": "Null",
+        },
+      },
+      "SeedPalletCommonEventRouterError": {
+        "_enum": {
+          "FailedProcessing": "SpRuntimeDispatchError",
+          "NoReceiver": "Null",
+        },
+      },
+      "SeedPrimitivesEthyCryptoAppCryptoPublic": "SpCoreEcdsaPublic",
+      "SeedPrimitivesEthyCryptoAppCryptoSignature": "SpCoreEcdsaSignature",
+      "SeedPrimitivesNftOriginChain": {
+        "_enum": [
+          "Ethereum",
+          "Root",
+        ],
+      },
+      "SeedPrimitivesNftRoyaltiesSchedule": {
+        "entitlements": "Vec<(SeedPrimitivesSignatureAccountId20,Permill)>",
+      },
+      "SeedPrimitivesSignatureAccountId20": "[u8;20]",
+      "SeedPrimitivesSignatureEthereumSignature": "SpCoreEcdsaSignature",
+      "SeedRuntimeImplsProxyType": {
+        "_enum": [
+          "NoPermission",
+          "Any",
+          "NonTransfer",
+          "Governance",
+          "Staking",
+          "__Unused5",
+          "__Unused6",
+          "__Unused7",
+          "__Unused8",
+          "__Unused9",
+          "__Unused10",
+          "__Unused11",
+          "__Unused12",
+          "__Unused13",
+          "__Unused14",
+          "__Unused15",
+          "__Unused16",
+          "__Unused17",
+          "__Unused18",
+          "__Unused19",
+          "__Unused20",
+          "__Unused21",
+          "__Unused22",
+          "__Unused23",
+          "__Unused24",
+          "__Unused25",
+          "__Unused26",
+          "__Unused27",
+          "__Unused28",
+          "__Unused29",
+          "__Unused30",
+          "__Unused31",
+          "__Unused32",
+          "__Unused33",
+          "__Unused34",
+          "__Unused35",
+          "__Unused36",
+          "__Unused37",
+          "__Unused38",
+          "__Unused39",
+          "__Unused40",
+          "__Unused41",
+          "__Unused42",
+          "__Unused43",
+          "__Unused44",
+          "__Unused45",
+          "__Unused46",
+          "__Unused47",
+          "__Unused48",
+          "__Unused49",
+          "__Unused50",
+          "__Unused51",
+          "__Unused52",
+          "__Unused53",
+          "__Unused54",
+          "__Unused55",
+          "__Unused56",
+          "__Unused57",
+          "__Unused58",
+          "__Unused59",
+          "__Unused60",
+          "__Unused61",
+          "__Unused62",
+          "__Unused63",
+          "__Unused64",
+          "__Unused65",
+          "__Unused66",
+          "__Unused67",
+          "__Unused68",
+          "__Unused69",
+          "__Unused70",
+          "__Unused71",
+          "__Unused72",
+          "__Unused73",
+          "__Unused74",
+          "__Unused75",
+          "__Unused76",
+          "__Unused77",
+          "__Unused78",
+          "__Unused79",
+          "__Unused80",
+          "__Unused81",
+          "__Unused82",
+          "__Unused83",
+          "__Unused84",
+          "__Unused85",
+          "__Unused86",
+          "__Unused87",
+          "__Unused88",
+          "__Unused89",
+          "__Unused90",
+          "__Unused91",
+          "__Unused92",
+          "__Unused93",
+          "__Unused94",
+          "__Unused95",
+          "__Unused96",
+          "__Unused97",
+          "__Unused98",
+          "__Unused99",
+          "__Unused100",
+          "__Unused101",
+          "__Unused102",
+          "__Unused103",
+          "__Unused104",
+          "__Unused105",
+          "__Unused106",
+          "__Unused107",
+          "__Unused108",
+          "__Unused109",
+          "__Unused110",
+          "__Unused111",
+          "__Unused112",
+          "__Unused113",
+          "__Unused114",
+          "__Unused115",
+          "__Unused116",
+          "__Unused117",
+          "__Unused118",
+          "__Unused119",
+          "__Unused120",
+          "__Unused121",
+          "__Unused122",
+          "__Unused123",
+          "__Unused124",
+          "__Unused125",
+          "__Unused126",
+          "__Unused127",
+          "__Unused128",
+          "__Unused129",
+          "__Unused130",
+          "__Unused131",
+          "__Unused132",
+          "__Unused133",
+          "__Unused134",
+          "__Unused135",
+          "__Unused136",
+          "__Unused137",
+          "__Unused138",
+          "__Unused139",
+          "__Unused140",
+          "__Unused141",
+          "__Unused142",
+          "__Unused143",
+          "__Unused144",
+          "__Unused145",
+          "__Unused146",
+          "__Unused147",
+          "__Unused148",
+          "__Unused149",
+          "__Unused150",
+          "__Unused151",
+          "__Unused152",
+          "__Unused153",
+          "__Unused154",
+          "__Unused155",
+          "__Unused156",
+          "__Unused157",
+          "__Unused158",
+          "__Unused159",
+          "__Unused160",
+          "__Unused161",
+          "__Unused162",
+          "__Unused163",
+          "__Unused164",
+          "__Unused165",
+          "__Unused166",
+          "__Unused167",
+          "__Unused168",
+          "__Unused169",
+          "__Unused170",
+          "__Unused171",
+          "__Unused172",
+          "__Unused173",
+          "__Unused174",
+          "__Unused175",
+          "__Unused176",
+          "__Unused177",
+          "__Unused178",
+          "__Unused179",
+          "__Unused180",
+          "__Unused181",
+          "__Unused182",
+          "__Unused183",
+          "__Unused184",
+          "__Unused185",
+          "__Unused186",
+          "__Unused187",
+          "__Unused188",
+          "__Unused189",
+          "__Unused190",
+          "__Unused191",
+          "__Unused192",
+          "__Unused193",
+          "__Unused194",
+          "__Unused195",
+          "__Unused196",
+          "__Unused197",
+          "__Unused198",
+          "__Unused199",
+          "__Unused200",
+          "__Unused201",
+          "__Unused202",
+          "__Unused203",
+          "__Unused204",
+          "__Unused205",
+          "__Unused206",
+          "__Unused207",
+          "__Unused208",
+          "__Unused209",
+          "__Unused210",
+          "__Unused211",
+          "__Unused212",
+          "__Unused213",
+          "__Unused214",
+          "__Unused215",
+          "__Unused216",
+          "__Unused217",
+          "__Unused218",
+          "__Unused219",
+          "__Unused220",
+          "__Unused221",
+          "__Unused222",
+          "__Unused223",
+          "__Unused224",
+          "__Unused225",
+          "__Unused226",
+          "__Unused227",
+          "__Unused228",
+          "__Unused229",
+          "__Unused230",
+          "__Unused231",
+          "__Unused232",
+          "__Unused233",
+          "__Unused234",
+          "__Unused235",
+          "__Unused236",
+          "__Unused237",
+          "__Unused238",
+          "__Unused239",
+          "__Unused240",
+          "__Unused241",
+          "__Unused242",
+          "__Unused243",
+          "__Unused244",
+          "__Unused245",
+          "__Unused246",
+          "__Unused247",
+          "__Unused248",
+          "__Unused249",
+          "__Unused250",
+          "__Unused251",
+          "__Unused252",
+          "__Unused253",
+          "__Unused254",
+          "Owner",
+        ],
+      },
+      "SeedRuntimeNposCompactSolution16": {
+        "votes1": "Vec<(Compact<u32>,Compact<u16>)>",
+        "votes10": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);9],Compact<u16>)>",
+        "votes11": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);10],Compact<u16>)>",
+        "votes12": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);11],Compact<u16>)>",
+        "votes13": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);12],Compact<u16>)>",
+        "votes14": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);13],Compact<u16>)>",
+        "votes15": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);14],Compact<u16>)>",
+        "votes16": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);15],Compact<u16>)>",
+        "votes2": "Vec<(Compact<u32>,(Compact<u16>,Compact<PerU16>),Compact<u16>)>",
+        "votes3": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);2],Compact<u16>)>",
+        "votes4": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);3],Compact<u16>)>",
+        "votes5": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);4],Compact<u16>)>",
+        "votes6": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);5],Compact<u16>)>",
+        "votes7": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);6],Compact<u16>)>",
+        "votes8": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);7],Compact<u16>)>",
+        "votes9": "Vec<(Compact<u32>,[(Compact<u16>,Compact<PerU16>);8],Compact<u16>)>",
+      },
+      "SeedRuntimeOriginCaller": {
+        "_enum": {
+          "Ethereum": "PalletEthereumRawOrigin",
+          "Void": "SpCoreVoid",
+          "__Unused1": "Null",
+          "__Unused10": "Null",
+          "__Unused11": "Null",
+          "__Unused12": "Null",
+          "__Unused13": "Null",
+          "__Unused14": "Null",
+          "__Unused15": "Null",
+          "__Unused16": "Null",
+          "__Unused17": "Null",
+          "__Unused18": "Null",
+          "__Unused19": "Null",
+          "__Unused20": "Null",
+          "__Unused21": "Null",
+          "__Unused22": "Null",
+          "__Unused23": "Null",
+          "__Unused24": "Null",
+          "__Unused25": "Null",
+          "__Unused3": "Null",
+          "__Unused4": "Null",
+          "__Unused5": "Null",
+          "__Unused6": "Null",
+          "__Unused7": "Null",
+          "__Unused8": "Null",
+          "__Unused9": "Null",
+          "system": "FrameSupportDispatchRawOrigin",
+        },
+      },
+      "SeedRuntimeRuntime": "Null",
+      "SeedRuntimeSessionKeys": {
+        "babe": "SpConsensusBabeAppPublic",
+        "ethy": "SeedPrimitivesEthyCryptoAppCryptoPublic",
+        "grandpa": "SpFinalityGrandpaAppPublic",
+        "imOnline": "PalletImOnlineSr25519AppSr25519Public",
+      },
+      "SpConsensusBabeAllowedSlots": {
+        "_enum": [
+          "PrimarySlots",
+          "PrimaryAndSecondaryPlainSlots",
+          "PrimaryAndSecondaryVRFSlots",
+        ],
+      },
+      "SpConsensusBabeAppPublic": "SpCoreSr25519Public",
+      "SpConsensusBabeBabeEpochConfiguration": {
+        "allowedSlots": "SpConsensusBabeAllowedSlots",
+        "c": "(u64,u64)",
+      },
+      "SpConsensusBabeDigestsNextConfigDescriptor": {
+        "_enum": {
+          "V1": {
+            "allowedSlots": "SpConsensusBabeAllowedSlots",
+            "c": "(u64,u64)",
+          },
+          "__Unused0": "Null",
+        },
+      },
+      "SpConsensusBabeDigestsPreDigest": {
+        "_enum": {
+          "Primary": "SpConsensusBabeDigestsPrimaryPreDigest",
+          "SecondaryPlain": "SpConsensusBabeDigestsSecondaryPlainPreDigest",
+          "SecondaryVRF": "SpConsensusBabeDigestsSecondaryVRFPreDigest",
+          "__Unused0": "Null",
+        },
+      },
+      "SpConsensusBabeDigestsPrimaryPreDigest": {
+        "authorityIndex": "u32",
+        "slot": "u64",
+        "vrfOutput": "[u8;32]",
+        "vrfProof": "[u8;64]",
+      },
+      "SpConsensusBabeDigestsSecondaryPlainPreDigest": {
+        "authorityIndex": "u32",
+        "slot": "u64",
+      },
+      "SpConsensusBabeDigestsSecondaryVRFPreDigest": {
+        "authorityIndex": "u32",
+        "slot": "u64",
+        "vrfOutput": "[u8;32]",
+        "vrfProof": "[u8;64]",
+      },
+      "SpConsensusSlotsEquivocationProof": {
+        "firstHeader": "SpRuntimeHeader",
+        "offender": "SpConsensusBabeAppPublic",
+        "secondHeader": "SpRuntimeHeader",
+        "slot": "u64",
+      },
+      "SpCoreCryptoKeyTypeId": "[u8;4]",
+      "SpCoreEcdsaPublic": "[u8;33]",
+      "SpCoreEcdsaSignature": "[u8;65]",
+      "SpCoreEd25519Public": "[u8;32]",
+      "SpCoreEd25519Signature": "[u8;64]",
+      "SpCoreOffchainOpaqueNetworkState": {
+        "externalAddresses": "Vec<OpaqueMultiaddr>",
+        "peerId": "OpaquePeerId",
+      },
+      "SpCoreSr25519Public": "[u8;32]",
+      "SpCoreSr25519Signature": "[u8;64]",
+      "SpCoreVoid": "Null",
+      "SpFinalityGrandpaAppPublic": "SpCoreEd25519Public",
+      "SpFinalityGrandpaAppSignature": "SpCoreEd25519Signature",
+      "SpFinalityGrandpaEquivocation": {
+        "_enum": {
+          "Precommit": "FinalityGrandpaEquivocationPrecommit",
+          "Prevote": "FinalityGrandpaEquivocationPrevote",
+        },
+      },
+      "SpFinalityGrandpaEquivocationProof": {
+        "equivocation": "SpFinalityGrandpaEquivocation",
+        "setId": "u64",
+      },
+      "SpNposElectionsElectionScore": {
+        "minimalStake": "u128",
+        "sumStake": "u128",
+        "sumStakeSquared": "u128",
+      },
+      "SpNposElectionsSupport": {
+        "total": "u128",
+        "voters": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
+      },
+      "SpRuntimeArithmeticError": {
+        "_enum": [
+          "Underflow",
+          "Overflow",
+          "DivisionByZero",
+        ],
+      },
+      "SpRuntimeBlakeTwo256": "Null",
+      "SpRuntimeDigest": {
+        "logs": "Vec<SpRuntimeDigestDigestItem>",
+      },
+      "SpRuntimeDigestDigestItem": {
+        "_enum": {
+          "Consensus": "([u8;4],Bytes)",
+          "Other": "Bytes",
+          "PreRuntime": "([u8;4],Bytes)",
+          "RuntimeEnvironmentUpdated": "Null",
+          "Seal": "([u8;4],Bytes)",
+          "__Unused1": "Null",
+          "__Unused2": "Null",
+          "__Unused3": "Null",
+          "__Unused7": "Null",
+        },
+      },
+      "SpRuntimeDispatchError": {
+        "_enum": {
+          "Arithmetic": "SpRuntimeArithmeticError",
+          "BadOrigin": "Null",
+          "CannotLookup": "Null",
+          "ConsumerRemaining": "Null",
+          "Module": "SpRuntimeModuleError",
+          "NoProviders": "Null",
+          "Other": "Null",
+          "Token": "SpRuntimeTokenError",
+          "TooManyConsumers": "Null",
+          "Transactional": "SpRuntimeTransactionalError",
+        },
+      },
+      "SpRuntimeHeader": {
+        "digest": "SpRuntimeDigest",
+        "extrinsicsRoot": "H256",
+        "number": "Compact<u32>",
+        "parentHash": "H256",
+        "stateRoot": "H256",
+      },
+      "SpRuntimeModuleError": {
+        "error": "[u8;4]",
+        "index": "u8",
+      },
+      "SpRuntimeTokenError": {
+        "_enum": [
+          "NoFunds",
+          "WouldDie",
+          "BelowMinimum",
+          "CannotCreate",
+          "UnknownAsset",
+          "Frozen",
+          "Unsupported",
+        ],
+      },
+      "SpRuntimeTransactionalError": {
+        "_enum": [
+          "LimitReached",
+          "NoLayer",
+        ],
+      },
+      "SpSessionMembershipProof": {
+        "session": "u32",
+        "trieNodes": "Vec<Bytes>",
+        "validatorCount": "u32",
+      },
+      "SpStakingOffenceOffenceDetails": {
+        "offender": "(SeedPrimitivesSignatureAccountId20,PalletStakingExposure)",
+        "reporters": "Vec<SeedPrimitivesSignatureAccountId20>",
+      },
+      "SpVersionRuntimeVersion": {
+        "apis": "Vec<([u8;8],u32)>",
+        "authoringVersion": "u32",
+        "implName": "Text",
+        "implVersion": "u32",
+        "specName": "Text",
+        "specVersion": "u32",
+        "stateVersion": "u8",
+        "transactionVersion": "u32",
+      },
+    },
+  },
+}
+`;
