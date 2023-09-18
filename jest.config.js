@@ -7,4 +7,12 @@ module.exports = {
 		"@therootnetwork/evm/(.*)$": ["<rootDir>/packages/evm/src/$1"],
 		"@therootnetwork/api-types/(.*)$": ["<rootDir>/packages/api-types/src/$1"],
 	},
+	transform: {
+		"^.+\\.tsx?$": [
+			"ts-jest",
+			{
+				isolatedModules: true,
+			},
+		],
+	},
 };
