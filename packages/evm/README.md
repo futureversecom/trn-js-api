@@ -36,6 +36,10 @@ Converts native asset id to ERC-20 contract address
 
 Converts native nft collection id to ERC-721 contract address
 
+### `function collectionIdToERC1155Address(collectionId: string | number)`
+
+Converts native sft collection id to ERC-1155 contract address
+
 ### `function getPublicProviderUrl(network: NetworkName): HttpProviderUrl`
 
 Returns the Public RPC URls for the corresponding `network`
