@@ -32,6 +32,10 @@ const data = await api.query.system.account("0xE04CC55ebEE1cBCE552f250e85c57B70B
 console.log(data.toHuman());
 ```
 
+## TypeScript Support
+
+See [`api-types`](https://github.com/futureversecom/trn-js-api/tree/main/packages/api-types) for more details
+
 ## API
 
 ### `function getApiOptions()`
@@ -41,3 +45,7 @@ Returns an `ApiOptions` object that contains necessary types, rpc methods to con
 ### `function getPublicProvider(network: NetworkName, useWsProvider?: boolean)`
 
 Returns a `provider` instance of either `WsProvider` or `HttpProvider` that connects to TRN mainnet `"root"` or testnet `"porcini"`
+
+### `function getPublicProviderUrl(network: NetworkName, useWsProvider?: boolean)`
+
+Used by `getPublicProvider`, simply returns public URL for the provider
