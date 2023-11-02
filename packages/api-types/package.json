@@ -8,10 +8,11 @@
     "_clean": "rm -rdf dist",
     "_build": "tsc --build tsconfig.json",
     "_gen": "ts-node scripts/generateTypes.ts",
+    "_format": "pnpm prettier --config ../../.prettierrc.js --write .",
     "build": "run-s _clean _build",
     "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts --ignore-path ../../.eslintignore",
     "update:meta": "ts-node scripts/updateMeta.ts",
-    "generate:types": "run-s _gen format"
+    "generate:types": "pnpm _gen &&  pnpm _format"
   },
   "dependencies": {
     "@polkadot/types": "^10.9.1"

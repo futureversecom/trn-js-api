@@ -30,26 +30,25 @@ import type {
 	FinalityGrandpaPrecommit,
 	FinalityGrandpaPrevote,
 	FpRpcTransactionStatus,
+	FrameSupportDispatchDispatchClass,
+	FrameSupportDispatchDispatchInfo,
+	FrameSupportDispatchPays,
+	FrameSupportDispatchPerDispatchClassU32,
+	FrameSupportDispatchPerDispatchClassWeight,
+	FrameSupportDispatchPerDispatchClassWeightsPerClass,
 	FrameSupportDispatchRawOrigin,
 	FrameSupportPalletId,
 	FrameSupportScheduleLookupError,
 	FrameSupportScheduleMaybeHashed,
 	FrameSupportTokensMiscBalanceStatus,
-	FrameSupportWeightsDispatchClass,
-	FrameSupportWeightsDispatchInfo,
-	FrameSupportWeightsPays,
-	FrameSupportWeightsPerDispatchClassU32,
-	FrameSupportWeightsPerDispatchClassU64,
-	FrameSupportWeightsPerDispatchClassWeightsPerClass,
-	FrameSupportWeightsRuntimeDbWeight,
 	FrameSystemAccountInfo,
 	FrameSystemCall,
 	FrameSystemError,
 	FrameSystemEvent,
 	FrameSystemEventRecord,
 	FrameSystemExtensionsCheckGenesis,
-	FrameSystemExtensionsCheckNonce,
 	FrameSystemExtensionsCheckNonZeroSender,
+	FrameSystemExtensionsCheckNonce,
 	FrameSystemExtensionsCheckSpecVersion,
 	FrameSystemExtensionsCheckTxVersion,
 	FrameSystemExtensionsCheckWeight,
@@ -135,7 +134,7 @@ import type {
 	PalletEvmEvent,
 	PalletFeeControlCall,
 	PalletFeeControlEvent,
-	PalletFeeControlFeeConfig,
+	PalletFeeControlFeeControlFeeConfig,
 	PalletFeeProxyCall,
 	PalletFeeProxyError,
 	PalletFeeProxyEvent,
@@ -154,26 +153,32 @@ import type {
 	PalletImOnlineHeartbeat,
 	PalletImOnlineSr25519AppSr25519Public,
 	PalletImOnlineSr25519AppSr25519Signature,
+	PalletMarketplaceAuctionClosureReason,
+	PalletMarketplaceAuctionListing,
 	PalletMarketplaceCall,
-	PalletNftAuctionClosureReason,
-	PalletNftAuctionListing,
+	PalletMarketplaceError,
+	PalletMarketplaceEvent,
+	PalletMarketplaceFixedPriceClosureReason,
+	PalletMarketplaceFixedPriceListing,
+	PalletMarketplaceListing,
+	PalletMarketplaceMarketplace,
+	PalletMarketplaceOfferType,
+	PalletMarketplaceSimpleOffer,
 	PalletNftCall,
 	PalletNftCollectionInformation,
 	PalletNftCrossChainCompatibility,
 	PalletNftError,
 	PalletNftEvent,
-	PalletNftFixedPriceClosureReason,
-	PalletNftFixedPriceListing,
-	PalletNftListing,
-	PalletNftMarketplace,
-	PalletNftOfferType,
+	PalletNftPegBlockedTokenInfo,
 	PalletNftPegCall,
 	PalletNftPegError,
 	PalletNftPegEvent,
-	PalletNftSimpleOffer,
-	PalletNftTokenLockReason,
 	PalletNftTokenOwnership,
 	PalletOffencesEvent,
+	PalletPreimageCall,
+	PalletPreimageError,
+	PalletPreimageEvent,
+	PalletPreimageRequestStatus,
 	PalletProxyAnnouncement,
 	PalletProxyCall,
 	PalletProxyError,
@@ -236,14 +241,15 @@ import type {
 	PalletXrplBridgeCall,
 	PalletXrplBridgeError,
 	PalletXrplBridgeEvent,
+	PalletXrplBridgeHelpersXrpTransaction,
 	PalletXrplBridgeHelpersXrplTicketSequenceParams,
 	PalletXrplBridgeHelpersXrplTxData,
-	PalletXrplBridgeHelpersXrpTransaction,
 	SeedPalletCommonEventRouterError,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesEthyCryptoAppCryptoSignature,
 	SeedPrimitivesNftOriginChain,
 	SeedPrimitivesNftRoyaltiesSchedule,
+	SeedPrimitivesNftTokenLockReason,
 	SeedPrimitivesSignatureAccountId20,
 	SeedPrimitivesSignatureEthereumSignature,
 	SeedRuntimeImplsProxyType,
@@ -287,6 +293,7 @@ import type {
 	SpSessionMembershipProof,
 	SpStakingOffenceOffenceDetails,
 	SpVersionRuntimeVersion,
+	SpWeightsRuntimeDbWeight,
 } from "@polkadot/types/lookup";
 
 declare module "@polkadot/types/types/registry" {
@@ -315,18 +322,17 @@ declare module "@polkadot/types/types/registry" {
 		FinalityGrandpaPrecommit: FinalityGrandpaPrecommit;
 		FinalityGrandpaPrevote: FinalityGrandpaPrevote;
 		FpRpcTransactionStatus: FpRpcTransactionStatus;
+		FrameSupportDispatchDispatchClass: FrameSupportDispatchDispatchClass;
+		FrameSupportDispatchDispatchInfo: FrameSupportDispatchDispatchInfo;
+		FrameSupportDispatchPays: FrameSupportDispatchPays;
+		FrameSupportDispatchPerDispatchClassU32: FrameSupportDispatchPerDispatchClassU32;
+		FrameSupportDispatchPerDispatchClassWeight: FrameSupportDispatchPerDispatchClassWeight;
+		FrameSupportDispatchPerDispatchClassWeightsPerClass: FrameSupportDispatchPerDispatchClassWeightsPerClass;
 		FrameSupportDispatchRawOrigin: FrameSupportDispatchRawOrigin;
 		FrameSupportPalletId: FrameSupportPalletId;
 		FrameSupportScheduleLookupError: FrameSupportScheduleLookupError;
 		FrameSupportScheduleMaybeHashed: FrameSupportScheduleMaybeHashed;
 		FrameSupportTokensMiscBalanceStatus: FrameSupportTokensMiscBalanceStatus;
-		FrameSupportWeightsDispatchClass: FrameSupportWeightsDispatchClass;
-		FrameSupportWeightsDispatchInfo: FrameSupportWeightsDispatchInfo;
-		FrameSupportWeightsPays: FrameSupportWeightsPays;
-		FrameSupportWeightsPerDispatchClassU32: FrameSupportWeightsPerDispatchClassU32;
-		FrameSupportWeightsPerDispatchClassU64: FrameSupportWeightsPerDispatchClassU64;
-		FrameSupportWeightsPerDispatchClassWeightsPerClass: FrameSupportWeightsPerDispatchClassWeightsPerClass;
-		FrameSupportWeightsRuntimeDbWeight: FrameSupportWeightsRuntimeDbWeight;
 		FrameSystemAccountInfo: FrameSystemAccountInfo;
 		FrameSystemCall: FrameSystemCall;
 		FrameSystemError: FrameSystemError;
@@ -420,7 +426,7 @@ declare module "@polkadot/types/types/registry" {
 		PalletEvmEvent: PalletEvmEvent;
 		PalletFeeControlCall: PalletFeeControlCall;
 		PalletFeeControlEvent: PalletFeeControlEvent;
-		PalletFeeControlFeeConfig: PalletFeeControlFeeConfig;
+		PalletFeeControlFeeControlFeeConfig: PalletFeeControlFeeControlFeeConfig;
 		PalletFeeProxyCall: PalletFeeProxyCall;
 		PalletFeeProxyError: PalletFeeProxyError;
 		PalletFeeProxyEvent: PalletFeeProxyEvent;
@@ -439,26 +445,32 @@ declare module "@polkadot/types/types/registry" {
 		PalletImOnlineHeartbeat: PalletImOnlineHeartbeat;
 		PalletImOnlineSr25519AppSr25519Public: PalletImOnlineSr25519AppSr25519Public;
 		PalletImOnlineSr25519AppSr25519Signature: PalletImOnlineSr25519AppSr25519Signature;
+		PalletMarketplaceAuctionClosureReason: PalletMarketplaceAuctionClosureReason;
+		PalletMarketplaceAuctionListing: PalletMarketplaceAuctionListing;
 		PalletMarketplaceCall: PalletMarketplaceCall;
-		PalletNftAuctionClosureReason: PalletNftAuctionClosureReason;
-		PalletNftAuctionListing: PalletNftAuctionListing;
+		PalletMarketplaceError: PalletMarketplaceError;
+		PalletMarketplaceEvent: PalletMarketplaceEvent;
+		PalletMarketplaceFixedPriceClosureReason: PalletMarketplaceFixedPriceClosureReason;
+		PalletMarketplaceFixedPriceListing: PalletMarketplaceFixedPriceListing;
+		PalletMarketplaceListing: PalletMarketplaceListing;
+		PalletMarketplaceMarketplace: PalletMarketplaceMarketplace;
+		PalletMarketplaceOfferType: PalletMarketplaceOfferType;
+		PalletMarketplaceSimpleOffer: PalletMarketplaceSimpleOffer;
 		PalletNftCall: PalletNftCall;
 		PalletNftCollectionInformation: PalletNftCollectionInformation;
 		PalletNftCrossChainCompatibility: PalletNftCrossChainCompatibility;
 		PalletNftError: PalletNftError;
 		PalletNftEvent: PalletNftEvent;
-		PalletNftFixedPriceClosureReason: PalletNftFixedPriceClosureReason;
-		PalletNftFixedPriceListing: PalletNftFixedPriceListing;
-		PalletNftListing: PalletNftListing;
-		PalletNftMarketplace: PalletNftMarketplace;
-		PalletNftOfferType: PalletNftOfferType;
+		PalletNftPegBlockedTokenInfo: PalletNftPegBlockedTokenInfo;
 		PalletNftPegCall: PalletNftPegCall;
 		PalletNftPegError: PalletNftPegError;
 		PalletNftPegEvent: PalletNftPegEvent;
-		PalletNftSimpleOffer: PalletNftSimpleOffer;
-		PalletNftTokenLockReason: PalletNftTokenLockReason;
 		PalletNftTokenOwnership: PalletNftTokenOwnership;
 		PalletOffencesEvent: PalletOffencesEvent;
+		PalletPreimageCall: PalletPreimageCall;
+		PalletPreimageError: PalletPreimageError;
+		PalletPreimageEvent: PalletPreimageEvent;
+		PalletPreimageRequestStatus: PalletPreimageRequestStatus;
 		PalletProxyAnnouncement: PalletProxyAnnouncement;
 		PalletProxyCall: PalletProxyCall;
 		PalletProxyError: PalletProxyError;
@@ -529,6 +541,7 @@ declare module "@polkadot/types/types/registry" {
 		SeedPrimitivesEthyCryptoAppCryptoSignature: SeedPrimitivesEthyCryptoAppCryptoSignature;
 		SeedPrimitivesNftOriginChain: SeedPrimitivesNftOriginChain;
 		SeedPrimitivesNftRoyaltiesSchedule: SeedPrimitivesNftRoyaltiesSchedule;
+		SeedPrimitivesNftTokenLockReason: SeedPrimitivesNftTokenLockReason;
 		SeedPrimitivesSignatureAccountId20: SeedPrimitivesSignatureAccountId20;
 		SeedPrimitivesSignatureEthereumSignature: SeedPrimitivesSignatureEthereumSignature;
 		SeedRuntimeImplsProxyType: SeedRuntimeImplsProxyType;
@@ -572,5 +585,6 @@ declare module "@polkadot/types/types/registry" {
 		SpSessionMembershipProof: SpSessionMembershipProof;
 		SpStakingOffenceOffenceDetails: SpStakingOffenceOffenceDetails;
 		SpVersionRuntimeVersion: SpVersionRuntimeVersion;
+		SpWeightsRuntimeDbWeight: SpWeightsRuntimeDbWeight;
 	} // InterfaceTypes
 } // declare module

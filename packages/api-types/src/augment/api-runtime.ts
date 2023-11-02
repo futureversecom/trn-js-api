@@ -7,16 +7,16 @@ import "@polkadot/api-base/types/calls";
 
 import type { ApiTypes, AugmentedCall, DecoratedCallBase } from "@polkadot/api-base/types";
 import type {
-	bool,
 	Bytes,
 	Null,
 	Option,
 	Result,
 	U256,
+	Vec,
+	bool,
 	u256,
 	u32,
 	u64,
-	Vec,
 } from "@polkadot/types-codec";
 import type { AnyNumber, ITuple } from "@polkadot/types-codec/types";
 import type {
@@ -67,33 +67,33 @@ declare module "@polkadot/api-base/types/calls" {
 		accountNonceApi: {
 			/**
 			 * The API to query account nonce (aka transaction index)
-			 */
+			 **/
 			accountNonce: AugmentedCall<
 				ApiType,
 				(accountId: AccountId | string | Uint8Array) => Observable<Index>
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0xcbca25e39f142387/2 */
 		babeApi: {
 			/**
 			 * Return the genesis configuration for BABE. The configuration is only read on genesis.
-			 */
+			 **/
 			configuration: AugmentedCall<ApiType, () => Observable<BabeGenesisConfiguration>>;
 			/**
 			 * Returns information regarding the current epoch.
-			 */
+			 **/
 			currentEpoch: AugmentedCall<ApiType, () => Observable<Epoch>>;
 			/**
 			 * Returns the slot that started the current epoch.
-			 */
+			 **/
 			currentEpochStart: AugmentedCall<ApiType, () => Observable<Slot>>;
 			/**
 			 * Generates a proof of key ownership for the given authority in the current epoch.
-			 */
+			 **/
 			generateKeyOwnershipProof: AugmentedCall<
 				ApiType,
 				(
@@ -103,11 +103,11 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Returns information regarding the next epoch (which was already previously announced).
-			 */
+			 **/
 			nextEpoch: AugmentedCall<ApiType, () => Observable<Epoch>>;
 			/**
 			 * Submits an unsigned extrinsic to report an equivocation.
-			 */
+			 **/
 			submitReportEquivocationUnsignedExtrinsic: AugmentedCall<
 				ApiType,
 				(
@@ -121,14 +121,14 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0x40fe3ad401f8959a/6 */
 		blockBuilder: {
 			/**
 			 * Apply the given extrinsic.
-			 */
+			 **/
 			applyExtrinsic: AugmentedCall<
 				ApiType,
 				(
@@ -137,7 +137,7 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Check that the inherents are valid.
-			 */
+			 **/
 			checkInherents: AugmentedCall<
 				ApiType,
 				(
@@ -147,11 +147,11 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Finish the current block.
-			 */
+			 **/
 			finalizeBlock: AugmentedCall<ApiType, () => Observable<Header>>;
 			/**
 			 * Generate inherent extrinsics.
-			 */
+			 **/
 			inherentExtrinsics: AugmentedCall<
 				ApiType,
 				(
@@ -160,14 +160,14 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0xe65b00e46cedd0aa/2 */
 		convertTransactionRuntimeApi: {
 			/**
 			 * Converts an Ethereum-style transaction to Extrinsic
-			 */
+			 **/
 			convertTransaction: AugmentedCall<
 				ApiType,
 				(
@@ -182,32 +182,32 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0x582211f65bb14b89/4 */
 		ethereumRuntimeRPCApi: {
 			/**
 			 * Returns pallet_evm::Accounts by address.
-			 */
+			 **/
 			accountBasic: AugmentedCall<
 				ApiType,
 				(address: H160 | string | Uint8Array) => Observable<EvmAccount>
 			>;
 			/**
 			 * For a given account address, returns pallet_evm::AccountCodes.
-			 */
+			 **/
 			accountCodeAt: AugmentedCall<
 				ApiType,
 				(address: H160 | string | Uint8Array) => Observable<Bytes>
 			>;
 			/**
 			 * Returns the converted FindAuthor::find_author authority id.
-			 */
+			 **/
 			author: AugmentedCall<ApiType, () => Observable<H160>>;
 			/**
 			 * Returns a frame_ethereum::call response. If `estimate` is true,
-			 */
+			 **/
 			call: AugmentedCall<
 				ApiType,
 				(
@@ -230,11 +230,11 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Returns runtime defined pallet_evm::ChainId.
-			 */
+			 **/
 			chainId: AugmentedCall<ApiType, () => Observable<u64>>;
 			/**
 			 * Returns a frame_ethereum::call response. If `estimate` is true,
-			 */
+			 **/
 			create: AugmentedCall<
 				ApiType,
 				(
@@ -256,7 +256,7 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Return all the current data for a block in a single runtime call.
-			 */
+			 **/
 			currentAll: AugmentedCall<
 				ApiType,
 				() => Observable<
@@ -265,26 +265,26 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Return the current block.
-			 */
+			 **/
 			currentBlock: AugmentedCall<ApiType, () => Observable<BlockV2>>;
 			/**
 			 * Return the current receipt.
-			 */
+			 **/
 			currentReceipts: AugmentedCall<ApiType, () => Observable<Option<Vec<EthReceiptV3>>>>;
 			/**
 			 * Return the current transaction status.
-			 */
+			 **/
 			currentTransactionStatuses: AugmentedCall<
 				ApiType,
 				() => Observable<Option<Vec<EthTransactionStatus>>>
 			>;
 			/**
 			 * Return the elasticity multiplier.
-			 */
+			 **/
 			elasticity: AugmentedCall<ApiType, () => Observable<Option<Permill>>>;
 			/**
 			 * Receives a `Vec<OpaqueExtrinsic>` and filters all the ethereum transactions.
-			 */
+			 **/
 			extrinsicFilter: AugmentedCall<
 				ApiType,
 				(
@@ -293,11 +293,11 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Returns FixedGasPrice::min_gas_price
-			 */
+			 **/
 			gasPrice: AugmentedCall<ApiType, () => Observable<u256>>;
 			/**
 			 * For a given account address and index, returns pallet_evm::AccountStorages.
-			 */
+			 **/
 			storageAt: AugmentedCall<
 				ApiType,
 				(
@@ -307,18 +307,18 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0xed99c5acb25eedf5/3 */
 		grandpaApi: {
 			/**
 			 * Get current GRANDPA authority set id.
-			 */
+			 **/
 			currentSetId: AugmentedCall<ApiType, () => Observable<SetId>>;
 			/**
 			 * Generates a proof of key ownership for the given authority in the given set.
-			 */
+			 **/
 			generateKeyOwnershipProof: AugmentedCall<
 				ApiType,
 				(
@@ -328,11 +328,11 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Get the current GRANDPA authorities and weights. This should not change except for when changes are scheduled and the corresponding delay has passed.
-			 */
+			 **/
 			grandpaAuthorities: AugmentedCall<ApiType, () => Observable<AuthorityList>>;
 			/**
 			 * Submits an unsigned extrinsic to report an equivocation.
-			 */
+			 **/
 			submitReportEquivocationUnsignedExtrinsic: AugmentedCall<
 				ApiType,
 				(
@@ -346,25 +346,25 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0x37e397fc7c91f5e4/1 */
 		metadata: {
 			/**
 			 * Returns the metadata of a runtime
-			 */
+			 **/
 			metadata: AugmentedCall<ApiType, () => Observable<OpaqueMetadata>>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0xf78b278be53f454c/2 */
 		offchainWorkerApi: {
 			/**
 			 * Starts the off-chain task for given block header.
-			 */
+			 **/
 			offchainWorker: AugmentedCall<
 				ApiType,
 				(
@@ -383,14 +383,14 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0xab3c0572291feb8b/1 */
 		sessionKeys: {
 			/**
 			 * Decode the given public session keys.
-			 */
+			 **/
 			decodeSessionKeys: AugmentedCall<
 				ApiType,
 				(
@@ -399,21 +399,21 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generate a set of session keys with optionally using the given seed.
-			 */
+			 **/
 			generateSessionKeys: AugmentedCall<
 				ApiType,
 				(seed: Option<Bytes> | null | Uint8Array | Bytes | string) => Observable<Bytes>
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0xd2bc9897eed08f15/3 */
 		taggedTransactionQueue: {
 			/**
 			 * Validate the transaction.
-			 */
+			 **/
 			validateTransaction: AugmentedCall<
 				ApiType,
 				(
@@ -424,14 +424,14 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 		/** 0x37c8bb1350a9a2a8/1 */
 		transactionPaymentApi: {
 			/**
 			 * The transaction fee details
-			 */
+			 **/
 			queryFeeDetails: AugmentedCall<
 				ApiType,
 				(
@@ -441,7 +441,7 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * The transaction info
-			 */
+			 **/
 			queryInfo: AugmentedCall<
 				ApiType,
 				(
@@ -451,7 +451,7 @@ declare module "@polkadot/api-base/types/calls" {
 			>;
 			/**
 			 * Generic call
-			 */
+			 **/
 			[key: string]: DecoratedCallBase<ApiType>;
 		};
 	} // AugmentedCalls
