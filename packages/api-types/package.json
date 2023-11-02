@@ -9,7 +9,7 @@
     "_build": "tsc --build tsconfig.json",
     "_gen": "ts-node scripts/generateTypes.ts",
     "build": "run-s _clean _build",
-    "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts",
+    "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts --ignore-path ../../.eslintignore",
     "update:meta": "ts-node scripts/updateMeta.ts",
     "generate:types": "run-s _gen format"
   },
