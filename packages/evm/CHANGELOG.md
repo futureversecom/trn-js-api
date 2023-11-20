@@ -1,5 +1,11 @@
 # @therootnetwork/evm
 
+## 1.0.4
+
+### Patch Changes
+
+- Add `registerDelegateWithSignature` interface to FUTUREPASS_PRECOMPILE_ABI
+
 ## 1.0.3
 
 ### Patch Changes

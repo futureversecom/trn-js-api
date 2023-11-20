@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+## 1.0.6
+
+### Patch Changes
+
+- Update types package with Runtime v45
+
 ## 1.0.5
 
 ### Patch Changes
