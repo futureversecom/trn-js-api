@@ -1569,16 +1569,23 @@ exports[`getApiOptions returns expected options 1`] = `
           "activate_withdrawals": {
             "activate": "bool",
           },
-          "set_contract_address": {
+          "set_erc20_asset_map": {
+            "assetId": "u32",
             "ethAddress": "H160",
           },
           "set_erc20_meta": {
             "details": "Vec<(H160,Bytes,u8)>",
           },
+          "set_erc20_peg_address": {
+            "ethAddress": "H160",
+          },
           "set_payment_delay": {
             "assetId": "u32",
             "delay": "u32",
             "minBalance": "u128",
+          },
+          "set_root_peg_address": {
+            "ethAddress": "H160",
           },
           "withdraw": {
             "amount": "u128",
@@ -1597,6 +1604,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "CreateAssetFailed",
           "InvalidAmount",
           "InvalidPalletId",
+          "InvalidSourceAddress",
           "DepositsPaused",
           "WithdrawalsPaused",
           "UnsupportedAsset",
@@ -1622,6 +1630,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "NoAvailableDelayedPaymentIds": "Null",
           "PaymentDelaySet": "(u32,u128,u32)",
           "SetContractAddress": "H160",
+          "SetRootPegContract": "H160",
         },
       },
       "PalletErc20PegWithdrawMessage": {
@@ -1911,12 +1920,27 @@ exports[`getApiOptions returns expected options 1`] = `
           "set_evm_base_fee": {
             "value": "U256",
           },
+          "set_length_multiplier": {
+            "value": "u128",
+          },
           "set_weight_multiplier": {
             "value": "Perbill",
           },
         },
       },
-      "PalletFeeControlEvent": "Null",
+      "PalletFeeControlEvent": {
+        "_enum": {
+          "EvmBaseFeeSet": {
+            "baseFee": "U256",
+          },
+          "LengthMultiplierSet": {
+            "lengthMultiplier": "u128",
+          },
+          "WeightMultiplierSet": {
+            "weightMultiplier": "Perbill",
+          },
+        },
+      },
       "PalletFeeControlFeeControlFeeConfig": {
         "evmBaseFeePerGas": "U256",
         "lengthMultiplier": "u128",
@@ -2353,6 +2377,91 @@ exports[`getApiOptions returns expected options 1`] = `
         "marketplaceId": "Option<u32>",
         "tokenId": "(u32,u32)",
       },
+      "PalletMultisigCall": {
+        "_enum": {
+          "approve_as_multi": {
+            "callHash": "[u8;32]",
+            "maxWeight": "WeightV1",
+            "maybeTimepoint": "Option<PalletMultisigTimepoint>",
+            "otherSignatories": "Vec<SeedPrimitivesSignatureAccountId20>",
+            "threshold": "u16",
+          },
+          "as_multi": {
+            "call": "WrapperKeepOpaque<Call>",
+            "maxWeight": "WeightV1",
+            "maybeTimepoint": "Option<PalletMultisigTimepoint>",
+            "otherSignatories": "Vec<SeedPrimitivesSignatureAccountId20>",
+            "storeCall": "bool",
+            "threshold": "u16",
+          },
+          "as_multi_threshold_1": {
+            "call": "Call",
+            "otherSignatories": "Vec<SeedPrimitivesSignatureAccountId20>",
+          },
+          "cancel_as_multi": {
+            "callHash": "[u8;32]",
+            "otherSignatories": "Vec<SeedPrimitivesSignatureAccountId20>",
+            "threshold": "u16",
+            "timepoint": "PalletMultisigTimepoint",
+          },
+        },
+      },
+      "PalletMultisigError": {
+        "_enum": [
+          "MinimumThreshold",
+          "AlreadyApproved",
+          "NoApprovalsNeeded",
+          "TooFewSignatories",
+          "TooManySignatories",
+          "SignatoriesOutOfOrder",
+          "SenderInSignatories",
+          "NotFound",
+          "NotOwner",
+          "NoTimepoint",
+          "WrongTimepoint",
+          "UnexpectedTimepoint",
+          "MaxWeightTooLow",
+          "AlreadyStored",
+        ],
+      },
+      "PalletMultisigEvent": {
+        "_enum": {
+          "MultisigApproval": {
+            "approving": "SeedPrimitivesSignatureAccountId20",
+            "callHash": "[u8;32]",
+            "multisig": "SeedPrimitivesSignatureAccountId20",
+            "timepoint": "PalletMultisigTimepoint",
+          },
+          "MultisigCancelled": {
+            "callHash": "[u8;32]",
+            "cancelling": "SeedPrimitivesSignatureAccountId20",
+            "multisig": "SeedPrimitivesSignatureAccountId20",
+            "timepoint": "PalletMultisigTimepoint",
+          },
+          "MultisigExecuted": {
+            "approving": "SeedPrimitivesSignatureAccountId20",
+            "callHash": "[u8;32]",
+            "multisig": "SeedPrimitivesSignatureAccountId20",
+            "result": "Result<Null, SpRuntimeDispatchError>",
+            "timepoint": "PalletMultisigTimepoint",
+          },
+          "NewMultisig": {
+            "approving": "SeedPrimitivesSignatureAccountId20",
+            "callHash": "[u8;32]",
+            "multisig": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletMultisigMultisig": {
+        "approvals": "Vec<SeedPrimitivesSignatureAccountId20>",
+        "deposit": "u128",
+        "depositor": "SeedPrimitivesSignatureAccountId20",
+        "when": "PalletMultisigTimepoint",
+      },
+      "PalletMultisigTimepoint": {
+        "height": "u32",
+        "index": "u32",
+      },
       "PalletNftCall": {
         "_enum": {
           "burn": {
@@ -2384,6 +2493,10 @@ exports[`getApiOptions returns expected options 1`] = `
             "collectionId": "u32",
             "maxIssuance": "u32",
           },
+          "set_mint_fee": {
+            "collectionId": "u32",
+            "pricingDetails": "Option<(u32,u128)>",
+          },
           "set_name": {
             "collectionId": "u32",
             "name": "Bytes",
@@ -2395,6 +2508,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "set_royalties_schedule": {
             "collectionId": "u32",
             "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
+          },
+          "toggle_public_mint": {
+            "collectionId": "u32",
+            "enabled": "bool",
           },
           "transfer": {
             "collectionId": "u32",
@@ -2424,32 +2541,19 @@ exports[`getApiOptions returns expected options 1`] = `
           "NoAvailableIds",
           "NotTokenOwner",
           "NoToken",
-          "NotForFixedPriceSale",
-          "NotForAuction",
           "NotCollectionOwner",
-          "TokenNotListed",
-          "MaxOffersReached",
+          "PublicMintDisabled",
           "TokenLocked",
           "RoyaltiesInvalid",
-          "BidTooLow",
-          "MixedBundleSale",
-          "MarketplaceNotRegistered",
           "NoCollectionFound",
           "InvalidMetadataPath",
-          "InvalidOffer",
-          "NotBuyer",
-          "NotSeller",
-          "IsTokenOwner",
           "InvalidNewOwner",
-          "ZeroOffer",
           "TokenLimitExceeded",
           "MintLimitExceeded",
-          "TokenOnAuction",
           "InvalidMaxIssuance",
           "MaxIssuanceAlreadySet",
           "MaxIssuanceReached",
           "AttemptedMintOnBridgedToken",
-          "FailedMintOnBridgedToken",
           "CannotClaimNonClaimableCollections",
           "InitialIssuanceNotZero",
           "CollectionIssuanceNotZero",
@@ -2496,6 +2600,18 @@ exports[`getApiOptions returns expected options 1`] = `
             "owner": "SeedPrimitivesSignatureAccountId20",
             "start": "u32",
           },
+          "MintFeePaid": {
+            "collectionId": "u32",
+            "paymentAmount": "u128",
+            "paymentAsset": "u32",
+            "tokenCount": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "MintPriceSet": {
+            "collectionId": "u32",
+            "mintPrice": "Option<u128>",
+            "paymentAsset": "Option<u32>",
+          },
           "NameSet": {
             "collectionId": "u32",
             "name": "Bytes",
@@ -2503,6 +2619,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "OwnerSet": {
             "collectionId": "u32",
             "newOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "PublicMintToggle": {
+            "collectionId": "u32",
+            "enabled": "bool",
           },
           "RoyaltiesScheduleSet": {
             "collectionId": "u32",
@@ -2983,6 +3103,10 @@ exports[`getApiOptions returns expected options 1`] = `
             "maxIssuance": "u128",
             "tokenId": "(u32,u32)",
           },
+          "set_mint_fee": {
+            "pricingDetails": "Option<(u32,u128)>",
+            "tokenId": "(u32,u32)",
+          },
           "set_name": {
             "collectionId": "u32",
             "collectionName": "Bytes",
@@ -2994,6 +3118,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "set_royalties_schedule": {
             "collectionId": "u32",
             "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
+          },
+          "toggle_public_mint": {
+            "enabled": "bool",
+            "tokenId": "(u32,u32)",
           },
           "transfer": {
             "collectionId": "u32",
@@ -3017,6 +3145,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "MaxIssuanceReached",
           "MaxOwnersReached",
           "Overflow",
+          "PublicMintDisabled",
         ],
       },
       "PalletSftEvent": {
@@ -3049,6 +3178,18 @@ exports[`getApiOptions returns expected options 1`] = `
             "owner": "SeedPrimitivesSignatureAccountId20",
             "serialNumbers": "Vec<u32>",
           },
+          "MintFeePaid": {
+            "paymentAmount": "u128",
+            "paymentAsset": "u32",
+            "tokenCount": "u128",
+            "tokenId": "(u32,u32)",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "MintPriceSet": {
+            "mintPrice": "Option<u128>",
+            "paymentAsset": "Option<u32>",
+            "tokenId": "(u32,u32)",
+          },
           "NameSet": {
             "collectionId": "u32",
             "collectionName": "Bytes",
@@ -3056,6 +3197,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "OwnerSet": {
             "collectionId": "u32",
             "newOwner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "PublicMintToggle": {
+            "enabled": "bool",
+            "tokenId": "(u32,u32)",
           },
           "RoyaltiesScheduleSet": {
             "collectionId": "u32",
@@ -3526,6 +3671,115 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
+      "PalletVortexCall": {
+        "_enum": {
+          "create_vtx_dist": "Null",
+          "disable_vtx_dist": {
+            "id": "u32",
+          },
+          "pay_unsigned": {
+            "currentBlock": "u32",
+            "id": "u32",
+          },
+          "redeem_tokens_from_vault": {
+            "id": "u32",
+            "vortexTokenAmount": "u128",
+          },
+          "register_rewards": {
+            "id": "u32",
+            "rewards": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
+          },
+          "set_admin": {
+            "_alias": {
+              "new_": "new",
+            },
+            "new_": "SeedPrimitivesSignatureAccountId20",
+          },
+          "set_asset_prices": {
+            "assetPrices": "Vec<(u32,u128)>",
+            "id": "u32",
+          },
+          "set_vtx_dist_eras": {
+            "endEra": "u32",
+            "id": "u32",
+            "startEra": "u32",
+          },
+          "start_vtx_dist": {
+            "id": "u32",
+          },
+          "trigger_vtx_distribution": {
+            "id": "u32",
+          },
+        },
+      },
+      "PalletVortexError": {
+        "_enum": [
+          "RequireAdmin",
+          "VtxDistIdNotAvailable",
+          "VtxDistAlreadyEnabled",
+          "VtxDistDisabled",
+          "InvalidEndBlock",
+          "NoVtxAssetMinted",
+          "InvalidAmount",
+          "VtxDistIdInUse",
+          "NotAValidator",
+          "VortexPeriodNotSet",
+          "PivotStringTooLong",
+          "AssetsShouldNotIncludeVtxAsset",
+          "AlreadyTriggered",
+          "NotTriggered",
+        ],
+      },
+      "PalletVortexEvent": {
+        "_enum": {
+          "AdminAccountChanged": {
+            "newKey": "SeedPrimitivesSignatureAccountId20",
+            "oldKey": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "RewardRegistered": {
+            "id": "u32",
+            "rewards": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
+          },
+          "SetAssetPrices": {
+            "assetPrices": "Vec<(u32,u128)>",
+            "id": "u32",
+          },
+          "SetVtxDistEras": {
+            "endEra": "u32",
+            "id": "u32",
+            "startEra": "u32",
+          },
+          "TriggerVtxDistribution": {
+            "id": "u32",
+          },
+          "VtxDistCreated": {
+            "id": "u32",
+          },
+          "VtxDistDisabled": {
+            "id": "u32",
+          },
+          "VtxDistDone": {
+            "id": "u32",
+          },
+          "VtxDistPaidOut": {
+            "amount": "u128",
+            "id": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "VtxDistStarted": {
+            "id": "u32",
+          },
+        },
+      },
+      "PalletVortexVtxDistStatus": {
+        "_enum": [
+          "Enabled",
+          "Disabled",
+          "Triggered",
+          "Paying",
+          "Done",
+        ],
+      },
       "PalletXls20Call": {
         "_enum": {
           "enable_xls20_compatibility": {
@@ -3699,6 +3953,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "FailedProcessing": "SpRuntimeDispatchError",
           "NoReceiver": "Null",
         },
+      },
+      "SeedPalletCommonUtilsPublicMintInformation": {
+        "enabled": "bool",
+        "pricingDetails": "Option<(u32,u128)>",
       },
       "SeedPrimitivesEthyCryptoAppCryptoPublic": "SpCoreEcdsaPublic",
       "SeedPrimitivesEthyCryptoAppCryptoSignature": "SpCoreEcdsaSignature",

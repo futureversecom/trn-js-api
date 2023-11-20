@@ -164,6 +164,11 @@ import type {
 	PalletMarketplaceMarketplace,
 	PalletMarketplaceOfferType,
 	PalletMarketplaceSimpleOffer,
+	PalletMultisigCall,
+	PalletMultisigError,
+	PalletMultisigEvent,
+	PalletMultisigMultisig,
+	PalletMultisigTimepoint,
 	PalletNftCall,
 	PalletNftCollectionInformation,
 	PalletNftCrossChainCompatibility,
@@ -235,6 +240,10 @@ import type {
 	PalletUtilityCall,
 	PalletUtilityError,
 	PalletUtilityEvent,
+	PalletVortexCall,
+	PalletVortexError,
+	PalletVortexEvent,
+	PalletVortexVtxDistStatus,
 	PalletXls20Call,
 	PalletXls20Error,
 	PalletXls20Event,
@@ -245,6 +254,7 @@ import type {
 	PalletXrplBridgeHelpersXrplTicketSequenceParams,
 	PalletXrplBridgeHelpersXrplTxData,
 	SeedPalletCommonEventRouterError,
+	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesEthyCryptoAppCryptoSignature,
 	SeedPrimitivesNftOriginChain,
@@ -456,6 +466,11 @@ declare module "@polkadot/types/types/registry" {
 		PalletMarketplaceMarketplace: PalletMarketplaceMarketplace;
 		PalletMarketplaceOfferType: PalletMarketplaceOfferType;
 		PalletMarketplaceSimpleOffer: PalletMarketplaceSimpleOffer;
+		PalletMultisigCall: PalletMultisigCall;
+		PalletMultisigError: PalletMultisigError;
+		PalletMultisigEvent: PalletMultisigEvent;
+		PalletMultisigMultisig: PalletMultisigMultisig;
+		PalletMultisigTimepoint: PalletMultisigTimepoint;
 		PalletNftCall: PalletNftCall;
 		PalletNftCollectionInformation: PalletNftCollectionInformation;
 		PalletNftCrossChainCompatibility: PalletNftCrossChainCompatibility;
@@ -527,6 +542,10 @@ declare module "@polkadot/types/types/registry" {
 		PalletUtilityCall: PalletUtilityCall;
 		PalletUtilityError: PalletUtilityError;
 		PalletUtilityEvent: PalletUtilityEvent;
+		PalletVortexCall: PalletVortexCall;
+		PalletVortexError: PalletVortexError;
+		PalletVortexEvent: PalletVortexEvent;
+		PalletVortexVtxDistStatus: PalletVortexVtxDistStatus;
 		PalletXls20Call: PalletXls20Call;
 		PalletXls20Error: PalletXls20Error;
 		PalletXls20Event: PalletXls20Event;
@@ -537,6 +556,7 @@ declare module "@polkadot/types/types/registry" {
 		PalletXrplBridgeHelpersXrplTicketSequenceParams: PalletXrplBridgeHelpersXrplTicketSequenceParams;
 		PalletXrplBridgeHelpersXrplTxData: PalletXrplBridgeHelpersXrplTxData;
 		SeedPalletCommonEventRouterError: SeedPalletCommonEventRouterError;
+		SeedPalletCommonUtilsPublicMintInformation: SeedPalletCommonUtilsPublicMintInformation;
 		SeedPrimitivesEthyCryptoAppCryptoPublic: SeedPrimitivesEthyCryptoAppCryptoPublic;
 		SeedPrimitivesEthyCryptoAppCryptoSignature: SeedPrimitivesEthyCryptoAppCryptoSignature;
 		SeedPrimitivesNftOriginChain: SeedPrimitivesNftOriginChain;

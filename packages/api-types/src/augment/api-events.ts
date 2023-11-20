@@ -11,6 +11,7 @@ import type {
 	Null,
 	Option,
 	Result,
+	U256,
 	U8aFixed,
 	Vec,
 	bool,
@@ -34,6 +35,7 @@ import type {
 	PalletImOnlineSr25519AppSr25519Public,
 	PalletMarketplaceAuctionClosureReason,
 	PalletMarketplaceFixedPriceClosureReason,
+	PalletMultisigTimepoint,
 	PalletNftCrossChainCompatibility,
 	PalletStakingExposure,
 	PalletStakingValidatorPrefs,
@@ -46,7 +48,13 @@ import type {
 	SpNposElectionsElectionScore,
 	SpRuntimeDispatchError,
 } from "@polkadot/types/lookup";
-import type { H160, H256, H512, Permill } from "@therootnetwork/api-types/interfaces/runtime";
+import type {
+	H160,
+	H256,
+	H512,
+	Perbill,
+	Permill,
+} from "@therootnetwork/api-types/interfaces/runtime";
 
 export type __AugmentedEvent<ApiType extends ApiTypes> = AugmentedEvent<ApiType>;
 
@@ -651,6 +659,10 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			SetContractAddress: AugmentedEvent<ApiType, [H160]>;
 			/**
+			 * The ROOT peg contract address has been set
+			 **/
+			SetRootPegContract: AugmentedEvent<ApiType, [H160]>;
+			/**
 			 * Generic event
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
@@ -787,6 +799,26 @@ declare module "@polkadot/api-base/types/events" {
 			[key: string]: AugmentedEvent<ApiType>;
 		};
 		feeControl: {
+			/**
+			 * The EVM base fee has been set to `base_fee`
+			 **/
+			EvmBaseFeeSet: AugmentedEvent<ApiType, [baseFee: U256], { baseFee: U256 }>;
+			/**
+			 * The length multiplier has been set to `length_multiplier`
+			 **/
+			LengthMultiplierSet: AugmentedEvent<
+				ApiType,
+				[lengthMultiplier: u128],
+				{ lengthMultiplier: u128 }
+			>;
+			/**
+			 * The weight multiplier has been set to `weight_multiplier`
+			 **/
+			WeightMultiplierSet: AugmentedEvent<
+				ApiType,
+				[weightMultiplier: Perbill],
+				{ weightMultiplier: Perbill }
+			>;
 			/**
 			 * Generic event
 			 **/
@@ -1178,6 +1210,84 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
 		};
+		multisig: {
+			/**
+			 * A multisig operation has been approved by someone.
+			 **/
+			MultisigApproval: AugmentedEvent<
+				ApiType,
+				[
+					approving: SeedPrimitivesSignatureAccountId20,
+					timepoint: PalletMultisigTimepoint,
+					multisig: SeedPrimitivesSignatureAccountId20,
+					callHash: U8aFixed,
+				],
+				{
+					approving: SeedPrimitivesSignatureAccountId20;
+					timepoint: PalletMultisigTimepoint;
+					multisig: SeedPrimitivesSignatureAccountId20;
+					callHash: U8aFixed;
+				}
+			>;
+			/**
+			 * A multisig operation has been cancelled.
+			 **/
+			MultisigCancelled: AugmentedEvent<
+				ApiType,
+				[
+					cancelling: SeedPrimitivesSignatureAccountId20,
+					timepoint: PalletMultisigTimepoint,
+					multisig: SeedPrimitivesSignatureAccountId20,
+					callHash: U8aFixed,
+				],
+				{
+					cancelling: SeedPrimitivesSignatureAccountId20;
+					timepoint: PalletMultisigTimepoint;
+					multisig: SeedPrimitivesSignatureAccountId20;
+					callHash: U8aFixed;
+				}
+			>;
+			/**
+			 * A multisig operation has been executed.
+			 **/
+			MultisigExecuted: AugmentedEvent<
+				ApiType,
+				[
+					approving: SeedPrimitivesSignatureAccountId20,
+					timepoint: PalletMultisigTimepoint,
+					multisig: SeedPrimitivesSignatureAccountId20,
+					callHash: U8aFixed,
+					result: Result<Null, SpRuntimeDispatchError>,
+				],
+				{
+					approving: SeedPrimitivesSignatureAccountId20;
+					timepoint: PalletMultisigTimepoint;
+					multisig: SeedPrimitivesSignatureAccountId20;
+					callHash: U8aFixed;
+					result: Result<Null, SpRuntimeDispatchError>;
+				}
+			>;
+			/**
+			 * A new multisig operation has begun.
+			 **/
+			NewMultisig: AugmentedEvent<
+				ApiType,
+				[
+					approving: SeedPrimitivesSignatureAccountId20,
+					multisig: SeedPrimitivesSignatureAccountId20,
+					callHash: U8aFixed,
+				],
+				{
+					approving: SeedPrimitivesSignatureAccountId20;
+					multisig: SeedPrimitivesSignatureAccountId20;
+					callHash: U8aFixed;
+				}
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
 		nft: {
 			/**
 			 * Base URI was set
@@ -1256,6 +1366,34 @@ declare module "@polkadot/api-base/types/events" {
 				{ collectionId: u32; start: u32; end: u32; owner: SeedPrimitivesSignatureAccountId20 }
 			>;
 			/**
+			 * Payment was made to cover a public mint
+			 **/
+			MintFeePaid: AugmentedEvent<
+				ApiType,
+				[
+					who: SeedPrimitivesSignatureAccountId20,
+					collectionId: u32,
+					paymentAsset: u32,
+					paymentAmount: u128,
+					tokenCount: u32,
+				],
+				{
+					who: SeedPrimitivesSignatureAccountId20;
+					collectionId: u32;
+					paymentAsset: u32;
+					paymentAmount: u128;
+					tokenCount: u32;
+				}
+			>;
+			/**
+			 * A mint price was set for a collection
+			 **/
+			MintPriceSet: AugmentedEvent<
+				ApiType,
+				[collectionId: u32, paymentAsset: Option<u32>, mintPrice: Option<u128>],
+				{ collectionId: u32; paymentAsset: Option<u32>; mintPrice: Option<u128> }
+			>;
+			/**
 			 * Name was set
 			 **/
 			NameSet: AugmentedEvent<
@@ -1270,6 +1408,14 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[collectionId: u32, newOwner: SeedPrimitivesSignatureAccountId20],
 				{ collectionId: u32; newOwner: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * Public minting was enabled/disabled for a collection
+			 **/
+			PublicMintToggle: AugmentedEvent<
+				ApiType,
+				[collectionId: u32, enabled: bool],
+				{ collectionId: u32; enabled: bool }
 			>;
 			/**
 			 * Royalties schedule was set
@@ -1684,6 +1830,34 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * Payment was made to cover a public mint
+			 **/
+			MintFeePaid: AugmentedEvent<
+				ApiType,
+				[
+					who: SeedPrimitivesSignatureAccountId20,
+					tokenId: ITuple<[u32, u32]>,
+					paymentAsset: u32,
+					paymentAmount: u128,
+					tokenCount: u128,
+				],
+				{
+					who: SeedPrimitivesSignatureAccountId20;
+					tokenId: ITuple<[u32, u32]>;
+					paymentAsset: u32;
+					paymentAmount: u128;
+					tokenCount: u128;
+				}
+			>;
+			/**
+			 * A mint price was set for a collection
+			 **/
+			MintPriceSet: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>, paymentAsset: Option<u32>, mintPrice: Option<u128>],
+				{ tokenId: ITuple<[u32, u32]>; paymentAsset: Option<u32>; mintPrice: Option<u128> }
+			>;
+			/**
 			 * Name was set
 			 **/
 			NameSet: AugmentedEvent<
@@ -1698,6 +1872,14 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[collectionId: u32, newOwner: SeedPrimitivesSignatureAccountId20],
 				{ collectionId: u32; newOwner: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * Public minting was enabled/disabled for a collection
+			 **/
+			PublicMintToggle: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>, enabled: bool],
+				{ tokenId: ITuple<[u32, u32]>; enabled: bool }
 			>;
 			/**
 			 * Royalties schedule was set
@@ -1993,6 +2175,78 @@ declare module "@polkadot/api-base/types/events" {
 				[error: SpRuntimeDispatchError],
 				{ error: SpRuntimeDispatchError }
 			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
+		vortexDistribution: {
+			/**
+			 * Admin Account changed
+			 **/
+			AdminAccountChanged: AugmentedEvent<
+				ApiType,
+				[
+					oldKey: Option<SeedPrimitivesSignatureAccountId20>,
+					newKey: SeedPrimitivesSignatureAccountId20,
+				],
+				{
+					oldKey: Option<SeedPrimitivesSignatureAccountId20>;
+					newKey: SeedPrimitivesSignatureAccountId20;
+				}
+			>;
+			/**
+			 * Rewards registered
+			 **/
+			RewardRegistered: AugmentedEvent<
+				ApiType,
+				[id: u32, rewards: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>],
+				{ id: u32; rewards: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>> }
+			>;
+			/**
+			 * Set asset prices
+			 **/
+			SetAssetPrices: AugmentedEvent<
+				ApiType,
+				[id: u32, assetPrices: Vec<ITuple<[u32, u128]>>],
+				{ id: u32; assetPrices: Vec<ITuple<[u32, u128]>> }
+			>;
+			/**
+			 * Set distribution eras
+			 **/
+			SetVtxDistEras: AugmentedEvent<
+				ApiType,
+				[id: u32, startEra: u32, endEra: u32],
+				{ id: u32; startEra: u32; endEra: u32 }
+			>;
+			/**
+			 * Trigger distribution calculation
+			 **/
+			TriggerVtxDistribution: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			/**
+			 * Distribution created
+			 **/
+			VtxDistCreated: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			/**
+			 * Distribution disabled
+			 **/
+			VtxDistDisabled: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			/**
+			 * Distribution done
+			 **/
+			VtxDistDone: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			/**
+			 * Distribution paid out
+			 **/
+			VtxDistPaidOut: AugmentedEvent<
+				ApiType,
+				[id: u32, who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ id: u32; who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Distribution started
+			 **/
+			VtxDistStarted: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
 			/**
 			 * Generic event
 			 **/

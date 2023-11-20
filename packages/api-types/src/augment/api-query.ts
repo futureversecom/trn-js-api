@@ -13,6 +13,7 @@ import type {
 	U256,
 	U8aFixed,
 	Vec,
+	WrapperKeepOpaque,
 	WrapperOpaque,
 	bool,
 	u128,
@@ -64,6 +65,7 @@ import type {
 	PalletMarketplaceListing,
 	PalletMarketplaceMarketplace,
 	PalletMarketplaceOfferType,
+	PalletMultisigMultisig,
 	PalletNftCollectionInformation,
 	PalletNftPegBlockedTokenInfo,
 	PalletPreimageRequestStatus,
@@ -87,8 +89,10 @@ import type {
 	PalletStakingUnappliedSlash,
 	PalletStakingValidatorPrefs,
 	PalletTransactionPaymentReleases,
+	PalletVortexVtxDistStatus,
 	PalletXrplBridgeHelpersXrpTransaction,
 	PalletXrplBridgeHelpersXrplTicketSequenceParams,
+	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesNftTokenLockReason,
 	SeedPrimitivesSignatureAccountId20,
@@ -104,6 +108,7 @@ import type {
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {
+	Call,
 	H160,
 	H256,
 	H512,
@@ -680,6 +685,11 @@ declare module "@polkadot/api-base/types/storage" {
 			readyBlocks: AugmentedQuery<ApiType, () => Observable<Vec<u32>>, []> &
 				QueryableStorageEntry<ApiType, []>;
 			/**
+			 * The ROOT peg contract address on Ethereum
+			 **/
+			rootPegContractAddress: AugmentedQuery<ApiType, () => Observable<H160>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
 			 * Whether withdrawals are active
 			 **/
 			withdrawalsActive: AugmentedQuery<ApiType, () => Observable<bool>, []> &
@@ -1248,6 +1258,34 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
+		multisig: {
+			calls: AugmentedQuery<
+				ApiType,
+				(
+					arg: U8aFixed | string | Uint8Array
+				) => Observable<
+					Option<ITuple<[WrapperKeepOpaque<Call>, SeedPrimitivesSignatureAccountId20, u128]>>
+				>,
+				[U8aFixed]
+			> &
+				QueryableStorageEntry<ApiType, [U8aFixed]>;
+			/**
+			 * The set of open multisig operations.
+			 **/
+			multisigs: AugmentedQuery<
+				ApiType,
+				(
+					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg2: U8aFixed | string | Uint8Array
+				) => Observable<Option<PalletMultisigMultisig>>,
+				[SeedPrimitivesSignatureAccountId20, U8aFixed]
+			> &
+				QueryableStorageEntry<ApiType, [SeedPrimitivesSignatureAccountId20, U8aFixed]>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
 		nft: {
 			/**
 			 * Map from collection to its information
@@ -1263,6 +1301,17 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			nextCollectionId: AugmentedQuery<ApiType, () => Observable<u32>, []> &
 				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Map from collection to its public minting information
+			 **/
+			publicMintInfo: AugmentedQuery<
+				ApiType,
+				(
+					arg: u32 | AnyNumber | Uint8Array
+				) => Observable<Option<SeedPalletCommonUtilsPublicMintInformation>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
 			/**
 			 * Map from a token to lock status if any
 			 **/
@@ -1546,6 +1595,17 @@ declare module "@polkadot/api-base/types/storage" {
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
 		sft: {
+			/**
+			 * Map from collection to its public minting information
+			 **/
+			publicMintInfo: AugmentedQuery<
+				ApiType,
+				(
+					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
+				) => Observable<Option<SeedPalletCommonUtilsPublicMintInformation>>,
+				[ITuple<[u32, u32]>]
+			> &
+				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
 			/**
 			 * Map from collection to its information
 			 **/
@@ -2187,6 +2247,93 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			eraTxFees: AugmentedQuery<ApiType, () => Observable<u128>, []> &
 				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
+		vortexDistribution: {
+			adminAccount: AugmentedQuery<ApiType, () => Observable<Option<U8aFixed>>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Stores asset prices for each vortex distribution
+			 **/
+			assetPrices: AugmentedQuery<
+				ApiType,
+				(
+					arg1: u32 | AnyNumber | Uint8Array,
+					arg2: u32 | AnyNumber | Uint8Array
+				) => Observable<u128>,
+				[u32, u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32, u32]>;
+			/**
+			 * Stores next unsigned tx block number
+			 **/
+			nextUnsignedAt: AugmentedQuery<ApiType, () => Observable<u32>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			nextVortexId: AugmentedQuery<ApiType, () => Observable<u32>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Stores stake and roles reward points for each vortex distribution
+			 **/
+			stakeRewardsPoints: AugmentedQuery<
+				ApiType,
+				(
+					arg1: u32 | AnyNumber | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<ITuple<[u128, u32]>>,
+				[u32, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<ApiType, [u32, SeedPrimitivesSignatureAccountId20]>;
+			/**
+			 * Stores total vortex amount for each distribution
+			 **/
+			totalVortex: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<u128>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores start and end eras of each vortex distribution
+			 **/
+			vtxDistEras: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<ITuple<[u32, u32]>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores order books for each vortex distribution
+			 **/
+			vtxDistOrderbook: AugmentedQuery<
+				ApiType,
+				(
+					arg1: u32 | AnyNumber | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<ITuple<[u128, bool]>>,
+				[u32, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<ApiType, [u32, SeedPrimitivesSignatureAccountId20]>;
+			/**
+			 * Stores payout pivot block for each vortex distribution
+			 **/
+			vtxDistPayoutPivot: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Bytes>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores status of each vortex distribution
+			 **/
+			vtxDistStatuses: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<PalletVortexVtxDistStatus>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
 			/**
 			 * Generic query
 			 **/

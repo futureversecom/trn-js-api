@@ -18,6 +18,7 @@ import type {
 	U256,
 	U8aFixed,
 	Vec,
+	WrapperKeepOpaque,
 	bool,
 	u128,
 	u16,
@@ -35,6 +36,7 @@ import type {
 	PalletEthyNotarizationPayload,
 	PalletImOnlineHeartbeat,
 	PalletImOnlineSr25519AppSr25519Signature,
+	PalletMultisigTimepoint,
 	PalletNftCrossChainCompatibility,
 	PalletStakingPalletConfigOpPerbill,
 	PalletStakingPalletConfigOpPercent,
@@ -1297,9 +1299,12 @@ declare module "@polkadot/api-base/types/submittable" {
 				(activate: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>,
 				[bool]
 			>;
-			setContractAddress: AugmentedSubmittable<
-				(ethAddress: H160 | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
-				[H160]
+			setErc20AssetMap: AugmentedSubmittable<
+				(
+					assetId: u32 | AnyNumber | Uint8Array,
+					ethAddress: H160 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, H160]
 			>;
 			setErc20Meta: AugmentedSubmittable<
 				(
@@ -1313,6 +1318,10 @@ declare module "@polkadot/api-base/types/submittable" {
 				) => SubmittableExtrinsic<ApiType>,
 				[Vec<ITuple<[H160, Bytes, u8]>>]
 			>;
+			setErc20PegAddress: AugmentedSubmittable<
+				(ethAddress: H160 | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[H160]
+			>;
 			setPaymentDelay: AugmentedSubmittable<
 				(
 					assetId: u32 | AnyNumber | Uint8Array,
@@ -1320,6 +1329,10 @@ declare module "@polkadot/api-base/types/submittable" {
 					delay: u32 | AnyNumber | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, u128, u32]
+			>;
+			setRootPegAddress: AugmentedSubmittable<
+				(ethAddress: H160 | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[H160]
 			>;
 			withdraw: AugmentedSubmittable<
 				(
@@ -1538,6 +1551,10 @@ declare module "@polkadot/api-base/types/submittable" {
 			setEvmBaseFee: AugmentedSubmittable<
 				(value: U256 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
 				[U256]
+			>;
+			setLengthMultiplier: AugmentedSubmittable<
+				(value: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u128]
 			>;
 			setWeightMultiplier: AugmentedSubmittable<
 				(value: Perbill | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
@@ -2021,6 +2038,212 @@ declare module "@polkadot/api-base/types/submittable" {
 			 **/
 			[key: string]: SubmittableExtrinsicFunction<ApiType>;
 		};
+		multisig: {
+			/**
+			 * Register approval for a dispatch to be made from a deterministic composite account if
+			 * approved by a total of `threshold - 1` of `other_signatories`.
+			 *
+			 * Payment: `DepositBase` will be reserved if this is the first approval, plus
+			 * `threshold` times `DepositFactor`. It is returned once this dispatch happens or
+			 * is cancelled.
+			 *
+			 * The dispatch origin for this call must be _Signed_.
+			 *
+			 * - `threshold`: The total number of approvals for this dispatch before it is executed.
+			 * - `other_signatories`: The accounts (other than the sender) who can approve this
+			 * dispatch. May not be empty.
+			 * - `maybe_timepoint`: If this is the first approval, then this must be `None`. If it is
+			 * not the first approval, then it must be `Some`, with the timepoint (block number and
+			 * transaction index) of the first approval transaction.
+			 * - `call_hash`: The hash of the call to be executed.
+			 *
+			 * NOTE: If this is the final approval, you will want to use `as_multi` instead.
+			 *
+			 * # <weight>
+			 * - `O(S)`.
+			 * - Up to one balance-reserve or unreserve operation.
+			 * - One passthrough operation, one insert, both `O(S)` where `S` is the number of
+			 * signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+			 * - One encode & hash, both of complexity `O(S)`.
+			 * - Up to one binary search and insert (`O(logS + S)`).
+			 * - I/O: 1 read `O(S)`, up to 1 mutate `O(S)`. Up to one remove.
+			 * - One event.
+			 * - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
+			 * taken for its lifetime of `DepositBase + threshold * DepositFactor`.
+			 * ----------------------------------
+			 * - DB Weight:
+			 * - Read: Multisig Storage, [Caller Account]
+			 * - Write: Multisig Storage, [Caller Account]
+			 * # </weight>
+			 **/
+			approveAsMulti: AugmentedSubmittable<
+				(
+					threshold: u16 | AnyNumber | Uint8Array,
+					otherSignatories:
+						| Vec<SeedPrimitivesSignatureAccountId20>
+						| (SeedPrimitivesSignatureAccountId20 | string | Uint8Array)[],
+					maybeTimepoint:
+						| Option<PalletMultisigTimepoint>
+						| null
+						| Uint8Array
+						| PalletMultisigTimepoint
+						| { height?: any; index?: any }
+						| string,
+					callHash: U8aFixed | string | Uint8Array,
+					maxWeight: WeightV1 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					u16,
+					Vec<SeedPrimitivesSignatureAccountId20>,
+					Option<PalletMultisigTimepoint>,
+					U8aFixed,
+					WeightV1,
+				]
+			>;
+			/**
+			 * Register approval for a dispatch to be made from a deterministic composite account if
+			 * approved by a total of `threshold - 1` of `other_signatories`.
+			 *
+			 * If there are enough, then dispatch the call.
+			 *
+			 * Payment: `DepositBase` will be reserved if this is the first approval, plus
+			 * `threshold` times `DepositFactor`. It is returned once this dispatch happens or
+			 * is cancelled.
+			 *
+			 * The dispatch origin for this call must be _Signed_.
+			 *
+			 * - `threshold`: The total number of approvals for this dispatch before it is executed.
+			 * - `other_signatories`: The accounts (other than the sender) who can approve this
+			 * dispatch. May not be empty.
+			 * - `maybe_timepoint`: If this is the first approval, then this must be `None`. If it is
+			 * not the first approval, then it must be `Some`, with the timepoint (block number and
+			 * transaction index) of the first approval transaction.
+			 * - `call`: The call to be executed.
+			 *
+			 * NOTE: Unless this is the final approval, you will generally want to use
+			 * `approve_as_multi` instead, since it only requires a hash of the call.
+			 *
+			 * Result is equivalent to the dispatched result if `threshold` is exactly `1`. Otherwise
+			 * on success, result is `Ok` and the result from the interior call, if it was executed,
+			 * may be found in the deposited `MultisigExecuted` event.
+			 *
+			 * # <weight>
+			 * - `O(S + Z + Call)`.
+			 * - Up to one balance-reserve or unreserve operation.
+			 * - One passthrough operation, one insert, both `O(S)` where `S` is the number of
+			 * signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+			 * - One call encode & hash, both of complexity `O(Z)` where `Z` is tx-len.
+			 * - One encode & hash, both of complexity `O(S)`.
+			 * - Up to one binary search and insert (`O(logS + S)`).
+			 * - I/O: 1 read `O(S)`, up to 1 mutate `O(S)`. Up to one remove.
+			 * - One event.
+			 * - The weight of the `call`.
+			 * - Storage: inserts one item, value size bounded by `MaxSignatories`, with a deposit
+			 * taken for its lifetime of `DepositBase + threshold * DepositFactor`.
+			 * -------------------------------
+			 * - DB Weight:
+			 * - Reads: Multisig Storage, [Caller Account], Calls (if `store_call`)
+			 * - Writes: Multisig Storage, [Caller Account], Calls (if `store_call`)
+			 * - Plus Call Weight
+			 * # </weight>
+			 **/
+			asMulti: AugmentedSubmittable<
+				(
+					threshold: u16 | AnyNumber | Uint8Array,
+					otherSignatories:
+						| Vec<SeedPrimitivesSignatureAccountId20>
+						| (SeedPrimitivesSignatureAccountId20 | string | Uint8Array)[],
+					maybeTimepoint:
+						| Option<PalletMultisigTimepoint>
+						| null
+						| Uint8Array
+						| PalletMultisigTimepoint
+						| { height?: any; index?: any }
+						| string,
+					call: WrapperKeepOpaque<Call> | object | string | Uint8Array,
+					storeCall: bool | boolean | Uint8Array,
+					maxWeight: WeightV1 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					u16,
+					Vec<SeedPrimitivesSignatureAccountId20>,
+					Option<PalletMultisigTimepoint>,
+					WrapperKeepOpaque<Call>,
+					bool,
+					WeightV1,
+				]
+			>;
+			/**
+			 * Immediately dispatch a multi-signature call using a single approval from the caller.
+			 *
+			 * The dispatch origin for this call must be _Signed_.
+			 *
+			 * - `other_signatories`: The accounts (other than the sender) who are part of the
+			 * multi-signature, but do not participate in the approval process.
+			 * - `call`: The call to be executed.
+			 *
+			 * Result is equivalent to the dispatched result.
+			 *
+			 * # <weight>
+			 * O(Z + C) where Z is the length of the call and C its execution weight.
+			 * -------------------------------
+			 * - DB Weight: None
+			 * - Plus Call Weight
+			 * # </weight>
+			 **/
+			asMultiThreshold1: AugmentedSubmittable<
+				(
+					otherSignatories:
+						| Vec<SeedPrimitivesSignatureAccountId20>
+						| (SeedPrimitivesSignatureAccountId20 | string | Uint8Array)[],
+					call: Call | IMethod | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Vec<SeedPrimitivesSignatureAccountId20>, Call]
+			>;
+			/**
+			 * Cancel a pre-existing, on-going multisig transaction. Any deposit reserved previously
+			 * for this operation will be unreserved on success.
+			 *
+			 * The dispatch origin for this call must be _Signed_.
+			 *
+			 * - `threshold`: The total number of approvals for this dispatch before it is executed.
+			 * - `other_signatories`: The accounts (other than the sender) who can approve this
+			 * dispatch. May not be empty.
+			 * - `timepoint`: The timepoint (block number and transaction index) of the first approval
+			 * transaction for this dispatch.
+			 * - `call_hash`: The hash of the call to be executed.
+			 *
+			 * # <weight>
+			 * - `O(S)`.
+			 * - Up to one balance-reserve or unreserve operation.
+			 * - One passthrough operation, one insert, both `O(S)` where `S` is the number of
+			 * signatories. `S` is capped by `MaxSignatories`, with weight being proportional.
+			 * - One encode & hash, both of complexity `O(S)`.
+			 * - One event.
+			 * - I/O: 1 read `O(S)`, one remove.
+			 * - Storage: removes one item.
+			 * ----------------------------------
+			 * - DB Weight:
+			 * - Read: Multisig Storage, [Caller Account], Refund Account, Calls
+			 * - Write: Multisig Storage, [Caller Account], Refund Account, Calls
+			 * # </weight>
+			 **/
+			cancelAsMulti: AugmentedSubmittable<
+				(
+					threshold: u16 | AnyNumber | Uint8Array,
+					otherSignatories:
+						| Vec<SeedPrimitivesSignatureAccountId20>
+						| (SeedPrimitivesSignatureAccountId20 | string | Uint8Array)[],
+					timepoint: PalletMultisigTimepoint | { height?: any; index?: any } | string | Uint8Array,
+					callHash: U8aFixed | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u16, Vec<SeedPrimitivesSignatureAccountId20>, PalletMultisigTimepoint, U8aFixed]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
 		nft: {
 			/**
 			 * Burn a token 🔥
@@ -2137,6 +2360,18 @@ declare module "@polkadot/api-base/types/submittable" {
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, u32]
 			>;
+			setMintFee: AugmentedSubmittable<
+				(
+					collectionId: u32 | AnyNumber | Uint8Array,
+					pricingDetails:
+						| Option<ITuple<[u32, u128]>>
+						| null
+						| Uint8Array
+						| ITuple<[u32, u128]>
+						| [u32 | AnyNumber | Uint8Array, u128 | AnyNumber | Uint8Array]
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, Option<ITuple<[u32, u128]>>]
+			>;
 			/**
 			 * Set the name of a collection
 			 * Caller must be the current collection owner
@@ -2173,6 +2408,13 @@ declare module "@polkadot/api-base/types/submittable" {
 						| Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, SeedPrimitivesNftRoyaltiesSchedule]
+			>;
+			togglePublicMint: AugmentedSubmittable<
+				(
+					collectionId: u32 | AnyNumber | Uint8Array,
+					enabled: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, bool]
 			>;
 			/**
 			 * Transfer ownership of an NFT
@@ -3012,6 +3254,20 @@ declare module "@polkadot/api-base/types/submittable" {
 				) => SubmittableExtrinsic<ApiType>,
 				[ITuple<[u32, u32]>, u128]
 			>;
+			setMintFee: AugmentedSubmittable<
+				(
+					tokenId:
+						| ITuple<[u32, u32]>
+						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+					pricingDetails:
+						| Option<ITuple<[u32, u128]>>
+						| null
+						| Uint8Array
+						| ITuple<[u32, u128]>
+						| [u32 | AnyNumber | Uint8Array, u128 | AnyNumber | Uint8Array]
+				) => SubmittableExtrinsic<ApiType>,
+				[ITuple<[u32, u32]>, Option<ITuple<[u32, u128]>>]
+			>;
 			/**
 			 * Set the name of a collection
 			 * Caller must be the current collection owner
@@ -3048,6 +3304,15 @@ declare module "@polkadot/api-base/types/submittable" {
 						| Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, SeedPrimitivesNftRoyaltiesSchedule]
+			>;
+			togglePublicMint: AugmentedSubmittable<
+				(
+					tokenId:
+						| ITuple<[u32, u32]>
+						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+					enabled: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[ITuple<[u32, u32]>, bool]
 			>;
 			/**
 			 * Transfer ownership of an SFT
@@ -4026,6 +4291,123 @@ declare module "@polkadot/api-base/types/submittable" {
 					calls: Vec<Call> | (Call | IMethod | string | Uint8Array)[]
 				) => SubmittableExtrinsic<ApiType>,
 				[Vec<Call>]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
+		vortexDistribution: {
+			/**
+			 * List a vortex distribution
+			 **/
+			createVtxDist: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+			/**
+			 * Disable a distribution
+			 *
+			 * `id` - The distribution id
+			 **/
+			disableVtxDist: AugmentedSubmittable<
+				(id: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u32]
+			>;
+			/**
+			 * Unsigned distribution of vortex, called by offchain worker
+			 *
+			 * `id` - The distribution id
+			 * `current_block` - Current block number
+			 **/
+			payUnsigned: AugmentedSubmittable<
+				(
+					id: u32 | AnyNumber | Uint8Array,
+					currentBlock: u32 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, u32]
+			>;
+			/**
+			 * Redeem tokens from vault
+			 *
+			 * `id` - The distribution id
+			 * `vortex_token_amount` - Amount of vortex to redeem
+			 **/
+			redeemTokensFromVault: AugmentedSubmittable<
+				(
+					id: u32 | AnyNumber | Uint8Array,
+					vortexTokenAmount: u128 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, u128]
+			>;
+			/**
+			 * Register distribution rewards
+			 *
+			 * `id` - The distribution id
+			 * `rewards` - Rewards list
+			 **/
+			registerRewards: AugmentedSubmittable<
+				(
+					id: u32 | AnyNumber | Uint8Array,
+					rewards:
+						| Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>
+						| [
+								SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+								u128 | AnyNumber | Uint8Array,
+						  ][]
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>]
+			>;
+			setAdmin: AugmentedSubmittable<
+				(
+					updated: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20]
+			>;
+			/**
+			 * Set asset prices
+			 *
+			 * `asset_prices` - List of asset prices
+			 * `id` - The distribution id
+			 **/
+			setAssetPrices: AugmentedSubmittable<
+				(
+					assetPrices:
+						| Vec<ITuple<[u32, u128]>>
+						| [u32 | AnyNumber | Uint8Array, u128 | AnyNumber | Uint8Array][],
+					id: u32 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Vec<ITuple<[u32, u128]>>, u32]
+			>;
+			/**
+			 * Set distribution eras
+			 *
+			 * `id` - The distribution id
+			 * `start_era` - Start era
+			 * `end_era` - End era
+			 **/
+			setVtxDistEras: AugmentedSubmittable<
+				(
+					id: u32 | AnyNumber | Uint8Array,
+					startEra: u32 | AnyNumber | Uint8Array,
+					endEra: u32 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, u32, u32]
+			>;
+			/**
+			 * Start distributing vortex
+			 *
+			 * `id` - The distribution id
+			 **/
+			startVtxDist: AugmentedSubmittable<
+				(id: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u32]
+			>;
+			/**
+			 * Trigger distribution
+			 *
+			 * `id` - The distribution id
+			 **/
+			triggerVtxDistribution: AugmentedSubmittable<
+				(id: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u32]
 			>;
 			/**
 			 * Generic tx

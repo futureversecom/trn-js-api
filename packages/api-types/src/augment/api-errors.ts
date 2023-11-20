@@ -396,6 +396,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InvalidPalletId: AugmentedError<ApiType>;
 			/**
+			 * The peg source address is incorrect for the token being bridged
+			 **/
+			InvalidSourceAddress: AugmentedError<ApiType>;
+			/**
 			 * Withdrawals of this asset are not supported
 			 **/
 			UnsupportedAsset: AugmentedError<ApiType>;
@@ -752,15 +756,73 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		multisig: {
+			/**
+			 * Call is already approved by this signatory.
+			 **/
+			AlreadyApproved: AugmentedError<ApiType>;
+			/**
+			 * The data to be stored is already stored.
+			 **/
+			AlreadyStored: AugmentedError<ApiType>;
+			/**
+			 * The maximum weight information provided was too low.
+			 **/
+			MaxWeightTooLow: AugmentedError<ApiType>;
+			/**
+			 * Threshold must be 2 or greater.
+			 **/
+			MinimumThreshold: AugmentedError<ApiType>;
+			/**
+			 * Call doesn't need any (more) approvals.
+			 **/
+			NoApprovalsNeeded: AugmentedError<ApiType>;
+			/**
+			 * Multisig operation not found when attempting to cancel.
+			 **/
+			NotFound: AugmentedError<ApiType>;
+			/**
+			 * No timepoint was given, yet the multisig operation is already underway.
+			 **/
+			NoTimepoint: AugmentedError<ApiType>;
+			/**
+			 * Only the account that originally created the multisig is able to cancel it.
+			 **/
+			NotOwner: AugmentedError<ApiType>;
+			/**
+			 * The sender was contained in the other signatories; it shouldn't be.
+			 **/
+			SenderInSignatories: AugmentedError<ApiType>;
+			/**
+			 * The signatories were provided out of order; they should be ordered.
+			 **/
+			SignatoriesOutOfOrder: AugmentedError<ApiType>;
+			/**
+			 * There are too few signatories in the list.
+			 **/
+			TooFewSignatories: AugmentedError<ApiType>;
+			/**
+			 * There are too many signatories in the list.
+			 **/
+			TooManySignatories: AugmentedError<ApiType>;
+			/**
+			 * A timepoint was given, yet no multisig operation is underway.
+			 **/
+			UnexpectedTimepoint: AugmentedError<ApiType>;
+			/**
+			 * A different timepoint was given to the multisig operation that is underway.
+			 **/
+			WrongTimepoint: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		nft: {
 			/**
 			 * Attemped to mint a token that was bridged from a different chain
 			 **/
 			AttemptedMintOnBridgedToken: AugmentedError<ApiType>;
-			/**
-			 * Auction bid was lower than reserve or current highest bid
-			 **/
-			BidTooLow: AugmentedError<ApiType>;
 			/**
 			 * Token(s) blocked from minting during the bridging process
 			 **/
@@ -777,10 +839,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Given collection name is invalid (invalid utf-8, too long, empty)
 			 **/
 			CollectionNameInvalid: AugmentedError<ApiType>;
-			/**
-			 * Failed to mint a token that was bridged from a different chain
-			 **/
-			FailedMintOnBridgedToken: AugmentedError<ApiType>;
 			/**
 			 * Initial issuance on XLS-20 compatible collections must be zero
 			 **/
@@ -799,18 +857,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InvalidNewOwner: AugmentedError<ApiType>;
 			/**
-			 * No offer exists for the given OfferId
-			 **/
-			InvalidOffer: AugmentedError<ApiType>;
-			/**
-			 * The caller owns the token and can't make an offer
-			 **/
-			IsTokenOwner: AugmentedError<ApiType>;
-			/**
-			 * The account_id hasn't been registered as a marketplace
-			 **/
-			MarketplaceNotRegistered: AugmentedError<ApiType>;
-			/**
 			 * The max issuance has already been set and can't be changed
 			 **/
 			MaxIssuanceAlreadySet: AugmentedError<ApiType>;
@@ -819,17 +865,9 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			MaxIssuanceReached: AugmentedError<ApiType>;
 			/**
-			 * The maximum number of offers on this token has been reached
-			 **/
-			MaxOffersReached: AugmentedError<ApiType>;
-			/**
 			 * The quantity exceeds the max tokens per mint limit
 			 **/
 			MintLimitExceeded: AugmentedError<ApiType>;
-			/**
-			 * Selling tokens from different collection is not allowed
-			 **/
-			MixedBundleSale: AugmentedError<ApiType>;
 			/**
 			 * No more Ids are available, they've been exhausted
 			 **/
@@ -839,33 +877,21 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			NoCollectionFound: AugmentedError<ApiType>;
 			/**
-			 * The caller is not the specified buyer
-			 **/
-			NotBuyer: AugmentedError<ApiType>;
-			/**
 			 * Origin is not the collection owner and is not permitted to perform the operation
 			 **/
 			NotCollectionOwner: AugmentedError<ApiType>;
-			/**
-			 * The token is not listed for auction sale
-			 **/
-			NotForAuction: AugmentedError<ApiType>;
-			/**
-			 * The token is not listed for fixed price sale
-			 **/
-			NotForFixedPriceSale: AugmentedError<ApiType>;
 			/**
 			 * The token does not exist
 			 **/
 			NoToken: AugmentedError<ApiType>;
 			/**
-			 * The caller is not the seller of the NFT
-			 **/
-			NotSeller: AugmentedError<ApiType>;
-			/**
 			 * Origin does not own the NFT
 			 **/
 			NotTokenOwner: AugmentedError<ApiType>;
+			/**
+			 * This collection has not allowed public minting
+			 **/
+			PublicMintDisabled: AugmentedError<ApiType>;
 			/**
 			 * Total royalties would exceed 100% of sale or an empty vec is supplied
 			 **/
@@ -878,18 +904,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Cannot operate on a listed NFT
 			 **/
 			TokenLocked: AugmentedError<ApiType>;
-			/**
-			 * The token is not listed for sale
-			 **/
-			TokenNotListed: AugmentedError<ApiType>;
-			/**
-			 * Cannot make an offer on a token up for auction
-			 **/
-			TokenOnAuction: AugmentedError<ApiType>;
-			/**
-			 * Offer amount needs to be greater than 0
-			 **/
-			ZeroOffer: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
@@ -1186,6 +1200,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			Overflow: AugmentedError<ApiType>;
 			/**
+			 * This collection has not allowed public minting
+			 **/
+			PublicMintDisabled: AugmentedError<ApiType>;
+			/**
 			 * Total royalties would exceed 100% of sale or an empty vec is supplied
 			 **/
 			RoyaltiesInvalid: AugmentedError<ApiType>;
@@ -1391,6 +1409,68 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Too many calls batched.
 			 **/
 			TooManyCalls: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
+		vortexDistribution: {
+			/**
+			 * Vortex distribution already triggered
+			 **/
+			AlreadyTriggered: AugmentedError<ApiType>;
+			/**
+			 * Assets should not include vortex asset
+			 **/
+			AssetsShouldNotIncludeVtxAsset: AugmentedError<ApiType>;
+			/**
+			 * Invalid amount
+			 **/
+			InvalidAmount: AugmentedError<ApiType>;
+			/**
+			 * Invalid end block
+			 **/
+			InvalidEndBlock: AugmentedError<ApiType>;
+			/**
+			 * Not a validator
+			 **/
+			NotAValidator: AugmentedError<ApiType>;
+			/**
+			 * Vortex distribution not triggered
+			 **/
+			NotTriggered: AugmentedError<ApiType>;
+			/**
+			 * No Vtx asset minted
+			 **/
+			NoVtxAssetMinted: AugmentedError<ApiType>;
+			/**
+			 * Pivot string too long
+			 **/
+			PivotStringTooLong: AugmentedError<ApiType>;
+			/**
+			 * Require to be previous admin
+			 **/
+			RequireAdmin: AugmentedError<ApiType>;
+			/**
+			 * Vortex period not set
+			 **/
+			VortexPeriodNotSet: AugmentedError<ApiType>;
+			/**
+			 * Vortex distribution already enabled
+			 **/
+			VtxDistAlreadyEnabled: AugmentedError<ApiType>;
+			/**
+			 * Vortex distribution disabled
+			 **/
+			VtxDistDisabled: AugmentedError<ApiType>;
+			/**
+			 * ID already in use
+			 **/
+			VtxDistIdInUse: AugmentedError<ApiType>;
+			/**
+			 * No available Dist id
+			 **/
+			VtxDistIdNotAvailable: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
