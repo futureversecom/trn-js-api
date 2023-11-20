@@ -20,14 +20,14 @@ import type {
 	Null,
 	Option,
 	Struct,
+	U8aFixed,
+	UInt,
+	Vec,
 	u128,
 	u16,
 	u32,
 	u64,
 	u8,
-	U8aFixed,
-	UInt,
-	Vec,
 } from "@polkadot/types-codec";
 import type { ITuple } from "@polkadot/types-codec/types";
 import type { AuthorityId } from "@polkadot/types/interfaces/consensus";

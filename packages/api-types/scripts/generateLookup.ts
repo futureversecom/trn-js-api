@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import type { TypeDef } from "@polkadot/types-create/types";
 import type {
 	PortableType,
@@ -94,8 +95,8 @@ function expandObject(parsed: Record<string, string | Record<string, string>>): 
 			const inner = isString(v)
 				? expandType(v)
 				: Array.isArray(v)
-				? [`[${(v as string[]).map((e) => `'${e}'`).join(", ")}]`]
-				: expandObject(v);
+				  ? [`[${(v as string[]).map((e) => `'${e}'`).join(", ")}]`]
+				  : expandObject(v);
 
 			inner.forEach((l, index): void => {
 				all.push(`${index === 0 ? `${k}: ${l}` : `${l}`}`);
