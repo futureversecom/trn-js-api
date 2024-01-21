@@ -5,12 +5,17 @@ import { safeReturn } from "../utils";
 /**
  * Wraps a given extrinsic with other extrinsic
  *
- * @param extrinsic - Original extrinsic
+ * @param extrinsic - The original extrinsic
+ * @param senderAddress - The address of the sender
  * @param wrappers - List of the wrappers
  * @returns Either wrapped extrinsic or an error as the result
  */
-export async function wrap(extrinsic: Extrinsic, wrappers?: ExtrinsicWrapper[]) {
-	let wrappedEx: WrappedExtrinsic = { extrinsic };
+export async function wrap(
+	extrinsic: Extrinsic,
+	senderAddress: string,
+	wrappers?: ExtrinsicWrapper[]
+) {
+	let wrappedEx: WrappedExtrinsic = { extrinsic, senderAddress };
 
 	const keyedWrappers =
 		wrappers &&

@@ -12,8 +12,8 @@ export interface PaymentInfo {
 
 export interface WrappedExtrinsic {
 	extrinsic: Extrinsic;
+	senderAddress: string;
 	estimateFee?: (address: string) => Promise<[PaymentInfo, PaymentInfo?]>;
-	senderAddress?: string;
 }
 
 export interface ExtrinsicWrapper {
@@ -23,12 +23,11 @@ export interface ExtrinsicWrapper {
 
 export type PlainResult<T, E = Error> = { ok: true; value: T } | { ok: false; value: E };
 
-export interface FuturepassWrapperOpts {
-	senderAddress: string;
-}
-
 export interface FeeProxyWrapperOpts {
-	senderAddress: string;
 	assetId: number;
 	slippage?: number;
+}
+
+export interface DexAmountsIn {
+	Ok: [number, number];
 }
