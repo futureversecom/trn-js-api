@@ -103,6 +103,21 @@ importers:
         specifier: ^6.6.5
         version: 6.7.1
 
+  packages/extrinsic:
+    dependencies:
+      '@polkadot/types':
+        specifier: ^10.9.1
+        version: 10.9.1
+      '@therootnetwork/api':
+        specifier: ^1.0.0
+        version: link:../api
+      '@therootnetwork/api-types':
+        specifier: ^1.0.0
+        version: link:../api-types
+      neverthrow:
+        specifier: ^6.1.0
+        version: 6.1.0
+
 packages:
 
   /@aashutoshrathi/word-wrap@1.2.6:
@@ -4790,6 +4805,10 @@ packages:
     resolution: {integrity: sha512-dBpDMdxv9Irdq66304OLfEmQ9tbNRFnFTuZiLo+bD+r332bBmMJ8GBLXklIXXgxd3+v9+KUnZaUR5PJMa75Gsg==}
     engines: {node: '>= 0.4.0'}
     dev: true
+
+  /neverthrow@6.1.0:
+    resolution: {integrity: sha512-xNbNjp/6M5vUV+mststgneJN9eJeJCDSYSBTaf3vxgvcKooP+8L0ATFpM8DGfmH7UWKJeoa24Qi33tBP9Ya3zA==}
+    dev: false
 
   /next-tick@1.1.0:
     resolution: {integrity: sha512-CXdUiJembsNjuToQvxayPZF9Vqht7hewsvy2sOWafLvi2awflj9mOC6bHIg50orX8IJvWKY9wYQ/zB2kogPslQ==}
