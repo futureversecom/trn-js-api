@@ -11,7 +11,7 @@ const err = errWithPrefix("FuturepassWrapper");
  * @param api - An instance of `ApiPromise` from `@polkadot/api`
  * @returns A `futurepass` extrinsic wrapper
  */
-export async function wrapWithFuturepass(api: ApiPromise) {
+export function wrapWithFuturepass(api: ApiPromise) {
 	return {
 		id: "futurepass",
 		async wrap(wrappedEx: WrappedExtrinsic) {
