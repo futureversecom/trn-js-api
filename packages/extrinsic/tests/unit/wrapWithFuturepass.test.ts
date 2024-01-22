@@ -5,7 +5,7 @@ import { WrappedExtrinsic } from "@therootnetwork/extrinsic/types";
 import { Err } from "neverthrow";
 
 describe("wrapWithFuturepass", () => {
-	test("wrap with `futurepass.proxyExtrinsic` with an ok result", async () => {
+	test("wraps extrinsic with `futurepass.proxyExtrinsic` with an ok result", async () => {
 		const api = {
 			query: {
 				futurepass: {
@@ -33,6 +33,7 @@ describe("wrapWithFuturepass", () => {
 		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise);
 		const wrapResult = await wrapper.wrap(wrappedExtrinsic);
 
+		expect(wrapper.id).toBe("futurepass");
 		expect(wrapResult.isOk()).toEqual(true);
 		expect(api.tx.futurepass.proxyExtrinsic).toBeCalledTimes(1);
 		expect(api.tx.futurepass.proxyExtrinsic).toHaveBeenCalledWith(
@@ -41,7 +42,7 @@ describe("wrapWithFuturepass", () => {
 		);
 	});
 
-	test("futurepass address fetching that ends with error due to throw", async () => {
+	test("futurepass address fetching ends with thrown error", async () => {
 		const api = {
 			query: {
 				futurepass: {
@@ -52,9 +53,11 @@ describe("wrapWithFuturepass", () => {
 			},
 		};
 
-		const senderAddress = "0x0";
 		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise);
-		const wrapResult1 = await wrapper.wrap({ extrinsic: {}, senderAddress } as WrappedExtrinsic);
+		const wrapResult1 = await wrapper.wrap({
+			extrinsic: {},
+			senderAddress: "0x0",
+		} as WrappedExtrinsic);
 
 		expect(wrapResult1.isErr()).toBe(true);
 		expect((wrapResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
@@ -72,7 +75,7 @@ describe("wrapWithFuturepass", () => {
 		);
 	});
 
-	test("futurepass address fetching that ends with error due to empty", async () => {
+	test("futurepass address fetching ends with empty error", async () => {
 		const api = {
 			query: {
 				futurepass: {
@@ -83,14 +86,16 @@ describe("wrapWithFuturepass", () => {
 			},
 		};
 
-		const senderAddress = "0x0";
 		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise);
-		const wrapResult = await wrapper.wrap({ extrinsic: {}, senderAddress } as WrappedExtrinsic);
+		const wrapResult = await wrapper.wrap({
+			extrinsic: {},
+			senderAddress: "0x0",
+		} as WrappedExtrinsic);
 
 		expect(wrapResult.isErr()).toBe(true);
 		expect((wrapResult as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((wrapResult as Err<never, Error>).error.message).toEqual(
-			`FuturepassWrapper::Unable to get Futurepass address for "${senderAddress}"`
+			`FuturepassWrapper::Unable to extract Futurepass address for "0x0"`
 		);
 	});
 });

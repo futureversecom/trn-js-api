@@ -37,7 +37,7 @@ async function fetchFuturepassAddress(api: ApiPromise, senderAddress: string) {
 	if (result.isErr()) return err(result.error);
 	const fpAddress = result.value;
 
-	if (fpAddress.isEmpty) return err(`Unable to get Futurepass address for "${senderAddress}"`);
+	if (fpAddress.isEmpty) return err(`Unable to extract Futurepass address for "${senderAddress}"`);
 
 	return ok(fpAddress.unwrap());
 }

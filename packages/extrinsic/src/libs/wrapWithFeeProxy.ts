@@ -7,14 +7,14 @@ import { XRP_ASSET_ID } from "../constants";
 
 const err = errWithPrefix("FeeProxyWrapper");
 
-export async function wrapWithFeeProxy(api: ApiPromise, opts: FeeProxyWrapperOpts) {
+export function wrapWithFeeProxy(api: ApiPromise, opts: FeeProxyWrapperOpts) {
 	return {
 		id: "feeProxy",
 		async wrap(wrappedEx: WrappedExtrinsic) {
-			const { extrinsic } = wrappedEx;
+			const { extrinsic, senderAddress } = wrappedEx;
 			const { assetId } = opts;
 
-			const paymentInfoResult = await fetchPaymentInfo(wrappedEx);
+			const paymentInfoResult = await fetchPaymentInfo(extrinsic, senderAddress);
 			if (paymentInfoResult.isErr()) return paymentInfoResult;
 			const paymentInfo = paymentInfoResult.value;
 
@@ -30,8 +30,10 @@ export async function wrapWithFeeProxy(api: ApiPromise, opts: FeeProxyWrapperOpt
 	};
 }
 
-async function fetchPaymentInfo(wrappedEx: WrappedExtrinsic) {
-	const { senderAddress, extrinsic } = wrappedEx;
+async function fetchPaymentInfo(
+	extrinsic: WrappedExtrinsic["extrinsic"],
+	senderAddress: WrappedExtrinsic["senderAddress"]
+) {
 	const result = await fromPromise(extrinsic.paymentInfo(senderAddress), (e) => {
 		if (e instanceof Error) return e.message;
 		return `Unable to fetch payment info for "${senderAddress}"`;
@@ -59,7 +61,8 @@ async function calculateMaxPayment(
 
 	if (result.isErr()) return err(result.error);
 	const quote = result.value as unknown as DexAmountsIn;
-	if (!quote.Ok) return err(`Unable to get swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`);
+	if (!quote.Ok)
+		return err(`Unable to extract swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`);
 
 	return ok(Number(quote.Ok[0]) * (1 + slippage));
 }

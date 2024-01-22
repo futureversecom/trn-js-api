@@ -4,7 +4,7 @@ import { wrap } from "@therootnetwork/extrinsic/libs/wrap";
 import { Extrinsic, ExtrinsicWrapper } from "@therootnetwork/extrinsic/types";
 
 describe("wrap", () => {
-	test("wrap given extrinsic with `futurepass` wrapper that ends with error result", async () => {
+	test("wrap given extrinsic with `futurepass` wrapper ends with error result", async () => {
 		const extrinsic = {};
 		const senderAddress = "0x0";
 		const error = new Error("error");
@@ -21,7 +21,7 @@ describe("wrap", () => {
 		expect(wrappedErrResult.value).toStrictEqual(error);
 	});
 
-	test("wrap given extrinsic with `futurepass` wrapper that ends with ok result", async () => {
+	test("wrap given extrinsic with `futurepass` wrapper ends with ok result", async () => {
 		const extrinsic = {};
 		const senderAddress = "0x0";
 		const value = {};
@@ -38,7 +38,7 @@ describe("wrap", () => {
 		expect(wrappedOkResult.value).toStrictEqual(value);
 	});
 
-	test("wrap a given extrinsic with `feeProxy` wrapper that ends with error result", async () => {
+	test("wrap a given extrinsic with `feeProxy` wrapper ends with error result", async () => {
 		const extrinsic = {};
 		const senderAddress = "0x0";
 		const error = new Error("error");
@@ -55,7 +55,7 @@ describe("wrap", () => {
 		expect(wrappedErrResult.value).toStrictEqual(error);
 	});
 
-	test("wrap a given extrinsic with `feeProxy` wrapper that ends with ok result", async () => {
+	test("wrap a given extrinsic with `feeProxy` wrapper ends with ok result", async () => {
 		const extrinsic = {};
 		const senderAddress = "0x0";
 		const value = {};
@@ -72,7 +72,7 @@ describe("wrap", () => {
 		expect(wrappedOkResult.value).toStrictEqual(value);
 	});
 
-	test("wrap a given extrinsic with both `futurepass` and `feeProxy` wrappers that ends with the correct order", async () => {
+	test("wrap a given extrinsic with both `futurepass` and `feeProxy` wrappers ends with the correct order", async () => {
 		type MockExtrinsic = { steps: string[] };
 		const extrinsic: MockExtrinsic = { steps: [] };
 		const senderAddress = "0x0";
