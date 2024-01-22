@@ -3,6 +3,22 @@
 exports[`getApiOptions returns expected options 1`] = `
 {
   "rpc": {
+    "assetsExt": {
+      "freeBalance": {
+        "description": "Given asset id and address, returns free balance",
+        "params": [
+          {
+            "name": "asset",
+            "type": "AssetId",
+          },
+          {
+            "name": "who",
+            "type": "AccountId",
+          },
+        ],
+        "type": "Text",
+      },
+    },
     "dex": {
       "getAmountsIn": {
         "description": "Given an array of AssetIds, return amounts in for an amount out",
