@@ -114,6 +114,17 @@ export type __AugmentedRpc = AugmentedRpc<() => unknown>;
 
 declare module "@polkadot/rpc-core/types/jsonrpc" {
 	interface RpcInterface {
+		assetsExt: {
+			/**
+			 * Given asset id and address, returns free balance
+			 **/
+			freeBalance: AugmentedRpc<
+				(
+					asset: AssetId | AnyNumber | Uint8Array,
+					who: AccountId | string | Uint8Array
+				) => Observable<Text>
+			>;
+		};
 		author: {
 			/**
 			 * Returns true if the keystore has private keys for the given public key and key type.
