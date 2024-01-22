@@ -13,7 +13,7 @@ const err = errWithPrefix("FuturepassWrapper");
  */
 export function wrapWithFuturepass(api: ApiPromise) {
 	return {
-		id: "futurepass",
+		id: "futurepass" as const,
 		async wrap(wrappedEx: WrappedExtrinsic) {
 			const { senderAddress } = wrappedEx;
 			const fpAddressResult = await fetchFuturepassAddress(api, senderAddress);

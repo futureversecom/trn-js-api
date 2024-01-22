@@ -16,15 +16,10 @@ export interface WrappedExtrinsic {
 	estimateFee?: (address: string) => Promise<[PaymentInfo, PaymentInfo?]>;
 }
 
-export type ExtrinsicWrapper =
-	| {
-			id: "futurepass";
-			wrap: (extrinsic: WrappedExtrinsic) => Promise<Result<WrappedExtrinsic, Error>>;
-	  }
-	| {
-			id: "feeProxy";
-			wrap: (extrinsic: WrappedExtrinsic) => Promise<Result<WrappedExtrinsic, Error>>;
-	  };
+export type ExtrinsicWrapper = {
+	id: "futurepass" | "feeProxy";
+	wrap: (extrinsic: WrappedExtrinsic) => Promise<Result<WrappedExtrinsic, Error>>;
+};
 
 export type PlainResult<T, E = Error> = { ok: true; value: T } | { ok: false; value: E };
 

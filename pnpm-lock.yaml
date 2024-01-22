@@ -32,6 +32,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^5.59.9
         version: 5.62.0(eslint@8.47.0)(typescript@5.1.6)
+      dotenv:
+        specifier: ^16.3.2
+        version: 16.3.2
       eslint:
         specifier: ^8.42.0
         version: 8.47.0
@@ -1550,7 +1553,7 @@ packages:
       '@polkadot/x-global': 12.4.1
       '@polkadot/x-textdecoder': 12.4.1
       '@polkadot/x-textencoder': 12.4.1
-      '@types/bn.js': 5.1.1
+      '@types/bn.js': 5.1.5
       bn.js: 5.2.1
       tslib: 2.6.2
 
@@ -1794,10 +1797,10 @@ packages:
       '@babel/types': 7.22.10
     dev: true
 
-  /@types/bn.js@5.1.1:
-    resolution: {integrity: sha512-qNrYbZqMx0uJAfKnKclPh+dTwK33KfLHYqtyODwd5HnXOjnkhc4qgn3BrK6RWyGZm5+sIFE7Q7Vz6QQtJB7w7g==}
+  /@types/bn.js@5.1.5:
+    resolution: {integrity: sha512-V46N0zwKRF5Q00AZ6hWtN0T8gGmDUaUzLWQvHFo5yThtVwK/VCenFY3wXVbOvNfajEpsTfQM4IN9k/d6gUVX3A==}
     dependencies:
-      '@types/node': 20.5.3
+      '@types/node': 20.9.2
 
   /@types/glob@7.2.0:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
@@ -1863,12 +1866,12 @@ packages:
 
   /@types/node@20.5.3:
     resolution: {integrity: sha512-ITI7rbWczR8a/S6qjAW7DMqxqFMjjTo61qZVWJ1ubPvbIQsL5D/TvwjYEalM8Kthpe3hTzOGrF2TGbAu2uyqeA==}
+    dev: true
 
   /@types/node@20.9.2:
     resolution: {integrity: sha512-WHZXKFCEyIUJzAwh3NyyTHYSR35SevJ6mZ1nWwJafKtiQbqRTIKSRcw3Ma3acqgsent3RRDqeVwpHntMk+9irg==}
     dependencies:
       undici-types: 5.26.5
-    dev: true
 
   /@types/normalize-package-data@2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -2820,6 +2823,11 @@ packages:
     resolution: {integrity: sha512-HnM6ZlFqcajLsyudHq7LeeLDr2rFAVYtDv/hV5qchQEidSck8j9OPUsXY9KwJv/lHMtYlX4DjRQqwFYa+0r8Ug==}
     dependencies:
       no-case: 2.3.2
+    dev: true
+
+  /dotenv@16.3.2:
+    resolution: {integrity: sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==}
+    engines: {node: '>=12'}
     dev: true
 
   /electron-to-chromium@1.4.499:
@@ -6310,7 +6318,6 @@ packages:
 
   /undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
-    dev: true
 
   /universalify@0.1.2:
     resolution: {integrity: sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==}

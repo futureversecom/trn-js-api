@@ -9,18 +9,18 @@ const err = errWithPrefix("FeeProxyWrapper");
 
 export function wrapWithFeeProxy(api: ApiPromise, opts: FeeProxyWrapperOpts) {
 	return {
-		id: "feeProxy",
+		id: "feeProxy" as const,
 		async wrap(wrappedEx: WrappedExtrinsic) {
 			const { extrinsic, senderAddress } = wrappedEx;
-			const { assetId } = opts;
+			const { assetId, slippage = 0.05 } = opts;
 
-			const paymentInfoResult = await fetchPaymentInfo(extrinsic, senderAddress);
+			const paymentInfoResult = await fetchPaymentInfo(api, extrinsic, senderAddress, assetId);
 			if (paymentInfoResult.isErr()) return paymentInfoResult;
 			const paymentInfo = paymentInfoResult.value;
 
-			const maxPaymentResult = await calculateMaxPayment(api, paymentInfo, opts);
+			const maxPaymentResult = await calculateMaxPayment(api, paymentInfo, assetId, slippage);
 			if (maxPaymentResult.isErr()) return maxPaymentResult;
-			const maxPayment = maxPaymentResult.value;
+			const maxPayment = maxPaymentResult.value.toString();
 
 			return ok({
 				...wrappedEx,
@@ -31,10 +31,13 @@ export function wrapWithFeeProxy(api: ApiPromise, opts: FeeProxyWrapperOpts) {
 }
 
 async function fetchPaymentInfo(
+	api: ApiPromise,
 	extrinsic: WrappedExtrinsic["extrinsic"],
-	senderAddress: WrappedExtrinsic["senderAddress"]
+	senderAddress: WrappedExtrinsic["senderAddress"],
+	assetId: number
 ) {
-	const result = await fromPromise(extrinsic.paymentInfo(senderAddress), (e) => {
+	const feeProxy = api.tx.feeProxy.callWithFeePreferences(assetId, 0, extrinsic);
+	const result = await fromPromise(feeProxy.paymentInfo(senderAddress), (e) => {
 		if (e instanceof Error) return e.message;
 		return `Unable to fetch payment info for "${senderAddress}"`;
 	});
@@ -46,13 +49,12 @@ async function fetchPaymentInfo(
 	return ok(paymentInfo);
 }
 
-type MaxPaymentOpts = Pick<FeeProxyWrapperOpts, "assetId" | "slippage">;
 async function calculateMaxPayment(
 	api: ApiPromise,
 	paymentInfo: RuntimeDispatchInfo,
-	opts: MaxPaymentOpts
+	assetId: number,
+	slippage: number
 ) {
-	const { assetId, slippage = 0.05 } = opts;
 	const fee = paymentInfo.partialFee.toString();
 	const result = await fromPromise(api.rpc.dex.getAmountsIn(fee, [assetId, XRP_ASSET_ID]), (e) => {
 		if (e instanceof Error) return e.message;
@@ -64,5 +66,8 @@ async function calculateMaxPayment(
 	if (!quote.Ok)
 		return err(`Unable to extract swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`);
 
-	return ok(Number(quote.Ok[0]) * (1 + slippage));
+	const amountIn = quote.Ok[0];
+	const maxPayment = amountIn * (1 + slippage);
+
+	return ok(maxPayment.toFixed());
 }
