@@ -23,7 +23,7 @@ describe("wrapWithFeeProxy", () => {
 			},
 			tx: {
 				feeProxy: {
-					callWithFeePreferences: jest.fn(),
+					callWithFeePreferences: jest.fn(() => extrinsic),
 				},
 			},
 		};
@@ -36,12 +36,24 @@ describe("wrapWithFeeProxy", () => {
 
 		expect(wrapper.id).toBe("feeProxy");
 		expect(wrapResult.isOk()).toBe(true);
-		expect(api.tx.feeProxy.callWithFeePreferences).toBeCalledTimes(1);
-		expect(api.tx.feeProxy.callWithFeePreferences).toHaveBeenCalledWith(1124, 105000000, extrinsic);
+		expect(api.tx.feeProxy.callWithFeePreferences).toBeCalledTimes(2);
+		expect(api.tx.feeProxy.callWithFeePreferences).toHaveBeenLastCalledWith(
+			1124,
+			"105000000",
+			extrinsic
+		);
 	});
 
 	test("extrinsic payment info fetching ends with thrown error", async () => {
-		const wrapper = wrapWithFeeProxy({} as unknown as ApiPromise, { assetId: 1124 });
+		const api = {
+			tx: {
+				feeProxy: {
+					callWithFeePreferences: jest.fn(() => extrinsic),
+				},
+			},
+		};
+
+		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, { assetId: 1124 });
 
 		const extrinsic = {
 			paymentInfo: jest.fn((address: string) => {
@@ -71,7 +83,14 @@ describe("wrapWithFeeProxy", () => {
 	});
 
 	test("extrinsic payment info fetching ends with empty error", async () => {
-		const wrapper = wrapWithFeeProxy({} as unknown as ApiPromise, { assetId: 1124 });
+		const api = {
+			tx: {
+				feeProxy: {
+					callWithFeePreferences: jest.fn(() => extrinsic),
+				},
+			},
+		};
+		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, { assetId: 1124 });
 
 		const extrinsic = {
 			paymentInfo: jest.fn(() => {
@@ -99,6 +118,11 @@ describe("wrapWithFeeProxy", () => {
 					}),
 				},
 			},
+			tx: {
+				feeProxy: {
+					callWithFeePreferences: jest.fn(() => extrinsic1),
+				},
+			},
 		};
 
 		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, { assetId: 1124 });
@@ -117,6 +141,7 @@ describe("wrapWithFeeProxy", () => {
 		expect((wrapResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((wrapResult1 as Err<never, Error>).error.message).toEqual("FeeProxyWrapper::error");
 
+		api.tx.feeProxy.callWithFeePreferences = jest.fn(() => extrinsic2);
 		const extrinsic2 = {
 			paymentInfo() {
 				return Promise.resolve({ partialFee: 110000 });
@@ -141,6 +166,11 @@ describe("wrapWithFeeProxy", () => {
 					getAmountsIn: jest.fn(() => {
 						return Promise.resolve({ Ok: undefined });
 					}),
+				},
+			},
+			tx: {
+				feeProxy: {
+					callWithFeePreferences: jest.fn(() => extrinsic),
 				},
 			},
 		};
