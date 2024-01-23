@@ -1,8 +1,8 @@
-import { SubmittableExtrinsic as _SubmittableExtrinsic } from "@polkadot/api/types";
+import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { ISubmittableResult } from "@polkadot/types/types";
 import { Result } from "neverthrow";
 
-export type Extrinsic = _SubmittableExtrinsic<"promise", ISubmittableResult>;
+export type Extrinsic = SubmittableExtrinsic<"promise", ISubmittableResult>;
 export interface PaymentInfo {
 	assetId: number;
 	symbol: string;
@@ -13,6 +13,7 @@ export interface PaymentInfo {
 export interface WrappedExtrinsic {
 	extrinsic: Extrinsic;
 	senderAddress: string;
+	signProvider?: SignProvider["id"];
 	estimateFee?: (address: string) => Promise<[PaymentInfo, PaymentInfo?]>;
 }
 
@@ -31,3 +32,8 @@ export interface FeeProxyWrapperOpts {
 export interface DexAmountsIn {
 	Ok: [number, number];
 }
+
+export type SignProvider = {
+	id: "nativeKeyring" | "ethWallet";
+	sign: (extrinsic: WrappedExtrinsic) => Promise<Result<WrappedExtrinsic, Error>>;
+};

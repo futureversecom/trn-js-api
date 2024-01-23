@@ -114,18 +114,25 @@ importers:
 
   packages/extrinsic:
     dependencies:
-      '@polkadot/types':
-        specifier: ^10.9.1
+      '@polkadot/api-base':
+        specifier: ^10.8.1
         version: 10.9.1
+      '@polkadot/keyring':
+        specifier: ^12.4.1
+        version: 12.4.1(@polkadot/util-crypto@12.4.1)(@polkadot/util@12.4.1)
+      '@polkadot/types':
+        specifier: ^10.8.1
+        version: 10.9.1
+      neverthrow:
+        specifier: ^6.1.0
+        version: 6.1.0
+    devDependencies:
       '@therootnetwork/api':
         specifier: ^1.0.0
         version: link:../api
       '@therootnetwork/api-types':
         specifier: ^1.0.0
         version: link:../api-types
-      neverthrow:
-        specifier: ^6.1.0
-        version: 6.1.0
 
 packages:
 

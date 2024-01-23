@@ -32,7 +32,7 @@ export async function wrap(
 			const result = await wrapper.wrap(wrappedEx);
 
 			if (result.isErr()) return safeReturn(result);
-			result.map((ex) => (wrappedEx = ex));
+			wrappedEx = result.value;
 		}
 	}
 
