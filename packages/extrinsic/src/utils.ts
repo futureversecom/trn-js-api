@@ -1,5 +1,5 @@
 import { ApiPromise } from "@polkadot/api";
-import { Result, err } from "neverthrow";
+import { Result, err, fromPromise, ok } from "neverthrow";
 import { PlainResult } from "./types";
 import { SignatureOptions, IExtrinsicEra } from "@polkadot/types/types";
 import { SignerOptions } from "@polkadot/api-base/types/submittable";
@@ -28,15 +28,22 @@ export async function createSignatureOptions(
 	senderAddress: string,
 	options: Partial<SignerOptions>
 ) {
-	const { header, mortalLength, nonce } = await api.derive.tx.signingInfo(senderAddress);
-	const era = api.registry.createTypeUnsafe("ExtrinsicEra", [
+	const result = await fromPromise(api.derive.tx.signingInfo(senderAddress), (e) =>
+		e instanceof Error ? e.message : `Unable to fetch signing info for "${senderAddress}"`
+	);
+
+	if (result.isErr()) return err(result.error);
+	const { header, mortalLength, nonce } = result.value;
+	if (!header) return err(`Unable to retrieve block header`);
+
+	const era = api.registry.createTypeUnsafe<IExtrinsicEra>("ExtrinsicEra", [
 		{
-			current: header?.number,
+			current: header.number,
 			period: mortalLength,
 		},
-	]) as IExtrinsicEra;
-	return {
-		blockHash: header?.hash,
+	]);
+	return ok({
+		blockHash: header.hash,
 		nonce,
 		era,
 		...options,
@@ -44,5 +51,5 @@ export async function createSignatureOptions(
 		runtimeVersion: api.runtimeVersion,
 		signedExtensions: api.registry.signedExtensions,
 		version: api.extrinsicVersion,
-	} as SignatureOptions;
+	} as SignatureOptions);
 }

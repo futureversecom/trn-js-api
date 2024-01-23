@@ -4,7 +4,7 @@ import { KeyringPair } from "@polkadot/keyring/types";
 import { hexToU8a } from "@polkadot/util";
 import { SignProvider, WrappedExtrinsic } from "../types";
 import { SignerOptions } from "@polkadot/api-base/types/submittable";
-import { fromPromise, ok } from "neverthrow";
+import { ok } from "neverthrow";
 import { createSignatureOptions, errWithPrefix } from "../utils";
 
 const err = errWithPrefix("NativeKeyringProvider");
@@ -19,20 +19,14 @@ export function signWithNativeKeyring(
 		async sign(wrappedEx: WrappedExtrinsic) {
 			const { extrinsic, senderAddress } = wrappedEx;
 
-			const account =
+			const sender =
 				typeof seedOrKeyring === "string" ? createKeyringFromSeed(seedOrKeyring) : seedOrKeyring;
 
-			const createOptionsResult = await fromPromise(
-				createSignatureOptions(api, senderAddress, signerOptions),
-				(e) => {
-					if (e instanceof Error) return e.message;
-					return `Unable to create signature otions`;
-				}
-			);
+			const createResult = await createSignatureOptions(api, senderAddress, signerOptions);
 
-			if (createOptionsResult.isErr()) return err(createOptionsResult.error);
-			const signatureOptions = createOptionsResult.value;
-			extrinsic.sign(account, signatureOptions);
+			if (createResult.isErr()) return err(createResult.error);
+			const signatureOptions = createResult.value;
+			extrinsic.sign(sender, signatureOptions);
 
 			return ok({
 				...wrappedEx,

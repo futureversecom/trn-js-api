@@ -16,14 +16,14 @@ export async function sign(
 		if (wExtrinsic.senderAddress !== senderAddress)
 			return safeReturn(
 				err(
-					`Received sender address ${senderAddress} is different with value inside the wrapped extrinsic`
+					`Received sender address "${senderAddress}" is different with the value inside the wrapped extrinsic`
 				)
 			);
 
 		const signResult = await provider.sign(wExtrinsic);
 
 		if (signResult.isErr()) return safeReturn(signResult);
-		return safeReturn(ok(signResult.value));
+		return safeReturn(ok({ ...signResult.value, signProvider: provider.id }));
 	} catch (e) {
 		return safeReturn(err(e instanceof Error ? e.message : `Unknown error, ${e}`));
 	}

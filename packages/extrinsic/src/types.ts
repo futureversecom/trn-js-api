@@ -14,7 +14,6 @@ export interface WrappedExtrinsic {
 	extrinsic: Extrinsic;
 	senderAddress: string;
 	signProvider?: SignProvider["id"];
-	estimateFee?: (address: string) => Promise<[PaymentInfo, PaymentInfo?]>;
 }
 
 export type ExtrinsicWrapper = {
@@ -38,9 +37,10 @@ export type SignProvider = {
 	sign: (extrinsic: WrappedExtrinsic) => Promise<Result<WrappedExtrinsic, Error>>;
 };
 
+export type PersonalSignRequest = { method: "personal_sign"; params: [string, string] };
 export type EthereumSigner =
 	| {
-			request: (request: { method: "personal_sign"; params: [string, string] }) => Promise<string>;
+			request: (request: PersonalSignRequest) => Promise<string>;
 	  }
 	| {
 			signMessage: (message: string) => Promise<string>;

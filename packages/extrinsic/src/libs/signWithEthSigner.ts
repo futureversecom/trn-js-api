@@ -19,24 +19,12 @@ export function signWithEthSigner(
 		async sign(wrappedEx: WrappedExtrinsic) {
 			const { extrinsic, senderAddress } = wrappedEx;
 
-			const createOptionsResult = await fromPromise(
-				createSignatureOptions(api, senderAddress, signerOptions),
-				(e) => {
-					if (e instanceof Error) return e.message;
-					return `Unable to create signature otions`;
-				}
-			);
-			if (createOptionsResult.isErr()) return err(createOptionsResult.error);
+			const createResult = await createSignatureOptions(api, senderAddress, signerOptions);
 
-			const [payload, ethHash] = createSignerPayload(api, createOptionsResult.value, extrinsic);
+			if (createResult.isErr()) return err(createResult.error);
+			const [payload, ethHash] = createSignerPayload(api, createResult.value, extrinsic);
 
-			const requestResult = await fromPromise(
-				requestSign(ethereumSigner, ethHash, senderAddress),
-				(e) => {
-					if (e instanceof Error) return e.message;
-					return `Unable to request signature from Ethereum provider`;
-				}
-			);
+			const requestResult = await requestSign(ethereumSigner, ethHash, senderAddress);
 			if (requestResult.isErr()) return err(requestResult.error);
 
 			extrinsic.addSignature(
@@ -71,10 +59,13 @@ function createSignerPayload(
 }
 
 async function requestSign(ethereumSigner: EthereumSigner, ethHash: string, senderAddress: string) {
-	return "request" in ethereumSigner
-		? await ethereumSigner.request({
-				method: "personal_sign",
-				params: [ethHash, senderAddress],
-		  })
-		: await ethereumSigner.signMessage(ethHash);
+	return await fromPromise(
+		"request" in ethereumSigner
+			? ethereumSigner.request({
+					method: "personal_sign",
+					params: [ethHash, senderAddress],
+			  })
+			: ethereumSigner.signMessage(ethHash),
+		(e) => (e instanceof Error ? e.message : `Unable to request signing for "${senderAddress}"`)
+	);
 }
