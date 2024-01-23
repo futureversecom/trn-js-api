@@ -5,16 +5,19 @@
   "types": "./dist/index.d.ts",
   "license": "Apache-2.0",
   "peerDependencies": {
-    "@polkadot/types": "^10.8.1",
+    "@polkadot/api-base": "^10.8.1",
     "@polkadot/keyring": "^12.4.1",
-    "@polkadot/api-base": "^10.8.1"
+    "@polkadot/types": "^10.8.1",
+    "@polkadot/util": "^12.4.1",
+    "@polkadot/util-crypto": "^12.4.1"
   },
   "dependencies": {
     "neverthrow": "^6.1.0"
   },
   "devDependencies": {
     "@therootnetwork/api": "^1.0.0",
-    "@therootnetwork/api-types": "^1.0.0"
+    "@therootnetwork/api-types": "^1.0.0",
+    "ethers": "^6.6.5"
   },
   "jest": {
     "setupFiles": [

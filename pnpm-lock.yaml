@@ -123,6 +123,12 @@ importers:
       '@polkadot/types':
         specifier: ^10.8.1
         version: 10.9.1
+      '@polkadot/util':
+        specifier: ^12.4.1
+        version: 12.4.1
+      '@polkadot/util-crypto':
+        specifier: ^12.4.1
+        version: 12.4.1(@polkadot/util@12.4.1)
       neverthrow:
         specifier: ^6.1.0
         version: 6.1.0
@@ -133,6 +139,9 @@ importers:
       '@therootnetwork/api-types':
         specifier: ^1.0.0
         version: link:../api-types
+      ethers:
+        specifier: ^6.6.5
+        version: 6.7.1
 
 packages:
 
@@ -1813,13 +1822,13 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 20.5.3
+      '@types/node': 20.9.2
     dev: true
 
   /@types/graceful-fs@4.1.6:
     resolution: {integrity: sha512-Sig0SNORX9fdW+bQuTEovKj3uHcUL6LQKbCrrqb1X7J6/ReAbhCXRAhc+SMejhLELFj2QcyuxmUooZ4bt5ReSw==}
     dependencies:
-      '@types/node': 20.5.3
+      '@types/node': 20.9.2
     dev: true
 
   /@types/inquirer@6.5.0:
@@ -1895,7 +1904,7 @@ packages:
   /@types/through@0.0.30:
     resolution: {integrity: sha512-FvnCJljyxhPM3gkRgWmxmDZyAQSiBQQWLI0A0VFL0K7W1oRUrPJSqNO0NvTnLkBcotdlp3lKvaT0JrnyRDkzOg==}
     dependencies:
-      '@types/node': 20.5.3
+      '@types/node': 20.9.2
     dev: true
 
   /@types/websocket@1.0.5:
@@ -4060,7 +4069,7 @@ packages:
       '@jest/expect': 29.6.3
       '@jest/test-result': 29.6.3
       '@jest/types': 29.6.3
-      '@types/node': 20.5.3
+      '@types/node': 20.9.2
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.1
@@ -4227,7 +4236,7 @@ packages:
       '@jest/environment': 29.6.3
       '@jest/fake-timers': 29.6.3
       '@jest/types': 29.6.3
-      '@types/node': 20.5.3
+      '@types/node': 20.9.2
       jest-mock: 29.6.3
       jest-util: 29.6.3
     dev: true
@@ -4469,7 +4478,7 @@ packages:
     resolution: {integrity: sha512-wacANXecZ/GbQakpf2CClrqrlwsYYDSXFd4fIGdL+dXpM2GWoJ+6bhQ7vR3TKi3+gkSfBkjy1/khH/WrYS4Q6g==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 20.5.3
+      '@types/node': 20.9.2
       jest-util: 29.6.3
       merge-stream: 2.0.0
       supports-color: 8.1.1

@@ -34,6 +34,14 @@ export interface DexAmountsIn {
 }
 
 export type SignProvider = {
-	id: "nativeKeyring" | "ethWallet";
+	id: "nativeKeyring" | "ethSigner";
 	sign: (extrinsic: WrappedExtrinsic) => Promise<Result<WrappedExtrinsic, Error>>;
 };
+
+export type EthereumSigner =
+	| {
+			request: (request: { method: "personal_sign"; params: [string, string] }) => Promise<string>;
+	  }
+	| {
+			signMessage: (message: string) => Promise<string>;
+	  };
