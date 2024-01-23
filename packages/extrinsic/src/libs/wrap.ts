@@ -1,6 +1,8 @@
 import { ok } from "neverthrow";
 import { ExtrinsicWrapper, Extrinsic, WrappedExtrinsic } from "../types";
-import { safeReturn } from "../utils";
+import { errWithPrefix, safeReturn } from "../utils";
+
+const err = errWithPrefix("Wrap");
 
 /**
  * Wraps a given extrinsic with other extrinsic
@@ -15,26 +17,30 @@ export async function wrap(
 	senderAddress: string,
 	wrappers: ExtrinsicWrapper[]
 ) {
-	let wrappedEx: WrappedExtrinsic = { extrinsic, senderAddress };
+	try {
+		let wrappedEx: WrappedExtrinsic = { extrinsic, senderAddress };
 
-	const keyedWrappers = wrappers.reduce(
-		(keyWrappers, wrapper) => {
-			keyWrappers[wrapper.id] = wrapper;
-			return keyWrappers;
-		},
-		{} as Record<ExtrinsicWrapper["id"], ExtrinsicWrapper>
-	);
+		const keyedWrappers = wrappers.reduce(
+			(keyWrappers, wrapper) => {
+				keyWrappers[wrapper.id] = wrapper;
+				return keyWrappers;
+			},
+			{} as Record<ExtrinsicWrapper["id"], ExtrinsicWrapper>
+		);
 
-	if (keyedWrappers) {
-		// ensure certain order is in place
-		const { futurepass, feeProxy } = keyedWrappers;
-		for (const wrapper of [futurepass, feeProxy].filter(Boolean)) {
-			const result = await wrapper.wrap(wrappedEx);
+		if (keyedWrappers) {
+			// ensure certain order is in place
+			const { futurepass, feeProxy } = keyedWrappers;
+			for (const wrapper of [futurepass, feeProxy].filter(Boolean)) {
+				const result = await wrapper.wrap(wrappedEx);
 
-			if (result.isErr()) return safeReturn(result);
-			wrappedEx = result.value;
+				if (result.isErr()) return safeReturn(result);
+				wrappedEx = result.value;
+			}
 		}
-	}
 
-	return safeReturn(ok(wrappedEx));
+		return safeReturn(ok(wrappedEx));
+	} catch (e) {
+		return safeReturn(err(e instanceof Error ? e.message : `Unknown error, ${e}`));
+	}
 }
