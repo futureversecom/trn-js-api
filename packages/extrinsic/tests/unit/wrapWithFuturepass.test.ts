@@ -1,8 +1,8 @@
 import { ApiPromise } from "@polkadot/api";
 import { describe, expect, jest, test } from "@jest/globals";
 import { wrapWithFuturepass } from "@therootnetwork/extrinsic/libs/wrapWithFuturepass";
-import { WrappedExtrinsic } from "@therootnetwork/extrinsic/types";
 import { Err } from "neverthrow";
+import { Extrinsic } from "@therootnetwork/extrinsic/types";
 
 describe("wrapWithFuturepass", () => {
 	test("wraps extrinsic with `futurepass.proxyExtrinsic` with an ok result", async () => {
@@ -29,17 +29,13 @@ describe("wrapWithFuturepass", () => {
 
 		const senderAddress = "0x0";
 		const fpAddress = "0xf";
-		const wrappedExtrinsic = { extrinsic: {}, senderAddress } as WrappedExtrinsic;
-		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise);
-		const wrapResult = await wrapper.wrap(wrappedExtrinsic);
+		const extrinsic = {} as Extrinsic;
+		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise, senderAddress);
+		const wrapResult = await wrapper(extrinsic);
 
-		expect(wrapper.id).toBe("futurepass");
 		expect(wrapResult.isOk()).toEqual(true);
 		expect(api.tx.futurepass.proxyExtrinsic).toBeCalledTimes(1);
-		expect(api.tx.futurepass.proxyExtrinsic).toHaveBeenCalledWith(
-			fpAddress,
-			wrappedExtrinsic.extrinsic
-		);
+		expect(api.tx.futurepass.proxyExtrinsic).toHaveBeenCalledWith(fpAddress, extrinsic);
 	});
 
 	test("futurepass address fetching ends with thrown error", async () => {
@@ -53,20 +49,17 @@ describe("wrapWithFuturepass", () => {
 			},
 		};
 
-		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise);
-		const wrapResult1 = await wrapper.wrap({
-			extrinsic: {},
-			senderAddress: "0x0",
-		} as WrappedExtrinsic);
+		const senderAddress1 = "0x0";
+		const wrapper1 = wrapWithFuturepass(api as unknown as ApiPromise, senderAddress1);
+		const wrapResult1 = await wrapper1({} as Extrinsic);
 
 		expect(wrapResult1.isErr()).toBe(true);
 		expect((wrapResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((wrapResult1 as Err<never, Error>).error.message).toEqual("FuturepassWrapper::error");
 
-		const wrapResult2 = await wrapper.wrap({
-			extrinsic: {},
-			senderAddress: "0x1",
-		} as WrappedExtrinsic);
+		const senderAddress2 = "0x1";
+		const wrapper2 = wrapWithFuturepass(api as unknown as ApiPromise, senderAddress2);
+		const wrapResult2 = await wrapper2({} as Extrinsic);
 
 		expect(wrapResult2.isErr()).toBe(true);
 		expect((wrapResult2 as Err<never, Error>).error).toBeInstanceOf(Error);
@@ -86,11 +79,9 @@ describe("wrapWithFuturepass", () => {
 			},
 		};
 
-		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise);
-		const wrapResult = await wrapper.wrap({
-			extrinsic: {},
-			senderAddress: "0x0",
-		} as WrappedExtrinsic);
+		const senderAddress = "0x0";
+		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise, senderAddress);
+		const wrapResult = await wrapper({} as Extrinsic);
 
 		expect(wrapResult.isErr()).toBe(true);
 		expect((wrapResult as Err<never, Error>).error).toBeInstanceOf(Error);

@@ -1,10 +1,10 @@
 import { ApiPromise } from "@polkadot/api";
-import { Result, err, fromPromise, ok } from "neverthrow";
-import { PlainResult } from "./types";
+import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
+import { Result } from "./types";
 import { SignatureOptions, IExtrinsicEra } from "@polkadot/types/types";
 import { SignerOptions } from "@polkadot/api-base/types/submittable";
 
-export function safeReturn<T>(result: Result<T, Error>): PlainResult<T> {
+export function safeReturn<T>(result: NTResult<T, Error>): Result<T> {
 	if (result.isErr()) {
 		return {
 			value: result.error,

@@ -1,24 +1,21 @@
-// import { SubmittableResultValue } from "@polkadot/api-base/types/submittable";
-import {
-	Extrinsic,
-	ProgressStatus,
-	InBlockResult,
-	WrappedExtrinsic,
-	ExtrinsicResult,
-} from "../types";
-import { fromPromise, ok } from "neverthrow";
-import { errWithPrefix, safeReturn } from "../utils";
 import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
+import { fromPromise, ok } from "neverthrow";
+import { Extrinsic, ExtrinsicResult, InBlockResult, ProgressStatus, Result } from "../types";
+import { errWithPrefix, safeReturn } from "../utils";
 
 const err = errWithPrefix("Sign");
 
 export async function send(
-	extrinsic: Extrinsic | WrappedExtrinsic,
+	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
 	onProgress: (status: ProgressStatus, result: ISubmittableResult) => void
 ) {
 	try {
-		const wrappedEx = "extrinsic" in extrinsic ? extrinsic : ({ extrinsic } as WrappedExtrinsic);
-		const result = await sendExtrinsic(wrappedEx, onProgress);
+		let extrinsic = extrinsicOrResult;
+		if ("ok" in extrinsic) {
+			if (!extrinsic.ok) return extrinsic;
+			extrinsic = extrinsic.value;
+		}
+		const result = await sendExtrinsic(extrinsic, onProgress);
 
 		if (result.isErr()) return safeReturn(err(result.error.message, result.error.cause));
 		return safeReturn(ok(result.value));
@@ -28,11 +25,9 @@ export async function send(
 }
 
 async function sendExtrinsic(
-	wrappedEx: WrappedExtrinsic,
+	extrinsic: Extrinsic,
 	onProgress: (status: ProgressStatus, result: ISubmittableResult) => void
 ) {
-	const { extrinsic } = wrappedEx;
-
 	const sendPromise = new Promise<ExtrinsicResult>((resolve, reject) => {
 		let unsubscribe: () => void;
 

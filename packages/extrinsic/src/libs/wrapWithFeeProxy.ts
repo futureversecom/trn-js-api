@@ -1,39 +1,35 @@
 import { ApiPromise } from "@polkadot/api";
 import { RuntimeDispatchInfo } from "@polkadot/types/interfaces";
 import { fromPromise, ok } from "neverthrow";
-import { FeeProxyWrapperOpts, WrappedExtrinsic, DexAmountsIn } from "../types";
-import { errWithPrefix } from "../utils";
 import { XRP_ASSET_ID } from "../constants";
+import { DexAmountsIn, Extrinsic } from "../types";
+import { errWithPrefix } from "../utils";
 
 const err = errWithPrefix("FeeProxyWrapper");
 
-export function wrapWithFeeProxy(api: ApiPromise, opts: FeeProxyWrapperOpts) {
-	return {
-		id: "feeProxy" as const,
-		async wrap(wrappedEx: WrappedExtrinsic) {
-			const { extrinsic, senderAddress } = wrappedEx;
-			const { assetId, slippage = 0.05 } = opts;
+export function wrapWithFeeProxy(
+	api: ApiPromise,
+	senderAddress: string,
+	assetId: number,
+	slippage = 0.05
+) {
+	return async (extrinsic: Extrinsic) => {
+		const paymentInfoResult = await fetchPaymentInfo(api, extrinsic, senderAddress, assetId);
+		if (paymentInfoResult.isErr()) return paymentInfoResult;
+		const paymentInfo = paymentInfoResult.value;
 
-			const paymentInfoResult = await fetchPaymentInfo(api, extrinsic, senderAddress, assetId);
-			if (paymentInfoResult.isErr()) return paymentInfoResult;
-			const paymentInfo = paymentInfoResult.value;
+		const maxPaymentResult = await calculateMaxPayment(api, paymentInfo, assetId, slippage);
+		if (maxPaymentResult.isErr()) return maxPaymentResult;
+		const maxPayment = maxPaymentResult.value.toString();
 
-			const maxPaymentResult = await calculateMaxPayment(api, paymentInfo, assetId, slippage);
-			if (maxPaymentResult.isErr()) return maxPaymentResult;
-			const maxPayment = maxPaymentResult.value.toString();
-
-			return ok({
-				...wrappedEx,
-				extrinsic: api.tx.feeProxy.callWithFeePreferences(assetId, maxPayment, extrinsic),
-			});
-		},
+		return ok(api.tx.feeProxy.callWithFeePreferences(assetId, maxPayment, extrinsic));
 	};
 }
 
 async function fetchPaymentInfo(
 	api: ApiPromise,
-	extrinsic: WrappedExtrinsic["extrinsic"],
-	senderAddress: WrappedExtrinsic["senderAddress"],
+	extrinsic: Extrinsic,
+	senderAddress: string,
 	assetId: number
 ) {
 	const feeProxy = api.tx.feeProxy.callWithFeePreferences(assetId, 0, extrinsic);

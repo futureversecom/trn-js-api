@@ -1,10 +1,10 @@
 import { ApiPromise } from "@polkadot/api";
 import { describe, expect, jest, test } from "@jest/globals";
-import { signWithEthSigner } from "@therootnetwork/extrinsic/libs/signWithEthSigner";
-import { Extrinsic, PersonalSignRequest, WrappedExtrinsic } from "@therootnetwork/extrinsic/types";
+import { signWithEthereumWallet } from "@therootnetwork/extrinsic/libs/signWithEthereumWallet";
+import { Extrinsic } from "@therootnetwork/extrinsic/types";
 import { Err } from "neverthrow";
 
-describe("signWithEthSigner", () => {
+describe("signWithEthereumWallet", () => {
 	test("signs an extrinsic with an ok result", async () => {
 		const api = {
 			genesisHash: "0x0",
@@ -30,18 +30,18 @@ describe("signWithEthSigner", () => {
 			},
 		};
 
-		const signer = signWithEthSigner(api as unknown as ApiPromise, {
-			signMessage: jest.fn(() => Promise.resolve("0x11")),
-		});
+		const senderAddress = "0x0";
+		const signer = signWithEthereumWallet(
+			api as unknown as ApiPromise,
+			senderAddress,
+			jest.fn(() => Promise.resolve("0x11"))
+		);
 
 		const extrinsic = {
 			addSignature: jest.fn(),
 		};
 
-		const signResult = await signer.sign({
-			extrinsic: extrinsic as unknown as Extrinsic,
-			senderAddress: "0x0",
-		});
+		const signResult = await signer(extrinsic as unknown as Extrinsic);
 
 		expect(signResult.isOk()).toBe(true);
 		expect(extrinsic.addSignature).toHaveBeenCalledTimes(1);
@@ -59,19 +59,27 @@ describe("signWithEthSigner", () => {
 			},
 		};
 
-		const signer = signWithEthSigner(api as unknown as ApiPromise, {
-			signMessage: jest.fn(() => Promise.resolve("")),
-		});
-		const signResult1 = await signer.sign({ senderAddress: "0x0" } as WrappedExtrinsic);
+		const signer1 = signWithEthereumWallet(
+			api as unknown as ApiPromise,
+			"0x0",
+			jest.fn(() => Promise.resolve(""))
+		);
+		const signResult1 = await signer1({} as unknown as Extrinsic);
 		expect(signResult1.isErr()).toBe(true);
 		expect((signResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((signResult1 as Err<never, Error>).error.message).toEqual("EthSignerProvider::error");
+		expect((signResult1 as Err<never, Error>).error.message).toEqual("EthereumWallet::error");
 
-		const signResult2 = await signer.sign({ senderAddress: "0x1" } as WrappedExtrinsic);
+		const signer2 = signWithEthereumWallet(
+			api as unknown as ApiPromise,
+			"0x1",
+			jest.fn(() => Promise.resolve(""))
+		);
+
+		const signResult2 = await signer2({} as unknown as Extrinsic);
 		expect(signResult2.isErr()).toBe(true);
 		expect((signResult2 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((signResult2 as Err<never, Error>).error.message).toEqual(
-			`EthSignerProvider::Unable to fetch signing info for "0x1"`
+			`EthereumWallet::Unable to fetch signing info for "0x1"`
 		);
 	});
 
@@ -97,30 +105,27 @@ describe("signWithEthSigner", () => {
 			},
 		};
 
-		const signer = signWithEthSigner(api as unknown as ApiPromise, {
-			request: jest.fn((request: PersonalSignRequest) => {
-				const {
-					params: [, address],
-				} = request;
-				return Promise.reject(address === "0x0" ? new Error("error") : "error");
-			}),
-		});
-		const signResult1 = await signer.sign({
-			extrinsic: { method: "" },
-			senderAddress: "0x0",
-		} as unknown as WrappedExtrinsic);
+		const signer1 = signWithEthereumWallet(
+			api as unknown as ApiPromise,
+			"0x0",
+			jest.fn(() => Promise.reject(new Error("error")))
+		);
+		const signResult1 = await signer1({} as unknown as Extrinsic);
 		expect(signResult1.isErr()).toBe(true);
 		expect((signResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((signResult1 as Err<never, Error>).error.message).toEqual("EthSignerProvider::error");
+		expect((signResult1 as Err<never, Error>).error.message).toEqual("EthereumWallet::error");
 
-		const signResult2 = await signer.sign({
-			extrinsic: { method: "" },
-			senderAddress: "0x1",
-		} as unknown as WrappedExtrinsic);
+		const signer2 = signWithEthereumWallet(
+			api as unknown as ApiPromise,
+			"0x1",
+			jest.fn(() => Promise.reject("error"))
+		);
+
+		const signResult2 = await signer2({} as unknown as Extrinsic);
 		expect(signResult2.isErr()).toBe(true);
 		expect((signResult2 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((signResult2 as Err<never, Error>).error.message).toEqual(
-			`EthSignerProvider::Unable to request signing for "0x1"`
+			`EthereumWallet::Unable to request signing for "0x1"`
 		);
 	});
 });

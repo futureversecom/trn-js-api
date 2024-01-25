@@ -6,8 +6,9 @@ import { resolve } from "node:path";
 import { createKeyring, filterExtrinsicEvents } from "./utils";
 import { wrap } from "@therootnetwork/extrinsic/libs/wrap";
 import { wrapWithFuturepass } from "@therootnetwork/extrinsic/libs/wrapWithFuturepass";
-import { WrappedExtrinsic } from "@therootnetwork/extrinsic/types";
 import { wrapWithFeeProxy } from "@therootnetwork/extrinsic/libs/wrapWithFeeProxy";
+import { Extrinsic } from "@therootnetwork/extrinsic/types";
+import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
 
 describe("wrap", () => {
 	let api: ApiPromise;
@@ -29,14 +30,14 @@ describe("wrap", () => {
 	test("wraps a given extrinsic with `futurepass.proxyExtrinsic`", async () => {
 		const keyring = createKeyring(process.env.CALLER_PRIVATE_KEY as unknown as string);
 		const remarkCall = api.tx.system.remarkWithEvent("Hello");
-		const wExtrinsic = await wrap(remarkCall, keyring.address, [wrapWithFuturepass(api)]);
+		const wrapResult = await wrap(remarkCall, [wrapWithFuturepass(api, keyring.address)]);
 
-		expect(wExtrinsic.ok).toBe(true);
-		const { extrinsic } = wExtrinsic.value as WrappedExtrinsic;
+		expect(wrapResult.ok).toBe(true);
+		const extrinsic = wrapResult.value as Extrinsic;
 		return new Promise((resolve) => {
 			let unsubscribe: () => void;
 			extrinsic
-				.signAndSend(keyring, (result) => {
+				.signAndSend(keyring, (result: ISubmittableResult) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
 					const [futurepassEvent, remarkEvent] = filterExtrinsicEvents(result.events, [
 						"Futurepass.ProxyExecuted",
@@ -53,17 +54,16 @@ describe("wrap", () => {
 
 	test("wraps a given extrinsic with `feeProxy.callWithFeePreferences`", async () => {
 		const keyring = createKeyring(process.env.CALLER_PRIVATE_KEY as unknown as string);
+		const assetId = 17508;
 		const remarkCall = api.tx.system.remarkWithEvent("Hello");
-		const wExtrinsic = await wrap(remarkCall, keyring.address, [
-			wrapWithFeeProxy(api, { assetId: 17508 }),
-		]);
+		const wrapResult = await wrap(remarkCall, [wrapWithFeeProxy(api, keyring.address, assetId)]);
 
-		expect(wExtrinsic.ok).toBe(true);
-		const { extrinsic } = wExtrinsic.value as WrappedExtrinsic;
+		expect(wrapResult.ok).toBe(true);
+		const extrinsic = wrapResult.value as Extrinsic;
 		return new Promise((resolve) => {
 			let unsubscribe: () => void;
 			extrinsic
-				.signAndSend(keyring, (result) => {
+				.signAndSend(keyring, (result: ISubmittableResult) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
 					const [feeProxyEvent, swapEvent, remarkEvent] = filterExtrinsicEvents(result.events, [
 						"FeeProxy.CallWithFeePreferences",
@@ -82,18 +82,19 @@ describe("wrap", () => {
 
 	test("wraps a given extrinsic with both `futurepass` and `feeProxy` wrappers", async () => {
 		const keyring = createKeyring(process.env.CALLER_PRIVATE_KEY as unknown as string);
+		const assetId = 17508;
 		const remarkCall = api.tx.system.remarkWithEvent("Hello");
-		const wExtrinsic = await wrap(remarkCall, keyring.address, [
-			wrapWithFeeProxy(api, { assetId: 17508 }),
-			wrapWithFuturepass(api),
+		const wrapResult = await wrap(remarkCall, [
+			wrapWithFuturepass(api, keyring.address),
+			wrapWithFeeProxy(api, keyring.address, assetId),
 		]);
 
-		expect(wExtrinsic.ok).toBe(true);
-		const { extrinsic } = wExtrinsic.value as WrappedExtrinsic;
+		expect(wrapResult.ok).toBe(true);
+		const extrinsic = wrapResult.value as Extrinsic;
 		return new Promise((resolve) => {
 			let unsubscribe: () => void;
 			extrinsic
-				.signAndSend(keyring, (result) => {
+				.signAndSend(keyring, (result: ISubmittableResult) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
 					const [feeProxyEvent, swapEvent, futurepassEvent, remarkEvent] = filterExtrinsicEvents(
 						result.events,
@@ -104,6 +105,7 @@ describe("wrap", () => {
 							"System.Remarked",
 						]
 					);
+
 					expect(feeProxyEvent).toBeDefined();
 					expect(swapEvent).toBeDefined();
 					expect(futurepassEvent).toBeDefined();

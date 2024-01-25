@@ -3,11 +3,11 @@ import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 import { sign } from "@therootnetwork/extrinsic/libs/sign";
-import { signWithNativeKeyring } from "@therootnetwork/extrinsic/libs/signWithNativeKeyring";
+import { signWithNativeWallet } from "@therootnetwork/extrinsic/libs/signWithNativeWallet";
 import { send } from "@therootnetwork/extrinsic/libs/send";
 import dotenv from "dotenv";
 import { resolve } from "node:path";
-import { ExtrinsicResult, WrappedExtrinsic } from "@therootnetwork/extrinsic/types";
+import { ExtrinsicResult } from "@therootnetwork/extrinsic/types";
 
 describe("send", () => {
 	let api: ApiPromise;
@@ -31,13 +31,9 @@ describe("send", () => {
 		const remarkCall = api.tx.system.remarkWithEvent("hello");
 		const signResult = await sign(
 			remarkCall,
-			senderAddress,
-			signWithNativeKeyring(api, process.env.CALLER_PRIVATE_KEY as unknown as string)
+			signWithNativeWallet(api, senderAddress, process.env.CALLER_PRIVATE_KEY as unknown as string)
 		);
-
-		expect(signResult.ok).toBe(true);
-
-		const sendResult = await send(signResult.value as WrappedExtrinsic, (status, result) => {
+		const sendResult = await send(signResult, (status, result) => {
 			expect(["Future", "Ready", "Broadcast", "Retracted"].includes(status)).toBe(true);
 			expect(result).toBeDefined();
 		});

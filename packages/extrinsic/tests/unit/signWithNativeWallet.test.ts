@@ -1,10 +1,10 @@
 import { ApiPromise } from "@polkadot/api";
 import { describe, expect, jest, test } from "@jest/globals";
-import { signWithNativeKeyring } from "@therootnetwork/extrinsic/libs/signWithNativeKeyring";
-import { Extrinsic, WrappedExtrinsic } from "@therootnetwork/extrinsic/types";
+import { signWithNativeWallet } from "@therootnetwork/extrinsic/libs/signWithNativeWallet";
+import { Extrinsic } from "@therootnetwork/extrinsic/types";
 import { Err } from "neverthrow";
 
-describe("signWithNativeKeyring", () => {
+describe("signWithNativeWallet", () => {
 	test("signs an extrinsic with an ok result", async () => {
 		const api = {
 			genesisHash: "0x0",
@@ -31,14 +31,12 @@ describe("signWithNativeKeyring", () => {
 			sign: jest.fn(),
 		};
 
-		const signer = signWithNativeKeyring(
+		const signer = signWithNativeWallet(
 			api as unknown as ApiPromise,
+			"0x0",
 			"0x1000000000000000000000000000000000000000000000000000000000000000"
 		);
-		const signResult = await signer.sign({
-			extrinsic: extrinsic as unknown as Extrinsic,
-			senderAddress: "0x0",
-		});
+		const signResult = await signer(extrinsic as unknown as Extrinsic);
 
 		expect(signResult.isOk()).toBe(true);
 		expect(extrinsic.sign).toHaveBeenCalledTimes(1);
@@ -65,22 +63,27 @@ describe("signWithNativeKeyring", () => {
 			},
 		};
 
-		const signer = signWithNativeKeyring(
+		const signer1 = signWithNativeWallet(
 			api as unknown as ApiPromise,
+			"0x0",
 			"0x1000000000000000000000000000000000000000000000000000000000000000"
 		);
-		const signResult1 = await signer.sign({ senderAddress: "0x0" } as WrappedExtrinsic);
+		const signResult1 = await signer1({} as unknown as Extrinsic);
 		expect(signResult1.isErr()).toBe(true);
 		expect((signResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((signResult1 as Err<never, Error>).error.message).toEqual(
-			"NativeKeyringProvider::error"
+		expect((signResult1 as Err<never, Error>).error.message).toEqual("NativeWallet::error");
+
+		const signer2 = signWithNativeWallet(
+			api as unknown as ApiPromise,
+			"0x1",
+			"0x1000000000000000000000000000000000000000000000000000000000000000"
 		);
 
-		const signResult2 = await signer.sign({ senderAddress: "0x1" } as WrappedExtrinsic);
+		const signResult2 = await signer2({} as unknown as Extrinsic);
 		expect(signResult2.isErr()).toBe(true);
 		expect((signResult2 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((signResult2 as Err<never, Error>).error.message).toEqual(
-			`NativeKeyringProvider::Unable to fetch signing info for "0x1"`
+			`NativeWallet::Unable to fetch signing info for "0x1"`
 		);
 	});
 });

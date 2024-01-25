@@ -32,9 +32,6 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^5.59.9
         version: 5.62.0(eslint@8.47.0)(typescript@5.1.6)
-      dotenv:
-        specifier: ^16.3.2
-        version: 16.3.2
       eslint:
         specifier: ^8.42.0
         version: 8.47.0
@@ -142,6 +139,9 @@ importers:
       '@therootnetwork/api-types':
         specifier: ^1.0.0
         version: link:../api-types
+      dotenv:
+        specifier: ^16.3.2
+        version: 16.3.2
       ethers:
         specifier: ^6.6.5
         version: 6.7.1

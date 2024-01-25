@@ -1,12 +1,13 @@
 import { ApiPromise } from "@polkadot/api";
 import { describe, expect, jest, test } from "@jest/globals";
 import { wrapWithFeeProxy } from "@therootnetwork/extrinsic/libs/wrapWithFeeProxy";
-import { Extrinsic, WrappedExtrinsic } from "@therootnetwork/extrinsic/types";
+import { Extrinsic } from "@therootnetwork/extrinsic/types";
 import { Err } from "neverthrow";
 
 describe("wrapWithFeeProxy", () => {
 	test("wraps extrinsic with `feeProxy.callWithFeePreferences` with an ok result", async () => {
 		const senderAddress = "0x0";
+		const assetId = 1124;
 		const extrinsic = {
 			paymentInfo() {
 				return Promise.resolve({ partialFee: 100000 });
@@ -28,13 +29,9 @@ describe("wrapWithFeeProxy", () => {
 			},
 		};
 
-		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, { assetId: 1124 });
-		const wrapResult = await wrapper.wrap({
-			extrinsic: extrinsic as unknown as Extrinsic,
-			senderAddress,
-		});
+		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, senderAddress, assetId);
+		const wrapResult = await wrapper(extrinsic as unknown as Extrinsic);
 
-		expect(wrapper.id).toBe("feeProxy");
 		expect(wrapResult.isOk()).toBe(true);
 		expect(api.tx.feeProxy.callWithFeePreferences).toBeCalledTimes(2);
 		expect(api.tx.feeProxy.callWithFeePreferences).toHaveBeenLastCalledWith(
@@ -53,27 +50,23 @@ describe("wrapWithFeeProxy", () => {
 			},
 		};
 
-		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, { assetId: 1124 });
-
+		const assetId = 1124;
 		const extrinsic = {
 			paymentInfo: jest.fn((address: string) => {
 				return Promise.reject(address === "0x0" ? new Error("error") : "error");
 			}),
 		};
-
-		const wrapResult1 = await wrapper.wrap({
-			extrinsic: extrinsic as unknown as Extrinsic,
-			senderAddress: "0x0",
-		} as WrappedExtrinsic);
+		const senderAddress1 = "0x0";
+		const wrapper1 = wrapWithFeeProxy(api as unknown as ApiPromise, senderAddress1, assetId);
+		const wrapResult1 = await wrapper1(extrinsic as unknown as Extrinsic);
 
 		expect(wrapResult1.isErr()).toBe(true);
 		expect((wrapResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((wrapResult1 as Err<never, Error>).error.message).toEqual("FeeProxyWrapper::error");
 
-		const wrapResult2 = await wrapper.wrap({
-			extrinsic: extrinsic as unknown as Extrinsic,
-			senderAddress: "0x1",
-		} as WrappedExtrinsic);
+		const senderAddress2 = "0x1";
+		const wrapper2 = wrapWithFeeProxy(api as unknown as ApiPromise, senderAddress2, assetId);
+		const wrapResult2 = await wrapper2(extrinsic as unknown as Extrinsic);
 
 		expect(wrapResult2.isErr()).toBe(true);
 		expect((wrapResult2 as Err<never, Error>).error).toBeInstanceOf(Error);
@@ -90,17 +83,16 @@ describe("wrapWithFeeProxy", () => {
 				},
 			},
 		};
-		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, { assetId: 1124 });
+		const senderAddress = "0x0";
+		const assetId = 1124;
+		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, senderAddress, assetId);
 
 		const extrinsic = {
 			paymentInfo: jest.fn(() => {
 				return Promise.resolve({ isEmpty: true });
 			}),
 		};
-		const wrapResult = await wrapper.wrap({
-			extrinsic: extrinsic as unknown as Extrinsic,
-			senderAddress: "0x0",
-		} as WrappedExtrinsic);
+		const wrapResult = await wrapper(extrinsic as unknown as Extrinsic);
 
 		expect(wrapResult.isErr()).toBe(true);
 		expect((wrapResult as Err<never, Error>).error).toBeInstanceOf(Error);
@@ -125,17 +117,16 @@ describe("wrapWithFeeProxy", () => {
 			},
 		};
 
-		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, { assetId: 1124 });
+		const senderAddress = "0x0";
+		const assetId = 1124;
+		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, senderAddress, assetId);
 
 		const extrinsic1 = {
 			paymentInfo() {
 				return Promise.resolve({ partialFee: 100000 });
 			},
 		};
-		const wrapResult1 = await wrapper.wrap({
-			extrinsic: extrinsic1 as unknown as Extrinsic,
-			senderAddress: `0x0`,
-		});
+		const wrapResult1 = await wrapper(extrinsic1 as unknown as Extrinsic);
 
 		expect(wrapResult1.isErr()).toBe(true);
 		expect((wrapResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
@@ -147,10 +138,7 @@ describe("wrapWithFeeProxy", () => {
 				return Promise.resolve({ partialFee: 110000 });
 			},
 		};
-		const wrapResult2 = await wrapper.wrap({
-			extrinsic: extrinsic2 as unknown as Extrinsic,
-			senderAddress: `0x0`,
-		});
+		const wrapResult2 = await wrapper(extrinsic2 as unknown as Extrinsic);
 
 		expect(wrapResult2.isErr()).toBe(true);
 		expect((wrapResult2 as Err<never, Error>).error).toBeInstanceOf(Error);
@@ -175,17 +163,16 @@ describe("wrapWithFeeProxy", () => {
 			},
 		};
 
-		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, { assetId: 1124 });
+		const senderAddress = "0x0";
+		const assetId = 1124;
+		const wrapper = wrapWithFeeProxy(api as unknown as ApiPromise, senderAddress, assetId);
 
 		const extrinsic = {
 			paymentInfo() {
 				return Promise.resolve({ partialFee: 100000 });
 			},
 		};
-		const wrapResult = await wrapper.wrap({
-			extrinsic: extrinsic as unknown as Extrinsic,
-			senderAddress: `0x0`,
-		});
+		const wrapResult = await wrapper(extrinsic as unknown as Extrinsic);
 
 		expect(wrapResult.isErr()).toBe(true);
 		expect((wrapResult as Err<never, Error>).error).toBeInstanceOf(Error);

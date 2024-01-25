@@ -4,104 +4,56 @@ import { wrap } from "@therootnetwork/extrinsic/libs/wrap";
 import { Extrinsic, ExtrinsicWrapper } from "@therootnetwork/extrinsic/types";
 
 describe("wrap", () => {
-	test("wrap given extrinsic with `futurepass` wrapper ends with error result", async () => {
+	test("wrap given extrinsic with a wrapper ends with error result", async () => {
 		const extrinsic = {};
-		const senderAddress = "0x0";
 		const error = new Error("error");
-		const futurepassWrapper = {
-			id: "futurepass",
-			wrap: jest.fn(() => err(error)),
-		};
-		const wrappedErrResult = await wrap(extrinsic as Extrinsic, senderAddress, [
+		const futurepassWrapper = jest.fn(() => err(error));
+		const wrappedErrResult = await wrap(extrinsic as Extrinsic, [
 			futurepassWrapper as unknown as ExtrinsicWrapper,
 		]);
 
-		expect(futurepassWrapper.wrap).toBeCalledTimes(1);
+		expect(futurepassWrapper).toBeCalledTimes(1);
 		expect(wrappedErrResult.ok).toEqual(false);
-		expect(wrappedErrResult.value).toStrictEqual(error);
+		expect((wrappedErrResult.value as Error).message).toEqual("Wrap::error");
 	});
 
-	test("wrap given extrinsic with `futurepass` wrapper ends with ok result", async () => {
+	test("wrap given extrinsic with a wrapper ends with ok result", async () => {
 		const extrinsic = {};
-		const senderAddress = "0x0";
 		const value = {};
-		const futurepassWrapper = {
-			id: "futurepass",
-			wrap: jest.fn(() => ok(value)),
-		};
-		const wrappedOkResult = await wrap(extrinsic as Extrinsic, senderAddress, [
+		const futurepassWrapper = jest.fn(() => ok(value));
+		const wrappedOkResult = await wrap(extrinsic as Extrinsic, [
 			futurepassWrapper as unknown as ExtrinsicWrapper,
 		]);
 
-		expect(futurepassWrapper.wrap).toBeCalledTimes(1);
+		expect(futurepassWrapper).toBeCalledTimes(1);
 		expect(wrappedOkResult.ok).toEqual(true);
 		expect(wrappedOkResult.value).toStrictEqual(value);
 	});
 
-	test("wrap a given extrinsic with `feeProxy` wrapper ends with error result", async () => {
-		const extrinsic = {};
-		const senderAddress = "0x0";
-		const error = new Error("error");
-		const feeProxyWrapper = {
-			id: "feeProxy",
-			wrap: jest.fn(() => err(error)),
-		};
-		const wrappedErrResult = await wrap(extrinsic as Extrinsic, senderAddress, [
-			feeProxyWrapper as unknown as ExtrinsicWrapper,
-		]);
-
-		expect(feeProxyWrapper.wrap).toBeCalledTimes(1);
-		expect(wrappedErrResult.ok).toEqual(false);
-		expect(wrappedErrResult.value).toStrictEqual(error);
-	});
-
-	test("wrap a given extrinsic with `feeProxy` wrapper ends with ok result", async () => {
-		const extrinsic = {};
-		const senderAddress = "0x0";
-		const value = {};
-		const feeProxyWrapper = {
-			id: "feeProxy",
-			wrap: jest.fn(() => ok(value)),
-		};
-		const wrappedOkResult = await wrap(extrinsic as Extrinsic, senderAddress, [
-			feeProxyWrapper as unknown as ExtrinsicWrapper,
-		]);
-
-		expect(feeProxyWrapper.wrap).toBeCalledTimes(1);
-		expect(wrappedOkResult.ok).toEqual(true);
-		expect(wrappedOkResult.value).toStrictEqual(value);
-	});
-
-	test("wrap a given extrinsic with both `futurepass` and `feeProxy` wrappers ends with the correct order", async () => {
+	test("wrap a given extrinsic with 1+ wrappers ends with ok result", async () => {
 		type MockExtrinsic = { steps: string[] };
 		const extrinsic: MockExtrinsic = { steps: [] };
-		const senderAddress = "0x0";
-		const futurepassWrapper = {
-			id: "futurepass",
-			wrap: jest.fn((wrapExtrinsic: { extrinsic: MockExtrinsic }) => {
-				wrapExtrinsic.extrinsic.steps.push("futurepass");
-				return ok(wrapExtrinsic);
-			}),
-		};
+		const wrapper1 = jest.fn((extrinsic: MockExtrinsic) => {
+			extrinsic.steps.push("futurepass");
+			return ok(extrinsic);
+		});
 
-		const feeProxyWrapper = {
-			id: "feeProxy",
-			wrap: jest.fn((wrapExtrinsic: { extrinsic: MockExtrinsic }) => {
-				wrapExtrinsic.extrinsic.steps.push("feeProxy");
-				return ok(wrapExtrinsic);
-			}),
-		};
+		const wrapper2 = jest.fn((extrinsic: MockExtrinsic) => {
+			extrinsic.steps.push("feeProxy");
+			return ok(extrinsic);
+		});
 
-		const wrappedOkResult = await wrap(extrinsic as unknown as Extrinsic, senderAddress, [
-			feeProxyWrapper as unknown as ExtrinsicWrapper,
-			futurepassWrapper as unknown as ExtrinsicWrapper,
+		const wrappedOkResult = await wrap(extrinsic as unknown as Extrinsic, [
+			wrapper1 as unknown as ExtrinsicWrapper,
+			wrapper2 as unknown as ExtrinsicWrapper,
 		]);
 
-		expect(futurepassWrapper.wrap).toBeCalledTimes(1);
-		expect(feeProxyWrapper.wrap).toBeCalledTimes(1);
+		expect(wrapper1).toBeCalledTimes(1);
+		expect(wrapper2).toBeCalledTimes(1);
 		expect(wrappedOkResult.ok).toEqual(true);
-		expect(
-			(wrappedOkResult.value as unknown as { extrinsic: MockExtrinsic }).extrinsic.steps
-		).toEqual(["futurepass", "feeProxy"]);
+		expect((wrappedOkResult.value as unknown as MockExtrinsic).steps).toEqual([
+			"futurepass",
+			"feeProxy",
+		]);
 	});
 });

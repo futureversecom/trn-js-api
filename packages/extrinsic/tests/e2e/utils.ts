@@ -1,8 +1,6 @@
 import { Keyring } from "@polkadot/api";
 import { hexToU8a } from "@polkadot/util";
-import { SubmittableResultValue } from "@polkadot/api/types";
 import { EventRecord } from "@polkadot/types/interfaces";
-import assert from "node:assert";
 
 export type Signer = ReturnType<InstanceType<typeof Keyring>["addFromSeed"]>;
 
@@ -15,11 +13,9 @@ export function createKeyring(seed: string): Signer {
 type EventFilter = `${string}.${string}`;
 
 export function filterExtrinsicEvents(
-	events: SubmittableResultValue["events"],
+	events: EventRecord[],
 	eventFilters: EventFilter[]
-): EventRecord[] {
-	assert(events);
-
+): (EventRecord | undefined)[] {
 	return eventFilters.map((eventFilter) => {
 		const event = events.find(({ event }) => {
 			const name = `${event.section[0].toUpperCase() + event.section.slice(1)}.${
@@ -29,7 +25,6 @@ export function filterExtrinsicEvents(
 			if (typeof eventFilter === "string") return name === eventFilter;
 		});
 
-		assert(event);
 		return event;
 	});
 }
