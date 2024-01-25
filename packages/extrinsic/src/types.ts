@@ -46,7 +46,7 @@ export type EthereumSigner =
 			signMessage: (message: string) => Promise<string>;
 	  };
 
-export type ProgressStatus = "Future" | "Ready" | "Broadcast" | "Invalid" | "Dropped" | "Retracted";
+export type ProgressStatus = "Future" | "Ready" | "Broadcast" | "Retracted";
 
 export type InBlockResult = ISubmittableResult & { blockNumber: number; txIndex: number };
 

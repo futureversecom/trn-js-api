@@ -38,9 +38,7 @@ describe("send", () => {
 		expect(signResult.ok).toBe(true);
 
 		const sendResult = await send(signResult.value as WrappedExtrinsic, (status, result) => {
-			expect(
-				["Future", "Ready", "Broadcast", "Invalid", "Dropped", "Retracted"].includes(status)
-			).toBe(true);
+			expect(["Future", "Ready", "Broadcast", "Retracted"].includes(status)).toBe(true);
 			expect(result).toBeDefined();
 		});
 

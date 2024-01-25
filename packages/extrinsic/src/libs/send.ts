@@ -67,8 +67,6 @@ async function sendExtrinsic(
 					case "Future":
 					case "Ready":
 					case "Broadcast":
-					case "Invalid":
-					case "Dropped":
 					case "Retracted":
 						return onProgress(status.type as ProgressStatus, result as InBlockResult);
 
