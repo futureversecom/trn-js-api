@@ -34,7 +34,7 @@ export async function wrap(
 			for (const wrapper of [futurepass, feeProxy].filter(Boolean)) {
 				const result = await wrapper.wrap(wrappedEx);
 
-				if (result.isErr()) return safeReturn(result);
+				if (result.isErr()) return safeReturn(err(result.error.message, result.error.cause));
 				wrappedEx = result.value;
 			}
 		}

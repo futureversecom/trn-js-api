@@ -22,7 +22,8 @@ export async function sign(
 
 		const signResult = await provider.sign(wExtrinsic);
 
-		if (signResult.isErr()) return safeReturn(signResult);
+		if (signResult.isErr())
+			return safeReturn(err(signResult.error.message, signResult.error.cause));
 		return safeReturn(ok({ ...signResult.value, signProvider: provider.id }));
 	} catch (e) {
 		return safeReturn(err(e instanceof Error ? e.message : `Unknown error, ${e}`));
