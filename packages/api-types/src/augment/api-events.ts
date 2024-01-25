@@ -251,6 +251,10 @@ declare module "@polkadot/api-base/types/events" {
 		};
 		assetsExt: {
 			/**
+			 * The asset deposit was set
+			 **/
+			AssetDepositSet: AugmentedEvent<ApiType, [assetDeposit: u128], { assetDeposit: u128 }>;
+			/**
 			 * New asset has been created
 			 **/
 			CreateAsset: AugmentedEvent<
@@ -1000,6 +1004,48 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[offline: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, PalletStakingExposure]>>],
 				{ offline: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, PalletStakingExposure]>> }
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
+		maintenanceMode: {
+			/**
+			 * An account was blocked
+			 **/
+			AccountBlocked: AugmentedEvent<
+				ApiType,
+				[account: SeedPrimitivesSignatureAccountId20, blocked: bool],
+				{ account: SeedPrimitivesSignatureAccountId20; blocked: bool }
+			>;
+			/**
+			 * An account was blocked
+			 **/
+			CallBlocked: AugmentedEvent<
+				ApiType,
+				[palletName: Bytes, callName: Bytes, blocked: bool],
+				{ palletName: Bytes; callName: Bytes; blocked: bool }
+			>;
+			/**
+			 * An account was blocked
+			 **/
+			EVMTargetBlocked: AugmentedEvent<
+				ApiType,
+				[targetAddress: H160, blocked: bool],
+				{ targetAddress: H160; blocked: bool }
+			>;
+			/**
+			 * Maintenance mode was activated
+			 **/
+			MaintenanceModeActivated: AugmentedEvent<ApiType, [enabled: bool], { enabled: bool }>;
+			/**
+			 * An account was blocked
+			 **/
+			PalletBlocked: AugmentedEvent<
+				ApiType,
+				[palletName: Bytes, blocked: bool],
+				{ palletName: Bytes; blocked: bool }
 			>;
 			/**
 			 * Generic event
@@ -2336,10 +2382,27 @@ declare module "@polkadot/api-base/types/events" {
 				[ticketSequence: u32, ticketSequenceStart: u32, ticketBucketSize: u32],
 				{ ticketSequence: u32; ticketSequenceStart: u32; ticketBucketSize: u32 }
 			>;
+			LedgerIndexManualPrune: AugmentedEvent<
+				ApiType,
+				[ledgerIndex: u32, totalCleared: u32],
+				{ ledgerIndex: u32; totalCleared: u32 }
+			>;
 			/**
 			 * Transaction not supported
 			 **/
 			NotSupportedTransaction: AugmentedEvent<ApiType, []>;
+			/**
+			 * The payment delay was removed
+			 **/
+			PaymentDelayRemoved: AugmentedEvent<ApiType, []>;
+			/**
+			 * The payment delay was set
+			 **/
+			PaymentDelaySet: AugmentedEvent<
+				ApiType,
+				[paymentThreshold: u128, delay: u32],
+				{ paymentThreshold: u128; delay: u32 }
+			>;
 			/**
 			 * Processing an event failed
 			 **/
@@ -2353,6 +2416,24 @@ declare module "@polkadot/api-base/types/events" {
 			TicketSequenceThresholdReached: AugmentedEvent<ApiType, [u32]>;
 			TransactionAdded: AugmentedEvent<ApiType, [u64, H512]>;
 			TransactionChallenge: AugmentedEvent<ApiType, [u64, H512]>;
+			/**
+			 * A withdrawal was delayed as it was above the min_payment threshold
+			 **/
+			WithdrawDelayed: AugmentedEvent<
+				ApiType,
+				[
+					sender: SeedPrimitivesSignatureAccountId20,
+					amount: u128,
+					destination: H160,
+					delayedPaymentId: u64,
+				],
+				{
+					sender: SeedPrimitivesSignatureAccountId20;
+					amount: u128;
+					destination: H160;
+					delayedPaymentId: u64;
+				}
+			>;
 			/**
 			 * Request to withdraw some XRP amount to XRPL
 			 **/

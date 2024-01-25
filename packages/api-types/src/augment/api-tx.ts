@@ -44,8 +44,8 @@ import type {
 	PalletStakingPalletConfigOpU32,
 	PalletStakingRewardDestination,
 	PalletStakingValidatorPrefs,
-	PalletXrplBridgeHelpersXrpTransaction,
-	PalletXrplBridgeHelpersXrplTxData,
+	PalletXrplBridgeXrpTransaction,
+	PalletXrplBridgeXrplTxData,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesEthyCryptoAppCryptoSignature,
 	SeedPrimitivesNftRoyaltiesSchedule,
@@ -705,6 +705,18 @@ declare module "@polkadot/api-base/types/submittable" {
 		};
 		assetsExt: {
 			/**
+			 * Burns an asset from an account. Caller must be the asset owner
+			 * Attempting to burn ROOT token will throw an error
+			 **/
+			burnFrom: AugmentedSubmittable<
+				(
+					assetId: u32 | AnyNumber | Uint8Array,
+					who: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					amount: Compact<u128> | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, SeedPrimitivesSignatureAccountId20, Compact<u128>]
+			>;
+			/**
 			 * Creates a new asset with unique ID according to the network asset id scheme.
 			 **/
 			createAsset: AugmentedSubmittable<
@@ -721,6 +733,39 @@ declare module "@polkadot/api-base/types/submittable" {
 						| string
 				) => SubmittableExtrinsic<ApiType>,
 				[Bytes, Bytes, u8, Option<u128>, Option<SeedPrimitivesSignatureAccountId20>]
+			>;
+			/**
+			 * Mints an asset to an account if the caller is the asset owner
+			 * Attempting to mint ROOT token will throw an error
+			 **/
+			mint: AugmentedSubmittable<
+				(
+					assetId: u32 | AnyNumber | Uint8Array,
+					beneficiary: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					amount: Compact<u128> | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, SeedPrimitivesSignatureAccountId20, Compact<u128>]
+			>;
+			/**
+			 * Sudo call to set the asset deposit for creating assets
+			 * Note, this does not change the deposit when calling create within the assets pallet
+			 * However that call is filtered
+			 **/
+			setAssetDeposit: AugmentedSubmittable<
+				(assetDeposit: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u128]
+			>;
+			/**
+			 * Transfers either ROOT or an asset
+			 **/
+			transfer: AugmentedSubmittable<
+				(
+					assetId: u32 | AnyNumber | Uint8Array,
+					destination: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					amount: Compact<u128> | AnyNumber | Uint8Array,
+					keepAlive: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, SeedPrimitivesSignatureAccountId20, Compact<u128>, bool]
 			>;
 			/**
 			 * Generic tx
@@ -1860,6 +1905,66 @@ declare module "@polkadot/api-base/types/submittable" {
 					signature: PalletImOnlineSr25519AppSr25519Signature | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[PalletImOnlineHeartbeat, PalletImOnlineSr25519AppSr25519Signature]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
+		maintenanceMode: {
+			/**
+			 * Blocks an account from transacting on the network
+			 **/
+			blockAccount: AugmentedSubmittable<
+				(
+					account: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					blocked: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20, bool]
+			>;
+			/**
+			 * Blocks a call from being executed
+			 * pallet_name: The name of the pallet as per the runtime file. i.e. FeeProxy
+			 * call_name: The snake_case name for the call. i.e. set_fee
+			 * Both pallet and call names are not case sensitive
+			 **/
+			blockCall: AugmentedSubmittable<
+				(
+					palletName: Bytes | string | Uint8Array,
+					callName: Bytes | string | Uint8Array,
+					blocked: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Bytes, Bytes, bool]
+			>;
+			/**
+			 * Blocks an account from transacting on the network
+			 * Can be used to block individual precompile addresses or contracts
+			 **/
+			blockEvmTarget: AugmentedSubmittable<
+				(
+					targetAddress: H160 | string | Uint8Array,
+					blocked: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[H160, bool]
+			>;
+			/**
+			 * Blocks an entire pallets calls from being executed
+			 * pallet_name: The name of the pallet as per the runtime file. i.e. FeeProxy
+			 * Pallet names are not case sensitive
+			 **/
+			blockPallet: AugmentedSubmittable<
+				(
+					palletName: Bytes | string | Uint8Array,
+					blocked: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Bytes, bool]
+			>;
+			/**
+			 * Enable maintenance mode which prevents all non sudo calls
+			 **/
+			enableMaintenanceMode: AugmentedSubmittable<
+				(enabled: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[bool]
 			>;
 			/**
 			 * Generic tx
@@ -4519,6 +4624,10 @@ declare module "@polkadot/api-base/types/submittable" {
 				) => SubmittableExtrinsic<ApiType>,
 				[SeedPrimitivesSignatureAccountId20]
 			>;
+			pruneSettledLedgerIndex: AugmentedSubmittable<
+				(ledgerIndex: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u32]
+			>;
 			/**
 			 * remove a relayer
 			 **/
@@ -4532,16 +4641,12 @@ declare module "@polkadot/api-base/types/submittable" {
 				(
 					highestSettledLedgerIndex: u32 | AnyNumber | Uint8Array,
 					submissionWindowWidth: u32 | AnyNumber | Uint8Array,
+					highestPrunedLedgerIndex: Option<u32> | null | Uint8Array | u32 | AnyNumber,
 					settledTxData:
 						| Option<
 								Vec<
 									ITuple<
-										[
-											H512,
-											u32,
-											PalletXrplBridgeHelpersXrpTransaction,
-											SeedPrimitivesSignatureAccountId20,
-										]
+										[H512, u32, PalletXrplBridgeXrpTransaction, SeedPrimitivesSignatureAccountId20]
 									>
 								>
 						  >
@@ -4549,19 +4654,14 @@ declare module "@polkadot/api-base/types/submittable" {
 						| Uint8Array
 						| Vec<
 								ITuple<
-									[
-										H512,
-										u32,
-										PalletXrplBridgeHelpersXrpTransaction,
-										SeedPrimitivesSignatureAccountId20,
-									]
+									[H512, u32, PalletXrplBridgeXrpTransaction, SeedPrimitivesSignatureAccountId20]
 								>
 						  >
 						| [
 								H512 | string | Uint8Array,
 								u32 | AnyNumber | Uint8Array,
 								(
-									| PalletXrplBridgeHelpersXrpTransaction
+									| PalletXrplBridgeXrpTransaction
 									| { transactionHash?: any; transaction?: any; timestamp?: any }
 									| string
 									| Uint8Array
@@ -4572,15 +4672,11 @@ declare module "@polkadot/api-base/types/submittable" {
 				[
 					u32,
 					u32,
+					Option<u32>,
 					Option<
 						Vec<
 							ITuple<
-								[
-									H512,
-									u32,
-									PalletXrplBridgeHelpersXrpTransaction,
-									SeedPrimitivesSignatureAccountId20,
-								]
+								[H512, u32, PalletXrplBridgeXrpTransaction, SeedPrimitivesSignatureAccountId20]
 							>
 						>
 					>,
@@ -4599,6 +4695,21 @@ declare module "@polkadot/api-base/types/submittable" {
 			setDoorTxFee: AugmentedSubmittable<
 				(fee: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
 				[u64]
+			>;
+			/**
+			 * Sets the payment delay
+			 * payment_delay is a tuple of payment_threshold and delay in blocks
+			 **/
+			setPaymentDelay: AugmentedSubmittable<
+				(
+					paymentDelay:
+						| Option<ITuple<[u128, u32]>>
+						| null
+						| Uint8Array
+						| ITuple<[u128, u32]>
+						| [u128 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
+				) => SubmittableExtrinsic<ApiType>,
+				[Option<ITuple<[u128, u32]>>]
 			>;
 			/**
 			 * Set the door account current ticket sequence params for current allocation - force set
@@ -4622,6 +4733,13 @@ declare module "@polkadot/api-base/types/submittable" {
 				[u32, u32]
 			>;
 			/**
+			 * Set the xrp source tag
+			 **/
+			setXrpSourceTag: AugmentedSubmittable<
+				(sourceTag: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u32]
+			>;
+			/**
 			 * Submit xrp transaction challenge
 			 **/
 			submitChallenge: AugmentedSubmittable<
@@ -4636,7 +4754,7 @@ declare module "@polkadot/api-base/types/submittable" {
 					ledgerIndex: u64 | AnyNumber | Uint8Array,
 					transactionHash: H512 | string | Uint8Array,
 					transaction:
-						| PalletXrplBridgeHelpersXrplTxData
+						| PalletXrplBridgeXrplTxData
 						| { Payment: any }
 						| { CurrencyPayment: any }
 						| { Xls20: any }
@@ -4644,7 +4762,7 @@ declare module "@polkadot/api-base/types/submittable" {
 						| Uint8Array,
 					timestamp: u64 | AnyNumber | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[u64, H512, PalletXrplBridgeHelpersXrplTxData, u64]
+				[u64, H512, PalletXrplBridgeXrplTxData, u64]
 			>;
 			/**
 			 * Withdraw xrp transaction
@@ -4655,6 +4773,17 @@ declare module "@polkadot/api-base/types/submittable" {
 					destination: H160 | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[u128, H160]
+			>;
+			/**
+			 * Withdraw xrp transaction
+			 **/
+			withdrawXrpWithDestinationTag: AugmentedSubmittable<
+				(
+					amount: u128 | AnyNumber | Uint8Array,
+					destination: H160 | string | Uint8Array,
+					destinationTag: u32 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u128, H160, u32]
 			>;
 			/**
 			 * Generic tx

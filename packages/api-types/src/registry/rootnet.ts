@@ -153,6 +153,10 @@ import type {
 	PalletImOnlineHeartbeat,
 	PalletImOnlineSr25519AppSr25519Public,
 	PalletImOnlineSr25519AppSr25519Signature,
+	PalletMaintenanceModeCall,
+	PalletMaintenanceModeError,
+	PalletMaintenanceModeEvent,
+	PalletMaintenanceModeMaintenanceChecker,
 	PalletMarketplaceAuctionClosureReason,
 	PalletMarketplaceAuctionListing,
 	PalletMarketplaceCall,
@@ -248,11 +252,13 @@ import type {
 	PalletXls20Error,
 	PalletXls20Event,
 	PalletXrplBridgeCall,
+	PalletXrplBridgeDelayedWithdrawal,
 	PalletXrplBridgeError,
 	PalletXrplBridgeEvent,
-	PalletXrplBridgeHelpersXrpTransaction,
-	PalletXrplBridgeHelpersXrplTicketSequenceParams,
-	PalletXrplBridgeHelpersXrplTxData,
+	PalletXrplBridgeXrpTransaction,
+	PalletXrplBridgeXrpWithdrawTransaction,
+	PalletXrplBridgeXrplTicketSequenceParams,
+	PalletXrplBridgeXrplTxData,
 	SeedPalletCommonEventRouterError,
 	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
@@ -455,6 +461,10 @@ declare module "@polkadot/types/types/registry" {
 		PalletImOnlineHeartbeat: PalletImOnlineHeartbeat;
 		PalletImOnlineSr25519AppSr25519Public: PalletImOnlineSr25519AppSr25519Public;
 		PalletImOnlineSr25519AppSr25519Signature: PalletImOnlineSr25519AppSr25519Signature;
+		PalletMaintenanceModeCall: PalletMaintenanceModeCall;
+		PalletMaintenanceModeError: PalletMaintenanceModeError;
+		PalletMaintenanceModeEvent: PalletMaintenanceModeEvent;
+		PalletMaintenanceModeMaintenanceChecker: PalletMaintenanceModeMaintenanceChecker;
 		PalletMarketplaceAuctionClosureReason: PalletMarketplaceAuctionClosureReason;
 		PalletMarketplaceAuctionListing: PalletMarketplaceAuctionListing;
 		PalletMarketplaceCall: PalletMarketplaceCall;
@@ -550,11 +560,13 @@ declare module "@polkadot/types/types/registry" {
 		PalletXls20Error: PalletXls20Error;
 		PalletXls20Event: PalletXls20Event;
 		PalletXrplBridgeCall: PalletXrplBridgeCall;
+		PalletXrplBridgeDelayedWithdrawal: PalletXrplBridgeDelayedWithdrawal;
 		PalletXrplBridgeError: PalletXrplBridgeError;
 		PalletXrplBridgeEvent: PalletXrplBridgeEvent;
-		PalletXrplBridgeHelpersXrpTransaction: PalletXrplBridgeHelpersXrpTransaction;
-		PalletXrplBridgeHelpersXrplTicketSequenceParams: PalletXrplBridgeHelpersXrplTicketSequenceParams;
-		PalletXrplBridgeHelpersXrplTxData: PalletXrplBridgeHelpersXrplTxData;
+		PalletXrplBridgeXrpTransaction: PalletXrplBridgeXrpTransaction;
+		PalletXrplBridgeXrpWithdrawTransaction: PalletXrplBridgeXrpWithdrawTransaction;
+		PalletXrplBridgeXrplTicketSequenceParams: PalletXrplBridgeXrplTicketSequenceParams;
+		PalletXrplBridgeXrplTxData: PalletXrplBridgeXrplTxData;
 		SeedPalletCommonEventRouterError: SeedPalletCommonEventRouterError;
 		SeedPalletCommonUtilsPublicMintInformation: SeedPalletCommonUtilsPublicMintInformation;
 		SeedPrimitivesEthyCryptoAppCryptoPublic: SeedPrimitivesEthyCryptoAppCryptoPublic;

@@ -944,6 +944,12 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 **/
 			methods: AugmentedRpc<() => Observable<RpcMethods>>;
 		};
+		sft: {
+			/**
+			 * Get the URI of a token
+			 **/
+			tokenUri: AugmentedRpc<(tokenId: TokenId) => Observable<Json>>;
+		};
 		state: {
 			/**
 			 * Perform a call to a builtin on the chain

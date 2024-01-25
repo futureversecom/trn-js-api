@@ -285,6 +285,16 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		maintenanceMode: {
+			/**
+			 * The maximum length of a pallet or call name, stored on-chain
+			 **/
+			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		marketplace: {
 			/**
 			 * The default account which collects network fees from marketplace sales
@@ -731,6 +741,18 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Challenge Period to wait for a challenge before processing the transaction
 			 **/
 			challengePeriod: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Upper limit to the number of blocks we can check per block for delayed payments
+			 **/
+			delayedPaymentBlockLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum number of delayed transactions that can be processed in a single block
+			 **/
+			maxDelayedPaymentsPerBlock: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum number of transactions that can be pruned in on_idle
+			 **/
+			maxPrunedTransactionsPerBlock: u32 & AugmentedConst<ApiType>;
 			/**
 			 * XRP Asset Id set at runtime
 			 **/
