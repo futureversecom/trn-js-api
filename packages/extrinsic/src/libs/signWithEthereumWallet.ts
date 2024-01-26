@@ -36,6 +36,14 @@ export function signWithEthereumWallet(
 	};
 }
 
+export function newEthereumWalletSigner(
+	ethereumSigner: EthereumSigner,
+	signerOptions: Partial<SignerOptions> = {}
+) {
+	return (api: ApiPromise, senderAddress: string) =>
+		signWithEthereumWallet.bind(undefined, api, senderAddress, ethereumSigner, signerOptions);
+}
+
 function createSignerPayload(
 	api: ApiPromise,
 	signatureOptions: SignatureOptions,

@@ -31,6 +31,14 @@ export function signWithNativeWallet(
 	};
 }
 
+export function newNativeWalletSigner(
+	seedOrKeyringPair: string | IKeyringPair,
+	signerOptions: Partial<SignerOptions> = {}
+) {
+	return (api: ApiPromise, senderAddress: string) =>
+		signWithNativeWallet.bind(undefined, api, senderAddress, seedOrKeyringPair, signerOptions);
+}
+
 function createKeyringFromSeed(seed: string) {
 	const keyring = new Keyring({ type: "ethereum" });
 	const seedU8a = hexToU8a(seed);

@@ -1,13 +1,20 @@
 import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
 import { fromPromise, ok } from "neverthrow";
-import { Extrinsic, ExtrinsicResult, InBlockResult, ProgressStatus, Result } from "../types";
+import {
+	Extrinsic,
+	ExtrinsicResult,
+	InBlockResult,
+	ProgressStatus,
+	Result,
+	ProgressCallback,
+} from "../types";
 import { errWithPrefix, safeReturn } from "../utils";
 
 const errPrefix = errWithPrefix("Send");
 
 export async function send(
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
-	onProgress?: (status: ProgressStatus, result: ISubmittableResult) => void
+	onProgress?: ProgressCallback
 ) {
 	try {
 		let extrinsic = extrinsicOrResult;
@@ -24,10 +31,7 @@ export async function send(
 	}
 }
 
-async function sendExtrinsic(
-	extrinsic: Extrinsic,
-	onProgress?: (status: ProgressStatus, result: ISubmittableResult) => void
-) {
+async function sendExtrinsic(extrinsic: Extrinsic, onProgress?: ProgressCallback) {
 	const sendPromise = new Promise<ExtrinsicResult>((resolve, reject) => {
 		let unsubscribe: () => void;
 
