@@ -3,7 +3,7 @@ import { fromPromise, ok } from "neverthrow";
 import { Extrinsic, ExtrinsicResult, InBlockResult, ProgressStatus, Result } from "../types";
 import { errWithPrefix, safeReturn } from "../utils";
 
-const err = errWithPrefix("Send");
+const errPrefix = errWithPrefix("Send");
 
 export async function send(
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
@@ -17,10 +17,10 @@ export async function send(
 		}
 		const result = await sendExtrinsic(extrinsic, onProgress);
 
-		if (result.isErr()) return safeReturn(err(result.error.message, result.error.cause));
+		if (result.isErr()) return safeReturn(errPrefix(result.error.message, result.error.cause));
 		return safeReturn(ok(result.value));
 	} catch (e) {
-		return safeReturn(err(e instanceof Error ? e.message : `Unknown error, ${e}`));
+		return safeReturn(errPrefix(e instanceof Error ? e.message : `Unknown error`, e));
 	}
 }
 

@@ -7,7 +7,7 @@ import { fromPromise, ok } from "neverthrow";
 import { EthereumSigner, Extrinsic, ExtrinsicSigner } from "../types";
 import { createSignatureOptions, errWithPrefix } from "../utils";
 
-const err = errWithPrefix("EthereumWallet");
+const errPrefix = errWithPrefix("EthereumWallet");
 
 export function signWithEthereumWallet(
 	api: ApiPromise,
@@ -18,11 +18,13 @@ export function signWithEthereumWallet(
 	return async (extrinsic: Extrinsic) => {
 		const createResult = await createSignatureOptions(api, senderAddress, signerOptions);
 
-		if (createResult.isErr()) return err(createResult.error);
+		if (createResult.isErr())
+			return errPrefix(createResult.error.message, createResult.error.cause);
 		const [payload, ethHash] = createSignerPayload(api, createResult.value, extrinsic);
 
 		const requestResult = await requestSign(ethereumSigner, ethHash, senderAddress);
-		if (requestResult.isErr()) return err(requestResult.error);
+		if (requestResult.isErr())
+			return errPrefix(requestResult.error.message, requestResult.error.cause);
 
 		extrinsic.addSignature(
 			senderAddress,
@@ -52,7 +54,8 @@ function createSignerPayload(
 }
 
 async function requestSign(ethereumSigner: EthereumSigner, message: string, senderAddress: string) {
-	return await fromPromise(ethereumSigner(message, senderAddress), (e) =>
-		e instanceof Error ? e.message : `Unable to request signing for "${senderAddress}"`
+	return await fromPromise(
+		ethereumSigner(message, senderAddress),
+		(e) => new Error(`Unable to request signing for "${senderAddress}"`, { cause: e })
 	);
 }

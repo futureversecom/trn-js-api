@@ -28,13 +28,14 @@ export async function createSignatureOptions(
 	senderAddress: string,
 	options: Partial<SignerOptions>
 ) {
-	const result = await fromPromise(api.derive.tx.signingInfo(senderAddress), (e) =>
-		e instanceof Error ? e.message : `Unable to fetch signing info for "${senderAddress}"`
+	const result = await fromPromise(
+		api.derive.tx.signingInfo(senderAddress),
+		(e) => new Error(`Unable to fetch signing info for "${senderAddress}"`, { cause: e })
 	);
 
 	if (result.isErr()) return err(result.error);
 	const { header, mortalLength, nonce } = result.value;
-	if (!header) return err(`Unable to retrieve block header`);
+	if (!header) return err(new Error(`Unable to retrieve block header`, { cause: result.value }));
 
 	const era = api.registry.createTypeUnsafe<IExtrinsicEra>("ExtrinsicEra", [
 		{

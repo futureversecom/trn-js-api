@@ -6,7 +6,7 @@ import { SignerOptions } from "@polkadot/api-base/types/submittable";
 import { ok } from "neverthrow";
 import { createSignatureOptions, errWithPrefix } from "../utils";
 
-const err = errWithPrefix("NativeWallet");
+const errPrefix = errWithPrefix("NativeWallet");
 
 export function signWithNativeWallet(
 	api: ApiPromise,
@@ -22,7 +22,8 @@ export function signWithNativeWallet(
 
 		const createResult = await createSignatureOptions(api, senderAddress, signerOptions);
 
-		if (createResult.isErr()) return err(createResult.error);
+		if (createResult.isErr())
+			return errPrefix(createResult.error.message, createResult.error.cause);
 		const signatureOptions = createResult.value;
 		extrinsic.sign(sender, signatureOptions);
 

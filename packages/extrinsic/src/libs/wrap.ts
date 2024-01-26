@@ -2,7 +2,7 @@ import { ok } from "neverthrow";
 import { ExtrinsicWrapper, Extrinsic } from "../types";
 import { errWithPrefix, safeReturn } from "../utils";
 
-const err = errWithPrefix("Wrap");
+const errPrefix = errWithPrefix("Wrap");
 
 /**
  * Wraps a given extrinsic with other extrinsic
@@ -18,11 +18,11 @@ export async function wrap(extrinsic: Extrinsic, wrappers: ExtrinsicWrapper[]) {
 
 		for (const wrapper of wrappers) {
 			const result = await wrapper(wrappedEx);
-			if (result.isErr()) return safeReturn(err(result.error.message, result.error.cause));
+			if (result.isErr()) return safeReturn(errPrefix(result.error.message, result.error.cause));
 			wrappedEx = result.value;
 		}
 		return safeReturn(ok(wrappedEx));
 	} catch (e) {
-		return safeReturn(err(e instanceof Error ? e.message : `Unknown error, ${e}`));
+		return safeReturn(errPrefix(e instanceof Error ? e.message : `Unknown error`, e));
 	}
 }

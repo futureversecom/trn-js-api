@@ -1,7 +1,7 @@
 import { Extrinsic, ExtrinsicSigner, Result } from "../types";
 import { errWithPrefix, safeReturn } from "../utils";
 
-const err = errWithPrefix("Sign");
+const errPrefix = errWithPrefix("Sign");
 
 export async function sign(
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
@@ -17,9 +17,9 @@ export async function sign(
 		const signResult = await signer(extrinsic);
 
 		if (signResult.isErr())
-			return safeReturn(err(signResult.error.message, signResult.error.cause));
+			return safeReturn(errPrefix(signResult.error.message, signResult.error.cause));
 		return safeReturn(signResult);
 	} catch (e) {
-		return safeReturn(err(e instanceof Error ? e.message : `Unknown error, ${e}`));
+		return safeReturn(errPrefix(e instanceof Error ? e.message : `Unknown error`, e));
 	}
 }
