@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2016",
+    "lib": ["ES2022.Error"],
     "module": "commonjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -11,7 +12,8 @@
     "paths": {
       "@therootnetwork/api/*": ["./packages/api/src/*"],
       "@therootnetwork/evm/*": ["./packages/evm/src/*"],
-      "@therootnetwork/api-types/*": ["./packages/api-types/src/*"]
+      "@therootnetwork/api-types/*": ["./packages/api-types/src/*"],
+      "@therootnetwork/extrinsic/*": ["./packages/extrinsic/src/*"]
     }
   },
   "exclude": ["dist/**/*", "**/dist/**/*"]

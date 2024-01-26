@@ -8,8 +8,8 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts  --ignore-path ../../.eslintignore",
-    "test": "jest -c ../../jest.config.js .*.test.ts",
-    "test:watch": "jest -c ../../jest.config.js --watch --coverage"
+    "test": "jest -c ../../jest.config.js evm/tests",
+    "test:watch": "jest -c ../../jest.config.js evm/tests --watch --coverage"
   },
   "devDependencies": {
     "ethers": "^6.6.5"
