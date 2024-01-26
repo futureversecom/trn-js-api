@@ -67,7 +67,10 @@ describe("signWithEthereumWallet", () => {
 		const signResult1 = await signer1({} as unknown as Extrinsic);
 		expect(signResult1.isErr()).toBe(true);
 		expect((signResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((signResult1 as Err<never, Error>).error.message).toEqual("EthereumWallet::error");
+		expect((signResult1 as Err<never, Error>).error.message).toEqual(
+			'EthereumWallet::Unable to fetch signing info for "0x0"'
+		);
+		expect((signResult1 as Err<never, Error>).error.cause).toEqual(new Error("error"));
 
 		const signer2 = signWithEthereumWallet(
 			api as unknown as ApiPromise,
@@ -81,6 +84,7 @@ describe("signWithEthereumWallet", () => {
 		expect((signResult2 as Err<never, Error>).error.message).toEqual(
 			`EthereumWallet::Unable to fetch signing info for "0x1"`
 		);
+		expect((signResult2 as Err<never, Error>).error.cause).toEqual("error");
 	});
 
 	test("sign request ends with thrown error", async () => {
@@ -113,7 +117,10 @@ describe("signWithEthereumWallet", () => {
 		const signResult1 = await signer1({} as unknown as Extrinsic);
 		expect(signResult1.isErr()).toBe(true);
 		expect((signResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((signResult1 as Err<never, Error>).error.message).toEqual("EthereumWallet::error");
+		expect((signResult1 as Err<never, Error>).error.message).toEqual(
+			'EthereumWallet::Unable to request signing for "0x0"'
+		);
+		expect((signResult1 as Err<never, Error>).error.cause).toEqual(new Error("error"));
 
 		const signer2 = signWithEthereumWallet(
 			api as unknown as ApiPromise,
@@ -127,5 +134,6 @@ describe("signWithEthereumWallet", () => {
 		expect((signResult2 as Err<never, Error>).error.message).toEqual(
 			`EthereumWallet::Unable to request signing for "0x1"`
 		);
+		expect((signResult2 as Err<never, Error>).error.cause).toEqual("error");
 	});
 });

@@ -62,7 +62,9 @@ describe("wrapWithFeeProxy", () => {
 
 		expect(wrapResult1.isErr()).toBe(true);
 		expect((wrapResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((wrapResult1 as Err<never, Error>).error.message).toEqual("FeeProxyWrapper::error");
+		expect((wrapResult1 as Err<never, Error>).error.message).toEqual(
+			'FeeProxyWrapper::Unable to fetch payment info for "0x0"'
+		);
 
 		const senderAddress2 = "0x1";
 		const wrapper2 = wrapWithFeeProxy(api as unknown as ApiPromise, senderAddress2, assetId);
@@ -89,7 +91,7 @@ describe("wrapWithFeeProxy", () => {
 
 		const extrinsic = {
 			paymentInfo: jest.fn(() => {
-				return Promise.resolve({ isEmpty: true });
+				return Promise.resolve({ isEmpty: true, toJSON: () => ({}) });
 			}),
 		};
 		const wrapResult = await wrapper(extrinsic as unknown as Extrinsic);
@@ -130,7 +132,9 @@ describe("wrapWithFeeProxy", () => {
 
 		expect(wrapResult1.isErr()).toBe(true);
 		expect((wrapResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((wrapResult1 as Err<never, Error>).error.message).toEqual("FeeProxyWrapper::error");
+		expect((wrapResult1 as Err<never, Error>).error.message).toEqual(
+			'FeeProxyWrapper::Unable to fetch swap info for the pair "[1124, 2]"'
+		);
 
 		api.tx.feeProxy.callWithFeePreferences = jest.fn(() => extrinsic2);
 		const extrinsic2 = {

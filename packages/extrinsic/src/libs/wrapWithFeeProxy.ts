@@ -15,11 +15,11 @@ export function wrapWithFeeProxy(
 ) {
 	return async (extrinsic: Extrinsic) => {
 		const fetchResult = await fetchPaymentInfo(api, extrinsic, senderAddress, assetId);
-		if (fetchResult.isErr()) return fetchResult;
+		if (fetchResult.isErr()) return errPrefix(fetchResult.error.message, fetchResult.error.cause);
 		const paymentInfo = fetchResult.value;
 
 		const calResult = await calculateMaxPayment(api, paymentInfo, assetId, slippage);
-		if (calResult.isErr()) return calResult;
+		if (calResult.isErr()) return errPrefix(calResult.error.message, calResult.error.cause);
 		const maxPayment = calResult.value.toString();
 
 		return ok(api.tx.feeProxy.callWithFeePreferences(assetId, maxPayment, extrinsic));

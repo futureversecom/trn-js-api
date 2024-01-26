@@ -55,7 +55,10 @@ describe("wrapWithFuturepass", () => {
 
 		expect(wrapResult1.isErr()).toBe(true);
 		expect((wrapResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((wrapResult1 as Err<never, Error>).error.message).toEqual("FuturepassWrapper::error");
+		expect((wrapResult1 as Err<never, Error>).error.message).toEqual(
+			'FuturepassWrapper::Unable to fetch Futurepass address for "0x0"'
+		);
+		expect((wrapResult1 as Err<never, Error>).error.cause).toEqual(new Error("error"));
 
 		const senderAddress2 = "0x1";
 		const wrapper2 = wrapWithFuturepass(api as unknown as ApiPromise, senderAddress2);
@@ -66,6 +69,7 @@ describe("wrapWithFuturepass", () => {
 		expect((wrapResult2 as Err<never, Error>).error.message).toEqual(
 			`FuturepassWrapper::Unable to fetch Futurepass address for "0x1"`
 		);
+		expect((wrapResult2 as Err<never, Error>).error.cause).toEqual(`error`);
 	});
 
 	test("futurepass address fetching ends with empty error", async () => {
