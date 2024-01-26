@@ -3,11 +3,11 @@ import { fromPromise, ok } from "neverthrow";
 import { Extrinsic, ExtrinsicResult, InBlockResult, ProgressStatus, Result } from "../types";
 import { errWithPrefix, safeReturn } from "../utils";
 
-const err = errWithPrefix("Sign");
+const err = errWithPrefix("Send");
 
 export async function send(
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
-	onProgress: (status: ProgressStatus, result: ISubmittableResult) => void
+	onProgress?: (status: ProgressStatus, result: ISubmittableResult) => void
 ) {
 	try {
 		let extrinsic = extrinsicOrResult;
@@ -26,36 +26,32 @@ export async function send(
 
 async function sendExtrinsic(
 	extrinsic: Extrinsic,
-	onProgress: (status: ProgressStatus, result: ISubmittableResult) => void
+	onProgress?: (status: ProgressStatus, result: ISubmittableResult) => void
 ) {
 	const sendPromise = new Promise<ExtrinsicResult>((resolve, reject) => {
 		let unsubscribe: () => void;
 
 		extrinsic
 			.send((result: ISubmittableResult) => {
-				const { isError, internalError, dispatchError, status } = result;
+				const { internalError, dispatchError, status } = result;
 
-				// handle errors
-				if (isError) {
+				if (internalError) {
 					unsubscribe();
-					if (internalError) return reject(internalError);
-					if (dispatchError && dispatchError.isModule) {
-						const { section, name, docs } = dispatchError.registry.findMetaError(
-							dispatchError.asModule
-						);
+					return reject(internalError);
+				}
 
-						return reject(
-							new Error(`Failed to dispatch the extrinsic`, {
-								cause: { section, name, docs },
-							})
-						);
-					}
+				if (dispatchError && !dispatchError.isModule) {
+					unsubscribe();
+					return reject(dispatchError.toJSON());
+				}
 
-					if (dispatchError && !dispatchError.isModule) {
-						return reject(
-							new Error(`Failed to dispatch the extrinsic`, { cause: dispatchError.toJSON() })
-						);
-					}
+				if (dispatchError && dispatchError.isModule) {
+					unsubscribe();
+					const { section, name, docs } = dispatchError.registry.findMetaError(
+						dispatchError.asModule
+					);
+
+					return reject({ section, name, docs });
 				}
 
 				switch (status.type) {
@@ -63,7 +59,7 @@ async function sendExtrinsic(
 					case "Ready":
 					case "Broadcast":
 					case "Retracted":
-						return onProgress(status.type as ProgressStatus, result as InBlockResult);
+						return onProgress?.(status.type as ProgressStatus, result);
 
 					case "InBlock":
 					case "Finalized": {
@@ -85,14 +81,12 @@ async function sendExtrinsic(
 
 					default:
 						unsubscribe();
-						return reject(new Error(`Extrinsic failed with status type "${status.type}"`));
+						return reject(result);
 				}
 			})
 			.then((_unsubscribe) => (unsubscribe = _unsubscribe))
 			.catch((error) => reject(error));
 	});
 
-	return fromPromise(sendPromise, (e) =>
-		e instanceof Error ? e : new Error("Unable to send the extrinsic")
-	);
+	return fromPromise(sendPromise, (e) => new Error(`Unable to send the extrinsic`, { cause: e }));
 }

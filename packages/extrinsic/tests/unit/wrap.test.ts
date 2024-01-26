@@ -4,7 +4,7 @@ import { wrap } from "@therootnetwork/extrinsic/libs/wrap";
 import { Extrinsic, ExtrinsicWrapper } from "@therootnetwork/extrinsic/types";
 
 describe("wrap", () => {
-	test("wrap given extrinsic with a wrapper ends with error result", async () => {
+	test("wraps given extrinsic with a wrapper ends with error result", async () => {
 		const extrinsic = {};
 		const error = new Error("error");
 		const futurepassWrapper = jest.fn(() => err(error));
@@ -17,7 +17,7 @@ describe("wrap", () => {
 		expect((wrappedErrResult.value as Error).message).toEqual("Wrap::error");
 	});
 
-	test("wrap given extrinsic with a wrapper ends with ok result", async () => {
+	test("wraps given extrinsic with a wrapper ends with ok result", async () => {
 		const extrinsic = {};
 		const value = {};
 		const futurepassWrapper = jest.fn(() => ok(value));
@@ -30,7 +30,7 @@ describe("wrap", () => {
 		expect(wrappedOkResult.value).toStrictEqual(value);
 	});
 
-	test("wrap a given extrinsic with 1+ wrappers ends with ok result", async () => {
+	test("wraps a given extrinsic with 1+ wrappers ends with ok result", async () => {
 		type MockExtrinsic = { steps: string[] };
 		const extrinsic: MockExtrinsic = { steps: [] };
 		const wrapper1 = jest.fn((extrinsic: MockExtrinsic) => {
