@@ -89,6 +89,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			CreateAssetFailed: AugmentedError<ApiType>;
 			/**
+			 * Decimals cannot be higher than 18
+			 **/
+			DecimalsTooHigh: AugmentedError<ApiType>;
+			/**
 			 * Maximum holds placed on this asset/account pair
 			 **/
 			MaxHolds: AugmentedError<ApiType>;
@@ -100,6 +104,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * No more Ids are available, they've been exhausted
 			 **/
 			NoAvailableIds: AugmentedError<ApiType>;
+			/**
+			 * The signer does not have permission to perform this action
+			 **/
+			NoPermission: AugmentedError<ApiType>;
 			/**
 			 * Operation would overflow
 			 **/
@@ -661,6 +669,32 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Non existent public key.
 			 **/
 			InvalidKey: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
+		maintenanceMode: {
+			/**
+			 * This account is not authorized to execute this transaction
+			 **/
+			AccountBlocked: AugmentedError<ApiType>;
+			/**
+			 * This pallet or call cannot be blocked
+			 **/
+			CannotBlock: AugmentedError<ApiType>;
+			/**
+			 * The call name is not valid utf-8 characters
+			 **/
+			InvalidCallName: AugmentedError<ApiType>;
+			/**
+			 * The pallet name is not valid utf-8 characters
+			 **/
+			InvalidPalletName: AugmentedError<ApiType>;
+			/**
+			 * This call is disabled as the chain is in maintenance mode
+			 **/
+			MaintenanceModeActive: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
@@ -1416,13 +1450,17 @@ declare module "@polkadot/api-base/types/errors" {
 		};
 		vortexDistribution: {
 			/**
-			 * Vortex distribution already triggered
-			 **/
-			AlreadyTriggered: AugmentedError<ApiType>;
-			/**
 			 * Assets should not include vortex asset
 			 **/
 			AssetsShouldNotIncludeVtxAsset: AugmentedError<ApiType>;
+			/**
+			 * Vortex distribution is not ready to be redeemed
+			 **/
+			CannotRedeem: AugmentedError<ApiType>;
+			/**
+			 * Vortex distribution is not ready to be triggered
+			 **/
+			CannotTrigger: AugmentedError<ApiType>;
 			/**
 			 * Invalid amount
 			 **/
@@ -1522,9 +1560,22 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			CannotProcessMoreTransactionsAtThatBlock: AugmentedError<ApiType>;
 			/**
+			 * This ledger index is within the submission window and can't be pruned
+			 **/
+			CannotPruneActiveLedgerIndex: AugmentedError<ApiType>;
+			/**
+			 * The scheduled block cannot hold any more delayed payments
+			 **/
+			DelayScheduleAtCapacity: AugmentedError<ApiType>;
+			/**
 			 * The door address has not been configured
 			 **/
 			DoorAddressNotSet: AugmentedError<ApiType>;
+			/**
+			 * highest_pruned_ledger_index must be less than highest_settled_ledger_index -
+			 * submission_window_width
+			 **/
+			InvalidHighestPrunedIndex: AugmentedError<ApiType>;
 			/**
 			 * The signers are not known by ethy
 			 **/
@@ -1537,7 +1588,15 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The NextTicketSequenceParams has not been set
 			 **/
 			NextTicketSequenceParamsNotSet: AugmentedError<ApiType>;
+			/**
+			 * The paymentIds have been exhausted
+			 **/
+			NoAvailablePaymentIds: AugmentedError<ApiType>;
 			NotPermitted: AugmentedError<ApiType>;
+			/**
+			 * There is no settledXRPTransactionDetails for this ledger index
+			 **/
+			NoTransactionDetails: AugmentedError<ApiType>;
 			/**
 			 * Transaction submitted is outside the submission window
 			 **/
