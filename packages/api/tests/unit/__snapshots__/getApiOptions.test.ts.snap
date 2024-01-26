@@ -178,6 +178,18 @@ exports[`getApiOptions returns expected options 1`] = `
         "type": "Json",
       },
     },
+    "sft": {
+      "tokenUri": {
+        "description": "Get the URI of a token",
+        "params": [
+          {
+            "name": "tokenId",
+            "type": "TokenId",
+          },
+        ],
+        "type": "Json",
+      },
+    },
   },
   "types": {
     "AccountId": "EthereumAccountId",
@@ -1065,6 +1077,11 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletAssetsExtCall": {
         "_enum": {
+          "burn_from": {
+            "amount": "Compact<u128>",
+            "assetId": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
           "create_asset": {
             "decimals": "u8",
             "minBalance": "Option<u128>",
@@ -1072,11 +1089,27 @@ exports[`getApiOptions returns expected options 1`] = `
             "owner": "Option<SeedPrimitivesSignatureAccountId20>",
             "symbol": "Bytes",
           },
+          "mint": {
+            "amount": "Compact<u128>",
+            "assetId": "u32",
+            "beneficiary": "SeedPrimitivesSignatureAccountId20",
+          },
+          "set_asset_deposit": {
+            "assetDeposit": "u128",
+          },
+          "transfer": {
+            "amount": "Compact<u128>",
+            "assetId": "u32",
+            "destination": "SeedPrimitivesSignatureAccountId20",
+            "keepAlive": "bool",
+          },
         },
       },
       "PalletAssetsExtError": {
         "_enum": [
+          "DecimalsTooHigh",
           "NoAvailableIds",
+          "NoPermission",
           "BalanceLow",
           "NoAccount",
           "Overflow",
@@ -1086,6 +1119,9 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletAssetsExtEvent": {
         "_enum": {
+          "AssetDepositSet": {
+            "assetDeposit": "u128",
+          },
           "CreateAsset": {
             "assetId": "u32",
             "creator": "SeedPrimitivesSignatureAccountId20",
@@ -2171,6 +2207,64 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletImOnlineSr25519AppSr25519Public": "SpCoreSr25519Public",
       "PalletImOnlineSr25519AppSr25519Signature": "SpCoreSr25519Signature",
+      "PalletMaintenanceModeCall": {
+        "_enum": {
+          "block_account": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "blocked": "bool",
+          },
+          "block_call": {
+            "blocked": "bool",
+            "callName": "Bytes",
+            "palletName": "Bytes",
+          },
+          "block_evm_target": {
+            "blocked": "bool",
+            "targetAddress": "H160",
+          },
+          "block_pallet": {
+            "blocked": "bool",
+            "palletName": "Bytes",
+          },
+          "enable_maintenance_mode": {
+            "enabled": "bool",
+          },
+        },
+      },
+      "PalletMaintenanceModeError": {
+        "_enum": [
+          "AccountBlocked",
+          "MaintenanceModeActive",
+          "InvalidPalletName",
+          "InvalidCallName",
+          "CannotBlock",
+        ],
+      },
+      "PalletMaintenanceModeEvent": {
+        "_enum": {
+          "AccountBlocked": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "blocked": "bool",
+          },
+          "CallBlocked": {
+            "blocked": "bool",
+            "callName": "Bytes",
+            "palletName": "Bytes",
+          },
+          "EVMTargetBlocked": {
+            "blocked": "bool",
+            "targetAddress": "H160",
+          },
+          "MaintenanceModeActivated": {
+            "enabled": "bool",
+          },
+          "PalletBlocked": {
+            "blocked": "bool",
+            "palletName": "Bytes",
+          },
+        },
+      },
+      "PalletMaintenanceModeMaintenanceChecker": "Null",
       "PalletMarketplaceAuctionClosureReason": {
         "_enum": [
           "ExpiredNoBids",
@@ -3742,7 +3836,8 @@ exports[`getApiOptions returns expected options 1`] = `
           "VortexPeriodNotSet",
           "PivotStringTooLong",
           "AssetsShouldNotIncludeVtxAsset",
-          "AlreadyTriggered",
+          "CannotTrigger",
+          "CannotRedeem",
           "NotTriggered",
         ],
       },
@@ -3789,8 +3884,8 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletVortexVtxDistStatus": {
         "_enum": [
-          "Enabled",
           "Disabled",
+          "Enabled",
           "Triggered",
           "Paying",
           "Done",
@@ -3858,12 +3953,16 @@ exports[`getApiOptions returns expected options 1`] = `
           "add_relayer": {
             "relayer": "SeedPrimitivesSignatureAccountId20",
           },
+          "prune_settled_ledger_index": {
+            "ledgerIndex": "u32",
+          },
           "remove_relayer": {
             "relayer": "SeedPrimitivesSignatureAccountId20",
           },
           "reset_settled_xrpl_tx_data": {
+            "highestPrunedLedgerIndex": "Option<u32>",
             "highestSettledLedgerIndex": "u32",
-            "settledTxData": "Option<Vec<(H512,u32,PalletXrplBridgeHelpersXrpTransaction,SeedPrimitivesSignatureAccountId20)>>",
+            "settledTxData": "Option<Vec<(H512,u32,PalletXrplBridgeXrpTransaction,SeedPrimitivesSignatureAccountId20)>>",
             "submissionWindowWidth": "u32",
           },
           "set_door_address": {
@@ -3871,6 +3970,9 @@ exports[`getApiOptions returns expected options 1`] = `
           },
           "set_door_tx_fee": {
             "fee": "u64",
+          },
+          "set_payment_delay": {
+            "paymentDelay": "Option<(u128,u32)>",
           },
           "set_ticket_sequence_current_allocation": {
             "startTicketSequence": "u32",
@@ -3881,34 +3983,52 @@ exports[`getApiOptions returns expected options 1`] = `
             "startTicketSequence": "u32",
             "ticketBucketSize": "u32",
           },
+          "set_xrp_source_tag": {
+            "sourceTag": "u32",
+          },
           "submit_challenge": {
             "transactionHash": "H512",
           },
           "submit_transaction": {
             "ledgerIndex": "u64",
             "timestamp": "u64",
-            "transaction": "PalletXrplBridgeHelpersXrplTxData",
+            "transaction": "PalletXrplBridgeXrplTxData",
             "transactionHash": "H512",
           },
           "withdraw_xrp": {
             "amount": "u128",
             "destination": "H160",
           },
+          "withdraw_xrp_with_destination_tag": {
+            "amount": "u128",
+            "destination": "H160",
+            "destinationTag": "u32",
+          },
         },
+      },
+      "PalletXrplBridgeDelayedWithdrawal": {
+        "destinationTag": "Option<u32>",
+        "sender": "SeedPrimitivesSignatureAccountId20",
+        "withdrawTx": "PalletXrplBridgeXrpWithdrawTransaction",
       },
       "PalletXrplBridgeError": {
         "_enum": [
           "NotPermitted",
+          "NoAvailablePaymentIds",
+          "DelayScheduleAtCapacity",
+          "NoTransactionDetails",
           "RelayerDoesNotExists",
           "WithdrawInvalidAmount",
           "DoorAddressNotSet",
           "TooManySigners",
           "InvalidSigners",
+          "InvalidHighestPrunedIndex",
           "TxReplay",
           "NextTicketSequenceParamsNotSet",
           "NextTicketSequenceParamsInvalid",
           "TicketSequenceParamsInvalid",
           "CannotProcessMoreTransactionsAtThatBlock",
+          "CannotPruneActiveLedgerIndex",
           "OutSideSubmissionWindow",
           "TooManyTransactionsPerLedger",
         ],
@@ -3925,7 +4045,16 @@ exports[`getApiOptions returns expected options 1`] = `
             "ticketSequence": "u32",
             "ticketSequenceStart": "u32",
           },
+          "LedgerIndexManualPrune": {
+            "ledgerIndex": "u32",
+            "totalCleared": "u32",
+          },
           "NotSupportedTransaction": "Null",
+          "PaymentDelayRemoved": "Null",
+          "PaymentDelaySet": {
+            "delay": "u32",
+            "paymentThreshold": "u128",
+          },
           "ProcessingFailed": "(u64,H512,SpRuntimeDispatchError)",
           "ProcessingOk": "(u64,H512)",
           "RelayerAdded": "SeedPrimitivesSignatureAccountId20",
@@ -3933,6 +4062,12 @@ exports[`getApiOptions returns expected options 1`] = `
           "TicketSequenceThresholdReached": "u32",
           "TransactionAdded": "(u64,H512)",
           "TransactionChallenge": "(u64,H512)",
+          "WithdrawDelayed": {
+            "amount": "u128",
+            "delayedPaymentId": "u64",
+            "destination": "H160",
+            "sender": "SeedPrimitivesSignatureAccountId20",
+          },
           "WithdrawRequest": {
             "amount": "u128",
             "destination": "H160",
@@ -3941,16 +4076,23 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
-      "PalletXrplBridgeHelpersXrpTransaction": {
+      "PalletXrplBridgeXrpTransaction": {
         "timestamp": "u64",
-        "transaction": "PalletXrplBridgeHelpersXrplTxData",
+        "transaction": "PalletXrplBridgeXrplTxData",
         "transactionHash": "H512",
       },
-      "PalletXrplBridgeHelpersXrplTicketSequenceParams": {
+      "PalletXrplBridgeXrpWithdrawTransaction": {
+        "amount": "u128",
+        "destination": "H160",
+        "txFee": "u64",
+        "txNonce": "u32",
+        "txTicketSequence": "u32",
+      },
+      "PalletXrplBridgeXrplTicketSequenceParams": {
         "bucketSize": "u32",
         "startSequence": "u32",
       },
-      "PalletXrplBridgeHelpersXrplTxData": {
+      "PalletXrplBridgeXrplTxData": {
         "_enum": {
           "CurrencyPayment": {
             "address": "H160",
