@@ -1,12 +1,14 @@
+import { EventRecord } from "@polkadot/types/interfaces";
 import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
 import { fromPromise, ok } from "neverthrow";
 import {
 	Extrinsic,
+	ExtrinsicEvent,
 	ExtrinsicResult,
 	InBlockResult,
+	ProgressCallback,
 	ProgressStatus,
 	Result,
-	ProgressCallback,
 } from "../types";
 import { errWithPrefix, safeReturn } from "../utils";
 
@@ -76,10 +78,12 @@ async function sendExtrinsic(extrinsic: Extrinsic, onProgress?: ProgressCallback
 						const index = txIndex.toString().padStart(6, "0");
 						const hash = blockHash.slice(2, 7);
 						const id = `${height}-${index}-${hash}`;
+						const events = result.events.map(formatEvent);
 
 						return resolve({
 							id,
 							result: result as InBlockResult,
+							events,
 						});
 					}
 
@@ -93,4 +97,21 @@ async function sendExtrinsic(extrinsic: Extrinsic, onProgress?: ProgressCallback
 	});
 
 	return fromPromise(sendPromise, (e) => new Error(`Unable to send the extrinsic`, { cause: e }));
+}
+
+function formatEvent({ event, phase }: EventRecord) {
+	const args = event.data.toJSON() as unknown[];
+	const fields = event.meta.fields.toJSON() as { name?: string }[];
+	const name = `${event.section.charAt(0).toUpperCase()}${event.section.slice(1)}.${event.method}`;
+
+	const data = fields.reduce<ExtrinsicEvent["data"]>((record, { name }, index) => {
+		record[name ?? `arg${index}`] = args[index];
+		return record;
+	}, {});
+
+	return {
+		name,
+		phase: phase.type,
+		data,
+	} as ExtrinsicEvent;
 }

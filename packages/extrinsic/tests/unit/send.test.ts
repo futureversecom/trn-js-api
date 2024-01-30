@@ -2,7 +2,6 @@ import { describe, expect, jest, test } from "@jest/globals";
 import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
 import { send } from "@therootnetwork/extrinsic/libs/send";
 import { Extrinsic, ExtrinsicResult, Result } from "@therootnetwork/extrinsic/types";
-import { Err } from "neverthrow";
 
 describe("send", () => {
 	test("sends a given extrinsic ends with ok result", async () => {
@@ -17,6 +16,30 @@ describe("send", () => {
 						},
 						blockNumber: 10456157,
 						txIndex: 0,
+						events: [
+							{
+								event: {
+									data: { toJSON: () => ["1", "2"] },
+									meta: { fields: { toJSON: () => [{ name: "assetId1" }, { name: "assetId2" }] } },
+									section: "assets",
+									method: "Transfer1",
+								},
+								phase: {
+									type: "ApplyExtrinsic",
+								},
+							},
+							{
+								event: {
+									data: { toJSON: () => ["1", "2"] },
+									meta: { fields: { toJSON: () => [{}, {}] } },
+									section: "assets",
+									method: "Transfer2",
+								},
+								phase: {
+									type: "ApplyExtrinsic",
+								},
+							},
+						],
 					} as unknown as ISubmittableResult);
 				}, 100);
 
@@ -27,7 +50,20 @@ describe("send", () => {
 		const sendResult = await send(extrinsic as unknown as Extrinsic);
 
 		expect(sendResult.ok).toBe(true);
+		const { events } = sendResult.value as ExtrinsicResult;
 		expect((sendResult.value as ExtrinsicResult).id).toEqual("0010456157-000000-0b643");
+		expect(events).toEqual([
+			{
+				name: "Assets.Transfer1",
+				phase: "ApplyExtrinsic",
+				data: { assetId1: "1", assetId2: "2" },
+			},
+			{
+				name: "Assets.Transfer2",
+				phase: "ApplyExtrinsic",
+				data: { arg0: "1", arg1: "2" },
+			},
+		]);
 	});
 
 	test("sends a given extrinsic ends with internal error", async () => {

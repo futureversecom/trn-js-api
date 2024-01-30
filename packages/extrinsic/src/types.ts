@@ -11,7 +11,14 @@ export type EthereumSigner = (message: string, senderAddress: string) => Promise
 export type ExtrinsicResult = {
 	id: string;
 	result: InBlockResult;
+	events: ExtrinsicEvent[];
 };
+export type ExtrinsicEvent = {
+	phase: "ApplyExtrinsic" | "Finalization" | "Initialization";
+	name: string;
+	data: Record<string, unknown>;
+};
+
 export type InBlockResult = ISubmittableResult & { blockNumber: number; txIndex: number };
 export interface DexAmountsIn {
 	Ok: [number, number];
