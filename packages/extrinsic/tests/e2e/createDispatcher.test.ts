@@ -4,14 +4,14 @@ import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import dotenv from "dotenv";
 import { resolve } from "node:path";
-import { createActions } from "@therootnetwork/extrinsic/libs/createActions";
-import { newFuturepassWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFuturepass";
-import { newFeeProxyWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFeeProxy";
-import { newNativeWalletSigner } from "@therootnetwork/extrinsic/libs/signWithNativeWallet";
+import { createDispatcher } from "@therootnetwork/extrinsic/libs/createDispatcher";
+import { futurepassWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFuturepass";
+import { feeProxyWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFeeProxy";
+import { nativeWalletSigner } from "@therootnetwork/extrinsic/libs/signWithNativeWallet";
 import { ExtrinsicResult } from "@therootnetwork/extrinsic/types";
 import { filterExtrinsicEvents } from "./utils";
 
-describe("createActions", () => {
+describe("createDispatcher", () => {
 	let api: ApiPromise;
 	const senderAddress = "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b";
 
@@ -30,11 +30,11 @@ describe("createActions", () => {
 	});
 
 	test("signs and sends multiple extrinsic", async () => {
-		const { signAndSend } = createActions(
+		const { signAndSend } = createDispatcher(
 			api,
 			senderAddress,
-			[newFuturepassWrapper(), newFeeProxyWrapper(17508)],
-			newNativeWalletSigner(process.env.CALLER_PRIVATE_KEY as unknown as string)
+			[futurepassWrapper(), feeProxyWrapper(17508)],
+			nativeWalletSigner(process.env.CALLER_PRIVATE_KEY as unknown as string)
 		);
 
 		{

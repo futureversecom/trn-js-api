@@ -36,7 +36,7 @@ export function signWithEthereumWallet(
 	};
 }
 
-export function newEthereumWalletSigner(
+export function ethereumWalletSigner(
 	ethereumSigner: EthereumSigner,
 	signerOptions: Partial<SignerOptions> = {}
 ) {

@@ -26,7 +26,7 @@ export function wrapWithFeeProxy(
 	};
 }
 
-export function newFeeProxyWrapper(assetId: number, slippage = 0.05) {
+export function feeProxyWrapper(assetId: number, slippage = 0.05) {
 	return (api: ApiPromise, senderAddress: string) =>
 		wrapWithFeeProxy.bind(undefined, api, senderAddress, assetId, slippage);
 }

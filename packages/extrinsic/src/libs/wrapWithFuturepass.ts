@@ -21,7 +21,7 @@ export function wrapWithFuturepass(api: ApiPromise, senderAddress: string) {
 	};
 }
 
-export function newFuturepassWrapper() {
+export function futurepassWrapper() {
 	return (api: ApiPromise, senderAddress: string) =>
 		wrapWithFuturepass.bind(undefined, api, senderAddress);
 }

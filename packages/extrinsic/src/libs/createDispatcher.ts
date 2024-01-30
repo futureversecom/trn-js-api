@@ -11,20 +11,20 @@ import { wrap as wrapFn } from "./wrap";
 import { sign as signFn } from "./sign";
 import { send as sendFn } from "./send";
 
-export function createActions(
+export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,
 	partialWrappers: PartialWrapper[]
 ): UnsignActions;
 
-export function createActions(
+export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,
 	partialWrappers: PartialWrapper[],
 	partialSigner: PartialSigner
 ): SignActions;
 
-export function createActions(
+export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,
 	partialWrappers: PartialWrapper[] = [],

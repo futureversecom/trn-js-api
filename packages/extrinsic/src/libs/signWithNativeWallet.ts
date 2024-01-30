@@ -31,7 +31,7 @@ export function signWithNativeWallet(
 	};
 }
 
-export function newNativeWalletSigner(
+export function nativeWalletSigner(
 	seedOrKeyringPair: string | IKeyringPair,
 	signerOptions: Partial<SignerOptions> = {}
 ) {
