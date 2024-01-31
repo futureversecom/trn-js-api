@@ -40,8 +40,8 @@ describe("wrap", () => {
 				.signAndSend(keyring, (result: ISubmittableResult) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
 					const [futurepassEvent, remarkEvent] = filterExtrinsicEvents(result.events, [
-						"Futurepass.ProxyExecuted",
-						"System.Remarked",
+						"futurepass.ProxyExecuted",
+						"system.Remarked",
 					]);
 					expect(futurepassEvent).toBeDefined();
 					expect(remarkEvent).toBeDefined();
@@ -66,9 +66,9 @@ describe("wrap", () => {
 				.signAndSend(keyring, (result: ISubmittableResult) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
 					const [feeProxyEvent, swapEvent, remarkEvent] = filterExtrinsicEvents(result.events, [
-						"FeeProxy.CallWithFeePreferences",
-						"Dex.Swap",
-						"System.Remarked",
+						"feeProxy.CallWithFeePreferences",
+						"dex.Swap",
+						"system.Remarked",
 					]);
 					expect(feeProxyEvent).toBeDefined();
 					expect(swapEvent).toBeDefined();
@@ -99,10 +99,10 @@ describe("wrap", () => {
 					const [feeProxyEvent, swapEvent, futurepassEvent, remarkEvent] = filterExtrinsicEvents(
 						result.events,
 						[
-							"FeeProxy.CallWithFeePreferences",
-							"Dex.Swap",
-							"Futurepass.ProxyExecuted",
-							"System.Remarked",
+							"feeProxy.CallWithFeePreferences",
+							"dex.Swap",
+							"futurepass.ProxyExecuted",
+							"system.Remarked",
 						]
 					);
 

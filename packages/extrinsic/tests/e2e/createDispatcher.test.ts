@@ -46,10 +46,10 @@ describe("createDispatcher", () => {
 			const [feeProxyEvent, swapEvent, futurepassEvent, remarkEvent] = filterExtrinsicEvents(
 				result.events,
 				[
-					"FeeProxy.CallWithFeePreferences",
-					"Dex.Swap",
-					"Futurepass.ProxyExecuted",
-					"System.Remarked",
+					"feeProxy.CallWithFeePreferences",
+					"dex.Swap",
+					"futurepass.ProxyExecuted",
+					"system.Remarked",
 				]
 			);
 
@@ -68,10 +68,10 @@ describe("createDispatcher", () => {
 			const [feeProxyEvent, swapEvent, futurepassEvent, transferEvent] = filterExtrinsicEvents(
 				result.events,
 				[
-					"FeeProxy.CallWithFeePreferences",
-					"Dex.Swap",
-					"Futurepass.ProxyExecuted",
-					"Assets.Transferred",
+					"feeProxy.CallWithFeePreferences",
+					"dex.Swap",
+					"futurepass.ProxyExecuted",
+					"assets.Transferred",
 				]
 			);
 
@@ -99,7 +99,5 @@ describe("createDispatcher", () => {
 		expect(estimateInASTOResult.ok).toBe(true);
 		const astoFee = estimateInASTOResult.value as bigint;
 		expect(astoFee).toBeGreaterThan(BigInt(0));
-
-		console.log({ xrpFee, astoFee });
 	}, 8000);
 });

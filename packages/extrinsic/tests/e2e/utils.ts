@@ -18,9 +18,7 @@ export function filterExtrinsicEvents(
 ): (EventRecord | undefined)[] {
 	return eventFilters.map((eventFilter) => {
 		const event = events.find(({ event }) => {
-			const name = `${event.section[0].toUpperCase() + event.section.slice(1)}.${
-				event.method
-			}` as `${string}.${string}`;
+			const name = `${event.section}.${event.method}` as `${string}.${string}`;
 
 			if (typeof eventFilter === "string") return name === eventFilter;
 		});

@@ -102,7 +102,7 @@ async function sendExtrinsic(extrinsic: Extrinsic, onProgress?: ProgressCallback
 function formatEvent({ event, phase }: EventRecord) {
 	const args = event.data.toJSON() as unknown[];
 	const fields = event.meta.fields.toJSON() as { name?: string }[];
-	const name = `${event.section.charAt(0).toUpperCase()}${event.section.slice(1)}.${event.method}`;
+	const name = `${event.section}.${event.method}`;
 
 	const data = fields.reduce<ExtrinsicEvent["data"]>((record, { name }, index) => {
 		record[name ?? `arg${index}`] = args[index];

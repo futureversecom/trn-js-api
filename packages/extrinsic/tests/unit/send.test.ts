@@ -54,12 +54,12 @@ describe("send", () => {
 		expect((sendResult.value as ExtrinsicResult).id).toEqual("0010456157-000000-0b643");
 		expect(events).toEqual([
 			{
-				name: "Assets.Transfer1",
+				name: "assets.Transfer1",
 				phase: "ApplyExtrinsic",
 				data: { assetId1: "1", assetId2: "2" },
 			},
 			{
-				name: "Assets.Transfer2",
+				name: "assets.Transfer2",
 				phase: "ApplyExtrinsic",
 				data: { arg0: "1", arg1: "2" },
 			},

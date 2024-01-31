@@ -44,7 +44,7 @@ describe("sign", () => {
 			extrinsic
 				.send((result) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
-					const [remarkEvent] = filterExtrinsicEvents(result.events, ["System.Remarked"]);
+					const [remarkEvent] = filterExtrinsicEvents(result.events, ["system.Remarked"]);
 					expect(remarkEvent).toBeDefined();
 					unsubscribe?.();
 					resolve(result);
@@ -68,7 +68,7 @@ describe("sign", () => {
 			extrinsic
 				.send((result) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
-					const [remarkEvent] = filterExtrinsicEvents(result.events, ["System.Remarked"]);
+					const [remarkEvent] = filterExtrinsicEvents(result.events, ["system.Remarked"]);
 					expect(remarkEvent).toBeDefined();
 					unsubscribe?.();
 					resolve(result);
@@ -95,8 +95,8 @@ describe("sign", () => {
 				.send((result) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
 					const [futurepassEvent, remarkEvent] = filterExtrinsicEvents(result.events, [
-						"Futurepass.ProxyExecuted",
-						"System.Remarked",
+						"futurepass.ProxyExecuted",
+						"system.Remarked",
 					]);
 					expect(futurepassEvent).toBeDefined();
 					expect(remarkEvent).toBeDefined();
@@ -124,8 +124,8 @@ describe("sign", () => {
 				.send((result) => {
 					if (!result.status.isInBlock && !result.status.isFinalized) return;
 					const [futurepassEvent, remarkEvent] = filterExtrinsicEvents(result.events, [
-						"Futurepass.ProxyExecuted",
-						"System.Remarked",
+						"futurepass.ProxyExecuted",
+						"system.Remarked",
 					]);
 					expect(futurepassEvent).toBeDefined();
 					expect(remarkEvent).toBeDefined();
