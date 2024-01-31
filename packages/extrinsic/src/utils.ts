@@ -1,8 +1,10 @@
 import { ApiPromise } from "@polkadot/api";
-import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
-import { Result } from "./types";
-import { SignatureOptions, IExtrinsicEra } from "@polkadot/types/types";
 import { SignerOptions } from "@polkadot/api-base/types/submittable";
+import { RuntimeDispatchInfo } from "@polkadot/types/interfaces";
+import { IExtrinsicEra, SignatureOptions } from "@polkadot/types/types";
+import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
+import { XRP_ASSET_ID } from "./constants";
+import { DexAmountsIn, Extrinsic, Result } from "./types";
 
 export function safeReturn<T>(result: NTResult<T, Error>): Result<T> {
 	if (result.isErr()) {
@@ -53,4 +55,48 @@ export async function createSignatureOptions(
 		signedExtensions: api.registry.signedExtensions,
 		version: api.extrinsicVersion,
 	} as SignatureOptions);
+}
+
+export async function fetchPaymentInfo(
+	api: ApiPromise,
+	senderAddress: string,
+	extrinsic: Extrinsic,
+	assetId: number
+) {
+	const paymentInfoResult = await fromPromise(
+		extrinsic.paymentInfo(senderAddress),
+		(e) => new Error(`Unable to fetch payment info for "${senderAddress}"`, { cause: e })
+	);
+
+	if (paymentInfoResult.isErr()) return err(paymentInfoResult.error);
+	const paymentInfo = paymentInfoResult.value as RuntimeDispatchInfo;
+
+	if (paymentInfo.isEmpty)
+		return err(
+			new Error(`Unable to get payment info for "${senderAddress}"`, {
+				cause: paymentInfo.toJSON(),
+			})
+		);
+
+	if (assetId === XRP_ASSET_ID) return ok(BigInt(paymentInfo.partialFee.toString()));
+
+	const fee = paymentInfoResult.value.partialFee.toString();
+	const getAmountsInResult = await fromPromise(
+		api.rpc.dex.getAmountsIn(fee, [assetId, XRP_ASSET_ID]),
+		(e) =>
+			new Error(`Unable to fetch swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`, {
+				cause: e,
+			})
+	);
+
+	if (getAmountsInResult.isErr()) return err(getAmountsInResult.error);
+	const quote = getAmountsInResult.value as unknown as DexAmountsIn;
+	if (!quote.Ok)
+		return err(
+			new Error(`Unable to extract swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`, {
+				cause: quote,
+			})
+		);
+
+	return ok(BigInt(quote.Ok[0].toString()));
 }

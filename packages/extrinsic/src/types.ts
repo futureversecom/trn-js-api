@@ -32,11 +32,17 @@ export type SendAction = (
 	extrinsic: Extrinsic,
 	onProgress?: ProgressCallback
 ) => Promise<Result<ExtrinsicResult, Error>>;
+export type EstimateAction = (
+	extrinsic: Extrinsic,
+	assetId?: number
+) => Promise<Result<bigint, Error>>;
 
 export type UnsignActions = {
 	send: SendAction;
+	estimate: EstimateAction;
 };
 
 export type SignActions = UnsignActions & {
 	signAndSend: SendAction;
+	estimate: EstimateAction;
 };

@@ -36,7 +36,7 @@ describe("wrapWithFeeProxy", () => {
 		expect(api.tx.feeProxy.callWithFeePreferences).toBeCalledTimes(2);
 		expect(api.tx.feeProxy.callWithFeePreferences).toHaveBeenLastCalledWith(
 			1124,
-			"105000000",
+			BigInt(105000000),
 			extrinsic
 		);
 	});

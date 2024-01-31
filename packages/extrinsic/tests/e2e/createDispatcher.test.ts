@@ -81,4 +81,25 @@ describe("createDispatcher", () => {
 			expect(transferEvent).toBeDefined();
 		}
 	}, 10000);
+
+	test("esitmate extrinsic in different asset ids", async () => {
+		const { estimate } = createDispatcher(
+			api,
+			senderAddress,
+			[futurepassWrapper(), feeProxyWrapper(17508)],
+			nativeWalletSigner(process.env.CALLER_PRIVATE_KEY as unknown as string)
+		);
+
+		const estimateInXRPResult = await estimate(api.tx.system.remarkWithEvent("hello"));
+		expect(estimateInXRPResult.ok).toBe(true);
+		const xrpFee = estimateInXRPResult.value as bigint;
+		expect(xrpFee).toBeGreaterThan(BigInt(0));
+
+		const estimateInASTOResult = await estimate(api.tx.system.remarkWithEvent("hello"), 17508);
+		expect(estimateInASTOResult.ok).toBe(true);
+		const astoFee = estimateInASTOResult.value as bigint;
+		expect(astoFee).toBeGreaterThan(BigInt(0));
+
+		console.log({ xrpFee, astoFee });
+	}, 8000);
 });
