@@ -33,7 +33,6 @@ export function createDispatcher(
 	partialSigner?: PartialSigner
 ): SignActions | UnsignActions {
 	const wrappers = partialWrappers.map((wrapper) => wrapper(api, senderAddress)());
-	const signer = partialSigner?.(api, senderAddress)();
 
 	const estimate = async (extrinsic: Extrinsic, assetId = XRP_ASSET_ID) => {
 		const wrapResult = await wrapFn(extrinsic, wrappers);
@@ -44,7 +43,9 @@ export function createDispatcher(
 		const wrapResult = await wrapFn(extrinsic, wrappers);
 		return await sendFn(wrapResult, onProgress);
 	};
-	if (!signer) return { estimate, send } as UnsignActions;
+
+	if (!partialSigner) return { estimate, send } as UnsignActions;
+	const signer = partialSigner(api, senderAddress)();
 
 	const signAndSend = async (extrinsic: Extrinsic, onProgress?: ProgressCallback) => {
 		const wrapResult = await wrapFn(extrinsic, wrappers);
