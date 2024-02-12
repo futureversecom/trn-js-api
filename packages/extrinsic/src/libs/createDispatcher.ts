@@ -26,6 +26,15 @@ export function createDispatcher(
 	partialSigner: PartialSigner
 ): SignActions;
 
+/**
+ * Creates a dispatcher object with all available methods to handle the extrinsics
+ *
+ * @param api - An instance of `ApiPromise` from `@polkadot/api`
+ * @param senderAddress - The sender address
+ * @param partialWrappers - List of the warappers to wrap all extrinsics dispatched by this dispatcher
+ * @param partialSigner - Designated signer for all extrinsics dispatched by this dispatcher
+ * @returns
+ */
 export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,

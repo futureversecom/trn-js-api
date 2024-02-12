@@ -5,6 +5,13 @@ import { errWithPrefix, fetchPaymentInfo } from "../utils";
 
 const errPrefix = errWithPrefix("FeeProxyWrapper");
 
+/**
+ * @param api -
+ * @param senderAddress -
+ * @param assetId -
+ * @param slippage -
+ * @returns
+ */
 export function wrapWithFeeProxy(
 	api: ApiPromise,
 	senderAddress: string,

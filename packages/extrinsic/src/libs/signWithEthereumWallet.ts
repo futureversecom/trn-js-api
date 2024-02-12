@@ -9,6 +9,13 @@ import { createSignatureOptions, errWithPrefix } from "../utils";
 
 const errPrefix = errWithPrefix("EthereumWallet");
 
+/**
+ * @param api -
+ * @param senderAddress -
+ * @param ethereumSigner -
+ * @param signerOptions -
+ * @returns
+ */
 export function signWithEthereumWallet(
 	api: ApiPromise,
 	senderAddress: string,

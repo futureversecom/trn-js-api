@@ -5,9 +5,9 @@ import { errWithPrefix, safeReturn } from "../utils";
 const errPrefix = errWithPrefix("Wrap");
 
 /**
- * Wraps a given extrinsic with other extrinsic
+ * Wraps a given extrinsic with other extrinsics
  *
- * @param extrinsic - The original extrinsic
+ * @param extrinsic - The extrinsic to be wrapped with other extrinsics
  * @param senderAddress - The address of the sender
  * @param wrappers - List of the extrinsic wrappers
  * @returns Either wrapped extrinsic or an error as the result

@@ -14,6 +14,10 @@ import { errWithPrefix, safeReturn } from "../utils";
 
 const errPrefix = errWithPrefix("Send");
 
+/**
+ * @param extrinsicOrResult -
+ * @param onProgress -
+ */
 export async function send(
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
 	onProgress?: ProgressCallback

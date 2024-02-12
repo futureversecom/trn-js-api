@@ -8,6 +8,13 @@ import { createSignatureOptions, errWithPrefix } from "../utils";
 
 const errPrefix = errWithPrefix("NativeWallet");
 
+/**
+ * @param api -
+ * @param senderAddress -
+ * @param seedOrKeyringPair -
+ * @param signerOptions -
+ * @returns
+ */
 export function signWithNativeWallet(
 	api: ApiPromise,
 	senderAddress: string,

@@ -6,6 +6,14 @@ import { ok } from "neverthrow";
 
 const errPrefix = errWithPrefix("Estimate");
 
+/**
+ * Return an estimate on gas cost from a given extrinsic
+ *
+ * @param api - Instance of ApiPromise
+ * @param senderAddress - Address of the sender
+ * @param extrinsicOrResult - Extrinsic to estimate gas cost
+ * @param assetId - Asset ID to estimate cost for
+ */
 export async function estimate(
 	api: ApiPromise,
 	senderAddress: string,

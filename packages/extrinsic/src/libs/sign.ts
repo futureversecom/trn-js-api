@@ -3,6 +3,10 @@ import { errWithPrefix, safeReturn } from "../utils";
 
 const errPrefix = errWithPrefix("Sign");
 
+/**
+ * @param extrinsicOrResult -
+ * @param signer -
+ */
 export async function sign(
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
 	signer: ExtrinsicSigner
