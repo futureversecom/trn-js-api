@@ -5,12 +5,12 @@ import { errWithPrefix, safeReturn } from "../utils";
 const errPrefix = errWithPrefix("Wrap");
 
 /**
- * Wraps a given extrinsic with other extrinsics
+ * Wraps a given extrinsic with other extrinsics specified in the wrappers list
  *
  * @param extrinsic - The extrinsic to be wrapped with other extrinsics
- * @param senderAddress - The address of the sender
+ * @param senderAddress - The sender address
  * @param wrappers - List of the extrinsic wrappers
- * @returns Either wrapped extrinsic or an error as the result
+ * @returns A result with value either a error or a wrapped extrinsic
  */
 export async function wrap(extrinsic: Extrinsic, wrappers: ExtrinsicWrapper[]) {
 	try {

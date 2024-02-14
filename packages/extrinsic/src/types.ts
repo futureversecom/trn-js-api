@@ -37,12 +37,12 @@ export type EstimateAction = (
 	assetId?: number
 ) => Promise<Result<bigint, Error>>;
 
-export type UnsignActions = {
+export type UnsignDispatcher = {
 	send: SendAction;
 	estimate: EstimateAction;
 };
 
-export type SignActions = UnsignActions & {
+export type SignDispatcher = UnsignDispatcher & {
 	signAndSend: SendAction;
 	estimate: EstimateAction;
 };

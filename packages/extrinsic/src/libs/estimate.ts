@@ -7,12 +7,13 @@ import { ok } from "neverthrow";
 const errPrefix = errWithPrefix("Estimate");
 
 /**
- * Return an estimate on gas cost from a given extrinsic
+ * Returns fee estimation for a given extrinsic
  *
- * @param api - Instance of ApiPromise
- * @param senderAddress - Address of the sender
- * @param extrinsicOrResult - Extrinsic to estimate gas cost
- * @param assetId - Asset ID to estimate cost for
+ * @param api - An instance of `ApiPromise` from `@polkadot/api`
+ * @param senderAddress - The sender's address
+ * @param extrinsicOrResult - Extrinsic to provide fee estimation
+ * @param assetId - Asset ID to use for fee estimation, use `dex.swap` to convert
+ * @returns A result with value either a fee estimation or an error
  */
 export async function estimate(
 	api: ApiPromise,

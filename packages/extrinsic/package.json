@@ -19,9 +19,7 @@
   },
   "devDependencies": {
     "ethers": "^6.6.5",
-    "dotenv": "^16.3.2",
-    "@therootnetwork/api": "^1.0.0",
-    "@therootnetwork/api-types": "^1.0.0"
+    "dotenv": "^16.3.2"
   },
   "jest": {
     "setupFiles": [

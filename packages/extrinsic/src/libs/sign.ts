@@ -4,8 +4,11 @@ import { errWithPrefix, safeReturn } from "../utils";
 const errPrefix = errWithPrefix("Sign");
 
 /**
- * @param extrinsicOrResult -
- * @param signer -
+ * Signs a gven extrinsic with the specified signer
+ *
+ * @param extrinsicOrResult - Either extrinsic or result from other functions
+ * @param signer - A signer that will sign the extrinsic
+ * @returns A result with value either a signed extrinsic or error
  */
 export async function sign(
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,

@@ -129,16 +129,16 @@ importers:
       '@polkadot/util-crypto':
         specifier: ^12.6.2
         version: 12.6.2(@polkadot/util@12.6.2)
+      '@therootnetwork/api':
+        specifier: ^1.0.0
+        version: 1.0.7(@polkadot/api@10.9.1)
+      '@therootnetwork/api-types':
+        specifier: ^1.0.0
+        version: 1.0.2
       neverthrow:
         specifier: ^6.1.0
         version: 6.1.0
     devDependencies:
-      '@therootnetwork/api':
-        specifier: ^1.0.0
-        version: link:../api
-      '@therootnetwork/api-types':
-        specifier: ^1.0.0
-        version: link:../api-types
       dotenv:
         specifier: ^16.3.2
         version: 16.3.2
@@ -1844,6 +1844,20 @@ packages:
 
   /@substrate/ss58-registry@1.46.0:
     resolution: {integrity: sha512-rBvWnlrBeFTd5LVG7oX3rOHzR16yqyffOFHKmUiVcblpXI3D89CXOvAljW9tWlA1H/2/FegaZnHPhdObPsvi+w==}
+
+  /@therootnetwork/api-types@1.0.2:
+    resolution: {integrity: sha512-MQJspspchHx512V6mIqRgkdy0Oaf1y9m7YVyNKVVLJ11NtqoeNj2sTiLRD6WDq0OBxGhB2J+3bJBlkCpLLd7eQ==}
+    dependencies:
+      '@polkadot/types': 10.9.1
+    dev: false
+
+  /@therootnetwork/api@1.0.7(@polkadot/api@10.9.1):
+    resolution: {integrity: sha512-g2Uk53+E+I/IHHivDVp+f3f86xFg90uH858006EOZ7U2LyEIaJ6QIhgDb1G5iESkgaseKikvEywCjto1i6nbiQ==}
+    peerDependencies:
+      '@polkadot/api': 10.9.1
+    dependencies:
+      '@polkadot/api': 10.9.1
+    dev: false
 
   /@tootallnate/quickjs-emscripten@0.23.0:
     resolution: {integrity: sha512-C5Mc6rdnsaJDjO3UpGW/CQTHtCKaYlScZTly4JIu97Jxo/odCiH0ITnDXSJPTOrEKk/ycSZ0AOgTmkDtkOsvIA==}

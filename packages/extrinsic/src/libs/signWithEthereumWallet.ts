@@ -1,5 +1,5 @@
 import { ApiPromise } from "@polkadot/api";
-import { SignerOptions } from "@polkadot/api-base/types/submittable";
+import { SignerOptions } from "@polkadot/api/types";
 import { SignerPayload } from "@polkadot/types/interfaces";
 import { SignatureOptions } from "@polkadot/types/types";
 import { blake2AsHex } from "@polkadot/util-crypto";
@@ -10,11 +10,13 @@ import { createSignatureOptions, errWithPrefix } from "../utils";
 const errPrefix = errWithPrefix("EthereumWallet");
 
 /**
- * @param api -
- * @param senderAddress -
- * @param ethereumSigner -
- * @param signerOptions -
- * @returns
+ * A signer that uses compatible Ethereum wallet to sign the extrinsic.
+ *
+ * @param api - An instance of `ApiPromise` from `@polkadot/api`
+ * @param senderAddress - The sender's address
+ * @param ethereumSigner - A generic callback to interface with different Ethereum wallets
+ * @param signerOptions - An object of `SignerOptions` to be included in the signing payload
+ * @returns An ExtrinsicSigner function to be used by the `sign` function
  */
 export function signWithEthereumWallet(
 	api: ApiPromise,

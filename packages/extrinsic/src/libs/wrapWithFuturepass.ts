@@ -6,10 +6,11 @@ import { Extrinsic } from "../types";
 const errPrefix = errWithPrefix("FuturepassWrapper");
 
 /**
- * Creates an extrinsic wrapper that wrap a given extrinsic with `futurepass.proxyExtrinsic()`
+ * Wraps a given extrinsic with `futurepass.proxyExtrinsic` extrinsic
  *
  * @param api - An instance of `ApiPromise` from `@polkadot/api`
- * @returns A `futurepass` extrinsic wrapper
+ * @param senderAddress - The sender's address
+ * @returns An `ExtrinsicWrapper` function to be used with the `wrap` function
  */
 export function wrapWithFuturepass(api: ApiPromise, senderAddress: string) {
 	return async (extrinsic: Extrinsic) => {

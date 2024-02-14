@@ -15,8 +15,11 @@ import { errWithPrefix, safeReturn } from "../utils";
 const errPrefix = errWithPrefix("Send");
 
 /**
- * @param extrinsicOrResult -
- * @param onProgress -
+ * Sends a given extrinsic to the node to process
+ *
+ * @param extrinsicOrResult - Either extrinsic or result from other functions
+ * @param onProgress - Callback to report the progress
+ * @returns A result with value either an ExtrinsicResult or an error
  */
 export async function send(
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,

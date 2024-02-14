@@ -6,11 +6,13 @@ import { errWithPrefix, fetchPaymentInfo } from "../utils";
 const errPrefix = errWithPrefix("FeeProxyWrapper");
 
 /**
- * @param api -
- * @param senderAddress -
- * @param assetId -
- * @param slippage -
- * @returns
+ * Wraps a given extrinsic with `feeProxy.callWithFeePreferences` extrinsic
+ *
+ * @param api - An instance of `ApiPromise` from `@polkadot/api`
+ * @param senderAddress - The sender address
+ * @param assetId - The asset ID to pay the fee in
+ * @param slippage - Percentage of buffer for max payment calculation
+ * @returns An ExtrinsicWrapper function to be used with the `wrap` function
  */
 export function wrapWithFeeProxy(
 	api: ApiPromise,

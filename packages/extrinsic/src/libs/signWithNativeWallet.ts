@@ -1,19 +1,21 @@
 import { ApiPromise, Keyring } from "@polkadot/api";
+import { SignerOptions } from "@polkadot/api/types";
 import { IKeyringPair } from "@polkadot/types/types";
 import { hexToU8a } from "@polkadot/util";
-import { ExtrinsicSigner, Extrinsic } from "../types";
-import { SignerOptions } from "@polkadot/api-base/types/submittable";
 import { ok } from "neverthrow";
+import { Extrinsic, ExtrinsicSigner } from "../types";
 import { createSignatureOptions, errWithPrefix } from "../utils";
 
 const errPrefix = errWithPrefix("NativeWallet");
 
 /**
- * @param api -
- * @param senderAddress -
- * @param seedOrKeyringPair -
- * @param signerOptions -
- * @returns
+ * A signer that uses the native KeyringPair instance to sign the extrinsic
+ *
+ * @param api - An instance of `ApiPromise` from `@polkadot/api`
+ * @param senderAddress - The sender address
+ * @param seedOrKeyringPair - Either the private key in string or instance of KeyringPair
+ * @param signerOptions - An object of `SignerOptions` to be included in the signing payload
+ * @returns An ExtrinsicSigner to be used with the `sign` function
  */
 export function signWithNativeWallet(
 	api: ApiPromise,

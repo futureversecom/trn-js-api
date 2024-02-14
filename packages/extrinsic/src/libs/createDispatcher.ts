@@ -4,8 +4,8 @@ import {
 	PartialSigner,
 	PartialWrapper,
 	ProgressCallback,
-	SignActions,
-	UnsignActions,
+	SignDispatcher,
+	UnsignDispatcher,
 } from "../types";
 import { wrap as wrapFn } from "./wrap";
 import { sign as signFn } from "./sign";
@@ -17,30 +17,30 @@ export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,
 	partialWrappers: PartialWrapper[]
-): UnsignActions;
+): UnsignDispatcher;
 
 export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,
 	partialWrappers: PartialWrapper[],
 	partialSigner: PartialSigner
-): SignActions;
+): SignDispatcher;
 
 /**
- * Creates a dispatcher object with all available methods to handle the extrinsics
+ * Creates a dispatcher object with relevant methods to work with the extrinsics
  *
  * @param api - An instance of `ApiPromise` from `@polkadot/api`
- * @param senderAddress - The sender address
+ * @param senderAddress - The sender's address
  * @param partialWrappers - List of the warappers to wrap all extrinsics dispatched by this dispatcher
  * @param partialSigner - Designated signer for all extrinsics dispatched by this dispatcher
- * @returns
+ * @returns Either a sign dispatcher or an unsign dispatcher
  */
 export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,
 	partialWrappers: PartialWrapper[] = [],
 	partialSigner?: PartialSigner
-): SignActions | UnsignActions {
+): SignDispatcher | UnsignDispatcher {
 	const wrappers = partialWrappers.map((wrapper) => wrapper(api, senderAddress)());
 
 	const estimate = async (extrinsic: Extrinsic, assetId = XRP_ASSET_ID) => {
@@ -53,7 +53,7 @@ export function createDispatcher(
 		return await sendFn(wrapResult, onProgress);
 	};
 
-	if (!partialSigner) return { estimate, send } as UnsignActions;
+	if (!partialSigner) return { estimate, send } as UnsignDispatcher;
 	const signer = partialSigner(api, senderAddress)();
 
 	const signAndSend = async (extrinsic: Extrinsic, onProgress?: ProgressCallback) => {
@@ -62,5 +62,5 @@ export function createDispatcher(
 		return await sendFn(signResult, onProgress);
 	};
 
-	return { estimate, signAndSend } as SignActions;
+	return { estimate, signAndSend } as SignDispatcher;
 }
