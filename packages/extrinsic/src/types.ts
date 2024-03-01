@@ -20,9 +20,6 @@ export type ExtrinsicEvent = {
 };
 
 export type InBlockResult = ISubmittableResult & { blockNumber: number; txIndex: number };
-export interface DexAmountsIn {
-	Ok: [number, number];
-}
 export type ProgressStatus = "Future" | "Ready" | "Broadcast" | "Retracted";
 export type ProgressCallback = (status: ProgressStatus, result: ISubmittableResult) => void;
 export type PartialWrapper = (api: ApiPromise, senderAddress: string) => () => ExtrinsicWrapper;
@@ -45,4 +42,19 @@ export type UnsignDispatcher = {
 export type SignDispatcher = UnsignDispatcher & {
 	signAndSend: SendAction;
 	estimate: EstimateAction;
+};
+
+export interface DexAmountsIn {
+	Ok: [number, number];
+}
+
+export type DexRpc = {
+	rpc: {
+		dex: {
+			getAmountsIn: (
+				amountOut: string,
+				paths: [number | string, number | string]
+			) => Promise<DexAmountsIn>;
+		};
+	};
 };

@@ -4,7 +4,7 @@ import { RuntimeDispatchInfo } from "@polkadot/types/interfaces";
 import { IExtrinsicEra, SignatureOptions } from "@polkadot/types/types";
 import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
 import { XRP_ASSET_ID } from "./constants";
-import { DexAmountsIn, Extrinsic, Result } from "./types";
+import { DexRpc, Extrinsic, Result } from "./types";
 
 export function safeReturn<T>(result: NTResult<T, Error>): Result<T> {
 	if (result.isErr()) {
@@ -58,7 +58,7 @@ export async function createSignatureOptions(
 }
 
 export async function fetchPaymentInfo(
-	api: ApiPromise,
+	api: ApiPromise & DexRpc,
 	senderAddress: string,
 	extrinsic: Extrinsic,
 	assetId: number
@@ -90,7 +90,7 @@ export async function fetchPaymentInfo(
 	);
 
 	if (getAmountsInResult.isErr()) return err(getAmountsInResult.error);
-	const quote = getAmountsInResult.value as unknown as DexAmountsIn;
+	const quote = getAmountsInResult.value;
 	if (!quote.Ok)
 		return err(
 			new Error(`Unable to extract swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`, {
