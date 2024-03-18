@@ -29,7 +29,7 @@ export function signWithEthereumWallet(
 
 		if (createResult.isErr())
 			return errPrefix(createResult.error.message, createResult.error.cause);
-		const [payload, ethHash] = createSignerPayload(api, createResult.value, extrinsic);
+		const [payload, ethHash] = createSigningPayload(api, createResult.value, extrinsic);
 
 		const requestResult = await requestSign(ethereumSigner, ethHash, senderAddress);
 		if (requestResult.isErr())
@@ -53,7 +53,7 @@ export function ethereumWalletSigner(
 		signWithEthereumWallet.bind(undefined, api, senderAddress, ethereumSigner, signerOptions);
 }
 
-function createSignerPayload(
+function createSigningPayload(
 	api: ApiPromise,
 	signatureOptions: SignatureOptions,
 	extrinsic: Extrinsic

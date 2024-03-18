@@ -7,19 +7,20 @@
   "peerDependencies": {
     "@polkadot/api": "^10.8.1",
     "@polkadot/api-base": "^10.8.1",
-    "@polkadot/types": "^10.8.1",
     "@polkadot/keyring": "^12.6.2",
+    "@polkadot/types": "^10.8.1",
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
     "@therootnetwork/api": "^1.0.0",
-    "@therootnetwork/api-types": "^1.0.0"
+    "@therootnetwork/api-types": "^1.0.0",
+    "ripple-keypairs": "^2.0.0"
   },
   "dependencies": {
     "neverthrow": "^6.1.0"
   },
   "devDependencies": {
-    "ethers": "^6.6.5",
-    "dotenv": "^16.3.2"
+    "dotenv": "^16.3.2",
+    "ethers": "^6.6.5"
   },
   "jest": {
     "setupFiles": [

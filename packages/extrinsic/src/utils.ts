@@ -2,7 +2,9 @@ import { ApiPromise } from "@polkadot/api";
 import { SignerOptions } from "@polkadot/api-base/types/submittable";
 import { RuntimeDispatchInfo } from "@polkadot/types/interfaces";
 import { IExtrinsicEra, SignatureOptions } from "@polkadot/types/types";
+import { ethereumEncode } from "@polkadot/util-crypto/ethereum";
 import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
+import { deriveAddress } from "ripple-keypairs";
 import { XRP_ASSET_ID } from "./constants";
 import { DexRpc, Extrinsic, Result } from "./types";
 
@@ -99,4 +101,17 @@ export async function fetchPaymentInfo(
 		);
 
 	return ok(BigInt(quote.Ok[0].toString()));
+}
+
+/**
+ * Derive a given public key into an ETH address format and XRPL r-address format
+ *
+ * @param publicKey - Public key to derive the pair of addresses for
+ * @returns Tupple of `ethAddress` and `xrplAddress`
+ */
+export function deriveAddressPair(publicKey: string) {
+	const ethAddress = ethereumEncode(publicKey);
+	const xrplAddress = deriveAddress(publicKey);
+
+	return [ethAddress, xrplAddress];
 }
