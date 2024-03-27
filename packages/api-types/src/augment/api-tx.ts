@@ -38,6 +38,7 @@ import type {
 	PalletImOnlineSr25519AppSr25519Signature,
 	PalletMultisigTimepoint,
 	PalletNftCrossChainCompatibility,
+	PalletMarketplaceListingTokens,
 	PalletStakingPalletConfigOpPerbill,
 	PalletStakingPalletConfigOpPercent,
 	PalletStakingPalletConfigOpU128,
@@ -718,6 +719,8 @@ declare module "@polkadot/api-base/types/submittable" {
 			>;
 			/**
 			 * Creates a new asset with unique ID according to the network asset id scheme.
+			 * Decimals cannot be higher than 18 due to a restriction in the conversion function
+			 * scale_wei_to_correct_decimals
 			 **/
 			createAsset: AugmentedSubmittable<
 				(
@@ -991,6 +994,148 @@ declare module "@polkadot/api-base/types/submittable" {
 			 **/
 			[key: string]: SubmittableExtrinsicFunction<ApiType>;
 		};
+		crowdsale: {
+			/**
+			 * Claim the vouchers after a sale has concluded, based on caller's contribution.
+			 * The vouchers are redeemable 1:1 with the NFTs in the collection (excluding decimals).
+			 * A successful claim will remove the user's contribution from the sale and mint the
+			 * vouchers to the user.
+			 *
+			 * Parameters:
+			 * - `sale_id`: The id of the sale to claim the vouchers from
+			 *
+			 * Emits `CrowdsaleVouchersClaimed` event when successful.
+			 **/
+			claimVoucher: AugmentedSubmittable<
+				(saleId: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u64]
+			>;
+			/**
+			 * Distribute vouchers for a given crowdsale - based on the amount of funds raised, the NFT
+			 * collection max issuance and respective participant contributions.
+			 * The crowdsale must be closed (automated on chain via `on_initialize`).
+			 * The extrinsic is automatically called by offchain worker once the sale is closed (end
+			 * block reached). The extrinsic can also manually be called by anyone.
+			 *
+			 * Parameters:
+			 * - `sale_id`: The id of the sale to distribute the vouchers for
+			 *
+			 * Emits `CrowdsaleVouchersDistributed` event when successful.
+			 **/
+			distributeCrowdsaleRewards: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
+			/**
+			 * Enable a crowdsale for user participation.
+			 * Only the crowdsale admin can call this function to enable the sale.
+			 * This will enable the sale to be participated in by any user which has required
+			 * payment_asset. The sale will be closed automatically once the sale_duration is met; the
+			 * sale end block/time is based on current block + sale_duration.
+			 *
+			 * Parameters:
+			 * - `sale_id`: The id of the sale to enable
+			 *
+			 * Emits `CrowdsaleEnabled` event when successful.
+			 **/
+			enable: AugmentedSubmittable<
+				(saleId: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u64]
+			>;
+			/**
+			 * Initialize a new crowdsale with the given parameters.
+			 * The provided collection max_issuance must be set and the collection must not have minted
+			 * any NFTs.
+			 *
+			 * Parameters:
+			 * - `payment_asset_id`: The asset_id used for participating in the crowdsale
+			 * - `collection_id`: Collection id of the NFTs that will be minted/redeemed to the
+			 * participants
+			 * - `soft_cap_price`: Number/Ratio of payment_asset tokens that will be required to
+			 * purchase vouchers; Note: this does not take into account asset decimals or voucher
+			 * decimals
+			 * - `sale_duration`: How many blocks will the sale last once enabled
+			 *
+			 * Emits `CrowdsaleCreated` event when successful.
+			 **/
+			initialize: AugmentedSubmittable<
+				(
+					paymentAssetId: u32 | AnyNumber | Uint8Array,
+					collectionId: u32 | AnyNumber | Uint8Array,
+					softCapPrice: u128 | AnyNumber | Uint8Array,
+					saleDuration: u32 | AnyNumber | Uint8Array,
+					voucherName: Option<Bytes> | null | Uint8Array | Bytes | string,
+					voucherSymbol: Option<Bytes> | null | Uint8Array | Bytes | string
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, u32, u128, u32, Option<Bytes>, Option<Bytes>]
+			>;
+			/**
+			 * Participate in the crowdsale.
+			 * Any user can call this function to participate in the crowdsale
+			 * assuming the sale is enabled and the user has enough payment_asset tokens to
+			 * participate. The tokens required to participate are transferred to the pallet account.
+			 *
+			 * Parameters:
+			 * - `sale_id`: The id of the sale to participate in
+			 * - `amount`: The amount of tokens to participate with
+			 *
+			 * Emits `CrowdsaleParticipated` event when successful.
+			 **/
+			participate: AugmentedSubmittable<
+				(
+					saleId: u64 | AnyNumber | Uint8Array,
+					amount: u128 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u64, u128]
+			>;
+			/**
+			 * Caller (crowdsale admin) proxies the `call` to the sale vault account to manage the
+			 * assets and NFTs owned by the vault.
+			 * Note: Only the asset and nft metadata can be modified by the proxied account.
+			 *
+			 * Parameters:
+			 * - `sale_id`: The id of the sale to proxy the call to
+			 * - `call`: The call to be proxied
+			 *
+			 * Emits `VaultCallProxied` event when successful.
+			 **/
+			proxyVaultCall: AugmentedSubmittable<
+				(
+					saleId: u64 | AnyNumber | Uint8Array,
+					call: Call | IMethod | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u64, Call]
+			>;
+			/**
+			 * Redeem the vouchers for the NFTs in a crowdsale which has concluded.
+			 * The vouchers are crowdsale specific and can be redeemed for NFTs from the collection.
+			 * NFTs are minted to the user's account.
+			 * NFTs can be redeemed during or after payment of all vouchers.
+			 *
+			 * Parameters:
+			 * - `sale_id`: The id of the sale to redeem the voucher from
+			 * - `quantity`: The amount of NFT(s) to redeem
+			 *
+			 * Emits `CrowdsaleNFTRedeemed` event when successful.
+			 **/
+			redeemVoucher: AugmentedSubmittable<
+				(
+					saleId: u64 | AnyNumber | Uint8Array,
+					quantity: u32 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u64, u32]
+			>;
+			/**
+			 * In the very unlikely case that a sale was blocked from automatic distribution within
+			 * the on_initialise step. This function allows a manual trigger of distribution
+			 * callable by anyone to kickstart the sale distribution process.
+			 **/
+			tryForceDistribution: AugmentedSubmittable<
+				(saleId: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u64]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
 		dex: {
 			/**
 			 * Add liquidity to Enabled trading pair, or add provision to Provisioning trading pair.
@@ -1196,6 +1341,53 @@ declare module "@polkadot/api-base/types/submittable" {
 					Option<SeedPrimitivesSignatureAccountId20>,
 					Option<u32>,
 				]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
+		doughnut: {
+			/**
+			 * Block a specific doughnut to be used
+			 **/
+			revokeDoughnut: AugmentedSubmittable<
+				(
+					doughnut: Bytes | string | Uint8Array,
+					revoke: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Bytes, bool]
+			>;
+			/**
+			 * Block a holder from executing any doughnuts from a specific issuer
+			 **/
+			revokeHolder: AugmentedSubmittable<
+				(
+					holder: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					revoke: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20, bool]
+			>;
+			transact: AugmentedSubmittable<
+				(
+					call: Call | IMethod | string | Uint8Array,
+					doughnut: Bytes | string | Uint8Array,
+					nonce: u32 | AnyNumber | Uint8Array,
+					genesisHash: H256 | string | Uint8Array,
+					tip: u64 | AnyNumber | Uint8Array,
+					signature: Bytes | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Call, Bytes, u32, H256, u64, Bytes]
+			>;
+			/**
+			 * Update whitelisted holders list
+			 **/
+			updateWhitelistedHolders: AugmentedSubmittable<
+				(
+					holder: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					add: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20, bool]
 			>;
 			/**
 			 * Generic tx
@@ -1990,6 +2182,32 @@ declare module "@polkadot/api-base/types/submittable" {
 			 * - `reserve_price` winning bid must be over this threshold
 			 * - `duration` length of the auction (in blocks), uses default duration if unspecified
 			 **/
+			auction: AugmentedSubmittable<
+				(
+					tokens:
+						| PalletMarketplaceListingTokens
+						| { Nft: any }
+						| { Sft: any }
+						| string
+						| Uint8Array,
+					paymentAsset: u32 | AnyNumber | Uint8Array,
+					reservePrice: u128 | AnyNumber | Uint8Array,
+					duration: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+					marketplaceId: Option<u32> | null | Uint8Array | u32 | AnyNumber
+				) => SubmittableExtrinsic<ApiType>,
+				[PalletMarketplaceListingTokens, u32, u128, Option<u32>, Option<u32>]
+			>;
+			/**
+			 * Deprecated, use `auction` instead
+			 * Auction a bundle of tokens on the open market to the highest bidder
+			 *
+			 * - Tokens must be from the same collection
+			 * - Tokens with individual royalties schedules cannot be sold in bundles
+			 * - `payment_asset` fungible asset Id to receive payment with
+			 * - `reserve_price` winning bid must be over this threshold
+			 * - `duration` length of the auction (in blocks), uses default duration if unspecified
+			 * Caller must be the token owner
+			 **/
 			auctionNft: AugmentedSubmittable<
 				(
 					collectionId: u32 | AnyNumber | Uint8Array,
@@ -2020,6 +2238,15 @@ declare module "@polkadot/api-base/types/submittable" {
 				[u128]
 			>;
 			/**
+			 * Buy multiple listings, each for their respective price
+			 **/
+			buyMulti: AugmentedSubmittable<
+				(
+					listingIds: Vec<u128> | (u128 | AnyNumber | Uint8Array)[]
+				) => SubmittableExtrinsic<ApiType>,
+				[Vec<u128>]
+			>;
+			/**
 			 * Cancels an offer on a token
 			 * Caller must be the offer buyer
 			 **/
@@ -2037,7 +2264,7 @@ declare module "@polkadot/api-base/types/submittable" {
 				[u128]
 			>;
 			/**
-			 * Create an offer on a token
+			 * Create an offer on a single NFT
 			 * Locks funds until offer is accepted, rejected or cancelled
 			 * An offer can't be made on a token currently in an auction
 			 * (This follows the behaviour of Opensea and forces the buyer to bid rather than create an
@@ -2074,6 +2301,46 @@ declare module "@polkadot/api-base/types/submittable" {
 				[Option<SeedPrimitivesSignatureAccountId20>, Permill]
 			>;
 			/**
+			 * Sell a bundle of SFTs or NFTs at a fixed price
+			 * - Tokens must be from the same collection
+			 * - Tokens with individual royalties schedules cannot be sold with this method
+			 *
+			 * `buyer` optionally, the account to receive the tokens. If unspecified, then any account
+			 * may purchase `asset_id` fungible asset Id to receive as payment for the NFT
+			 * `fixed_price` ask price
+			 * `duration` listing duration time in blocks from now
+			 * Caller must be the token owner
+			 **/
+			sell: AugmentedSubmittable<
+				(
+					tokens:
+						| PalletMarketplaceListingTokens
+						| { Nft: any }
+						| { Sft: any }
+						| string
+						| Uint8Array,
+					buyer:
+						| Option<SeedPrimitivesSignatureAccountId20>
+						| null
+						| Uint8Array
+						| SeedPrimitivesSignatureAccountId20
+						| string,
+					paymentAsset: u32 | AnyNumber | Uint8Array,
+					fixedPrice: u128 | AnyNumber | Uint8Array,
+					duration: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+					marketplaceId: Option<u32> | null | Uint8Array | u32 | AnyNumber
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					PalletMarketplaceListingTokens,
+					Option<SeedPrimitivesSignatureAccountId20>,
+					u32,
+					u128,
+					Option<u32>,
+					Option<u32>,
+				]
+			>;
+			/**
+			 * Deprecated, use `sell` instead
 			 * Sell a bundle of tokens at a fixed price
 			 * - Tokens must be from the same collection
 			 * - Tokens with individual royalties schedules cannot be sold with this method
@@ -4369,6 +4636,7 @@ declare module "@polkadot/api-base/types/submittable" {
 						| { system: any }
 						| { Void: any }
 						| { Ethereum: any }
+						| { Xrpl: any }
 						| string
 						| Uint8Array,
 					call: Call | IMethod | string | Uint8Array
@@ -4608,6 +4876,31 @@ declare module "@polkadot/api-base/types/submittable" {
 			setXls20Fee: AugmentedSubmittable<
 				(newFee: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
 				[u128]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
+		xrpl: {
+			/**
+			 * Dispatch the given call through an XRPL account (signer). Transaction fees will be paid
+			 * by the signer.
+			 *
+			 * Parameters:
+			 * - `origin`: The origin of the call; must be `None` - as this is an unsigned extrinsic.
+			 * - `encoded_msg`: The encoded, verified XRPL transaction.
+			 * - `signature`: The signature of the XRPL transaction; ignored since it's verified in
+			 * self-contained call trait impl.
+			 * - `call`: The call to dispatch by the XRPL transaction signer (pubkey).
+			 **/
+			transact: AugmentedSubmittable<
+				(
+					encodedMsg: Bytes | string | Uint8Array,
+					signature: Bytes | string | Uint8Array,
+					call: Call | IMethod | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Bytes, Bytes, Call]
 			>;
 			/**
 			 * Generic tx
