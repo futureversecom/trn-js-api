@@ -43,6 +43,7 @@ import type {
 	PalletBalancesBalanceLock,
 	PalletBalancesReleases,
 	PalletBalancesReserveData,
+	PalletCrowdsaleSaleInformation,
 	PalletDexTradingPair,
 	PalletDexTradingPairStatus,
 	PalletElectionProviderMultiPhasePhase,
@@ -446,6 +447,59 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
+		crowdsale: {
+			/**
+			 * The next available sale id
+			 **/
+			nextSaleId: AugmentedQuery<ApiType, () => Observable<u64>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Stores next unsigned tx block number
+			 **/
+			nextUnsignedAt: AugmentedQuery<ApiType, () => Observable<u32>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * A list of all sales currently being distributed
+			 **/
+			saleDistribution: AugmentedQuery<ApiType, () => Observable<Vec<u64>>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Map from block number to the sales that will end at that block
+			 * The tuple represents the sale id and the current sale participant distribution index
+			 **/
+			saleEndBlocks: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Option<Vec<u64>>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Map from sale id to its information
+			 **/
+			saleInfo: AugmentedQuery<
+				ApiType,
+				(arg: u64 | AnyNumber | Uint8Array) => Observable<Option<PalletCrowdsaleSaleInformation>>,
+				[u64]
+			> &
+				QueryableStorageEntry<ApiType, [u64]>;
+			/**
+			 * User participation in the sale
+			 * sale_id -> user -> payment_asset contribution amount
+			 **/
+			saleParticipation: AugmentedQuery<
+				ApiType,
+				(
+					arg1: u64 | AnyNumber | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<Option<u128>>,
+				[u64, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<ApiType, [u64, SeedPrimitivesSignatureAccountId20]>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
 		dex: {
 			/**
 			 * FeeTo account where network fees are deposited
@@ -480,6 +534,45 @@ declare module "@polkadot/api-base/types/storage" {
 				[PalletDexTradingPair]
 			> &
 				QueryableStorageEntry<ApiType, [PalletDexTradingPair]>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
+		doughnut: {
+			/**
+			 * Storage map for revoked doughnut information
+			 **/
+			blockedDoughnuts: AugmentedQuery<
+				ApiType,
+				(arg: U8aFixed | string | Uint8Array) => Observable<bool>,
+				[U8aFixed]
+			> &
+				QueryableStorageEntry<ApiType, [U8aFixed]>;
+			/**
+			 * Double map from issuer to blocked holder
+			 **/
+			blockedHolders: AugmentedQuery<
+				ApiType,
+				(
+					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<bool>,
+				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<
+					ApiType,
+					[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20]
+				>;
+			/**
+			 * Storage map for whitelisted holder information
+			 **/
+			whitelistedHolders: AugmentedQuery<
+				ApiType,
+				(arg: SeedPrimitivesSignatureAccountId20 | string | Uint8Array) => Observable<bool>,
+				[SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<ApiType, [SeedPrimitivesSignatureAccountId20]>;
 			/**
 			 * Generic query
 			 **/
