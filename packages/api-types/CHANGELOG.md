@@ -4,8 +4,7 @@
 
 ### Patch Changes
 
-- Add a flag to allow switching to full node.
-  Update metadata for runtime version 52
+- Add a flag to allow switching to full node. Update metadata for runtime version 52
 
 ## 1.0.2
 
