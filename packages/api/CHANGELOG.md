@@ -1,5 +1,12 @@
 # @therootnetwork/api
 
+## 1.0.8
+
+### Patch Changes
+
+- Add a flag to allow switching to full node.
+  Update metadata for runtime version 52
+
 ## 1.0.7
 
 ### Patch Changes
