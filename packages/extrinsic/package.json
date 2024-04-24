@@ -16,11 +16,15 @@
     "ripple-keypairs": "^2.0.0"
   },
   "dependencies": {
-    "neverthrow": "^6.1.0"
+    "@sinclair/typebox": "^0.32.22",
+    "codechain-primitives": "^1.0.4",
+    "neverthrow": "^6.1.0",
+    "xrpl-binary-codec-prerelease": "^8.0.1"
   },
   "devDependencies": {
     "dotenv": "^16.3.2",
-    "ethers": "^6.6.5"
+    "ethers": "^6.6.5",
+    "xumm-sdk": "^1.11.1"
   },
   "jest": {
     "setupFiles": [
