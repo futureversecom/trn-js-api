@@ -60,7 +60,7 @@ export async function createSignatureOptions(
 }
 
 export async function fetchPaymentInfo(
-	api: ApiPromise & DexRpc,
+	api: ApiPromise,
 	senderAddress: string,
 	extrinsic: Extrinsic,
 	assetId: number
@@ -84,7 +84,7 @@ export async function fetchPaymentInfo(
 
 	const fee = paymentInfoResult.value.partialFee.toString();
 	const getAmountsInResult = await fromPromise(
-		api.rpc.dex.getAmountsIn(fee, [assetId, XRP_ASSET_ID]),
+		(api as ApiPromise & DexRpc).rpc.dex.getAmountsIn(fee, [assetId, XRP_ASSET_ID]),
 		(e) =>
 			new Error(`Unable to fetch swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`, {
 				cause: e,

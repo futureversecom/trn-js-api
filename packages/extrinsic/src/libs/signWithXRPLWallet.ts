@@ -1,14 +1,16 @@
 import { ApiPromise } from "@polkadot/api";
 import { SignerOptions } from "@polkadot/api/types";
 import { fromPromise, ok } from "neverthrow";
-import { Extrinsic, XrplDecodedTx, XrplExtrinsicSigner, XrplSigner } from "../types";
+import { Extrinsic, ExtrinsicSigner, XrplSigner } from "../types";
 import { createSignatureOptions, errWithPrefix } from "../utils";
-import { XummPostPayloadBodyJson } from "xumm-sdk/dist/src/types";
+import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
 import { blake256 } from "codechain-primitives";
 import { Value } from "@sinclair/typebox/value";
-import { decode } from "xrpl-binary-codec-prerelease";
+import { decode, encode, encodeForSigning } from "xrpl-binary-codec-prerelease";
 import { SignatureOptions } from "@polkadot/types/types";
 import { stringToHex } from "@polkadot/util";
+import { Type } from "@sinclair/typebox";
+import { deriveAddress } from "ripple-keypairs";
 
 const errPrefix = errWithPrefix("XrplWallet");
 
@@ -17,6 +19,13 @@ interface XrplOptions {
 }
 
 type WithXrplOptions<T> = T & XrplOptions;
+
+const XrplDecodedTx = Type.Object({
+	AccountTxnID: Type.String(),
+	SigningPubKey: Type.String(),
+	TxnSignature: Type.String(),
+	Account: Type.String(),
+});
 
 /**
  * @param api - An instance of `ApiPromise` from `@polkadot/api`
@@ -30,28 +39,22 @@ export function signWithXrplWallet(
 	senderAddress: string,
 	xrplSigner: XrplSigner,
 	signerOptions: Partial<WithXrplOptions<SignerOptions>> = {}
-): XrplExtrinsicSigner {
+): ExtrinsicSigner {
 	return async (extrinsic: Extrinsic) => {
 		const createResult = await createSignatureOptions(api, senderAddress, signerOptions);
 
 		if (createResult.isErr())
 			return errPrefix(createResult.error.message, createResult.error.cause);
-		const payload = await createSigningMemoData(api, createResult.value, extrinsic);
+		const payload = await createSigningMemoData(api, senderAddress, createResult.value, extrinsic);
 
 		const requestResult = await requestSign(xrplSigner, payload, senderAddress);
 		if (requestResult.isErr())
 			return errPrefix(requestResult.error.message, requestResult.error.cause);
 
-		const txHex = requestResult.value;
-		if (!txHex) return errPrefix("Transaction hex is empty");
+		const signature = requestResult.value;
+		if (!signature) return errPrefix("Signature is empty");
 
-		const decodedTx = decode(txHex);
-		if (!Value.Check(XrplDecodedTx, decodedTx)) return errPrefix("Decoded transaction is invalid");
-
-		return ok({
-			txHex,
-			decodedTx: Value.Decode(XrplDecodedTx, decodedTx),
-		});
+		return ok(api.tx.xrpl.transact(`0x${encode(payload)}`, `0x${signature}`, extrinsic));
 	};
 }
 
@@ -65,35 +68,34 @@ export function xrplWalletSigner(
 
 async function createSigningMemoData(
 	api: ApiPromise,
+	senderAddress: string,
 	signatureOptions: Partial<WithXrplOptions<SignatureOptions>>,
 	extrinsic: Extrinsic
-): Promise<XummPostPayloadBodyJson> {
+): Promise<XummJsonTransaction> {
 	const maxBlockNumber = +(await api.query.system.number()) + 20;
 	const hashedExtrinsicWithoutPrefix = blake256(extrinsic.toHex().slice(6)).toString();
 
 	return {
-		txjson: {
-			TransactionType: "SignIn",
-			Memos: [
-				{
-					Memo: {
-						MemoType: stringToHex("extrinsic"),
-						MemoData: stringToHex(
-							`${signatureOptions.genesisHash}:${signatureOptions.nonce}:${maxBlockNumber}:0:${hashedExtrinsicWithoutPrefix}`
-						),
-					},
+		SigningPubKey: senderAddress.slice(2),
+		Account: deriveAddress(senderAddress.slice(2)),
+		Memos: [
+			{
+				Memo: {
+					MemoType: stringToHex("extrinsic"),
+					MemoData: stringToHex(
+						`${signatureOptions.genesisHash}:${signatureOptions.nonce}:${maxBlockNumber}:${
+							signatureOptions.tip ?? 0
+						}:${hashedExtrinsicWithoutPrefix}`
+					),
 				},
-			],
-		},
-		custom_meta: {
-			instruction: signatureOptions?.instructions ?? "Sign extrinsic",
-		},
-	};
+			},
+		],
+	} as unknown as XummJsonTransaction;
 }
 
 async function requestSign(
 	xrplSigner: XrplSigner,
-	payload: XummPostPayloadBodyJson,
+	payload: XummJsonTransaction,
 	senderAddress: string
 ) {
 	return await fromPromise(

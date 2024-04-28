@@ -2,8 +2,7 @@ import { ApiPromise } from "@polkadot/api";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { ISubmittableResult } from "@polkadot/types/types";
 import { Result as NTResult } from "neverthrow";
-import { XummPostPayloadBodyJson } from "xumm-sdk/dist/src/types";
-import { Static, Type } from "@sinclair/typebox";
+import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
 
 export type Result<T, E = Error> = { ok: true; value: T } | { ok: false; value: E };
 export type Extrinsic = SubmittableExtrinsic<"promise", ISubmittableResult>;
@@ -11,22 +10,9 @@ export type ExtrinsicWrapper = (extrinsic: Extrinsic) => Promise<NTResult<Extrin
 export type ExtrinsicSigner = (extrinsic: Extrinsic) => Promise<NTResult<Extrinsic, Error>>;
 export type EthereumSigner = (message: string, senderAddress: string) => Promise<string>;
 export type XrplSigner = (
-	payload: XummPostPayloadBodyJson,
+	payload: XummJsonTransaction,
 	senderAddress: string
 ) => Promise<string | null>;
-export const XrplDecodedTx = Type.Object({
-	AccountTxnID: Type.String(),
-	SigningPubKey: Type.String(),
-	TxnSignature: Type.String(),
-	Account: Type.String(),
-});
-export type XrplSignResponse = {
-	txHex: string;
-	decodedTx: Static<typeof XrplDecodedTx>;
-};
-export type XrplExtrinsicSigner = (
-	extrinsic: Extrinsic
-) => Promise<NTResult<XrplSignResponse, Error>>;
 
 export type ExtrinsicResult = {
 	id: string;
@@ -58,6 +44,7 @@ export type UnsignDispatcher = {
 	send: SendAction;
 	estimate: EstimateAction;
 };
+export type SendDispatcher = UnsignDispatcher;
 
 export type SignDispatcher = UnsignDispatcher & {
 	signAndSend: SendAction;

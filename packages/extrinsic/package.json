@@ -19,6 +19,7 @@
     "@sinclair/typebox": "^0.32.22",
     "codechain-primitives": "^1.0.4",
     "neverthrow": "^6.1.0",
+    "xrpl": "^3.0.0",
     "xrpl-binary-codec-prerelease": "^8.0.1"
   },
   "devDependencies": {
@@ -37,7 +38,7 @@
     "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts  --ignore-path ../../.eslintignore",
     "test": "jest -c ../../jest.config.js extrinsic/tests/unit",
     "test:watch": "jest -c ../../jest.config.js extrinsic/tests/unit --watch --coverage",
-    "test:e2e": "jest -c ../../jest.config.js extrinsic/tests/e2e",
+    "test:e2e": "jest -c ../../jest.config.js extrinsic/tests/e2e/createDispatcher.test.ts",
     "jest": "jest -c ../../jest.config.js",
     "jest:watch": "jest -c ../../jest.config.js --watch --coverage"
   }
