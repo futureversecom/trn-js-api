@@ -126,6 +126,40 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		crowdsale: {
+			/**
+			 * The maximum number of sales that can be active at one time
+			 **/
+			maxConsecutiveSales: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of payments that can be processed in the offchain worker per block
+			 **/
+			maxPaymentsPerBlock: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum duration of a sale
+			 **/
+			maxSaleDuration: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of sales that can be queued for completion in a single block
+			 **/
+			maxSalesPerBlock: u32 & AugmentedConst<ApiType>;
+			/**
+			 * This pallet's Id, used for deriving a sovereign account ID
+			 **/
+			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
+			/**
+			 * The maximum length of a intermediary sale voucher asset name and symbol
+			 **/
+			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Unsigned transaction interval
+			 **/
+			unsignedInterval: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		dex: {
 			/**
 			 * The default FeeTo account
@@ -280,6 +314,16 @@ declare module "@polkadot/api-base/types/consts" {
 			 * multiple pallets send unsigned transactions.
 			 **/
 			unsignedPriority: u64 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
+		maintenanceMode: {
+			/**
+			 * The maximum length of a pallet or call name, stored on-chain
+			 **/
+			stringLimit: u32 & AugmentedConst<ApiType>;
 			/**
 			 * Generic const
 			 **/
@@ -726,11 +770,37 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		xrpl: {
+			/**
+			 * The maximum bounded length for the XRPL signed message/transaction.
+			 **/
+			maxMessageLength: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum bounded length for the XRPL signature.
+			 **/
+			maxSignatureLength: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		xrplBridge: {
 			/**
 			 * Challenge Period to wait for a challenge before processing the transaction
 			 **/
 			challengePeriod: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Upper limit to the number of blocks we can check per block for delayed payments
+			 **/
+			delayedPaymentBlockLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum number of delayed transactions that can be processed in a single block
+			 **/
+			maxDelayedPaymentsPerBlock: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum number of transactions that can be pruned in on_idle
+			 **/
+			maxPrunedTransactionsPerBlock: u32 & AugmentedConst<ApiType>;
 			/**
 			 * XRP Asset Id set at runtime
 			 **/

@@ -4,3 +4,5 @@ export { default as ethy } from "./ethy/definitions";
 export { default as nft } from "./nft/definitions";
 export { default as runtime } from "./runtime/definitions";
 export { default as xrplBridge } from "./xrplBridge/definitions";
+export { default as assetsExt } from "./assetsExt/definitions";
+export { default as sft } from "./sft/definitions";

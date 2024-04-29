@@ -42,10 +42,10 @@ See [`api-types`](https://github.com/futureversecom/trn-js-api/tree/main/package
 
 Returns an `ApiOptions` object that contains necessary types, rpc methods to connect the Root Network
 
-### `function getPublicProvider(network: NetworkName, useWsProvider?: boolean)`
+### `function getPublicProvider(network: NetworkName, useWsProvider?: boolean, useArchiveNode?: boolean)`
 
 Returns a `provider` instance of either `WsProvider` or `HttpProvider` that connects to TRN mainnet `"root"` or testnet `"porcini"`
 
-### `function getPublicProviderUrl(network: NetworkName, useWsProvider?: boolean)`
+### `function getPublicProviderUrl(network: NetworkName, useWsProvider?: boolean, useArchiveNode?: boolean)`
 
 Used by `getPublicProvider`, simply returns public URL for the provider
