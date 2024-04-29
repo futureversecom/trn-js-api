@@ -10,9 +10,12 @@ export type ExtrinsicWrapper = (extrinsic: Extrinsic) => Promise<NTResult<Extrin
 export type ExtrinsicSigner = (extrinsic: Extrinsic) => Promise<NTResult<Extrinsic, Error>>;
 export type EthereumSigner = (message: string, senderAddress: string) => Promise<string>;
 export type XrplSigner = (
-	payload: XummJsonTransaction,
+	payload: Partial<XummJsonTransaction>,
 	senderAddress: string
-) => Promise<string | null>;
+) => Promise<{
+	signature: string;
+	payload: XummJsonTransaction;
+}>;
 
 export type ExtrinsicResult = {
 	id: string;

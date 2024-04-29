@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "dotenv": "^16.3.2",
-    "ethers": "^6.6.5",
+    "ethers": "^5.7.2",
     "xumm-sdk": "^1.11.1"
   },
   "jest": {
@@ -38,7 +38,7 @@
     "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts  --ignore-path ../../.eslintignore",
     "test": "jest -c ../../jest.config.js extrinsic/tests/unit",
     "test:watch": "jest -c ../../jest.config.js extrinsic/tests/unit --watch --coverage",
-    "test:e2e": "jest -c ../../jest.config.js extrinsic/tests/e2e/createDispatcher.test.ts",
+    "test:e2e": "jest -c ../../jest.config.js extrinsic/tests/e2e",
     "jest": "jest -c ../../jest.config.js",
     "jest:watch": "jest -c ../../jest.config.js --watch --coverage"
   }

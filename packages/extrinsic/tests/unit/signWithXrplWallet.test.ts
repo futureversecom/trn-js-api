@@ -3,22 +3,19 @@ import { describe, expect, jest, test } from "@jest/globals";
 import { signWithXrplWallet } from "@therootnetwork/extrinsic/libs/signWithXrplWallet";
 import { Extrinsic } from "@therootnetwork/extrinsic/types";
 import { Err } from "neverthrow";
-import { decode } from "xrpl-binary-codec-prerelease";
+import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
 
 jest.mock("xrpl-binary-codec-prerelease", () => ({
 	__esModule: true,
-	decode: jest.fn(() => ({
-		AccountTxnID: "0x0",
-		SigningPubKey: "0x0",
-		TxnSignature: "0x0",
-		Account: "0x0",
-	})),
+	encode: jest.fn(() => "0x0"),
 }));
 
 describe("signWithXrplWallet", () => {
 	test("signs an extrinsic with an ok result", async () => {
 		const api = {
-			genesisHash: "0x0",
+			genesisHash: {
+				toHex: jest.fn(() => "0x0"),
+			},
 			runtimeVersion: 1,
 			registry: {
 				signedExtensions: [],
@@ -44,6 +41,11 @@ describe("signWithXrplWallet", () => {
 					number: jest.fn(() => Promise.resolve(1)),
 				},
 			},
+			tx: {
+				xrpl: {
+					transact: jest.fn(),
+				},
+			},
 		};
 		const extrinsic = {
 			toHex: jest.fn(() => "0xa"),
@@ -53,18 +55,25 @@ describe("signWithXrplWallet", () => {
 		const signer = signWithXrplWallet(
 			api as unknown as ApiPromise,
 			senderAddress,
-			jest.fn(() => Promise.resolve("0x11"))
+			jest.fn(() =>
+				Promise.resolve({
+					signature: "0x11",
+					payload: {} as XummJsonTransaction,
+				})
+			)
 		);
 
 		const signResult = await signer(extrinsic);
 
-		expect(decode).toBeCalledWith("0x11");
 		expect(signResult.isOk()).toBe(true);
 		expect(extrinsic.toHex).toHaveBeenCalledTimes(1);
 	});
 
 	test("signature options creation ends with thrown error", async () => {
 		const api = {
+			genesisHash: {
+				toHex: jest.fn(() => "0x0"),
+			},
 			derive: {
 				tx: {
 					signingInfo: jest.fn((address) => {
@@ -80,7 +89,12 @@ describe("signWithXrplWallet", () => {
 		const signer1 = signWithXrplWallet(
 			api as unknown as ApiPromise,
 			"0x0",
-			jest.fn(() => Promise.resolve(""))
+			jest.fn(() =>
+				Promise.resolve({
+					signature: "0x11",
+					payload: {} as XummJsonTransaction,
+				})
+			)
 		);
 		const signResult1 = await signer1(extrinsic);
 		expect(signResult1.isErr()).toBe(true);
@@ -93,7 +107,12 @@ describe("signWithXrplWallet", () => {
 		const signer2 = signWithXrplWallet(
 			api as unknown as ApiPromise,
 			"0x1",
-			jest.fn(() => Promise.resolve(""))
+			jest.fn(() =>
+				Promise.resolve({
+					signature: "0x11",
+					payload: {} as XummJsonTransaction,
+				})
+			)
 		);
 
 		const signResult2 = await signer2(extrinsic);
@@ -107,7 +126,9 @@ describe("signWithXrplWallet", () => {
 
 	test("sign request ends with thrown error", async () => {
 		const api = {
-			genesisHash: "0x0",
+			genesisHash: {
+				toHex: jest.fn(() => "0x0"),
+			},
 			runtimeVersion: 1,
 			registry: {
 				signedExtensions: [],
