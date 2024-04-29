@@ -88,11 +88,19 @@ import type {
 	PalletBalancesReasons,
 	PalletBalancesReleases,
 	PalletBalancesReserveData,
+	PalletCrowdsaleCall,
+	PalletCrowdsaleError,
+	PalletCrowdsaleEvent,
+	PalletCrowdsaleSaleInformation,
+	PalletCrowdsaleSaleStatus,
 	PalletDexCall,
 	PalletDexError,
 	PalletDexEvent,
 	PalletDexTradingPair,
 	PalletDexTradingPairStatus,
+	PalletDoughnutCall,
+	PalletDoughnutError,
+	PalletDoughnutEvent,
 	PalletEchoCall,
 	PalletEchoError,
 	PalletEchoEvent,
@@ -153,6 +161,10 @@ import type {
 	PalletImOnlineHeartbeat,
 	PalletImOnlineSr25519AppSr25519Public,
 	PalletImOnlineSr25519AppSr25519Signature,
+	PalletMaintenanceModeCall,
+	PalletMaintenanceModeError,
+	PalletMaintenanceModeEvent,
+	PalletMaintenanceModeMaintenanceChecker,
 	PalletMarketplaceAuctionClosureReason,
 	PalletMarketplaceAuctionListing,
 	PalletMarketplaceCall,
@@ -161,8 +173,11 @@ import type {
 	PalletMarketplaceFixedPriceClosureReason,
 	PalletMarketplaceFixedPriceListing,
 	PalletMarketplaceListing,
+	PalletMarketplaceListingTokens,
 	PalletMarketplaceMarketplace,
+	PalletMarketplaceNftListing,
 	PalletMarketplaceOfferType,
+	PalletMarketplaceSftListing,
 	PalletMarketplaceSimpleOffer,
 	PalletMultisigCall,
 	PalletMultisigError,
@@ -248,11 +263,16 @@ import type {
 	PalletXls20Error,
 	PalletXls20Event,
 	PalletXrplBridgeCall,
+	PalletXrplBridgeDelayedWithdrawal,
 	PalletXrplBridgeError,
 	PalletXrplBridgeEvent,
-	PalletXrplBridgeHelpersXrpTransaction,
-	PalletXrplBridgeHelpersXrplTicketSequenceParams,
-	PalletXrplBridgeHelpersXrplTxData,
+	PalletXrplBridgeXrpTransaction,
+	PalletXrplBridgeXrpWithdrawTransaction,
+	PalletXrplBridgeXrplTicketSequenceParams,
+	PalletXrplBridgeXrplTxData,
+	PalletXrplCall,
+	PalletXrplError,
+	PalletXrplEvent,
 	SeedPalletCommonEventRouterError,
 	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
@@ -390,11 +410,19 @@ declare module "@polkadot/types/types/registry" {
 		PalletBalancesReasons: PalletBalancesReasons;
 		PalletBalancesReleases: PalletBalancesReleases;
 		PalletBalancesReserveData: PalletBalancesReserveData;
+		PalletCrowdsaleCall: PalletCrowdsaleCall;
+		PalletCrowdsaleError: PalletCrowdsaleError;
+		PalletCrowdsaleEvent: PalletCrowdsaleEvent;
+		PalletCrowdsaleSaleInformation: PalletCrowdsaleSaleInformation;
+		PalletCrowdsaleSaleStatus: PalletCrowdsaleSaleStatus;
 		PalletDexCall: PalletDexCall;
 		PalletDexError: PalletDexError;
 		PalletDexEvent: PalletDexEvent;
 		PalletDexTradingPair: PalletDexTradingPair;
 		PalletDexTradingPairStatus: PalletDexTradingPairStatus;
+		PalletDoughnutCall: PalletDoughnutCall;
+		PalletDoughnutError: PalletDoughnutError;
+		PalletDoughnutEvent: PalletDoughnutEvent;
 		PalletEchoCall: PalletEchoCall;
 		PalletEchoError: PalletEchoError;
 		PalletEchoEvent: PalletEchoEvent;
@@ -455,6 +483,10 @@ declare module "@polkadot/types/types/registry" {
 		PalletImOnlineHeartbeat: PalletImOnlineHeartbeat;
 		PalletImOnlineSr25519AppSr25519Public: PalletImOnlineSr25519AppSr25519Public;
 		PalletImOnlineSr25519AppSr25519Signature: PalletImOnlineSr25519AppSr25519Signature;
+		PalletMaintenanceModeCall: PalletMaintenanceModeCall;
+		PalletMaintenanceModeError: PalletMaintenanceModeError;
+		PalletMaintenanceModeEvent: PalletMaintenanceModeEvent;
+		PalletMaintenanceModeMaintenanceChecker: PalletMaintenanceModeMaintenanceChecker;
 		PalletMarketplaceAuctionClosureReason: PalletMarketplaceAuctionClosureReason;
 		PalletMarketplaceAuctionListing: PalletMarketplaceAuctionListing;
 		PalletMarketplaceCall: PalletMarketplaceCall;
@@ -463,8 +495,11 @@ declare module "@polkadot/types/types/registry" {
 		PalletMarketplaceFixedPriceClosureReason: PalletMarketplaceFixedPriceClosureReason;
 		PalletMarketplaceFixedPriceListing: PalletMarketplaceFixedPriceListing;
 		PalletMarketplaceListing: PalletMarketplaceListing;
+		PalletMarketplaceListingTokens: PalletMarketplaceListingTokens;
 		PalletMarketplaceMarketplace: PalletMarketplaceMarketplace;
+		PalletMarketplaceNftListing: PalletMarketplaceNftListing;
 		PalletMarketplaceOfferType: PalletMarketplaceOfferType;
+		PalletMarketplaceSftListing: PalletMarketplaceSftListing;
 		PalletMarketplaceSimpleOffer: PalletMarketplaceSimpleOffer;
 		PalletMultisigCall: PalletMultisigCall;
 		PalletMultisigError: PalletMultisigError;
@@ -550,11 +585,16 @@ declare module "@polkadot/types/types/registry" {
 		PalletXls20Error: PalletXls20Error;
 		PalletXls20Event: PalletXls20Event;
 		PalletXrplBridgeCall: PalletXrplBridgeCall;
+		PalletXrplBridgeDelayedWithdrawal: PalletXrplBridgeDelayedWithdrawal;
 		PalletXrplBridgeError: PalletXrplBridgeError;
 		PalletXrplBridgeEvent: PalletXrplBridgeEvent;
-		PalletXrplBridgeHelpersXrpTransaction: PalletXrplBridgeHelpersXrpTransaction;
-		PalletXrplBridgeHelpersXrplTicketSequenceParams: PalletXrplBridgeHelpersXrplTicketSequenceParams;
-		PalletXrplBridgeHelpersXrplTxData: PalletXrplBridgeHelpersXrplTxData;
+		PalletXrplBridgeXrpTransaction: PalletXrplBridgeXrpTransaction;
+		PalletXrplBridgeXrpWithdrawTransaction: PalletXrplBridgeXrpWithdrawTransaction;
+		PalletXrplBridgeXrplTicketSequenceParams: PalletXrplBridgeXrplTicketSequenceParams;
+		PalletXrplBridgeXrplTxData: PalletXrplBridgeXrplTxData;
+		PalletXrplCall: PalletXrplCall;
+		PalletXrplError: PalletXrplError;
+		PalletXrplEvent: PalletXrplEvent;
 		SeedPalletCommonEventRouterError: SeedPalletCommonEventRouterError;
 		SeedPalletCommonUtilsPublicMintInformation: SeedPalletCommonUtilsPublicMintInformation;
 		SeedPrimitivesEthyCryptoAppCryptoPublic: SeedPrimitivesEthyCryptoAppCryptoPublic;

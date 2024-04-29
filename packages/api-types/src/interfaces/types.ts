@@ -7,3 +7,5 @@ export * from "./ethy/types.js";
 export * from "./nft/types.js";
 export * from "./runtime/types.js";
 export * from "./xrplBridge/types.js";
+export * from "./assetsExt/types.js";
+export * from "./sft/types.js";

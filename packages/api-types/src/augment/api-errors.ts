@@ -89,6 +89,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			CreateAssetFailed: AugmentedError<ApiType>;
 			/**
+			 * Decimals cannot be higher than 18
+			 **/
+			DecimalsTooHigh: AugmentedError<ApiType>;
+			/**
 			 * Maximum holds placed on this asset/account pair
 			 **/
 			MaxHolds: AugmentedError<ApiType>;
@@ -100,6 +104,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * No more Ids are available, they've been exhausted
 			 **/
 			NoAvailableIds: AugmentedError<ApiType>;
+			/**
+			 * The signer does not have permission to perform this action
+			 **/
+			NoPermission: AugmentedError<ApiType>;
 			/**
 			 * Operation would overflow
 			 **/
@@ -203,6 +211,92 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		crowdsale: {
+			/**
+			 * Access denied
+			 **/
+			AccessDenied: AugmentedError<ApiType>;
+			/**
+			 * The NFT collection must not contain any minted NFTs
+			 **/
+			CollectionIssuanceNotZero: AugmentedError<ApiType>;
+			/**
+			 * The NFT collection must not be mintable
+			 **/
+			CollectionPublicMintable: AugmentedError<ApiType>;
+			/**
+			 * Crowdsale is not enabled
+			 **/
+			CrowdsaleNotEnabled: AugmentedError<ApiType>;
+			/**
+			 * Crowdsale was not found
+			 **/
+			CrowdsaleNotFound: AugmentedError<ApiType>;
+			/**
+			 * Extrinsic not allowed
+			 **/
+			ExtrinsicForbidden: AugmentedError<ApiType>;
+			/**
+			 * The amount must not be zero
+			 **/
+			InvalidAmount: AugmentedError<ApiType>;
+			/**
+			 * Invalid asset id
+			 **/
+			InvalidAsset: AugmentedError<ApiType>;
+			/**
+			 * The start block is greater than the end block
+			 **/
+			InvalidBlockRange: AugmentedError<ApiType>;
+			/**
+			 * Invalid crowdsale status
+			 **/
+			InvalidCrowdsaleStatus: AugmentedError<ApiType>;
+			/**
+			 * The collection max issuance is too high
+			 **/
+			InvalidMaxIssuance: AugmentedError<ApiType>;
+			/**
+			 * Redemption quantity must not be zero
+			 **/
+			InvalidQuantity: AugmentedError<ApiType>;
+			/**
+			 * The soft cap price must be greater than zero
+			 **/
+			InvalidSoftCapPrice: AugmentedError<ApiType>;
+			/**
+			 * The NFT collection max issuance is not set
+			 **/
+			MaxIssuanceNotSet: AugmentedError<ApiType>;
+			/**
+			 * There are no remaining sale ids
+			 **/
+			NoAvailableIds: AugmentedError<ApiType>;
+			/**
+			 * Automatic trigger of sales distribution has failed
+			 **/
+			SaleDistributionFailed: AugmentedError<ApiType>;
+			/**
+			 * The sale duration is too long
+			 **/
+			SaleDurationTooLong: AugmentedError<ApiType>;
+			/**
+			 * There are too many sales queued for this block, try again on a different block
+			 **/
+			TooManySales: AugmentedError<ApiType>;
+			/**
+			 * The voucher claim could not be completed due to invalid voucher supply
+			 **/
+			VoucherClaimFailed: AugmentedError<ApiType>;
+			/**
+			 * Vouchers have already been claimed
+			 **/
+			VouchersAlreadyClaimed: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		dex: {
 			/**
 			 * Supply amount is more than max_supply_amount
@@ -293,6 +387,60 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The target amount is zero
 			 **/
 			ZeroTargetAmount: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
+		doughnut: {
+			/**
+			 * Cannot revoke doughnut that does was issued by another account
+			 **/
+			CallerNotIssuer: AugmentedError<ApiType>;
+			/**
+			 * Doguhnut decode failed.
+			 **/
+			DoughnutDecodeFailed: AugmentedError<ApiType>;
+			/**
+			 * The doughnut has been revoked by the issuer
+			 **/
+			DoughnutRevoked: AugmentedError<ApiType>;
+			/**
+			 * Doughnut verify failed
+			 **/
+			DoughnutVerifyFailed: AugmentedError<ApiType>;
+			/**
+			 * Holder not whitelisted
+			 **/
+			HolderNotWhitelisted: AugmentedError<ApiType>;
+			/**
+			 * The holder address has been revoked by the issuer
+			 **/
+			HolderRevoked: AugmentedError<ApiType>;
+			/**
+			 * Topping decode failed.
+			 **/
+			ToppingDecodeFailed: AugmentedError<ApiType>;
+			/**
+			 * Topping permissions denied.
+			 **/
+			ToppingPermissionDenied: AugmentedError<ApiType>;
+			/**
+			 * Unable to find TRN domain.
+			 **/
+			TRNDomainNotfound: AugmentedError<ApiType>;
+			/**
+			 * Sender is not authorized to use the doughnut
+			 **/
+			UnauthorizedSender: AugmentedError<ApiType>;
+			/**
+			 * Unsupported doughnut version
+			 **/
+			UnsupportedDoughnutVersion: AugmentedError<ApiType>;
+			/**
+			 * Inner call is not whitelisted
+			 **/
+			UnsupportedInnerCall: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
@@ -568,6 +716,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			AccountParsingFailure: AugmentedError<ApiType>;
 			/**
+			 * Blacklisted extrinsic
+			 **/
+			BlacklistedExtrinsic: AugmentedError<ApiType>;
+			/**
 			 * Account already exists as a delegate
 			 **/
 			DelegateAlreadyExists: AugmentedError<ApiType>;
@@ -666,11 +818,41 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		maintenanceMode: {
+			/**
+			 * This account is not authorized to execute this transaction
+			 **/
+			AccountBlocked: AugmentedError<ApiType>;
+			/**
+			 * This pallet or call cannot be blocked
+			 **/
+			CannotBlock: AugmentedError<ApiType>;
+			/**
+			 * The call name is not valid utf-8 characters
+			 **/
+			InvalidCallName: AugmentedError<ApiType>;
+			/**
+			 * The pallet name is not valid utf-8 characters
+			 **/
+			InvalidPalletName: AugmentedError<ApiType>;
+			/**
+			 * This call is disabled as the chain is in maintenance mode
+			 **/
+			MaintenanceModeActive: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		marketplace: {
 			/**
 			 * Auction bid was lower than reserve or current highest bid
 			 **/
 			BidTooLow: AugmentedError<ApiType>;
+			/**
+			 * No tokens were specified in the listing
+			 **/
+			EmptyTokens: AugmentedError<ApiType>;
 			/**
 			 * The metadata path is invalid (non-utf8 or empty)
 			 **/
@@ -700,10 +882,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			NoAvailableIds: AugmentedError<ApiType>;
 			/**
-			 * The collection does not exist
-			 **/
-			NoCollectionFound: AugmentedError<ApiType>;
-			/**
 			 * The caller is not the specified buyer
 			 **/
 			NotBuyer: AugmentedError<ApiType>;
@@ -719,10 +897,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The token is not listed for fixed price sale
 			 **/
 			NotForFixedPriceSale: AugmentedError<ApiType>;
-			/**
-			 * The token does not exist
-			 **/
-			NoToken: AugmentedError<ApiType>;
 			/**
 			 * The caller is not the seller of the NFT
 			 **/
@@ -747,6 +921,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Cannot make an offer on a token up for auction
 			 **/
 			TokenOnAuction: AugmentedError<ApiType>;
+			/**
+			 * The balance of tokens within the listing must be greater than zero
+			 **/
+			ZeroBalance: AugmentedError<ApiType>;
 			/**
 			 * Offer amount needs to be greater than 0
 			 **/
@@ -1208,6 +1386,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			RoyaltiesInvalid: AugmentedError<ApiType>;
 			/**
+			 * The number of tokens have exceeded the max tokens allowed
+			 **/
+			TokenLimitExceeded: AugmentedError<ApiType>;
+			/**
 			 * Generic error
 			 **/
 			[key: string]: AugmentedError<ApiType>;
@@ -1416,13 +1598,17 @@ declare module "@polkadot/api-base/types/errors" {
 		};
 		vortexDistribution: {
 			/**
-			 * Vortex distribution already triggered
-			 **/
-			AlreadyTriggered: AugmentedError<ApiType>;
-			/**
 			 * Assets should not include vortex asset
 			 **/
 			AssetsShouldNotIncludeVtxAsset: AugmentedError<ApiType>;
+			/**
+			 * Vortex distribution is not ready to be redeemed
+			 **/
+			CannotRedeem: AugmentedError<ApiType>;
+			/**
+			 * Vortex distribution is not ready to be triggered
+			 **/
+			CannotTrigger: AugmentedError<ApiType>;
 			/**
 			 * Invalid amount
 			 **/
@@ -1516,15 +1702,46 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		xrpl: {
+			/**
+			 * Call filtered
+			 **/
+			CallFiltered: AugmentedError<ApiType>;
+			/**
+			 * Failed to decode XRPL transaction
+			 **/
+			XRPLTransaction: AugmentedError<ApiType>;
+			/**
+			 * Failed to get account from XRPL transaction
+			 **/
+			XRPLTransactionAccount: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		xrplBridge: {
 			/**
 			 * Cannot process more transactions at that block
 			 **/
 			CannotProcessMoreTransactionsAtThatBlock: AugmentedError<ApiType>;
 			/**
+			 * This ledger index is within the submission window and can't be pruned
+			 **/
+			CannotPruneActiveLedgerIndex: AugmentedError<ApiType>;
+			/**
+			 * The scheduled block cannot hold any more delayed payments
+			 **/
+			DelayScheduleAtCapacity: AugmentedError<ApiType>;
+			/**
 			 * The door address has not been configured
 			 **/
 			DoorAddressNotSet: AugmentedError<ApiType>;
+			/**
+			 * highest_pruned_ledger_index must be less than highest_settled_ledger_index -
+			 * submission_window_width
+			 **/
+			InvalidHighestPrunedIndex: AugmentedError<ApiType>;
 			/**
 			 * The signers are not known by ethy
 			 **/
@@ -1537,7 +1754,15 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The NextTicketSequenceParams has not been set
 			 **/
 			NextTicketSequenceParamsNotSet: AugmentedError<ApiType>;
+			/**
+			 * The paymentIds have been exhausted
+			 **/
+			NoAvailablePaymentIds: AugmentedError<ApiType>;
 			NotPermitted: AugmentedError<ApiType>;
+			/**
+			 * There is no settledXRPTransactionDetails for this ledger index
+			 **/
+			NoTransactionDetails: AugmentedError<ApiType>;
 			/**
 			 * Transaction submitted is outside the submission window
 			 **/

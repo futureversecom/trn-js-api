@@ -3,6 +3,22 @@
 exports[`getApiOptions returns expected options 1`] = `
 {
   "rpc": {
+    "assetsExt": {
+      "freeBalance": {
+        "description": "Given asset id and address, returns free balance",
+        "params": [
+          {
+            "name": "asset",
+            "type": "AssetId",
+          },
+          {
+            "name": "who",
+            "type": "AccountId",
+          },
+        ],
+        "type": "Text",
+      },
+    },
     "dex": {
       "getAmountsIn": {
         "description": "Given an array of AssetIds, return amounts in for an amount out",
@@ -151,6 +167,18 @@ exports[`getApiOptions returns expected options 1`] = `
         ],
         "type": "Json",
       },
+      "tokenUri": {
+        "description": "Get the URI of a token",
+        "params": [
+          {
+            "name": "tokenId",
+            "type": "TokenId",
+          },
+        ],
+        "type": "Json",
+      },
+    },
+    "sft": {
       "tokenUri": {
         "description": "Get the URI of a token",
         "params": [
@@ -1049,6 +1077,11 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletAssetsExtCall": {
         "_enum": {
+          "burn_from": {
+            "amount": "Compact<u128>",
+            "assetId": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
           "create_asset": {
             "decimals": "u8",
             "minBalance": "Option<u128>",
@@ -1056,11 +1089,27 @@ exports[`getApiOptions returns expected options 1`] = `
             "owner": "Option<SeedPrimitivesSignatureAccountId20>",
             "symbol": "Bytes",
           },
+          "mint": {
+            "amount": "Compact<u128>",
+            "assetId": "u32",
+            "beneficiary": "SeedPrimitivesSignatureAccountId20",
+          },
+          "set_asset_deposit": {
+            "assetDeposit": "u128",
+          },
+          "transfer": {
+            "amount": "Compact<u128>",
+            "assetId": "u32",
+            "destination": "SeedPrimitivesSignatureAccountId20",
+            "keepAlive": "bool",
+          },
         },
       },
       "PalletAssetsExtError": {
         "_enum": [
+          "DecimalsTooHigh",
           "NoAvailableIds",
+          "NoPermission",
           "BalanceLow",
           "NoAccount",
           "Overflow",
@@ -1070,6 +1119,9 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletAssetsExtEvent": {
         "_enum": {
+          "AssetDepositSet": {
+            "assetDeposit": "u128",
+          },
           "CreateAsset": {
             "assetId": "u32",
             "creator": "SeedPrimitivesSignatureAccountId20",
@@ -1322,6 +1374,134 @@ exports[`getApiOptions returns expected options 1`] = `
         "amount": "u128",
         "id": "[u8;8]",
       },
+      "PalletCrowdsaleCall": {
+        "_enum": {
+          "claim_voucher": {
+            "saleId": "u64",
+          },
+          "distribute_crowdsale_rewards": "Null",
+          "enable": {
+            "saleId": "u64",
+          },
+          "initialize": {
+            "collectionId": "u32",
+            "paymentAssetId": "u32",
+            "saleDuration": "u32",
+            "softCapPrice": "u128",
+            "voucherName": "Option<Bytes>",
+            "voucherSymbol": "Option<Bytes>",
+          },
+          "participate": {
+            "amount": "u128",
+            "saleId": "u64",
+          },
+          "proxy_vault_call": {
+            "call": "Call",
+            "saleId": "u64",
+          },
+          "redeem_voucher": {
+            "quantity": "u32",
+            "saleId": "u64",
+          },
+          "try_force_distribution": {
+            "saleId": "u64",
+          },
+        },
+      },
+      "PalletCrowdsaleError": {
+        "_enum": [
+          "AccessDenied",
+          "NoAvailableIds",
+          "InvalidBlockRange",
+          "CrowdsaleNotFound",
+          "InvalidCrowdsaleStatus",
+          "CrowdsaleNotEnabled",
+          "InvalidSoftCapPrice",
+          "InvalidAsset",
+          "InvalidMaxIssuance",
+          "InvalidAmount",
+          "InvalidQuantity",
+          "VoucherClaimFailed",
+          "MaxIssuanceNotSet",
+          "CollectionIssuanceNotZero",
+          "CollectionPublicMintable",
+          "TooManySales",
+          "VouchersAlreadyClaimed",
+          "SaleDistributionFailed",
+          "SaleDurationTooLong",
+          "ExtrinsicForbidden",
+        ],
+      },
+      "PalletCrowdsaleEvent": {
+        "_enum": {
+          "CrowdsaleClosed": {
+            "info": "PalletCrowdsaleSaleInformation",
+            "saleId": "u64",
+          },
+          "CrowdsaleCreated": {
+            "info": "PalletCrowdsaleSaleInformation",
+            "saleId": "u64",
+          },
+          "CrowdsaleDistributionComplete": {
+            "saleId": "u64",
+            "vouchersDistributed": "u128",
+          },
+          "CrowdsaleEnabled": {
+            "endBlock": "u32",
+            "info": "PalletCrowdsaleSaleInformation",
+            "saleId": "u64",
+          },
+          "CrowdsaleManualDistribution": {
+            "info": "PalletCrowdsaleSaleInformation",
+            "saleId": "u64",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "CrowdsaleNFTRedeemed": {
+            "collectionId": "u32",
+            "quantity": "u32",
+            "saleId": "u64",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "CrowdsaleParticipated": {
+            "amount": "u128",
+            "asset": "u32",
+            "saleId": "u64",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "CrowdsaleVouchersClaimed": {
+            "amount": "u128",
+            "saleId": "u64",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "VaultCallProxied": {
+            "call": "Call",
+            "saleId": "u64",
+            "vault": "SeedPrimitivesSignatureAccountId20",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletCrowdsaleSaleInformation": {
+        "admin": "SeedPrimitivesSignatureAccountId20",
+        "duration": "u32",
+        "fundsRaised": "u128",
+        "participantCount": "u64",
+        "paymentAssetId": "u32",
+        "rewardCollectionId": "u32",
+        "softCapPrice": "u128",
+        "status": "PalletCrowdsaleSaleStatus",
+        "vault": "SeedPrimitivesSignatureAccountId20",
+        "voucherAssetId": "u32",
+      },
+      "PalletCrowdsaleSaleStatus": {
+        "_enum": {
+          "Distributing": "(u32,u128)",
+          "DistributionFailed": "u32",
+          "Enabled": "u32",
+          "Ended": "u32",
+          "Pending": "u32",
+        },
+      },
       "PalletDexCall": {
         "_enum": {
           "add_liquidity": {
@@ -1415,6 +1595,68 @@ exports[`getApiOptions returns expected options 1`] = `
           "NotEnabled",
           "Enabled",
         ],
+      },
+      "PalletDoughnutCall": {
+        "_enum": {
+          "revoke_doughnut": {
+            "doughnut": "Bytes",
+            "revoke": "bool",
+          },
+          "revoke_holder": {
+            "holder": "SeedPrimitivesSignatureAccountId20",
+            "revoke": "bool",
+          },
+          "transact": {
+            "call": "Call",
+            "doughnut": "Bytes",
+            "genesisHash": "H256",
+            "nonce": "u32",
+            "signature": "Bytes",
+            "tip": "u64",
+          },
+          "update_whitelisted_holders": {
+            "add": "bool",
+            "holder": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
+      },
+      "PalletDoughnutError": {
+        "_enum": [
+          "DoughnutDecodeFailed",
+          "UnsupportedDoughnutVersion",
+          "DoughnutVerifyFailed",
+          "UnauthorizedSender",
+          "CallerNotIssuer",
+          "DoughnutRevoked",
+          "HolderRevoked",
+          "ToppingDecodeFailed",
+          "TRNDomainNotfound",
+          "ToppingPermissionDenied",
+          "UnsupportedInnerCall",
+          "HolderNotWhitelisted",
+        ],
+      },
+      "PalletDoughnutEvent": {
+        "_enum": {
+          "DoughnutCallExecuted": {
+            "call": "Call",
+            "doughnut": "Bytes",
+            "result": "Result<Null, SpRuntimeDispatchError>",
+          },
+          "DoughnutRevokeStateUpdated": {
+            "doughnutHash": "[u8;32]",
+            "revoked": "bool",
+          },
+          "HolderRevokeStateUpdated": {
+            "holder": "SeedPrimitivesSignatureAccountId20",
+            "issuer": "SeedPrimitivesSignatureAccountId20",
+            "revoked": "bool",
+          },
+          "WhitelistedHoldersUpdated": {
+            "enabled": "bool",
+            "holder": "SeedPrimitivesSignatureAccountId20",
+          },
+        },
       },
       "PalletEchoCall": {
         "_enum": {
@@ -2010,6 +2252,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "AccountAlreadyRegistered",
           "DelegateNotRegistered",
           "DelegateAlreadyExists",
+          "BlacklistedExtrinsic",
           "NotFuturepassOwner",
           "OwnerCannotUnregister",
           "PermissionDenied",
@@ -2155,6 +2398,64 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletImOnlineSr25519AppSr25519Public": "SpCoreSr25519Public",
       "PalletImOnlineSr25519AppSr25519Signature": "SpCoreSr25519Signature",
+      "PalletMaintenanceModeCall": {
+        "_enum": {
+          "block_account": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "blocked": "bool",
+          },
+          "block_call": {
+            "blocked": "bool",
+            "callName": "Bytes",
+            "palletName": "Bytes",
+          },
+          "block_evm_target": {
+            "blocked": "bool",
+            "targetAddress": "H160",
+          },
+          "block_pallet": {
+            "blocked": "bool",
+            "palletName": "Bytes",
+          },
+          "enable_maintenance_mode": {
+            "enabled": "bool",
+          },
+        },
+      },
+      "PalletMaintenanceModeError": {
+        "_enum": [
+          "AccountBlocked",
+          "MaintenanceModeActive",
+          "InvalidPalletName",
+          "InvalidCallName",
+          "CannotBlock",
+        ],
+      },
+      "PalletMaintenanceModeEvent": {
+        "_enum": {
+          "AccountBlocked": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "blocked": "bool",
+          },
+          "CallBlocked": {
+            "blocked": "bool",
+            "callName": "Bytes",
+            "palletName": "Bytes",
+          },
+          "EVMTargetBlocked": {
+            "blocked": "bool",
+            "targetAddress": "H160",
+          },
+          "MaintenanceModeActivated": {
+            "enabled": "bool",
+          },
+          "PalletBlocked": {
+            "blocked": "bool",
+            "palletName": "Bytes",
+          },
+        },
+      },
+      "PalletMaintenanceModeMaintenanceChecker": "Null",
       "PalletMarketplaceAuctionClosureReason": {
         "_enum": [
           "ExpiredNoBids",
@@ -2164,18 +2465,24 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletMarketplaceAuctionListing": {
         "close": "u32",
-        "collectionId": "u32",
         "marketplaceId": "Option<u32>",
         "paymentAsset": "u32",
         "reservePrice": "u128",
         "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
         "seller": "SeedPrimitivesSignatureAccountId20",
-        "serialNumbers": "Vec<u32>",
+        "tokens": "PalletMarketplaceListingTokens",
       },
       "PalletMarketplaceCall": {
         "_enum": {
           "accept_offer": {
             "offerId": "u64",
+          },
+          "auction": {
+            "duration": "Option<u32>",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "reservePrice": "u128",
+            "tokens": "PalletMarketplaceListingTokens",
           },
           "auction_nft": {
             "collectionId": "u32",
@@ -2192,6 +2499,9 @@ exports[`getApiOptions returns expected options 1`] = `
           "buy": {
             "listingId": "u128",
           },
+          "buy_multi": {
+            "listingIds": "Vec<u128>",
+          },
           "cancel_offer": {
             "offerId": "u64",
           },
@@ -2207,6 +2517,14 @@ exports[`getApiOptions returns expected options 1`] = `
           "register_marketplace": {
             "entitlement": "Permill",
             "marketplaceAccount": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "sell": {
+            "buyer": "Option<SeedPrimitivesSignatureAccountId20>",
+            "duration": "Option<u32>",
+            "fixedPrice": "u128",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "tokens": "PalletMarketplaceListingTokens",
           },
           "sell_nft": {
             "buyer": "Option<SeedPrimitivesSignatureAccountId20>",
@@ -2230,7 +2548,6 @@ exports[`getApiOptions returns expected options 1`] = `
         "_enum": [
           "NoAvailableIds",
           "NotTokenOwner",
-          "NoToken",
           "NotForFixedPriceSale",
           "NotForAuction",
           "NotCollectionOwner",
@@ -2241,78 +2558,81 @@ exports[`getApiOptions returns expected options 1`] = `
           "BidTooLow",
           "MixedBundleSale",
           "MarketplaceNotRegistered",
-          "NoCollectionFound",
           "InvalidMetadataPath",
           "InvalidOffer",
           "NotBuyer",
           "NotSeller",
           "IsTokenOwner",
           "ZeroOffer",
+          "ZeroBalance",
           "TokenOnAuction",
+          "EmptyTokens",
         ],
       },
       "PalletMarketplaceEvent": {
         "_enum": {
           "AuctionClose": {
-            "collectionId": "u32",
             "listingId": "u128",
+            "marketplaceId": "Option<u32>",
             "reason": "PalletMarketplaceAuctionClosureReason",
+            "tokens": "PalletMarketplaceListingTokens",
           },
           "AuctionOpen": {
-            "collectionId": "u32",
+            "close": "u32",
             "listingId": "u128",
             "marketplaceId": "Option<u32>",
             "paymentAsset": "u32",
             "reservePrice": "u128",
             "seller": "SeedPrimitivesSignatureAccountId20",
-            "serialNumbers": "Vec<u32>",
+            "tokens": "PalletMarketplaceListingTokens",
           },
           "AuctionSold": {
-            "collectionId": "u32",
             "hammerPrice": "u128",
             "listingId": "u128",
+            "marketplaceId": "Option<u32>",
             "paymentAsset": "u32",
+            "tokens": "PalletMarketplaceListingTokens",
             "winner": "SeedPrimitivesSignatureAccountId20",
           },
           "Bid": {
             "amount": "u128",
             "bidder": "SeedPrimitivesSignatureAccountId20",
-            "collectionId": "u32",
             "listingId": "u128",
-            "serialNumbers": "Vec<u32>",
+            "marketplaceId": "Option<u32>",
+            "tokens": "PalletMarketplaceListingTokens",
           },
           "FeeToSet": {
             "account": "Option<SeedPrimitivesSignatureAccountId20>",
           },
           "FixedPriceSaleClose": {
-            "collectionId": "u32",
             "listingId": "u128",
+            "marketplaceId": "Option<u32>",
             "reason": "PalletMarketplaceFixedPriceClosureReason",
-            "serialNumbers": "Vec<u32>",
+            "tokens": "PalletMarketplaceListingTokens",
           },
           "FixedPriceSaleComplete": {
             "buyer": "SeedPrimitivesSignatureAccountId20",
-            "collectionId": "u32",
-            "listingId": "u128",
-            "paymentAsset": "u32",
-            "price": "u128",
-            "seller": "SeedPrimitivesSignatureAccountId20",
-            "serialNumbers": "Vec<u32>",
-          },
-          "FixedPriceSaleList": {
-            "collectionId": "u32",
             "listingId": "u128",
             "marketplaceId": "Option<u32>",
             "paymentAsset": "u32",
             "price": "u128",
             "seller": "SeedPrimitivesSignatureAccountId20",
-            "serialNumbers": "Vec<u32>",
+            "tokens": "PalletMarketplaceListingTokens",
+          },
+          "FixedPriceSaleList": {
+            "close": "u32",
+            "listingId": "u128",
+            "marketplaceId": "Option<u32>",
+            "paymentAsset": "u32",
+            "price": "u128",
+            "seller": "SeedPrimitivesSignatureAccountId20",
+            "tokens": "PalletMarketplaceListingTokens",
           },
           "FixedPriceSalePriceUpdate": {
-            "collectionId": "u32",
             "listingId": "u128",
+            "marketplaceId": "Option<u32>",
             "newPrice": "u128",
-            "serialNumbers": "Vec<u32>",
+            "tokens": "PalletMarketplaceListingTokens",
           },
           "MarketplaceRegister": {
             "account": "SeedPrimitivesSignatureAccountId20",
@@ -2329,10 +2649,12 @@ exports[`getApiOptions returns expected options 1`] = `
           "OfferAccept": {
             "amount": "u128",
             "assetId": "u32",
+            "marketplaceId": "Option<u32>",
             "offerId": "u64",
             "tokenId": "(u32,u32)",
           },
           "OfferCancel": {
+            "marketplaceId": "Option<u32>",
             "offerId": "u64",
             "tokenId": "(u32,u32)",
           },
@@ -2347,13 +2669,12 @@ exports[`getApiOptions returns expected options 1`] = `
       "PalletMarketplaceFixedPriceListing": {
         "buyer": "Option<SeedPrimitivesSignatureAccountId20>",
         "close": "u32",
-        "collectionId": "u32",
         "fixedPrice": "u128",
         "marketplaceId": "Option<u32>",
         "paymentAsset": "u32",
         "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
         "seller": "SeedPrimitivesSignatureAccountId20",
-        "serialNumbers": "Vec<u32>",
+        "tokens": "PalletMarketplaceListingTokens",
       },
       "PalletMarketplaceListing": {
         "_enum": {
@@ -2361,14 +2682,28 @@ exports[`getApiOptions returns expected options 1`] = `
           "FixedPrice": "PalletMarketplaceFixedPriceListing",
         },
       },
+      "PalletMarketplaceListingTokens": {
+        "_enum": {
+          "Nft": "PalletMarketplaceNftListing",
+          "Sft": "PalletMarketplaceSftListing",
+        },
+      },
       "PalletMarketplaceMarketplace": {
         "account": "SeedPrimitivesSignatureAccountId20",
         "entitlement": "Permill",
+      },
+      "PalletMarketplaceNftListing": {
+        "collectionId": "u32",
+        "serialNumbers": "Vec<u32>",
       },
       "PalletMarketplaceOfferType": {
         "_enum": {
           "Simple": "PalletMarketplaceSimpleOffer",
         },
+      },
+      "PalletMarketplaceSftListing": {
+        "collectionId": "u32",
+        "serialNumbers": "Vec<(u32,u128)>",
       },
       "PalletMarketplaceSimpleOffer": {
         "amount": "u128",
@@ -3146,6 +3481,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "MaxOwnersReached",
           "Overflow",
           "PublicMintDisabled",
+          "TokenLimitExceeded",
         ],
       },
       "PalletSftEvent": {
@@ -3726,7 +4062,8 @@ exports[`getApiOptions returns expected options 1`] = `
           "VortexPeriodNotSet",
           "PivotStringTooLong",
           "AssetsShouldNotIncludeVtxAsset",
-          "AlreadyTriggered",
+          "CannotTrigger",
+          "CannotRedeem",
           "NotTriggered",
         ],
       },
@@ -3773,8 +4110,8 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletVortexVtxDistStatus": {
         "_enum": [
-          "Enabled",
           "Disabled",
+          "Enabled",
           "Triggered",
           "Paying",
           "Done",
@@ -3842,12 +4179,16 @@ exports[`getApiOptions returns expected options 1`] = `
           "add_relayer": {
             "relayer": "SeedPrimitivesSignatureAccountId20",
           },
+          "prune_settled_ledger_index": {
+            "ledgerIndex": "u32",
+          },
           "remove_relayer": {
             "relayer": "SeedPrimitivesSignatureAccountId20",
           },
           "reset_settled_xrpl_tx_data": {
+            "highestPrunedLedgerIndex": "Option<u32>",
             "highestSettledLedgerIndex": "u32",
-            "settledTxData": "Option<Vec<(H512,u32,PalletXrplBridgeHelpersXrpTransaction,SeedPrimitivesSignatureAccountId20)>>",
+            "settledTxData": "Option<Vec<(H512,u32,PalletXrplBridgeXrpTransaction,SeedPrimitivesSignatureAccountId20)>>",
             "submissionWindowWidth": "u32",
           },
           "set_door_address": {
@@ -3855,6 +4196,9 @@ exports[`getApiOptions returns expected options 1`] = `
           },
           "set_door_tx_fee": {
             "fee": "u64",
+          },
+          "set_payment_delay": {
+            "paymentDelay": "Option<(u128,u32)>",
           },
           "set_ticket_sequence_current_allocation": {
             "startTicketSequence": "u32",
@@ -3865,34 +4209,52 @@ exports[`getApiOptions returns expected options 1`] = `
             "startTicketSequence": "u32",
             "ticketBucketSize": "u32",
           },
+          "set_xrp_source_tag": {
+            "sourceTag": "u32",
+          },
           "submit_challenge": {
             "transactionHash": "H512",
           },
           "submit_transaction": {
             "ledgerIndex": "u64",
             "timestamp": "u64",
-            "transaction": "PalletXrplBridgeHelpersXrplTxData",
+            "transaction": "PalletXrplBridgeXrplTxData",
             "transactionHash": "H512",
           },
           "withdraw_xrp": {
             "amount": "u128",
             "destination": "H160",
           },
+          "withdraw_xrp_with_destination_tag": {
+            "amount": "u128",
+            "destination": "H160",
+            "destinationTag": "u32",
+          },
         },
+      },
+      "PalletXrplBridgeDelayedWithdrawal": {
+        "destinationTag": "Option<u32>",
+        "sender": "SeedPrimitivesSignatureAccountId20",
+        "withdrawTx": "PalletXrplBridgeXrpWithdrawTransaction",
       },
       "PalletXrplBridgeError": {
         "_enum": [
           "NotPermitted",
+          "NoAvailablePaymentIds",
+          "DelayScheduleAtCapacity",
+          "NoTransactionDetails",
           "RelayerDoesNotExists",
           "WithdrawInvalidAmount",
           "DoorAddressNotSet",
           "TooManySigners",
           "InvalidSigners",
+          "InvalidHighestPrunedIndex",
           "TxReplay",
           "NextTicketSequenceParamsNotSet",
           "NextTicketSequenceParamsInvalid",
           "TicketSequenceParamsInvalid",
           "CannotProcessMoreTransactionsAtThatBlock",
+          "CannotPruneActiveLedgerIndex",
           "OutSideSubmissionWindow",
           "TooManyTransactionsPerLedger",
         ],
@@ -3909,7 +4271,16 @@ exports[`getApiOptions returns expected options 1`] = `
             "ticketSequence": "u32",
             "ticketSequenceStart": "u32",
           },
+          "LedgerIndexManualPrune": {
+            "ledgerIndex": "u32",
+            "totalCleared": "u32",
+          },
           "NotSupportedTransaction": "Null",
+          "PaymentDelayRemoved": "Null",
+          "PaymentDelaySet": {
+            "delay": "u32",
+            "paymentThreshold": "u128",
+          },
           "ProcessingFailed": "(u64,H512,SpRuntimeDispatchError)",
           "ProcessingOk": "(u64,H512)",
           "RelayerAdded": "SeedPrimitivesSignatureAccountId20",
@@ -3917,6 +4288,13 @@ exports[`getApiOptions returns expected options 1`] = `
           "TicketSequenceThresholdReached": "u32",
           "TransactionAdded": "(u64,H512)",
           "TransactionChallenge": "(u64,H512)",
+          "WithdrawDelayed": {
+            "amount": "u128",
+            "delayedPaymentId": "u64",
+            "destination": "H160",
+            "paymentBlock": "u32",
+            "sender": "SeedPrimitivesSignatureAccountId20",
+          },
           "WithdrawRequest": {
             "amount": "u128",
             "destination": "H160",
@@ -3925,16 +4303,23 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
-      "PalletXrplBridgeHelpersXrpTransaction": {
+      "PalletXrplBridgeXrpTransaction": {
         "timestamp": "u64",
-        "transaction": "PalletXrplBridgeHelpersXrplTxData",
+        "transaction": "PalletXrplBridgeXrplTxData",
         "transactionHash": "H512",
       },
-      "PalletXrplBridgeHelpersXrplTicketSequenceParams": {
+      "PalletXrplBridgeXrpWithdrawTransaction": {
+        "amount": "u128",
+        "destination": "H160",
+        "txFee": "u64",
+        "txNonce": "u32",
+        "txTicketSequence": "u32",
+      },
+      "PalletXrplBridgeXrplTicketSequenceParams": {
         "bucketSize": "u32",
         "startSequence": "u32",
       },
-      "PalletXrplBridgeHelpersXrplTxData": {
+      "PalletXrplBridgeXrplTxData": {
         "_enum": {
           "CurrencyPayment": {
             "address": "H160",
@@ -3946,6 +4331,32 @@ exports[`getApiOptions returns expected options 1`] = `
             "amount": "u128",
           },
           "Xls20": "Null",
+        },
+      },
+      "PalletXrplCall": {
+        "_enum": {
+          "transact": {
+            "call": "Call",
+            "encodedMsg": "Bytes",
+            "signature": "Bytes",
+          },
+        },
+      },
+      "PalletXrplError": {
+        "_enum": [
+          "XRPLTransaction",
+          "XRPLTransactionAccount",
+          "CallFiltered",
+        ],
+      },
+      "PalletXrplEvent": {
+        "_enum": {
+          "XRPLExtrinsicExecuted": {
+            "call": "Call",
+            "caller": "SeedPrimitivesSignatureAccountId20",
+            "publicKey": "[u8;33]",
+            "rAddress": "Text",
+          },
         },
       },
       "SeedPalletCommonEventRouterError": {
@@ -4258,6 +4669,7 @@ exports[`getApiOptions returns expected options 1`] = `
         "_enum": {
           "Ethereum": "PalletEthereumRawOrigin",
           "Void": "SpCoreVoid",
+          "Xrpl": "SeedPrimitivesSignatureAccountId20",
           "__Unused1": "Null",
           "__Unused10": "Null",
           "__Unused11": "Null",
@@ -4269,13 +4681,21 @@ exports[`getApiOptions returns expected options 1`] = `
           "__Unused17": "Null",
           "__Unused18": "Null",
           "__Unused19": "Null",
+          "__Unused2": "Null",
           "__Unused20": "Null",
           "__Unused21": "Null",
           "__Unused22": "Null",
           "__Unused23": "Null",
           "__Unused24": "Null",
           "__Unused25": "Null",
-          "__Unused3": "Null",
+          "__Unused27": "Null",
+          "__Unused28": "Null",
+          "__Unused29": "Null",
+          "__Unused30": "Null",
+          "__Unused31": "Null",
+          "__Unused32": "Null",
+          "__Unused33": "Null",
+          "__Unused34": "Null",
           "__Unused4": "Null",
           "__Unused5": "Null",
           "__Unused6": "Null",

@@ -11,6 +11,7 @@ import type {
 	Null,
 	Option,
 	Result,
+	Text,
 	U256,
 	U8aFixed,
 	Vec,
@@ -28,6 +29,7 @@ import type {
 	FrameSupportDispatchDispatchInfo,
 	FrameSupportScheduleLookupError,
 	FrameSupportTokensMiscBalanceStatus,
+	PalletCrowdsaleSaleInformation,
 	PalletDexTradingPair,
 	PalletElectionProviderMultiPhaseElectionCompute,
 	PalletEthyEthySigningRequest,
@@ -35,6 +37,7 @@ import type {
 	PalletImOnlineSr25519AppSr25519Public,
 	PalletMarketplaceAuctionClosureReason,
 	PalletMarketplaceFixedPriceClosureReason,
+	PalletMarketplaceListingTokens,
 	PalletMultisigTimepoint,
 	PalletNftCrossChainCompatibility,
 	PalletStakingExposure,
@@ -49,6 +52,7 @@ import type {
 	SpRuntimeDispatchError,
 } from "@polkadot/types/lookup";
 import type {
+	Call,
 	H160,
 	H256,
 	H512,
@@ -251,6 +255,10 @@ declare module "@polkadot/api-base/types/events" {
 		};
 		assetsExt: {
 			/**
+			 * The asset deposit was set
+			 **/
+			AssetDepositSet: AugmentedEvent<ApiType, [assetDeposit: u128], { assetDeposit: u128 }>;
+			/**
 			 * New asset has been created
 			 **/
 			CreateAsset: AugmentedEvent<
@@ -435,6 +443,102 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
 		};
+		crowdsale: {
+			/**
+			 * Crowdsale closed
+			 **/
+			CrowdsaleClosed: AugmentedEvent<
+				ApiType,
+				[saleId: u64, info: PalletCrowdsaleSaleInformation],
+				{ saleId: u64; info: PalletCrowdsaleSaleInformation }
+			>;
+			/**
+			 * Crowdsale created
+			 **/
+			CrowdsaleCreated: AugmentedEvent<
+				ApiType,
+				[saleId: u64, info: PalletCrowdsaleSaleInformation],
+				{ saleId: u64; info: PalletCrowdsaleSaleInformation }
+			>;
+			/**
+			 * Crowdsale distribution has been completed and all vouchers paid out
+			 **/
+			CrowdsaleDistributionComplete: AugmentedEvent<
+				ApiType,
+				[saleId: u64, vouchersDistributed: u128],
+				{ saleId: u64; vouchersDistributed: u128 }
+			>;
+			/**
+			 * Crowdsale enabled
+			 **/
+			CrowdsaleEnabled: AugmentedEvent<
+				ApiType,
+				[saleId: u64, info: PalletCrowdsaleSaleInformation, endBlock: u32],
+				{ saleId: u64; info: PalletCrowdsaleSaleInformation; endBlock: u32 }
+			>;
+			/**
+			 * Crowdsale distribution was manually triggered
+			 **/
+			CrowdsaleManualDistribution: AugmentedEvent<
+				ApiType,
+				[
+					saleId: u64,
+					info: PalletCrowdsaleSaleInformation,
+					who: SeedPrimitivesSignatureAccountId20,
+				],
+				{
+					saleId: u64;
+					info: PalletCrowdsaleSaleInformation;
+					who: SeedPrimitivesSignatureAccountId20;
+				}
+			>;
+			/**
+			 * Crowdsale NFT redeemed
+			 **/
+			CrowdsaleNFTRedeemed: AugmentedEvent<
+				ApiType,
+				[saleId: u64, who: SeedPrimitivesSignatureAccountId20, collectionId: u32, quantity: u32],
+				{ saleId: u64; who: SeedPrimitivesSignatureAccountId20; collectionId: u32; quantity: u32 }
+			>;
+			/**
+			 * Crowdsale participated
+			 **/
+			CrowdsaleParticipated: AugmentedEvent<
+				ApiType,
+				[saleId: u64, who: SeedPrimitivesSignatureAccountId20, asset: u32, amount: u128],
+				{ saleId: u64; who: SeedPrimitivesSignatureAccountId20; asset: u32; amount: u128 }
+			>;
+			/**
+			 * Crowdsale vouchers claimed
+			 **/
+			CrowdsaleVouchersClaimed: AugmentedEvent<
+				ApiType,
+				[saleId: u64, who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ saleId: u64; who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Call proxied
+			 **/
+			VaultCallProxied: AugmentedEvent<
+				ApiType,
+				[
+					saleId: u64,
+					who: SeedPrimitivesSignatureAccountId20,
+					vault: SeedPrimitivesSignatureAccountId20,
+					call: Call,
+				],
+				{
+					saleId: u64;
+					who: SeedPrimitivesSignatureAccountId20;
+					vault: SeedPrimitivesSignatureAccountId20;
+					call: Call;
+				}
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
 		dex: {
 			/**
 			 * Add liquidity success. \[who, asset_id_0, reserve_0_increment,
@@ -507,6 +611,52 @@ declare module "@polkadot/api-base/types/events" {
 					u128,
 					SeedPrimitivesSignatureAccountId20,
 				]
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
+		doughnut: {
+			/**
+			 * Doughnut transaction executed
+			 **/
+			DoughnutCallExecuted: AugmentedEvent<
+				ApiType,
+				[doughnut: Bytes, call: Call, result: Result<Null, SpRuntimeDispatchError>],
+				{ doughnut: Bytes; call: Call; result: Result<Null, SpRuntimeDispatchError> }
+			>;
+			/**
+			 * Doughnut revoke state updated
+			 **/
+			DoughnutRevokeStateUpdated: AugmentedEvent<
+				ApiType,
+				[doughnutHash: U8aFixed, revoked: bool],
+				{ doughnutHash: U8aFixed; revoked: bool }
+			>;
+			/**
+			 * Holder revocation updated
+			 **/
+			HolderRevokeStateUpdated: AugmentedEvent<
+				ApiType,
+				[
+					issuer: SeedPrimitivesSignatureAccountId20,
+					holder: SeedPrimitivesSignatureAccountId20,
+					revoked: bool,
+				],
+				{
+					issuer: SeedPrimitivesSignatureAccountId20;
+					holder: SeedPrimitivesSignatureAccountId20;
+					revoked: bool;
+				}
+			>;
+			/**
+			 * Whitelisted holders updated
+			 **/
+			WhitelistedHoldersUpdated: AugmentedEvent<
+				ApiType,
+				[holder: SeedPrimitivesSignatureAccountId20, enabled: bool],
+				{ holder: SeedPrimitivesSignatureAccountId20; enabled: bool }
 			>;
 			/**
 			 * Generic event
@@ -1006,14 +1156,66 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
 		};
+		maintenanceMode: {
+			/**
+			 * An account was blocked
+			 **/
+			AccountBlocked: AugmentedEvent<
+				ApiType,
+				[account: SeedPrimitivesSignatureAccountId20, blocked: bool],
+				{ account: SeedPrimitivesSignatureAccountId20; blocked: bool }
+			>;
+			/**
+			 * A Runtime Call was blocked
+			 **/
+			CallBlocked: AugmentedEvent<
+				ApiType,
+				[palletName: Bytes, callName: Bytes, blocked: bool],
+				{ palletName: Bytes; callName: Bytes; blocked: bool }
+			>;
+			/**
+			 * An account was blocked
+			 **/
+			EVMTargetBlocked: AugmentedEvent<
+				ApiType,
+				[targetAddress: H160, blocked: bool],
+				{ targetAddress: H160; blocked: bool }
+			>;
+			/**
+			 * Maintenance mode was activated
+			 **/
+			MaintenanceModeActivated: AugmentedEvent<ApiType, [enabled: bool], { enabled: bool }>;
+			/**
+			 * A Pallet was blocked
+			 **/
+			PalletBlocked: AugmentedEvent<
+				ApiType,
+				[palletName: Bytes, blocked: bool],
+				{ palletName: Bytes; blocked: bool }
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
 		marketplace: {
 			/**
 			 * An auction has closed without selling
 			 **/
 			AuctionClose: AugmentedEvent<
 				ApiType,
-				[collectionId: u32, listingId: u128, reason: PalletMarketplaceAuctionClosureReason],
-				{ collectionId: u32; listingId: u128; reason: PalletMarketplaceAuctionClosureReason }
+				[
+					tokens: PalletMarketplaceListingTokens,
+					listingId: u128,
+					marketplaceId: Option<u32>,
+					reason: PalletMarketplaceAuctionClosureReason,
+				],
+				{
+					tokens: PalletMarketplaceListingTokens;
+					listingId: u128;
+					marketplaceId: Option<u32>;
+					reason: PalletMarketplaceAuctionClosureReason;
+				}
 			>;
 			/**
 			 * An auction has opened
@@ -1021,22 +1223,22 @@ declare module "@polkadot/api-base/types/events" {
 			AuctionOpen: AugmentedEvent<
 				ApiType,
 				[
-					collectionId: u32,
-					serialNumbers: Vec<u32>,
-					paymentAsset: u32,
-					reservePrice: u128,
+					tokens: PalletMarketplaceListingTokens,
 					listingId: u128,
 					marketplaceId: Option<u32>,
+					paymentAsset: u32,
+					reservePrice: u128,
 					seller: SeedPrimitivesSignatureAccountId20,
+					close: u32,
 				],
 				{
-					collectionId: u32;
-					serialNumbers: Vec<u32>;
-					paymentAsset: u32;
-					reservePrice: u128;
+					tokens: PalletMarketplaceListingTokens;
 					listingId: u128;
 					marketplaceId: Option<u32>;
+					paymentAsset: u32;
+					reservePrice: u128;
 					seller: SeedPrimitivesSignatureAccountId20;
+					close: u32;
 				}
 			>;
 			/**
@@ -1045,15 +1247,17 @@ declare module "@polkadot/api-base/types/events" {
 			AuctionSold: AugmentedEvent<
 				ApiType,
 				[
-					collectionId: u32,
+					tokens: PalletMarketplaceListingTokens,
 					listingId: u128,
+					marketplaceId: Option<u32>,
 					paymentAsset: u32,
 					hammerPrice: u128,
 					winner: SeedPrimitivesSignatureAccountId20,
 				],
 				{
-					collectionId: u32;
+					tokens: PalletMarketplaceListingTokens;
 					listingId: u128;
+					marketplaceId: Option<u32>;
 					paymentAsset: u32;
 					hammerPrice: u128;
 					winner: SeedPrimitivesSignatureAccountId20;
@@ -1065,16 +1269,16 @@ declare module "@polkadot/api-base/types/events" {
 			Bid: AugmentedEvent<
 				ApiType,
 				[
-					collectionId: u32,
-					serialNumbers: Vec<u32>,
+					tokens: PalletMarketplaceListingTokens,
 					listingId: u128,
+					marketplaceId: Option<u32>,
 					amount: u128,
 					bidder: SeedPrimitivesSignatureAccountId20,
 				],
 				{
-					collectionId: u32;
-					serialNumbers: Vec<u32>;
+					tokens: PalletMarketplaceListingTokens;
 					listingId: u128;
+					marketplaceId: Option<u32>;
 					amount: u128;
 					bidder: SeedPrimitivesSignatureAccountId20;
 				}
@@ -1093,15 +1297,15 @@ declare module "@polkadot/api-base/types/events" {
 			FixedPriceSaleClose: AugmentedEvent<
 				ApiType,
 				[
-					collectionId: u32,
-					serialNumbers: Vec<u32>,
+					tokens: PalletMarketplaceListingTokens,
 					listingId: u128,
+					marketplaceId: Option<u32>,
 					reason: PalletMarketplaceFixedPriceClosureReason,
 				],
 				{
-					collectionId: u32;
-					serialNumbers: Vec<u32>;
+					tokens: PalletMarketplaceListingTokens;
 					listingId: u128;
+					marketplaceId: Option<u32>;
 					reason: PalletMarketplaceFixedPriceClosureReason;
 				}
 			>;
@@ -1111,18 +1315,18 @@ declare module "@polkadot/api-base/types/events" {
 			FixedPriceSaleComplete: AugmentedEvent<
 				ApiType,
 				[
-					collectionId: u32,
-					serialNumbers: Vec<u32>,
+					tokens: PalletMarketplaceListingTokens,
 					listingId: u128,
+					marketplaceId: Option<u32>,
 					price: u128,
 					paymentAsset: u32,
 					buyer: SeedPrimitivesSignatureAccountId20,
 					seller: SeedPrimitivesSignatureAccountId20,
 				],
 				{
-					collectionId: u32;
-					serialNumbers: Vec<u32>;
+					tokens: PalletMarketplaceListingTokens;
 					listingId: u128;
+					marketplaceId: Option<u32>;
 					price: u128;
 					paymentAsset: u32;
 					buyer: SeedPrimitivesSignatureAccountId20;
@@ -1135,22 +1339,22 @@ declare module "@polkadot/api-base/types/events" {
 			FixedPriceSaleList: AugmentedEvent<
 				ApiType,
 				[
-					collectionId: u32,
-					serialNumbers: Vec<u32>,
+					tokens: PalletMarketplaceListingTokens,
 					listingId: u128,
 					marketplaceId: Option<u32>,
 					price: u128,
 					paymentAsset: u32,
 					seller: SeedPrimitivesSignatureAccountId20,
+					close: u32,
 				],
 				{
-					collectionId: u32;
-					serialNumbers: Vec<u32>;
+					tokens: PalletMarketplaceListingTokens;
 					listingId: u128;
 					marketplaceId: Option<u32>;
 					price: u128;
 					paymentAsset: u32;
 					seller: SeedPrimitivesSignatureAccountId20;
+					close: u32;
 				}
 			>;
 			/**
@@ -1158,8 +1362,18 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			FixedPriceSalePriceUpdate: AugmentedEvent<
 				ApiType,
-				[collectionId: u32, serialNumbers: Vec<u32>, listingId: u128, newPrice: u128],
-				{ collectionId: u32; serialNumbers: Vec<u32>; listingId: u128; newPrice: u128 }
+				[
+					tokens: PalletMarketplaceListingTokens,
+					listingId: u128,
+					marketplaceId: Option<u32>,
+					newPrice: u128,
+				],
+				{
+					tokens: PalletMarketplaceListingTokens;
+					listingId: u128;
+					marketplaceId: Option<u32>;
+					newPrice: u128;
+				}
 			>;
 			/**
 			 * An account has been registered as a marketplace
@@ -1194,16 +1408,28 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			OfferAccept: AugmentedEvent<
 				ApiType,
-				[offerId: u64, tokenId: ITuple<[u32, u32]>, amount: u128, assetId: u32],
-				{ offerId: u64; tokenId: ITuple<[u32, u32]>; amount: u128; assetId: u32 }
+				[
+					offerId: u64,
+					marketplaceId: Option<u32>,
+					tokenId: ITuple<[u32, u32]>,
+					amount: u128,
+					assetId: u32,
+				],
+				{
+					offerId: u64;
+					marketplaceId: Option<u32>;
+					tokenId: ITuple<[u32, u32]>;
+					amount: u128;
+					assetId: u32;
+				}
 			>;
 			/**
 			 * An offer has been cancelled
 			 **/
 			OfferCancel: AugmentedEvent<
 				ApiType,
-				[offerId: u64, tokenId: ITuple<[u32, u32]>],
-				{ offerId: u64; tokenId: ITuple<[u32, u32]> }
+				[offerId: u64, marketplaceId: Option<u32>, tokenId: ITuple<[u32, u32]>],
+				{ offerId: u64; marketplaceId: Option<u32>; tokenId: ITuple<[u32, u32]> }
 			>;
 			/**
 			 * Generic event
@@ -2324,6 +2550,30 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
 		};
+		xrpl: {
+			/**
+			 * XRPL transaction with encoded extrinsic executed
+			 **/
+			XRPLExtrinsicExecuted: AugmentedEvent<
+				ApiType,
+				[
+					publicKey: U8aFixed,
+					caller: SeedPrimitivesSignatureAccountId20,
+					rAddress: Text,
+					call: Call,
+				],
+				{
+					publicKey: U8aFixed;
+					caller: SeedPrimitivesSignatureAccountId20;
+					rAddress: Text;
+					call: Call;
+				}
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
 		xrplBridge: {
 			DoorAddressSet: AugmentedEvent<ApiType, [H160]>;
 			DoorNextTicketSequenceParamSet: AugmentedEvent<
@@ -2336,10 +2586,27 @@ declare module "@polkadot/api-base/types/events" {
 				[ticketSequence: u32, ticketSequenceStart: u32, ticketBucketSize: u32],
 				{ ticketSequence: u32; ticketSequenceStart: u32; ticketBucketSize: u32 }
 			>;
+			LedgerIndexManualPrune: AugmentedEvent<
+				ApiType,
+				[ledgerIndex: u32, totalCleared: u32],
+				{ ledgerIndex: u32; totalCleared: u32 }
+			>;
 			/**
 			 * Transaction not supported
 			 **/
 			NotSupportedTransaction: AugmentedEvent<ApiType, []>;
+			/**
+			 * The payment delay was removed
+			 **/
+			PaymentDelayRemoved: AugmentedEvent<ApiType, []>;
+			/**
+			 * The payment delay was set
+			 **/
+			PaymentDelaySet: AugmentedEvent<
+				ApiType,
+				[paymentThreshold: u128, delay: u32],
+				{ paymentThreshold: u128; delay: u32 }
+			>;
 			/**
 			 * Processing an event failed
 			 **/
@@ -2353,6 +2620,26 @@ declare module "@polkadot/api-base/types/events" {
 			TicketSequenceThresholdReached: AugmentedEvent<ApiType, [u32]>;
 			TransactionAdded: AugmentedEvent<ApiType, [u64, H512]>;
 			TransactionChallenge: AugmentedEvent<ApiType, [u64, H512]>;
+			/**
+			 * A withdrawal was delayed as it was above the min_payment threshold
+			 **/
+			WithdrawDelayed: AugmentedEvent<
+				ApiType,
+				[
+					sender: SeedPrimitivesSignatureAccountId20,
+					amount: u128,
+					destination: H160,
+					delayedPaymentId: u64,
+					paymentBlock: u32,
+				],
+				{
+					sender: SeedPrimitivesSignatureAccountId20;
+					amount: u128;
+					destination: H160;
+					delayedPaymentId: u64;
+					paymentBlock: u32;
+				}
+			>;
 			/**
 			 * Request to withdraw some XRP amount to XRPL
 			 **/
