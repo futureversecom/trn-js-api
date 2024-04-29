@@ -1,10 +1,9 @@
 import { ApiPromise } from "@polkadot/api";
 import { fromPromise, ok } from "neverthrow";
-import { Extrinsic, ExtrinsicSigner, XrplSigner, XummTransaction } from "../types";
+import { Extrinsic, ExtrinsicSigner, XrplSigner } from "../types";
 import { errWithPrefix } from "../utils";
 import { blake256 } from "codechain-primitives";
 import { u32 } from "@polkadot/types";
-import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
 
 const stringToHex = (str: string) => {
 	return str

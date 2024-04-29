@@ -1,6 +1,6 @@
 import { ApiPromise } from "@polkadot/api";
 import { SignerOptions } from "@polkadot/api-base/types/submittable";
-import { EventRecord, RuntimeDispatchInfo } from "@polkadot/types/interfaces";
+import { RuntimeDispatchInfo } from "@polkadot/types/interfaces";
 import { IExtrinsicEra, SignatureOptions } from "@polkadot/types/types";
 import { ethereumEncode } from "@polkadot/util-crypto/ethereum";
 import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
@@ -107,26 +107,11 @@ export async function fetchPaymentInfo(
  * Derive a given public key into an ETH address format and XRPL r-address format
  *
  * @param publicKey - Public key to derive the pair of addresses for
- * @returns Tupple of `ethAddress` and `xrplAddress`
+ * @returns Tuple of `ethAddress` and `xrplAddress`
  */
 export function deriveAddressPair(publicKey: string) {
 	const ethAddress = ethereumEncode(publicKey);
 	const xrplAddress = deriveAddress(publicKey);
 
 	return [ethAddress, xrplAddress];
-}
-
-export function filterExtrinsicEvents(
-	events: EventRecord[],
-	eventFilters: `${string}.${string}`[]
-): (EventRecord | undefined)[] {
-	return eventFilters.map((eventFilter) => {
-		const event = events.find(({ event }) => {
-			const name = `${event.section}.${event.method}` as `${string}.${string}`;
-
-			if (typeof eventFilter === "string") return name === eventFilter;
-		});
-
-		return event;
-	});
 }

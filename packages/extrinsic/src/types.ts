@@ -2,17 +2,7 @@ import { ApiPromise } from "@polkadot/api";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { ISubmittableResult } from "@polkadot/types/types";
 import { Result as NTResult } from "neverthrow";
-import {
-	XummJsonTransaction,
-	XummPostPayloadBodyBlob,
-	XummPostPayloadBodyJson,
-} from "xumm-sdk/dist/src/types";
 import { MemoData } from "./libs/signWithXrplWallet";
-
-export type XummTransaction =
-	| XummPostPayloadBodyJson
-	| XummPostPayloadBodyBlob
-	| XummJsonTransaction;
 
 export type Result<T, E = Error> = { ok: true; value: T } | { ok: false; value: E };
 export type Extrinsic = SubmittableExtrinsic<"promise", ISubmittableResult>;
