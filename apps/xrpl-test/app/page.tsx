@@ -1,13 +1,14 @@
 "use client";
-import { decode, encode } from "xrpl-binary-codec-prerelease";
+import { decode } from "xrpl-binary-codec-prerelease";
 import styles from "./page.module.css";
 import { Xumm } from "xumm";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
-import { createDispatcher, xrplWalletSigner, XummTransaction } from "@therootnetwork/extrinsic";
+import { createDispatcher, xrplWalletSigner } from "@therootnetwork/extrinsic";
 import { Web3ReactProvider } from "@web3-react/core";
 import { metaMaskConnectors, useMetaMask } from "@/libs/hooks/useMetaMask";
+import { XummPostPayloadBodyJson } from "xumm-sdk/dist/src/types";
 
 export default function Home() {
 	return (
@@ -18,7 +19,7 @@ export default function Home() {
 }
 
 function App() {
-	const xumm = useMemo(() => new Xumm("5376fa18-f6d8-45d6-98df-cfdbc6b3b62b"), []);
+	const xaman = useMemo(() => new Xumm("7b7f9890-6744-4ce0-81c7-16618d72fe85"), []);
 
 	const [api, setApi] = useState<ApiPromise>();
 	const [xrplAddress, setXrplAddress] = useState<string>();
@@ -34,39 +35,33 @@ function App() {
 
 	const connect = useCallback(async () => {
 		connectWallet();
-		const maybeAddress = await xumm.user.account;
-		if (maybeAddress) return setXrplAddress(maybeAddress);
 
-		const response = await xumm.authorize();
+		const response = await xaman.authorize();
 		if (!response || response instanceof Error)
 			return console.log("Unable to connect", response?.message);
 
-		setXrplAddress(await xumm.user.account);
-	}, [xumm, connectWallet]);
+		setXrplAddress(await xaman.user.account);
+	}, [xaman, connectWallet]);
 
 	const signPayload = useCallback(
-		async (payload: XummTransaction) => {
-			const txHex = await new Promise<string | null>((resolve, reject) => {
-				if (xumm.payload == null) {
-					throw new Error("Xaman client not found");
-				}
-				void xumm.payload.createAndSubscribe(payload, (eventMessage) => {
-					if (Object.keys(eventMessage.data).indexOf("signed") > -1) {
-						if (!eventMessage.data.signed) {
-							return reject("Transaction was rejected");
-						}
-						return resolve(eventMessage.payload.response.hex);
-					}
+		async (payload: XummPostPayloadBodyJson) => {
+			const message = await new Promise<string | null>((resolve, reject) => {
+				if (!xaman.payload) throw new Error("Xaman client not found");
+
+				void xaman.payload.createAndSubscribe(payload, (eventMessage) => {
+					if (!Object.keys(eventMessage.data).includes("signed")) return;
+
+					if (!eventMessage.data.signed) return reject("Transaction was rejected");
+
+					return resolve(eventMessage.payload.response.hex);
 				});
 			});
 
-			if (txHex == null) {
-				throw new Error("txHex is null");
-			}
-			const decodedTx = decode(txHex);
-			return { txHex, decodedTx };
+			if (!message) throw new Error("message is null");
+
+			return { message, signature: String(decode(message).TxnSignature) };
 		},
-		[xumm]
+		[xaman]
 	);
 
 	const sign = useCallback(async () => {
@@ -77,7 +72,7 @@ function App() {
 			nativeAddress,
 			[],
 			xrplWalletSigner(async (Memos) => {
-				const signedTx = await signPayload({
+				return await signPayload({
 					txjson: {
 						TransactionType: "SignIn",
 						Memos,
@@ -86,29 +81,6 @@ function App() {
 						instruction: "Sign test extrinsic",
 					},
 				});
-
-				const yeet = {
-					txjson: {
-						TransactionType: "SignIn",
-						Memos,
-					},
-					custom_meta: {
-						instruction: "Sign test extrinsic",
-					},
-				};
-
-				console.log("yeet", encode(yeet));
-				console.log("isGoodYa", encode(yeet) === signedTx.txHex);
-
-				console.log({
-					signature: String(signedTx.decodedTx.TxnSignature),
-					message: signedTx.txHex,
-				});
-
-				return {
-					signature: String(signedTx.decodedTx.TxnSignature),
-					message: signedTx.txHex,
-				};
 			})
 		);
 
