@@ -1,4 +1,3 @@
-import "@therootnetwork/api-types";
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
@@ -16,7 +15,6 @@ import { encode, encodeForSigning } from "xrpl-binary-codec-prerelease";
 import { Wallet } from "ethers";
 import { computePublicKey } from "ethers/lib/utils";
 import { deriveAddress } from "ripple-keypairs";
-import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
 
 describe("createDispatcher", () => {
 	let api: ApiPromise;
@@ -109,17 +107,7 @@ describe("createDispatcher", () => {
 	}, 10000);
 
 	test("signs and sends with XRPL signer", async () => {
-		const sender = Wallet.createRandom();
-
-		const { signAndSend: signAndSendNative } = createDispatcher(
-			api,
-			senderAddress,
-			[],
-			nativeWalletSigner(process.env.CALLER_PRIVATE_KEY as unknown as string)
-		);
-
-		await signAndSendNative(api.tx.assets.transfer(2, sender.address, 3_000_000));
-
+		const sender = new Wallet(process.env.CALLER_PRIVATE_KEY as string);
 		const publicKey = computePublicKey(sender.publicKey, true);
 
 		const { signAndSend } = createDispatcher(

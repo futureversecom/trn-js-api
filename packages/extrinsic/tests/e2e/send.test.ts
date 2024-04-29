@@ -1,4 +1,3 @@
-import "@therootnetwork/api-types";
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
