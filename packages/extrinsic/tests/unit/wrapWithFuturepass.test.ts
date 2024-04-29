@@ -12,7 +12,7 @@ describe("wrapWithFuturepass", () => {
 					holders: jest.fn(() => {
 						return Promise.resolve({
 							isEmpty: false,
-							unwrap() {
+							toJSON() {
 								return fpAddress;
 							},
 						});

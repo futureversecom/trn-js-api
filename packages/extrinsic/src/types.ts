@@ -2,19 +2,30 @@ import { ApiPromise } from "@polkadot/api";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { ISubmittableResult } from "@polkadot/types/types";
 import { Result as NTResult } from "neverthrow";
-import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
+import {
+	XummJsonTransaction,
+	XummPostPayloadBodyBlob,
+	XummPostPayloadBodyJson,
+} from "xumm-sdk/dist/src/types";
+import { MemoData } from "./libs/signWithXrplWallet";
+
+export type XummTransaction =
+	| XummPostPayloadBodyJson
+	| XummPostPayloadBodyBlob
+	| XummJsonTransaction;
 
 export type Result<T, E = Error> = { ok: true; value: T } | { ok: false; value: E };
 export type Extrinsic = SubmittableExtrinsic<"promise", ISubmittableResult>;
 export type ExtrinsicWrapper = (extrinsic: Extrinsic) => Promise<NTResult<Extrinsic, Error>>;
 export type ExtrinsicSigner = (extrinsic: Extrinsic) => Promise<NTResult<Extrinsic, Error>>;
 export type EthereumSigner = (message: string, senderAddress: string) => Promise<string>;
+
 export type XrplSigner = (
-	payload: Partial<XummJsonTransaction>,
+	memos: MemoData,
 	senderAddress: string
 ) => Promise<{
 	signature: string;
-	payload: XummJsonTransaction;
+	message: string;
 }>;
 
 export type ExtrinsicResult = {

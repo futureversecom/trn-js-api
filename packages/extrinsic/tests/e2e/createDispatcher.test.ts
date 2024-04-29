@@ -12,7 +12,7 @@ import { ExtrinsicResult } from "@therootnetwork/extrinsic/types";
 import { filterExtrinsicEvents } from "./utils";
 import { xrplWalletSigner } from "@therootnetwork/extrinsic/libs/signWithXrplWallet";
 import { sign } from "ripple-keypairs";
-import { encodeForSigning } from "xrpl-binary-codec-prerelease";
+import { encode, encodeForSigning } from "xrpl-binary-codec-prerelease";
 import { Wallet } from "ethers";
 import { computePublicKey } from "ethers/lib/utils";
 import { deriveAddress } from "ripple-keypairs";
@@ -126,15 +126,16 @@ describe("createDispatcher", () => {
 			api,
 			sender.address,
 			[],
-			xrplWalletSigner((payload) => {
-				const adjustedPayload = {
-					...payload,
+			xrplWalletSigner((Memos) => {
+				const payload = {
+					Memos,
+					AccountTxnID: "16969036626990000000000000000000F236FD752B5E4C84810AB3D41A3C2580",
 					SigningPubKey: publicKey.slice(2),
 					Account: deriveAddress(publicKey.slice(2)),
-				} as XummJsonTransaction;
-				const signature = sign(encodeForSigning(adjustedPayload), sender.privateKey.slice(2));
+				};
+				const signature = sign(encodeForSigning(payload), sender.privateKey.slice(2));
 
-				return new Promise((resolve) => resolve({ signature, payload: adjustedPayload }));
+				return new Promise((resolve) => resolve({ signature, message: encode(payload) }));
 			})
 		);
 

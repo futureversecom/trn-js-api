@@ -1,12 +1,10 @@
 import { ApiPromise } from "@polkadot/api";
-import { SignerOptions } from "@polkadot/api/types";
 import { fromPromise, ok } from "neverthrow";
-import { Extrinsic, ExtrinsicSigner, XrplSigner } from "../types";
-import { createSignatureOptions, errWithPrefix } from "../utils";
-import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
+import { Extrinsic, ExtrinsicSigner, XrplSigner, XummTransaction } from "../types";
+import { errWithPrefix } from "../utils";
 import { blake256 } from "codechain-primitives";
-import { SignatureOptions } from "@polkadot/types/types";
-import { encode } from "xrpl-binary-codec-prerelease";
+import { u32 } from "@polkadot/types";
+import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
 
 const stringToHex = (str: string) => {
 	return str
@@ -27,67 +25,53 @@ const errPrefix = errWithPrefix("XrplWallet");
 export function signWithXrplWallet(
 	api: ApiPromise,
 	senderAddress: string,
-	xrplSigner: XrplSigner,
-	signerOptions: Partial<SignerOptions> = {}
+	xrplSigner: XrplSigner
 ): ExtrinsicSigner {
 	return async (extrinsic: Extrinsic) => {
-		const createResult = await createSignatureOptions(api, senderAddress, signerOptions);
-
-		if (createResult.isErr())
-			return errPrefix(createResult.error.message, createResult.error.cause);
-		const memoData = await createSigningMemoData(api, createResult.value, extrinsic);
+		const memoData = await createSigningMemoData(api, senderAddress, extrinsic);
 
 		const requestResult = await requestSign(xrplSigner, memoData, senderAddress);
 		if (requestResult.isErr())
 			return errPrefix(requestResult.error.message, requestResult.error.cause);
 
-		const { signature, payload } = requestResult.value;
-		if (!signature) return errPrefix("Signature is empty");
+		const { signature, message } = requestResult.value;
+		if (!signature || !message)
+			return errPrefix(`${!signature ? "Signature" : "Message"} is empty`);
 
-		return ok(api.tx.xrpl.transact(`0x${encode(payload)}`, `0x${signature}`, extrinsic));
+		return ok(api.tx.xrpl.transact(`0x${message}`, `0x${signature}`, extrinsic));
 	};
 }
 
-export function xrplWalletSigner(
-	xrplSigner: XrplSigner,
-	signerOptions: Partial<SignerOptions> = {}
-) {
+export function xrplWalletSigner(xrplSigner: XrplSigner) {
 	return (api: ApiPromise, senderAddress: string) =>
-		signWithXrplWallet.bind(undefined, api, senderAddress, xrplSigner, signerOptions);
+		signWithXrplWallet.bind(undefined, api, senderAddress, xrplSigner);
 }
 
-async function createSigningMemoData(
-	api: ApiPromise,
-	signatureOptions: Pick<SignatureOptions, "nonce">,
-	extrinsic: Extrinsic
-): Promise<Partial<XummJsonTransaction>> {
+export type MemoData = Awaited<ReturnType<typeof createSigningMemoData>>;
+async function createSigningMemoData(api: ApiPromise, senderAddress: string, extrinsic: Extrinsic) {
 	const maxBlockNumber = +(await api.query.system.number()) + 20;
 	const hashedExtrinsicWithoutPrefix = blake256(extrinsic.toHex().slice(6)).toString();
+	const nonce = (
+		(await api.query.system.account(senderAddress)) as unknown as { nonce: u32 }
+	).nonce.toString();
 
-	return {
-		AccountTxnID: "16969036626990000000000000000000F236FD752B5E4C84810AB3D41A3C2580",
-		Memos: [
-			{
-				Memo: {
-					MemoType: stringToHex("extrinsic"),
-					MemoData: stringToHex(
-						`${api.genesisHash.toHex().slice(2)}:${
-							signatureOptions.nonce
-						}:${maxBlockNumber}:0:${hashedExtrinsicWithoutPrefix}`
-					),
-				},
+	return [
+		{
+			Memo: {
+				MemoType: stringToHex("extrinsic"),
+				MemoData: stringToHex(
+					`${api.genesisHash
+						.toHex()
+						.slice(2)}:${nonce}:${maxBlockNumber}:0:${hashedExtrinsicWithoutPrefix}`
+				),
 			},
-		],
-	} as Partial<XummJsonTransaction>;
+		},
+	];
 }
 
-async function requestSign(
-	xrplSigner: XrplSigner,
-	payload: Partial<XummJsonTransaction>,
-	senderAddress: string
-) {
+async function requestSign(xrplSigner: XrplSigner, memos: MemoData, senderAddress: string) {
 	return await fromPromise(
-		xrplSigner(payload, senderAddress),
+		xrplSigner(memos, senderAddress),
 		(e) => new Error(`Unable to request signing for "${senderAddress}"`, { cause: e })
 	);
 }

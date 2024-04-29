@@ -3,7 +3,6 @@ import { describe, expect, jest, test } from "@jest/globals";
 import { signWithXrplWallet } from "@therootnetwork/extrinsic/libs/signWithXrplWallet";
 import { Extrinsic } from "@therootnetwork/extrinsic/types";
 import { Err } from "neverthrow";
-import { XummJsonTransaction } from "xumm-sdk/dist/src/types";
 
 jest.mock("xrpl-binary-codec-prerelease", () => ({
 	__esModule: true,
@@ -39,6 +38,7 @@ describe("signWithXrplWallet", () => {
 			query: {
 				system: {
 					number: jest.fn(() => Promise.resolve(1)),
+					account: jest.fn(() => Promise.resolve({ nonce: { toString: () => "0" } })),
 				},
 			},
 			tx: {
@@ -58,7 +58,7 @@ describe("signWithXrplWallet", () => {
 			jest.fn(() =>
 				Promise.resolve({
 					signature: "0x11",
-					payload: {} as XummJsonTransaction,
+					message: "0x12",
 				})
 			)
 		);
@@ -81,6 +81,17 @@ describe("signWithXrplWallet", () => {
 					}),
 				},
 			},
+			query: {
+				system: {
+					number: jest.fn(() => Promise.resolve(1)),
+					account: jest.fn(() => Promise.resolve({ nonce: { toString: () => "0" } })),
+				},
+			},
+			tx: {
+				xrpl: {
+					transact: jest.fn(),
+				},
+			},
 		};
 		const extrinsic = {
 			toHex: jest.fn(() => "0xa"),
@@ -89,37 +100,27 @@ describe("signWithXrplWallet", () => {
 		const signer1 = signWithXrplWallet(
 			api as unknown as ApiPromise,
 			"0x0",
-			jest.fn(() =>
-				Promise.resolve({
-					signature: "0x11",
-					payload: {} as XummJsonTransaction,
-				})
-			)
+			jest.fn(() => Promise.reject(new Error("error")))
 		);
 		const signResult1 = await signer1(extrinsic);
 		expect(signResult1.isErr()).toBe(true);
 		expect((signResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((signResult1 as Err<never, Error>).error.message).toEqual(
-			'XrplWallet::Unable to fetch signing info for "0x0"'
+			'XrplWallet::Unable to request signing for "0x0"'
 		);
 		expect((signResult1 as Err<never, Error>).error.cause).toEqual(new Error("error"));
 
 		const signer2 = signWithXrplWallet(
 			api as unknown as ApiPromise,
 			"0x1",
-			jest.fn(() =>
-				Promise.resolve({
-					signature: "0x11",
-					payload: {} as XummJsonTransaction,
-				})
-			)
+			jest.fn(() => Promise.reject("error"))
 		);
 
 		const signResult2 = await signer2(extrinsic);
 		expect(signResult2.isErr()).toBe(true);
 		expect((signResult2 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((signResult2 as Err<never, Error>).error.message).toEqual(
-			`XrplWallet::Unable to fetch signing info for "0x1"`
+			'XrplWallet::Unable to request signing for "0x1"'
 		);
 		expect((signResult2 as Err<never, Error>).error.cause).toEqual("error");
 	});
@@ -149,6 +150,12 @@ describe("signWithXrplWallet", () => {
 			query: {
 				system: {
 					number: jest.fn(() => Promise.resolve(1)),
+					account: jest.fn(() => Promise.resolve({ nonce: { toString: () => "0" } })),
+				},
+			},
+			tx: {
+				xrpl: {
+					transact: jest.fn(),
 				},
 			},
 		};
