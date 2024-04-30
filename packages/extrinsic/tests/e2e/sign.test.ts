@@ -10,7 +10,7 @@ import { Extrinsic } from "@therootnetwork/extrinsic/types";
 import dotenv from "dotenv";
 import { Wallet } from "ethers";
 import { resolve } from "node:path";
-import { filterExtrinsicEvents } from "./utils";
+import { filterExtrinsicEvents } from "@therootnetwork/extrinsic/utils";
 
 describe("sign", () => {
 	let api: ApiPromise;

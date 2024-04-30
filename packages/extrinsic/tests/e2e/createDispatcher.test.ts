@@ -8,7 +8,7 @@ import { futurepassWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFuture
 import { feeProxyWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFeeProxy";
 import { nativeWalletSigner } from "@therootnetwork/extrinsic/libs/signWithNativeWallet";
 import { ExtrinsicResult } from "@therootnetwork/extrinsic/types";
-import { filterExtrinsicEvents } from "./utils";
+import { filterExtrinsicEvents } from "@therootnetwork/extrinsic/utils";
 import { xrplWalletSigner } from "@therootnetwork/extrinsic/libs/signWithXrplWallet";
 import { sign } from "ripple-keypairs";
 import { encode, encodeForSigning } from "xrpl-binary-codec-prerelease";

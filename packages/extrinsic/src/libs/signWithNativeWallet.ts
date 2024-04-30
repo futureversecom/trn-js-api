@@ -1,10 +1,9 @@
-import { ApiPromise, Keyring } from "@polkadot/api";
+import { ApiPromise } from "@polkadot/api";
 import { SignerOptions } from "@polkadot/api/types";
 import { IKeyringPair } from "@polkadot/types/types";
-import { hexToU8a } from "@polkadot/util";
 import { ok } from "neverthrow";
 import { Extrinsic, ExtrinsicSigner } from "../types";
-import { createSignatureOptions, errWithPrefix } from "../utils";
+import { createKeyringFromSeed, createSignatureOptions, errWithPrefix } from "../utils";
 
 const errPrefix = errWithPrefix("NativeWallet");
 
@@ -46,10 +45,4 @@ export function nativeWalletSigner(
 ) {
 	return (api: ApiPromise, senderAddress: string) =>
 		signWithNativeWallet.bind(undefined, api, senderAddress, seedOrKeyringPair, signerOptions);
-}
-
-function createKeyringFromSeed(seed: string) {
-	const keyring = new Keyring({ type: "ethereum" });
-	const seedU8a = hexToU8a(seed);
-	return keyring.addFromSeed(seedU8a);
 }

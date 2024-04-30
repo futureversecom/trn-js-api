@@ -5,26 +5,27 @@ import { Xumm } from "xumm";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
-import { createDispatcher, xrplWalletSigner } from "@therootnetwork/extrinsic";
-import { Web3ReactProvider } from "@web3-react/core";
-import { metaMaskConnectors, useMetaMask } from "@/libs/hooks/useMetaMask";
+import {
+	createKeyringFromSeed,
+	createDispatcher,
+	deriveAddressPair,
+	filterExtrinsicEvents,
+	nativeWalletSigner,
+	xrplWalletSigner,
+} from "@therootnetwork/extrinsic";
 import { XummPostPayloadBodyJson } from "xumm-sdk/dist/src/types";
 
 export default function Home() {
-	return (
-		<Web3ReactProvider connectors={[metaMaskConnectors] as any}>
-			<App />
-		</Web3ReactProvider>
+	const xaman = useMemo(() => new Xumm("f41fb06b-54e1-4c6d-b9cc-69207c89f95a"), []);
+	const keyring = useMemo(
+		() => createKeyringFromSeed(process.env.NEXT_PUBLIC_CALLER_PRIVATE_KEY as string),
+		[]
 	);
-}
-
-function App() {
-	const xaman = useMemo(() => new Xumm("7b7f9890-6744-4ce0-81c7-16618d72fe85"), []);
 
 	const [api, setApi] = useState<ApiPromise>();
+	const [remarkEvent, setRemarkEvent] = useState<object>();
+	const [ethAddress, setEthAddress] = useState<string>();
 	const [xrplAddress, setXrplAddress] = useState<string>();
-
-	const { connectWallet, address: nativeAddress } = useMetaMask();
 
 	useEffect(() => {
 		ApiPromise.create({
@@ -32,16 +33,6 @@ function App() {
 			...getPublicProvider("porcini"),
 		}).then(setApi);
 	}, []);
-
-	const connect = useCallback(async () => {
-		connectWallet();
-
-		const response = await xaman.authorize();
-		if (!response || response instanceof Error)
-			return console.log("Unable to connect", response?.message);
-
-		setXrplAddress(await xaman.user.account);
-	}, [xaman, connectWallet]);
 
 	const signPayload = useCallback(
 		async (payload: XummPostPayloadBodyJson) => {
@@ -64,12 +55,46 @@ function App() {
 		[xaman]
 	);
 
+	const getEthAddress = useCallback(async () => {
+		const signedTx = await signPayload({
+			custom_meta: {
+				instruction: "Sign In",
+			},
+			txjson: {
+				TransactionType: "SignIn",
+			},
+		});
+		const signingPubKey = String(decode(signedTx.message).SigningPubKey);
+		setEthAddress(deriveAddressPair(signingPubKey)[0]);
+	}, [signPayload]);
+
+	const connect = useCallback(async () => {
+		const response = await xaman.authorize();
+		if (!response || response instanceof Error)
+			return console.log("Unable to connect", response?.message);
+
+		setXrplAddress(await xaman.user.account);
+
+		await getEthAddress();
+	}, [xaman, getEthAddress]);
+
 	const sign = useCallback(async () => {
-		if (!api || !nativeAddress) return;
+		if (!api || !keyring) return;
+
+		if (!ethAddress) return await getEthAddress();
+
+		// Fund XRPL account
+		const { signAndSend: signAndSendNative } = createDispatcher(
+			api,
+			keyring.address,
+			[],
+			nativeWalletSigner(keyring)
+		);
+		await signAndSendNative(api.tx.assetsExt.transfer(2, ethAddress, 3_000_000, true));
 
 		const { signAndSend } = createDispatcher(
 			api,
-			nativeAddress,
+			ethAddress,
 			[],
 			xrplWalletSigner(async (Memos) => {
 				return await signPayload({
@@ -85,19 +110,21 @@ function App() {
 		);
 
 		const result = await signAndSend(api.tx.system.remarkWithEvent("Signing test extrinsic"));
-		if (!result.ok) return console.error("Error submitting extrinsic", result.value);
+		if (!result.ok) return console.error("Error submitting extrinsic", result.value.message);
 
-		console.log("result", result.value);
-	}, [api, nativeAddress, signPayload]);
+		setRemarkEvent(filterExtrinsicEvents(result.value.events, ["system.Remarked"])[0]);
+	}, [api, signPayload, ethAddress, getEthAddress, keyring]);
 
 	return (
 		<main className={styles.main}>
 			<h1>XRPL test</h1>
 			{xrplAddress && <p>XrplAddress: {xrplAddress}</p>}
-			{nativeAddress && <p>NativeAddress: {nativeAddress}</p>}
+			{ethAddress && <p>EthAddress: {ethAddress}</p>}
 
 			<button onClick={connect}>Connect</button>
-			{xrplAddress && nativeAddress && <button onClick={sign}>Sign</button>}
+			{xrplAddress && <button onClick={sign}>Sign</button>}
+
+			{remarkEvent && <pre>{JSON.stringify(remarkEvent, null, 2)}</pre>}
 		</main>
 	);
 }

@@ -1,12 +1,15 @@
-import { ApiPromise } from "@polkadot/api";
+import { ApiPromise, Keyring } from "@polkadot/api";
+import { IKeyringPair } from "@polkadot/types/types";
+
 import { SignerOptions } from "@polkadot/api-base/types/submittable";
-import { RuntimeDispatchInfo } from "@polkadot/types/interfaces";
+import { EventRecord, RuntimeDispatchInfo } from "@polkadot/types/interfaces";
 import { IExtrinsicEra, SignatureOptions } from "@polkadot/types/types";
 import { ethereumEncode } from "@polkadot/util-crypto/ethereum";
 import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
 import { deriveAddress } from "ripple-keypairs";
 import { XRP_ASSET_ID } from "./constants";
-import { DexRpc, Extrinsic, Result } from "./types";
+import { DexRpc, Extrinsic, ExtrinsicEvent, Result } from "./types";
+import { hexToU8a } from "@polkadot/util";
 
 export function safeReturn<T>(result: NTResult<T, Error>): Result<T> {
 	if (result.isErr()) {
@@ -110,8 +113,41 @@ export async function fetchPaymentInfo(
  * @returns Tuple of `ethAddress` and `xrplAddress`
  */
 export function deriveAddressPair(publicKey: string) {
-	const ethAddress = ethereumEncode(publicKey);
+	const ethAddress = ethereumEncode(`0x${publicKey}`);
 	const xrplAddress = deriveAddress(publicKey);
 
 	return [ethAddress, xrplAddress];
+}
+
+/**
+ * Filter extrinsic events based on the given event filters
+ * @param events - Array of events to filter
+ * @param eventFilters - Names of the events to filter
+ * @return Array of events that match the given event filters
+ */
+export function filterExtrinsicEvents<T extends EventRecord | ExtrinsicEvent>(
+	events: T[],
+	eventFilters: `${string}.${string}`[]
+): (T | undefined)[] {
+	return eventFilters.map((eventFilter) => {
+		const event = events.find((event) => {
+			if (!("event" in event)) return event.name === eventFilter;
+
+			const [section, method] = eventFilter.split(".");
+			return event.event.section === section && event.event.method === method;
+		});
+
+		return event;
+	});
+}
+
+/**
+ * Create a keyring pair from a given private key
+ * @param seed - Private key to create the keyring pair from
+ * @returns Keyring pair
+ */
+export function createKeyringFromSeed(seed: string): IKeyringPair {
+	const keyring = new Keyring({ type: "ethereum" });
+	const seedU8a = hexToU8a(seed);
+	return keyring.addFromSeed(seedU8a);
 }

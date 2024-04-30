@@ -3,12 +3,12 @@ import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import dotenv from "dotenv";
 import { resolve } from "node:path";
-import { createKeyring, filterExtrinsicEvents } from "./utils";
 import { wrap } from "@therootnetwork/extrinsic/libs/wrap";
 import { wrapWithFuturepass } from "@therootnetwork/extrinsic/libs/wrapWithFuturepass";
 import { wrapWithFeeProxy } from "@therootnetwork/extrinsic/libs/wrapWithFeeProxy";
 import { Extrinsic } from "@therootnetwork/extrinsic/types";
 import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
+import { filterExtrinsicEvents, createKeyringFromSeed } from "@therootnetwork/extrinsic/utils";
 
 describe("wrap", () => {
 	let api: ApiPromise;
@@ -28,7 +28,7 @@ describe("wrap", () => {
 	});
 
 	test("wraps a given extrinsic with `futurepass.proxyExtrinsic`", async () => {
-		const keyring = createKeyring(process.env.CALLER_PRIVATE_KEY as unknown as string);
+		const keyring = createKeyringFromSeed(process.env.CALLER_PRIVATE_KEY as unknown as string);
 		const remarkCall = api.tx.system.remarkWithEvent("Hello");
 		const wrapResult = await wrap(remarkCall, [wrapWithFuturepass(api, keyring.address)]);
 
@@ -53,7 +53,7 @@ describe("wrap", () => {
 	}, 8000);
 
 	test("wraps a given extrinsic with `feeProxy.callWithFeePreferences`", async () => {
-		const keyring = createKeyring(process.env.CALLER_PRIVATE_KEY as unknown as string);
+		const keyring = createKeyringFromSeed(process.env.CALLER_PRIVATE_KEY as unknown as string);
 		const assetId = 17508;
 		const remarkCall = api.tx.system.remarkWithEvent("Hello");
 		const wrapResult = await wrap(remarkCall, [wrapWithFeeProxy(api, keyring.address, assetId)]);
@@ -81,7 +81,7 @@ describe("wrap", () => {
 	}, 8000);
 
 	test("wraps a given extrinsic with both `futurepass` and `feeProxy` wrappers", async () => {
-		const keyring = createKeyring(process.env.CALLER_PRIVATE_KEY as unknown as string);
+		const keyring = createKeyringFromSeed(process.env.CALLER_PRIVATE_KEY as unknown as string);
 		const assetId = 17508;
 		const remarkCall = api.tx.system.remarkWithEvent("Hello");
 		const wrapResult = await wrap(remarkCall, [
