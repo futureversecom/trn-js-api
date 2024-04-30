@@ -156,7 +156,22 @@ describe("wrapWithFeeProxy", () => {
 			rpc: {
 				dex: {
 					getAmountsIn: jest.fn(() => {
-						return Promise.resolve({ Ok: undefined });
+						return Promise.resolve({
+							Err: {
+								Module: {
+									index: 0,
+									error: 0,
+									message: "error",
+								},
+							},
+							registry: {
+								findMetaError: jest.fn(() => ({
+									section: "dex",
+									name: "getAmountsIn",
+									docs: [],
+								})),
+							},
+						});
 					}),
 				},
 			},
@@ -180,8 +195,6 @@ describe("wrapWithFeeProxy", () => {
 
 		expect(wrapResult.isErr()).toBe(true);
 		expect((wrapResult as Err<never, Error>).error).toBeInstanceOf(Error);
-		expect((wrapResult as Err<never, Error>).error.message).toEqual(
-			`FeeProxyWrapper::Unable to extract swap info for the pair "[1124, 2]"`
-		);
+		expect((wrapResult as Err<never, Error>).error.message).toEqual("FeeProxyWrapper::RPC Error");
 	});
 });

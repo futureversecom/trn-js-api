@@ -167,7 +167,7 @@ export function parseJsonRpcResult<T extends object>(json: Json): NTResult<T, Er
 	});
 
 	return err(
-		new Error(`RPC Error`, {
+		new Error("RPC Error", {
 			cause: {
 				section,
 				name,
