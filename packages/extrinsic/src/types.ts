@@ -59,13 +59,12 @@ export interface DexAmountsIn {
 	Ok: [number, number];
 }
 
-export type DexRpc = {
-	rpc: {
-		dex: {
-			getAmountsIn: (
-				amountOut: string,
-				paths: [number | string, number | string]
-			) => Promise<DexAmountsIn>;
+export interface JsonRpcError {
+	Err: {
+		Module: {
+			index: number;
+			error: number[];
+			message: string | null;
 		};
 	};
-};
+}

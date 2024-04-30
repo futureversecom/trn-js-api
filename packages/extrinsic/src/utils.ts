@@ -1,5 +1,5 @@
 import { ApiPromise, Keyring } from "@polkadot/api";
-import { IKeyringPair } from "@polkadot/types/types";
+import { IKeyringPair, Registry } from "@polkadot/types/types";
 
 import { SignerOptions } from "@polkadot/api-base/types/submittable";
 import { EventRecord, RuntimeDispatchInfo } from "@polkadot/types/interfaces";
@@ -8,8 +8,9 @@ import { ethereumEncode } from "@polkadot/util-crypto/ethereum";
 import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
 import { deriveAddress } from "ripple-keypairs";
 import { XRP_ASSET_ID } from "./constants";
-import { DexRpc, Extrinsic, ExtrinsicEvent, Result } from "./types";
-import { hexToU8a } from "@polkadot/util";
+import { DexAmountsIn, Extrinsic, ExtrinsicEvent, JsonRpcError, Result } from "./types";
+import { Json } from "@polkadot/types-codec";
+import { BN, hexToU8a } from "@polkadot/util";
 
 export function safeReturn<T>(result: NTResult<T, Error>): Result<T> {
 	if (result.isErr()) {
@@ -87,7 +88,7 @@ export async function fetchPaymentInfo(
 
 	const fee = paymentInfoResult.value.partialFee.toString();
 	const getAmountsInResult = await fromPromise(
-		(api as ApiPromise & DexRpc).rpc.dex.getAmountsIn(fee, [assetId, XRP_ASSET_ID]),
+		api.rpc.dex.getAmountsIn(fee, [assetId, XRP_ASSET_ID]),
 		(e) =>
 			new Error(`Unable to fetch swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`, {
 				cause: e,
@@ -95,15 +96,11 @@ export async function fetchPaymentInfo(
 	);
 
 	if (getAmountsInResult.isErr()) return err(getAmountsInResult.error);
-	const quote = getAmountsInResult.value;
-	if (!quote.Ok)
-		return err(
-			new Error(`Unable to extract swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`, {
-				cause: quote,
-			})
-		);
 
-	return ok(BigInt(quote.Ok[0].toString()));
+	const quote = parseJsonRpcResult<DexAmountsIn>(getAmountsInResult.value);
+	if (quote.isErr()) return err(quote.error);
+
+	return ok(BigInt(quote.value.Ok[0].toString()));
 }
 
 /**
@@ -150,4 +147,32 @@ export function createKeyringFromSeed(seed: string): IKeyringPair {
 	const keyring = new Keyring({ type: "ethereum" });
 	const seedU8a = hexToU8a(seed);
 	return keyring.addFromSeed(seedU8a);
+}
+
+/**
+ * Take a JSON-RPC result and parse it into a `Result` type;
+ * @type T - Type of the result
+ * @param json - JSON-RPC result to parse
+ * @returns `Result` of the parsed JSON-RPC result or meta error
+ */
+export function parseJsonRpcResult<T extends object>(json: Json): NTResult<T, Error> {
+	const casted = json as unknown as (T | JsonRpcError) & { registry: Registry };
+
+	if (!("Err" in casted)) return ok(casted);
+
+	const { index, error } = casted.Err.Module;
+	const { section, name, docs } = casted.registry.findMetaError({
+		error: new Uint8Array(error),
+		index: new BN(index),
+	});
+
+	return err(
+		new Error(`RPC Error`, {
+			cause: {
+				section,
+				name,
+				docs,
+			},
+		})
+	);
 }
