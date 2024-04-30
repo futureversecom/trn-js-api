@@ -7,7 +7,7 @@ settings:
 overrides:
   '@polkadot/api': 10.9.1
   '@polkadot/types': 10.9.1
-  '@polkadot/types-codec': ^10.9.1
+  '@polkadot/types-codec': 10.9.1
   '@polkadot/util': 12.6.2
   '@polkadot/keyring': 12.6.2
 
@@ -89,7 +89,7 @@ importers:
         specifier: ^10.9.1
         version: 10.9.1
       '@polkadot/types-codec':
-        specifier: ^10.9.1
+        specifier: 10.9.1
         version: 10.9.1
       '@polkadot/types-create':
         specifier: ^10.9.1
@@ -127,9 +127,6 @@ importers:
       '@polkadot/keyring':
         specifier: ^12.6.2
         version: 12.6.2(@polkadot/util-crypto@12.6.2)(@polkadot/util@12.6.2)
-      '@polkadot/types':
-        specifier: ^10.9.1
-        version: 10.9.1
       '@polkadot/util':
         specifier: ^12.6.2
         version: 12.6.2
@@ -139,6 +136,9 @@ importers:
       '@therootnetwork/api':
         specifier: ^1.0.8
         version: link:../api
+      '@therootnetwork/api-types':
+        specifier: ^1.0.3
+        version: link:../api-types
       codechain-primitives:
         specifier: ^1.0.4
         version: 1.0.4
@@ -155,12 +155,12 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
     devDependencies:
-      '@polkadot/types-codec':
-        specifier: ^10.9.1
+      '@polkadot/types':
+        specifier: 10.9.1
         version: 10.9.1
-      '@therootnetwork/api-types':
-        specifier: workspace:*
-        version: link:../api-types
+      '@polkadot/types-codec':
+        specifier: 10.9.1
+        version: 10.9.1
       dotenv:
         specifier: ^16.3.2
         version: 16.3.2
@@ -1674,7 +1674,7 @@ packages:
       '@polkadot/rpc-augment': 10.9.1
       '@polkadot/types': 10.9.1
       '@polkadot/types-augment': 10.9.1
-      '@polkadot/types-codec': 10.11.2
+      '@polkadot/types-codec': 10.9.1
       '@polkadot/util': 12.6.2
       tslib: 2.6.2
     transitivePeerDependencies:
@@ -1705,7 +1705,7 @@ packages:
       '@polkadot/api-base': 10.9.1
       '@polkadot/rpc-core': 10.9.1
       '@polkadot/types': 10.9.1
-      '@polkadot/types-codec': 10.11.2
+      '@polkadot/types-codec': 10.9.1
       '@polkadot/util': 12.6.2
       '@polkadot/util-crypto': 12.6.2(@polkadot/util@12.6.2)
       rxjs: 7.8.1
@@ -1766,7 +1766,7 @@ packages:
     dependencies:
       '@polkadot/rpc-core': 10.9.1
       '@polkadot/types': 10.9.1
-      '@polkadot/types-codec': 10.11.2
+      '@polkadot/types-codec': 10.9.1
       '@polkadot/util': 12.6.2
       tslib: 2.6.2
     transitivePeerDependencies:
@@ -1843,16 +1843,8 @@ packages:
     engines: {node: '>=16'}
     dependencies:
       '@polkadot/types': 10.9.1
-      '@polkadot/types-codec': 10.11.2
+      '@polkadot/types-codec': 10.9.1
       '@polkadot/util': 12.6.2
-      tslib: 2.6.2
-
-  /@polkadot/types-codec@10.11.2:
-    resolution: {integrity: sha512-3xjOQL+LOOMzYqlgP9ROL0FQnzU8lGflgYewzau7AsDlFziSEtb49a9BpYo6zil4koC+QB8zQ9OHGFumG08T8w==}
-    engines: {node: '>=18'}
-    dependencies:
-      '@polkadot/util': 12.6.2
-      '@polkadot/x-bigint': 12.6.2
       tslib: 2.6.2
 
   /@polkadot/types-codec@10.9.1:
@@ -1877,7 +1869,7 @@ packages:
     dependencies:
       '@polkadot/networks': 12.6.2
       '@polkadot/types': 10.9.1
-      '@polkadot/types-codec': 10.11.2
+      '@polkadot/types-codec': 10.9.1
       '@polkadot/types-create': 10.9.1
       '@polkadot/util': 12.6.2
       tslib: 2.6.2
@@ -1895,7 +1887,7 @@ packages:
     dependencies:
       '@polkadot/keyring': 12.6.2(@polkadot/util-crypto@12.6.2)(@polkadot/util@12.6.2)
       '@polkadot/types-augment': 10.9.1
-      '@polkadot/types-codec': 10.11.2
+      '@polkadot/types-codec': 10.9.1
       '@polkadot/types-create': 10.9.1
       '@polkadot/util': 12.6.2
       '@polkadot/util-crypto': 12.6.2(@polkadot/util@12.6.2)

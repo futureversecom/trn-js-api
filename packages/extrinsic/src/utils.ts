@@ -8,7 +8,7 @@ import { ethereumEncode } from "@polkadot/util-crypto/ethereum";
 import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
 import { deriveAddress } from "ripple-keypairs";
 import { XRP_ASSET_ID } from "./constants";
-import { DexAmountsIn, Extrinsic, ExtrinsicEvent, JsonRpcError, Result } from "./types";
+import { DexAmountsIn, Extrinsic, ExtrinsicEvent, JsonRpc, JsonRpcError, Result } from "./types";
 import { Json } from "@polkadot/types-codec";
 import { BN, hexToU8a } from "@polkadot/util";
 
@@ -88,7 +88,7 @@ export async function fetchPaymentInfo(
 
 	const fee = paymentInfoResult.value.partialFee.toString();
 	const getAmountsInResult = await fromPromise(
-		api.rpc.dex.getAmountsIn(fee, [assetId, XRP_ASSET_ID]),
+		(api as ApiPromise & JsonRpc).rpc.dex.getAmountsIn(fee, [assetId, XRP_ASSET_ID]),
 		(e) =>
 			new Error(`Unable to fetch swap info for the pair "[${assetId}, ${XRP_ASSET_ID}]"`, {
 				cause: e,
