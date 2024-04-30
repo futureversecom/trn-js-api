@@ -16,7 +16,6 @@
     "ripple-keypairs": "^2.0.0"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.32.22",
     "codechain-primitives": "^1.0.4",
     "neverthrow": "^6.1.0",
     "xrpl": "^3.0.0",
