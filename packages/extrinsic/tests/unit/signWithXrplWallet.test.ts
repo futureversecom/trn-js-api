@@ -24,6 +24,11 @@ describe("signWithXrplWallet", () => {
 				})),
 			},
 			extrinsicVersion: 1,
+			rpc: {
+				system: {
+					accountNextIndex: jest.fn(() => Promise.resolve(1)),
+				},
+			},
 			derive: {
 				tx: {
 					signingInfo: jest.fn(() => {
@@ -74,6 +79,11 @@ describe("signWithXrplWallet", () => {
 			genesisHash: {
 				toHex: jest.fn(() => "0x0"),
 			},
+			rpc: {
+				system: {
+					accountNextIndex: jest.fn(() => Promise.resolve(1)),
+				},
+			},
 			derive: {
 				tx: {
 					signingInfo: jest.fn((address) => {
@@ -106,7 +116,7 @@ describe("signWithXrplWallet", () => {
 		expect(signResult1.isErr()).toBe(true);
 		expect((signResult1 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((signResult1 as Err<never, Error>).error.message).toEqual(
-			'XrplWallet::Unable to request signing for "0x0"'
+			'XrplWallet::Unable to create signature options for "0x0"'
 		);
 		expect((signResult1 as Err<never, Error>).error.cause).toEqual(new Error("error"));
 
@@ -120,7 +130,7 @@ describe("signWithXrplWallet", () => {
 		expect(signResult2.isErr()).toBe(true);
 		expect((signResult2 as Err<never, Error>).error).toBeInstanceOf(Error);
 		expect((signResult2 as Err<never, Error>).error.message).toEqual(
-			'XrplWallet::Unable to request signing for "0x1"'
+			'XrplWallet::Unable to create signature options for "0x1"'
 		);
 		expect((signResult2 as Err<never, Error>).error.cause).toEqual("error");
 	});
@@ -136,6 +146,11 @@ describe("signWithXrplWallet", () => {
 				createTypeUnsafe: jest.fn(() => ({ toRaw: () => ({ data: "0x0" }) })),
 			},
 			extrinsicVersion: 1,
+			rpc: {
+				system: {
+					accountNextIndex: jest.fn(() => Promise.resolve(1)),
+				},
+			},
 			derive: {
 				tx: {
 					signingInfo: jest.fn(() => {

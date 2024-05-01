@@ -1,16 +1,16 @@
 import { ApiPromise } from "@polkadot/api";
+import { BN } from "@polkadot/util";
 import { fromPromise, ok } from "neverthrow";
 import { Extrinsic, ExtrinsicSigner, XrplSigner } from "../types";
 import { errWithPrefix } from "../utils";
 import { blake256 } from "codechain-primitives";
-import { u32 } from "@polkadot/types";
 
-const stringToHex = (str: string) => {
+function stringToHex(str: string) {
 	return str
 		.split("")
 		.map((c) => c.charCodeAt(0).toString(16))
 		.join("");
-};
+}
 
 const errPrefix = errWithPrefix("XrplWallet");
 
@@ -27,7 +27,14 @@ export function signWithXrplWallet(
 	xrplSigner: XrplSigner
 ): ExtrinsicSigner {
 	return async (extrinsic: Extrinsic) => {
-		const memoData = await createSigningMemoData(api, senderAddress, extrinsic);
+		const createResult = await fromPromise(
+			createSignatureOptions(api, senderAddress, extrinsic),
+			(e) => new Error(`Unable to create signature options for "${senderAddress}"`, { cause: e })
+		);
+		if (createResult.isErr())
+			return errPrefix(createResult.error.message, createResult.error.cause);
+
+		const memoData = createSigningMemoData(createResult.value);
 
 		const requestResult = await requestSign(xrplSigner, memoData, senderAddress);
 		if (requestResult.isErr())
@@ -46,22 +53,45 @@ export function xrplWalletSigner(xrplSigner: XrplSigner) {
 		signWithXrplWallet.bind(undefined, api, senderAddress, xrplSigner);
 }
 
+async function createSignatureOptions(
+	api: ApiPromise,
+	senderAddress: string,
+	extrinsic: Extrinsic
+) {
+	const [blockNumber, signingInfo, nonce] = await Promise.allSettled([
+		api.query.system.number(),
+		api.derive.tx.signingInfo(senderAddress),
+		api.rpc.system.accountNextIndex(senderAddress),
+	]);
+
+	if (blockNumber.status === "rejected") throw blockNumber.reason;
+	if (signingInfo.status === "rejected") throw signingInfo.reason;
+	if (nonce.status === "rejected") throw nonce.reason;
+
+	return {
+		nonce: nonce.value.toString(),
+		genesisHash: api.genesisHash.toHex().slice(2),
+		maxBlockNumber: +blockNumber.value + signingInfo.value.mortalLength,
+		hashedExtrinsicWithoutPrefix: blake256(extrinsic.toHex().slice(6)).toString(),
+	};
+}
+
+interface XrplSignatureOptions {
+	nonce: string;
+	genesisHash: string;
+	maxBlockNumber: number;
+	hashedExtrinsicWithoutPrefix: string;
+}
 export type MemoData = Awaited<ReturnType<typeof createSigningMemoData>>;
-async function createSigningMemoData(api: ApiPromise, senderAddress: string, extrinsic: Extrinsic) {
-	const maxBlockNumber = +(await api.query.system.number()) + 20;
-	const hashedExtrinsicWithoutPrefix = blake256(extrinsic.toHex().slice(6)).toString();
-	const nonce = (
-		(await api.query.system.account(senderAddress)) as unknown as { nonce: u32 }
-	).nonce.toString();
+function createSigningMemoData(signatureOptions: XrplSignatureOptions) {
+	const { nonce, genesisHash, maxBlockNumber, hashedExtrinsicWithoutPrefix } = signatureOptions;
 
 	return [
 		{
 			Memo: {
 				MemoType: stringToHex("extrinsic"),
 				MemoData: stringToHex(
-					`${api.genesisHash
-						.toHex()
-						.slice(2)}:${nonce}:${maxBlockNumber}:0:${hashedExtrinsicWithoutPrefix}`
+					`${genesisHash}:${nonce}:${maxBlockNumber}:0:${hashedExtrinsicWithoutPrefix}`
 				),
 			},
 		},
