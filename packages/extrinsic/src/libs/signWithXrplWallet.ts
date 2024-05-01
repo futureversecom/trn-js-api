@@ -1,5 +1,4 @@
 import { ApiPromise } from "@polkadot/api";
-import { BN } from "@polkadot/util";
 import { fromPromise, ok } from "neverthrow";
 import { Extrinsic, ExtrinsicSigner, XrplSigner } from "../types";
 import { errWithPrefix } from "../utils";
@@ -58,18 +57,16 @@ async function createSignatureOptions(
 	senderAddress: string,
 	extrinsic: Extrinsic
 ) {
-	const [blockNumber, signingInfo, nonce] = await Promise.allSettled([
+	const [blockNumber, signingInfo] = await Promise.allSettled([
 		api.query.system.number(),
 		api.derive.tx.signingInfo(senderAddress),
-		api.rpc.system.accountNextIndex(senderAddress),
 	]);
 
 	if (blockNumber.status === "rejected") throw blockNumber.reason;
 	if (signingInfo.status === "rejected") throw signingInfo.reason;
-	if (nonce.status === "rejected") throw nonce.reason;
 
 	return {
-		nonce: nonce.value.toString(),
+		nonce: signingInfo.value.nonce.toString(),
 		genesisHash: api.genesisHash.toHex().slice(2),
 		maxBlockNumber: +blockNumber.value + signingInfo.value.mortalLength,
 		hashedExtrinsicWithoutPrefix: blake256(extrinsic.toHex().slice(6)).toString(),
