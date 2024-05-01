@@ -8,7 +8,7 @@ import { ethereumEncode } from "@polkadot/util-crypto/ethereum";
 import { Result as NTResult, err, fromPromise, ok } from "neverthrow";
 import { deriveAddress } from "ripple-keypairs";
 import { XRP_ASSET_ID } from "./constants";
-import { DexAmountsIn, Extrinsic, ExtrinsicEvent, JsonRpc, JsonRpcError, Result } from "./types";
+import { Extrinsic, ExtrinsicEvent, JsonRpc, JsonRpcError, Result } from "./types";
 import { Json } from "@polkadot/types-codec";
 import { BN, hexToU8a } from "@polkadot/util";
 
@@ -97,10 +97,10 @@ export async function fetchPaymentInfo(
 
 	if (getAmountsInResult.isErr()) return err(getAmountsInResult.error);
 
-	const quote = parseJsonRpcResult<DexAmountsIn>(getAmountsInResult.value);
+	const quote = parseJsonRpcResult<[number, number]>(getAmountsInResult.value);
 	if (quote.isErr()) return err(quote.error);
 
-	return ok(BigInt(quote.value.Ok[0].toString()));
+	return ok(BigInt(quote.value[0].toString()));
 }
 
 /**
@@ -155,10 +155,10 @@ export function createKeyringFromSeed(seed: string): IKeyringPair {
  * @param json - JSON-RPC result to parse
  * @returns `Result` of the parsed JSON-RPC result or meta error
  */
-export function parseJsonRpcResult<T extends object>(json: Json): NTResult<T, Error> {
-	const casted = json as unknown as (T | JsonRpcError) & { registry: Registry };
+export function parseJsonRpcResult<T>(json: Json): NTResult<T, Error> {
+	const casted = json as unknown as ({ Ok: T } | JsonRpcError) & { registry: Registry };
 
-	if (!("Err" in casted)) return ok(casted);
+	if (!("Err" in casted)) return ok(casted.Ok);
 
 	const { index, error } = casted.Err.Module;
 	const { section, name, docs } = casted.registry.findMetaError({

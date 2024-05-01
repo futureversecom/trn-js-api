@@ -56,10 +56,6 @@ export type SignDispatcher = UnsignDispatcher & {
 	estimate: EstimateAction;
 };
 
-export interface DexAmountsIn {
-	Ok: [number, number];
-}
-
 export type JsonRpc = {
 	rpc: Record<string, Record<string, (...args: unknown[]) => Promise<Json>>>;
 };

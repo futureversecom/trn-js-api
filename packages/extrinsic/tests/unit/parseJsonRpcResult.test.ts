@@ -19,7 +19,7 @@ describe("parseJsonRpcResult", () => {
 		expect(actual.isOk()).toBe(true);
 		if (actual.isErr()) throw "Unexpected error result";
 
-		expect(actual.value).toEqual(expected);
+		expect(actual.value).toEqual(expected.Ok);
 	});
 	test("it returns error details for bad result", () => {
 		const actual = parseJsonRpcResult<{ Ok: boolean }>({
