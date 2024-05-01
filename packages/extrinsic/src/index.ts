@@ -1,4 +1,9 @@
-export * from "./utils";
+export {
+	deriveAddressPair,
+	filterExtrinsicEvents,
+	createKeyringFromSeed,
+	parseJsonRpcResult,
+} from "./utils";
 export * from "./types";
 export * from "./constants";
 export * from "./libs/createDispatcher";
