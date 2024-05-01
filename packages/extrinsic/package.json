@@ -12,24 +12,25 @@
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
     "@therootnetwork/api": "^1.0.8",
-    "@therootnetwork/api-types": "^1.0.3"
+    "@therootnetwork/api-types": "^1.0.3",
+    "xrpl": "^3.0.0"
   },
   "dependencies": {
     "codechain-primitives": "^1.0.4",
     "neverthrow": "^6.1.0",
-    "ripple-keypairs": "^2.0.0",
-    "xrpl": "^3.0.0",
-    "xrpl-binary-codec-prerelease": "^8.0.1"
+    "ripple-keypairs": "^2.0.0"
   },
   "devDependencies": {
     "@polkadot/api": "^10.9.1",
     "@polkadot/api-base": "^10.9.1",
-    "@polkadot/util": "^12.6.2",
-    "@polkadot/util-crypto": "^12.6.2",
     "@polkadot/types": "^10.9.1",
     "@polkadot/types-codec": "^10.9.1",
+    "@polkadot/util": "^12.6.2",
+    "@polkadot/util-crypto": "^12.6.2",
     "dotenv": "^16.3.2",
-    "ethers": "^5.7.2"
+    "ethers": "^6.7.1",
+    "xrpl": "^3.0.0",
+    "xrpl-binary-codec-prerelease": "^8.0.1"
   },
   "jest": {
     "setupFiles": [

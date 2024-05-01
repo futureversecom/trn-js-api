@@ -13,7 +13,6 @@ import { xrplWalletSigner } from "@therootnetwork/extrinsic/libs/signWithXrplWal
 import { sign } from "ripple-keypairs";
 import { encode, encodeForSigning } from "xrpl-binary-codec-prerelease";
 import { Wallet } from "ethers";
-import { computePublicKey } from "ethers/lib/utils";
 import { deriveAddress } from "ripple-keypairs";
 
 describe("createDispatcher", () => {
@@ -108,7 +107,7 @@ describe("createDispatcher", () => {
 
 	test("signs and sends with XRPL signer", async () => {
 		const sender = new Wallet(process.env.CALLER_PRIVATE_KEY as string);
-		const publicKey = computePublicKey(sender.publicKey, true);
+		const publicKey = sender.signingKey.compressedPublicKey;
 
 		const { signAndSend } = createDispatcher(
 			api,
