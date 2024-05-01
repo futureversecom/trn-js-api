@@ -42,7 +42,7 @@
     "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts  --ignore-path ../../.eslintignore",
     "test": "jest -c ../../jest.config.js extrinsic/tests/unit",
     "test:watch": "jest -c ../../jest.config.js extrinsic/tests/unit --watch --coverage",
-    "test:e2e": "jest -c ../../jest.config.js extrinsic/tests/e2e",
+    "test:e2e": "jest -c ../../jest.config.js extrinsic/tests/e2e --runInBand",
     "jest": "jest -c ../../jest.config.js",
     "jest:watch": "jest -c ../../jest.config.js --watch --coverage"
   }

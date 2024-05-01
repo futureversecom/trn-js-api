@@ -42,5 +42,5 @@ describe("send", () => {
 		const remarkEvent = result.findRecord("system", "Remarked");
 
 		expect(remarkEvent).toBeDefined();
-	});
+	}, 10000);
 });

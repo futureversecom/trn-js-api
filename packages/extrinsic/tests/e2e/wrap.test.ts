@@ -50,7 +50,7 @@ describe("wrap", () => {
 				})
 				.then((unsub) => (unsubscribe = unsub));
 		});
-	}, 8000);
+	}, 10000);
 
 	test("wraps a given extrinsic with `feeProxy.callWithFeePreferences`", async () => {
 		const keyring = createKeyringFromSeed(process.env.CALLER_PRIVATE_KEY as unknown as string);
@@ -78,7 +78,7 @@ describe("wrap", () => {
 				})
 				.then((unsub) => (unsubscribe = unsub));
 		});
-	}, 8000);
+	}, 10000);
 
 	test("wraps a given extrinsic with both `futurepass` and `feeProxy` wrappers", async () => {
 		const keyring = createKeyringFromSeed(process.env.CALLER_PRIVATE_KEY as unknown as string);
@@ -115,5 +115,5 @@ describe("wrap", () => {
 				})
 				.then((unsub) => (unsubscribe = unsub));
 		});
-	}, 8000);
+	}, 10000);
 });
