@@ -2,6 +2,7 @@ import { ApiPromise } from "@polkadot/api";
 import { fromPromise, ok, err } from "neverthrow";
 import { errWithPrefix } from "../utils";
 import { Extrinsic } from "../types";
+import { Option, U8aFixed } from "@polkadot/types";
 
 const errPrefix = errWithPrefix("FuturepassWrapper");
 
@@ -34,10 +35,10 @@ async function fetchFuturepassAddress(api: ApiPromise, senderAddress: string) {
 	);
 
 	if (result.isErr()) return err(result.error);
-	const fpAddress = result.value;
+	const fpAddress = result.value as Option<U8aFixed>;
 
 	if (fpAddress.isEmpty)
 		return err(new Error(`Unable to extract Futurepass address for "${senderAddress}"`));
 
-	return ok(fpAddress.toJSON());
+	return ok(fpAddress.unwrap());
 }

@@ -1,4 +1,5 @@
 import { ApiPromise } from "@polkadot/api";
+import { Json } from "@polkadot/types-codec";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { ISubmittableResult } from "@polkadot/types/types";
 import { Result as NTResult } from "neverthrow";
@@ -59,13 +60,16 @@ export interface DexAmountsIn {
 	Ok: [number, number];
 }
 
-export type DexRpc = {
-	rpc: {
-		dex: {
-			getAmountsIn: (
-				amountOut: string,
-				paths: [number | string, number | string]
-			) => Promise<DexAmountsIn>;
+export type JsonRpc = {
+	rpc: Record<string, Record<string, (...args: unknown[]) => Promise<Json>>>;
+};
+
+export interface JsonRpcError {
+	Err: {
+		Module: {
+			index: number;
+			error: number[];
+			message: string | null;
 		};
 	};
-};
+}

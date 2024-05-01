@@ -18,13 +18,16 @@
     "@polkadot/types": "^10.8.1"
   },
   "devDependencies": {
-    "@polkadot/api-base": "^10.8.1",
-    "@polkadot/rpc-core": "^10.8.1",
-    "@polkadot/typegen": "^10.8.1",
-    "@polkadot/types-codec": "^10.8.1",
-    "@polkadot/types-create": "^10.8.1",
+    "@polkadot/api-base": "^10.9.1",
+    "@polkadot/rpc-core": "^10.9.1",
+    "@polkadot/typegen": "^10.9.1",
+    "@polkadot/types-codec": "^10.9.1",
+    "@polkadot/types-create": "^10.9.1",
+    "@polkadot/util": "12.6.2",
+    "@types/node": "^20.12.7",
     "@types/websocket": "^1.0.5",
     "handlebars": "^4.7.8",
+    "ts-node": "^10.9.1",
     "websocket": "^1.0.34"
   }
 }
