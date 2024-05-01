@@ -5,22 +5,32 @@
   "types": "./dist/index.d.ts",
   "license": "Apache-2.0",
   "peerDependencies": {
-    "@polkadot/api": "^10.8.1",
-    "@polkadot/api-base": "^10.8.1",
+    "@polkadot/api": "^10.9.1",
+    "@polkadot/api-base": "^10.9.1",
     "@polkadot/keyring": "^12.6.2",
-    "@polkadot/types": "^10.8.1",
+    "@polkadot/types": "^10.9.1",
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
-    "@therootnetwork/api": "^1.0.0",
-    "@therootnetwork/api-types": "^1.0.0",
-    "ripple-keypairs": "^2.0.0"
+    "@therootnetwork/api": "^1.0.8",
+    "@therootnetwork/api-types": "^1.0.3",
+    "xrpl": "^3.0.0"
   },
   "dependencies": {
-    "neverthrow": "^6.1.0"
+    "codechain-primitives": "^1.0.4",
+    "neverthrow": "^6.1.0",
+    "ripple-keypairs": "^2.0.0"
   },
   "devDependencies": {
+    "@polkadot/api": "^10.9.1",
+    "@polkadot/api-base": "^10.9.1",
+    "@polkadot/types": "^10.9.1",
+    "@polkadot/types-codec": "^10.9.1",
+    "@polkadot/util": "^12.6.2",
+    "@polkadot/util-crypto": "^12.6.2",
     "dotenv": "^16.3.2",
-    "ethers": "^6.6.5"
+    "ethers": "^6.7.1",
+    "xrpl": "^3.0.0",
+    "xrpl-binary-codec-prerelease": "^8.0.1"
   },
   "jest": {
     "setupFiles": [
@@ -33,7 +43,7 @@
     "lint": "prettier --config ../../.prettierrc.js --ignore-path ../../.prettierignore --check . && eslint . --ext .ts  --ignore-path ../../.eslintignore",
     "test": "jest -c ../../jest.config.js extrinsic/tests/unit",
     "test:watch": "jest -c ../../jest.config.js extrinsic/tests/unit --watch --coverage",
-    "test:e2e": "jest -c ../../jest.config.js extrinsic/tests/e2e",
+    "test:e2e": "jest -c ../../jest.config.js extrinsic/tests/e2e --runInBand",
     "jest": "jest -c ../../jest.config.js",
     "jest:watch": "jest -c ../../jest.config.js --watch --coverage"
   }

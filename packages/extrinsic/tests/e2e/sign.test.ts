@@ -10,7 +10,7 @@ import { Extrinsic } from "@therootnetwork/extrinsic/types";
 import dotenv from "dotenv";
 import { Wallet } from "ethers";
 import { resolve } from "node:path";
-import { filterExtrinsicEvents } from "./utils";
+import { filterExtrinsicEvents } from "@therootnetwork/extrinsic/utils";
 
 describe("sign", () => {
 	let api: ApiPromise;
@@ -51,7 +51,7 @@ describe("sign", () => {
 				})
 				.then((unsub) => (unsubscribe = unsub));
 		});
-	}, 8000);
+	}, 10000);
 
 	test("signs a given extrinsic with ethereum wallet", async () => {
 		const senderAddress = "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b";
@@ -75,7 +75,7 @@ describe("sign", () => {
 				})
 				.then((unsub) => (unsubscribe = unsub));
 		});
-	}, 8000);
+	}, 10000);
 
 	test("signs a given wrapped extrinsic with native wallet", async () => {
 		const senderAddress = "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b";
@@ -105,7 +105,7 @@ describe("sign", () => {
 				})
 				.then((unsub) => (unsubscribe = unsub));
 		});
-	}, 8000);
+	}, 10000);
 
 	test("signs a given wrapped extrinsic with ethereum wallet", async () => {
 		const senderAddress = "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b";
@@ -134,5 +134,5 @@ describe("sign", () => {
 				})
 				.then((unsub) => (unsubscribe = unsub));
 		});
-	}, 8000);
+	}, 10000);
 });

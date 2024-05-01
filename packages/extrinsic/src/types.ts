@@ -1,13 +1,24 @@
 import { ApiPromise } from "@polkadot/api";
+import { Json } from "@polkadot/types-codec";
 import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { ISubmittableResult } from "@polkadot/types/types";
 import { Result as NTResult } from "neverthrow";
+import { MemoData } from "./libs/signWithXrplWallet";
 
 export type Result<T, E = Error> = { ok: true; value: T } | { ok: false; value: E };
 export type Extrinsic = SubmittableExtrinsic<"promise", ISubmittableResult>;
 export type ExtrinsicWrapper = (extrinsic: Extrinsic) => Promise<NTResult<Extrinsic, Error>>;
 export type ExtrinsicSigner = (extrinsic: Extrinsic) => Promise<NTResult<Extrinsic, Error>>;
 export type EthereumSigner = (message: string, senderAddress: string) => Promise<string>;
+
+export type XrplSigner = (
+	memos: MemoData,
+	senderAddress: string
+) => Promise<{
+	signature: string;
+	message: string;
+}>;
+
 export type ExtrinsicResult = {
 	id: string;
 	result: InBlockResult;
@@ -38,23 +49,23 @@ export type UnsignDispatcher = {
 	send: SendAction;
 	estimate: EstimateAction;
 };
+export type SendDispatcher = UnsignDispatcher;
 
 export type SignDispatcher = UnsignDispatcher & {
 	signAndSend: SendAction;
 	estimate: EstimateAction;
 };
 
-export interface DexAmountsIn {
-	Ok: [number, number];
-}
+export type JsonRpc = {
+	rpc: Record<string, Record<string, (...args: unknown[]) => Promise<Json>>>;
+};
 
-export type DexRpc = {
-	rpc: {
-		dex: {
-			getAmountsIn: (
-				amountOut: string,
-				paths: [number | string, number | string]
-			) => Promise<DexAmountsIn>;
+export interface JsonRpcError {
+	Err: {
+		Module: {
+			index: number;
+			error: number[];
+			message: string | null;
 		};
 	};
-};
+}

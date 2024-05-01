@@ -1,4 +1,3 @@
-import "@therootnetwork/api-types";
 import { ApiPromise } from "@polkadot/api";
 import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
@@ -9,7 +8,12 @@ import { futurepassWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFuture
 import { feeProxyWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFeeProxy";
 import { nativeWalletSigner } from "@therootnetwork/extrinsic/libs/signWithNativeWallet";
 import { ExtrinsicResult } from "@therootnetwork/extrinsic/types";
-import { filterExtrinsicEvents } from "./utils";
+import { filterExtrinsicEvents } from "@therootnetwork/extrinsic/utils";
+import { xrplWalletSigner } from "@therootnetwork/extrinsic/libs/signWithXrplWallet";
+import { sign } from "ripple-keypairs";
+import { encode, encodeForSigning } from "xrpl-binary-codec-prerelease";
+import { Wallet } from "ethers";
+import { deriveAddress } from "ripple-keypairs";
 
 describe("createDispatcher", () => {
 	let api: ApiPromise;
@@ -99,5 +103,37 @@ describe("createDispatcher", () => {
 		expect(estimateInASTOResult.ok).toBe(true);
 		const astoFee = estimateInASTOResult.value as bigint;
 		expect(astoFee).toBeGreaterThan(BigInt(0));
-	}, 8000);
+	}, 10000);
+
+	test("signs and sends with XRPL signer", async () => {
+		const sender = new Wallet(process.env.CALLER_PRIVATE_KEY as string);
+		const publicKey = sender.signingKey.compressedPublicKey;
+
+		const { signAndSend } = createDispatcher(
+			api,
+			sender.address,
+			[],
+			xrplWalletSigner((Memos) => {
+				const payload = {
+					Memos,
+					AccountTxnID: "16969036626990000000000000000000F236FD752B5E4C84810AB3D41A3C2580",
+					SigningPubKey: publicKey.slice(2),
+					Account: deriveAddress(publicKey.slice(2)),
+				};
+				const signature = sign(encodeForSigning(payload), sender.privateKey.slice(2));
+
+				return new Promise((resolve) => resolve({ signature, message: encode(payload) }));
+			})
+		);
+
+		const remarkResult = await signAndSend(api.tx.system.remarkWithEvent("hello"));
+
+		expect(remarkResult.ok).toBe(true);
+		const { id, result } = remarkResult.value as ExtrinsicResult;
+
+		expect(id).toBeDefined();
+		const [remarkEvent] = filterExtrinsicEvents(result.events, ["system.Remarked"]);
+
+		expect(remarkEvent).toBeDefined();
+	}, 10000);
 });
