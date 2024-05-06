@@ -6,9 +6,9 @@
   "license": "Apache-2.0",
   "peerDependencies": {
     "@polkadot/api": "^10.9.1",
-    "@polkadot/api-base": "^10.9.1",
     "@polkadot/keyring": "^12.6.2",
     "@polkadot/types": "^10.9.1",
+    "@polkadot/types-codec": "^10.9.1",
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
     "@therootnetwork/api": "^1.0.8",
@@ -23,7 +23,6 @@
   },
   "devDependencies": {
     "@polkadot/api": "^10.9.1",
-    "@polkadot/api-base": "^10.9.1",
     "@polkadot/types": "^10.9.1",
     "@polkadot/types-codec": "^10.9.1",
     "@polkadot/util": "^12.6.2",
