@@ -118,9 +118,9 @@ export function deriveAddressPair(publicKey: string) {
 }
 
 /**
- * Derive an Ed25519 key into an ETH address format
- * @param key - Key to derive the ETH address for
- * @returns ETH address
+ * Derive an Ed25519 key into an ETH/TRN format address
+ * @param key - Key to derive the address for
+ * @returns Checksum address
  */
 export function deriveAddressFromEd25519(key: string) {
 	const signingKey = new SigningKey(id(`0x${key}`));
