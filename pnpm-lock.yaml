@@ -145,9 +145,6 @@ importers:
       '@polkadot/api':
         specifier: 10.9.1
         version: 10.9.1
-      '@polkadot/api-base':
-        specifier: 10.9.1
-        version: 10.9.1
       '@polkadot/types':
         specifier: 10.9.1
         version: 10.9.1

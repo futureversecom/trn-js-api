@@ -1,7 +1,7 @@
 import { ApiPromise, Keyring } from "@polkadot/api";
 import { IKeyringPair, Registry } from "@polkadot/types/types";
 
-import { SignerOptions } from "@polkadot/api-base/types/submittable";
+import { SignerOptions } from "@polkadot/api/types";
 import { EventRecord, RuntimeDispatchInfo } from "@polkadot/types/interfaces";
 import { IExtrinsicEra, SignatureOptions } from "@polkadot/types/types";
 import { ethereumEncode } from "@polkadot/util-crypto/ethereum";
