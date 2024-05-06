@@ -11,6 +11,7 @@ import { XRP_ASSET_ID } from "./constants";
 import { Extrinsic, ExtrinsicEvent, JsonRpc, JsonRpcError, Result } from "./types";
 import { Json } from "@polkadot/types-codec";
 import { BN, hexToU8a } from "@polkadot/util";
+import { getAddress, keccak256 } from "ethers";
 
 export function safeReturn<T>(result: NTResult<T, Error>): Result<T> {
 	if (result.isErr()) {
@@ -114,6 +115,15 @@ export function deriveAddressPair(publicKey: string) {
 	const xrplAddress = deriveAddress(publicKey);
 
 	return [ethAddress, xrplAddress];
+}
+
+/**
+ * Derive an ED25519 public key into an ETH address format
+ * @param publicKey - Public key to derive the ETH address for
+ * @returns ETH address
+ */
+export function deriveAddressFromEd25519(publicKey: string) {
+	return getAddress("0x" + keccak256(hexToU8a(`0x${publicKey.slice(4)}`)).slice(26));
 }
 
 /**
