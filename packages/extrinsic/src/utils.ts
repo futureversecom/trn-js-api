@@ -123,7 +123,7 @@ export function deriveAddressPair(publicKey: string) {
  * @returns Checksum address
  */
 export function deriveAddressFromEd25519(key: string) {
-	const signingKey = new SigningKey(id(`0x${key}`));
+	const signingKey = new SigningKey(id(key.startsWith("0x") ? key : `0x${key}`));
 	const publicKey = signingKey.compressedPublicKey;
 
 	return getAddress("0x" + keccak256(hexToU8a(`0x${publicKey.slice(4)}`)).slice(26));
