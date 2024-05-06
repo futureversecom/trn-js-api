@@ -30,6 +30,7 @@
     "dotenv": "^16.3.2",
     "ethers": "^6.7.1",
     "xrpl": "^3.0.0",
+    "xrpl-accountlib": "^3.6.1",
     "xrpl-binary-codec-prerelease": "^8.0.1"
   },
   "jest": {
