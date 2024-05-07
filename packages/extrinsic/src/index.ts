@@ -1,5 +1,6 @@
 export {
 	deriveAddressPair,
+	deriveAddressFromEd25519,
 	filterExtrinsicEvents,
 	createKeyringFromSeed,
 	parseJsonRpcResult,
