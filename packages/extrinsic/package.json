@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "codechain-primitives": "^1.0.4",
-    "ethers": "^6.7.1",
+    "ethers": "^5.7.2",
     "neverthrow": "^6.1.0",
     "ripple-keypairs": "^2.0.0"
   },
