@@ -11,7 +11,8 @@ import { XRP_ASSET_ID } from "./constants";
 import { Extrinsic, ExtrinsicEvent, JsonRpc, JsonRpcError, Result } from "./types";
 import { Json } from "@polkadot/types-codec";
 import { BN, hexToU8a } from "@polkadot/util";
-import { SigningKey, getAddress, id, keccak256 } from "ethers";
+import { computePublicKey } from "@ethersproject/signing-key";
+import { keccak256 } from "ethers";
 
 export function safeReturn<T>(result: NTResult<T, Error>): Result<T> {
 	if (result.isErr()) {
@@ -111,22 +112,25 @@ export async function fetchPaymentInfo(
  * @returns Tuple of `ethAddress` and `xrplAddress`
  */
 export function deriveAddressPair(publicKey: string) {
-	const ethAddress = ethereumEncode(`0x${publicKey}`);
-	const xrplAddress = deriveAddress(publicKey);
+	const noHexKey = publicKey.startsWith("0x") ? publicKey.slice(2) : publicKey;
+
+	const isEd25519 = noHexKey.toLowerCase().startsWith("ed");
+
+	if (!isEd25519) {
+		const ethAddress = ethereumEncode(`0x${noHexKey}`);
+		const xrplAddress = deriveAddress(noHexKey);
+
+		return [ethAddress, xrplAddress];
+	}
+
+	const compressedPublicKey = computePublicKey(`0x${noHexKey}`, true);
+
+	const ethAddress = ethereumEncode(
+		"0x" + keccak256(hexToU8a(`0x${compressedPublicKey.slice(4)}`)).slice(26)
+	);
+	const xrplAddress = deriveAddress(compressedPublicKey);
 
 	return [ethAddress, xrplAddress];
-}
-
-/**
- * Derive an Ed25519 key into an ETH/TRN format address
- * @param key - Key to derive the address for
- * @returns Checksum address
- */
-export function deriveAddressFromEd25519(key: string) {
-	const signingKey = new SigningKey(id(key.startsWith("0x") ? key : `0x${key}`));
-	const publicKey = signingKey.compressedPublicKey;
-
-	return getAddress("0x" + keccak256(hexToU8a(`0x${publicKey.slice(4)}`)).slice(26));
 }
 
 /**
