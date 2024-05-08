@@ -114,11 +114,12 @@ export async function fetchPaymentInfo(
 export function deriveAddressPair(publicKey: string) {
 	const noHexKey = publicKey.startsWith("0x") ? publicKey.slice(2) : publicKey;
 
+	const xrplAddress = deriveAddress(noHexKey);
+
 	const isEd25519 = noHexKey.toLowerCase().startsWith("ed");
 
 	if (!isEd25519) {
 		const ethAddress = ethereumEncode(`0x${noHexKey}`);
-		const xrplAddress = deriveAddress(noHexKey);
 
 		return [ethAddress, xrplAddress];
 	}
@@ -128,7 +129,6 @@ export function deriveAddressPair(publicKey: string) {
 	const ethAddress = ethereumEncode(
 		"0x" + keccak256(hexToU8a(`0x${compressedPublicKey.slice(4)}`)).slice(26)
 	);
-	const xrplAddress = deriveAddress(compressedPublicKey);
 
 	return [ethAddress, xrplAddress];
 }
