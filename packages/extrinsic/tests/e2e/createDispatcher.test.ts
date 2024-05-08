@@ -8,12 +8,14 @@ import { futurepassWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFuture
 import { feeProxyWrapper } from "@therootnetwork/extrinsic/libs/wrapWithFeeProxy";
 import { nativeWalletSigner } from "@therootnetwork/extrinsic/libs/signWithNativeWallet";
 import { ExtrinsicResult } from "@therootnetwork/extrinsic/types";
-import { filterExtrinsicEvents } from "@therootnetwork/extrinsic/utils";
+import { deriveAddressPair, filterExtrinsicEvents } from "@therootnetwork/extrinsic/utils";
 import { xrplWalletSigner } from "@therootnetwork/extrinsic/libs/signWithXrplWallet";
 import { sign } from "ripple-keypairs";
 import { encode, encodeForSigning } from "xrpl-binary-codec-prerelease";
 import { Wallet } from "ethers";
 import { deriveAddress } from "ripple-keypairs";
+import { derive } from "xrpl-accountlib";
+import { computePublicKey } from "@ethersproject/signing-key";
 
 describe("createDispatcher", () => {
 	let api: ApiPromise;
@@ -121,6 +123,53 @@ describe("createDispatcher", () => {
 					Account: deriveAddress(publicKey.slice(2)),
 				};
 				const signature = sign(encodeForSigning(payload), sender.privateKey.slice(2));
+
+				return new Promise((resolve) => resolve({ signature, message: encode(payload) }));
+			})
+		);
+
+		const remarkResult = await signAndSend(api.tx.system.remarkWithEvent("hello"));
+
+		expect(remarkResult.ok).toBe(true);
+		const { id, result } = remarkResult.value as ExtrinsicResult;
+
+		expect(id).toBeDefined();
+		const [remarkEvent] = filterExtrinsicEvents(result.events, ["system.Remarked"]);
+
+		expect(remarkEvent).toBeDefined();
+	}, 10000);
+
+	test("signs and sends with XRPL Ed25519 signer", async () => {
+		const importedAccount = derive.familySeed("sEdS4rAgVysUtD5Zmm9F8i8uJBGik4K");
+		const { keypair } = derive.privatekey(importedAccount.keypair.privateKey as string);
+		const publicKey = computePublicKey(`0x${keypair.publicKey as string}`, true);
+
+		const [ethAddress] = deriveAddressPair(publicKey);
+
+		const { signAndSend: signAndSendNative } = createDispatcher(
+			api,
+			senderAddress,
+			[],
+			nativeWalletSigner(process.env.CALLER_PRIVATE_KEY as unknown as string)
+		);
+
+		const transferResult = await signAndSendNative(
+			api.tx.assetsExt.transfer(2, ethAddress, 3_000_000, true)
+		);
+		expect(transferResult.ok).toBe(true);
+
+		const { signAndSend } = createDispatcher(
+			api,
+			ethAddress,
+			[],
+			xrplWalletSigner((Memos) => {
+				const payload = {
+					Memos,
+					AccountTxnID: "16969036626990000000000000000000F236FD752B5E4C84810AB3D41A3C2580",
+					SigningPubKey: publicKey.slice(2),
+					Account: deriveAddress(publicKey.slice(2)),
+				};
+				const signature = sign(encodeForSigning(payload), keypair.privateKey as string);
 
 				return new Promise((resolve) => resolve({ signature, message: encode(payload) }));
 			})
