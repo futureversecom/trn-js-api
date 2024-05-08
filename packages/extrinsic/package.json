@@ -16,8 +16,9 @@
     "xrpl": "^3.0.0"
   },
   "dependencies": {
+    "@ethersproject/signing-key": "^5.7.0",
     "codechain-primitives": "^1.0.4",
-    "ethers": "^5.7.2",
+    "ethers": "^6.7.1",
     "neverthrow": "^6.1.0",
     "ripple-keypairs": "^2.0.0"
   },

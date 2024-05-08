@@ -11,7 +11,8 @@ import { XRP_ASSET_ID } from "./constants";
 import { Extrinsic, ExtrinsicEvent, JsonRpc, JsonRpcError, Result } from "./types";
 import { Json } from "@polkadot/types-codec";
 import { BN, hexToU8a } from "@polkadot/util";
-import { computePublicKey, keccak256 } from "ethers/lib/utils";
+import { computePublicKey } from "@ethersproject/signing-key";
+import { keccak256 } from "ethers";
 
 export function safeReturn<T>(result: NTResult<T, Error>): Result<T> {
 	if (result.isErr()) {
