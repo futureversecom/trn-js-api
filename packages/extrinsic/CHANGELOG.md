@@ -1,5 +1,11 @@
 # @therootnetwork/extrinsic
 
+## 1.0.3
+
+### Patch Changes
+
+- Fix `deriveAddressFromEd25519` and merge with `deriveAddressPair`
+
 ## 1.0.2
 
 ### Patch Changes
