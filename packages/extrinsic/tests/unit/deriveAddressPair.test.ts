@@ -24,7 +24,7 @@ describe("deriveAddressPair", () => {
 
 		expect(result).toEqual([
 			"0x83a6Dd17b5db4F87b9d877A38E172F3Bff0CdE46",
-			"rHTfx7p4ge8CfDhyoczpSwc84LWfiK3dhN",
+			"r3PkESDrGaZHHPNLzJP1Uhki1yq94XTBSr",
 		]);
 	});
 	test("it correctly handles key of `0x${string}`", () => {
@@ -37,7 +37,7 @@ describe("deriveAddressPair", () => {
 
 		expect(result).toEqual([
 			"0x83a6Dd17b5db4F87b9d877A38E172F3Bff0CdE46",
-			"rHTfx7p4ge8CfDhyoczpSwc84LWfiK3dhN",
+			"r3PkESDrGaZHHPNLzJP1Uhki1yq94XTBSr",
 		]);
 	});
 });
