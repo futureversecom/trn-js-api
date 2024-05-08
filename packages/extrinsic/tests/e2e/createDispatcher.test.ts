@@ -208,11 +208,12 @@ describe("createDispatcher", () => {
 			true
 		);
 
-		const remarkResult = await signAndSend(api.tx.system.remarkWithEvent("hello"));
+		const extrinsic = api.tx.system.remarkWithEvent("hello");
 
-		const estimatedFee = await estimate(api.tx.system.remarkWithEvent("hello"), undefined);
+		const estimatedFee = await estimate(extrinsic);
 		expect(estimatedFee.ok).toBe(true);
 
+		const remarkResult = await signAndSend(extrinsic);
 		expect(remarkResult.ok).toBe(true);
 		const { id, result } = remarkResult.value as ExtrinsicResult;
 
