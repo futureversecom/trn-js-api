@@ -1,5 +1,11 @@
 # @therootnetwork/extrinsic
 
+## 1.0.5
+
+### Patch Changes
+
+- Estimate `XRPL` signed extrinsics
+
 ## 1.0.4
 
 ### Patch Changes
