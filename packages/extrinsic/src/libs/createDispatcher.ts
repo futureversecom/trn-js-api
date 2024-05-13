@@ -23,7 +23,8 @@ export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,
 	partialWrappers: PartialWrapper[],
-	partialSigner: PartialSigner
+	partialSigner: PartialSigner,
+	isXrplDispatcher?: boolean
 ): SignDispatcher;
 
 /**
@@ -39,13 +40,14 @@ export function createDispatcher(
 	api: ApiPromise,
 	senderAddress: string,
 	partialWrappers: PartialWrapper[] = [],
-	partialSigner?: PartialSigner
+	partialSigner?: PartialSigner,
+	isXrplDispatcher = false
 ): SignDispatcher | UnsignDispatcher {
 	const wrappers = partialWrappers.map((wrapper) => wrapper(api, senderAddress)());
 
 	const estimate = async (extrinsic: Extrinsic, assetId = XRP_ASSET_ID) => {
 		const wrapResult = await wrapFn(extrinsic, wrappers);
-		return await estimateFn(api, senderAddress, wrapResult, assetId);
+		return await estimateFn(api, senderAddress, wrapResult, assetId, isXrplDispatcher);
 	};
 
 	const send = async (extrinsic: Extrinsic, onProgress?: ProgressCallback) => {
