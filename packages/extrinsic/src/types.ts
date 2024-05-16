@@ -69,3 +69,11 @@ export interface JsonRpcError {
 		};
 	};
 }
+
+export interface DispatcherOptions {
+	isXrplDispatcher?: boolean;
+}
+
+export interface FeeProxyOptions extends DispatcherOptions {
+	slippage?: number;
+}

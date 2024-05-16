@@ -205,7 +205,9 @@ describe("createDispatcher", () => {
 
 				return new Promise((resolve) => resolve({ signature, message: encode(payload) }));
 			}),
-			true
+			{
+				isXrplDispatcher: true,
+			}
 		);
 
 		const extrinsic = api.tx.system.remarkWithEvent("hello");
@@ -232,5 +234,37 @@ describe("createDispatcher", () => {
 		const feeEventData = (feeEvent.toJSON().event as { data: [number, string, number] }).data;
 
 		expect(estimatedFee.value).toBeGreaterThanOrEqual(feeEventData[2]);
+	}, 10000);
+
+	test("XRPL signer can call with fee proxy", async () => {
+		const sender = new Wallet(process.env.CALLER_PRIVATE_KEY as string);
+		const publicKey = sender.signingKey.compressedPublicKey;
+
+		const { signAndSend } = createDispatcher(
+			api,
+			sender.address,
+			[feeProxyWrapper(1, { isXrplDispatcher: true })],
+			xrplWalletSigner((Memos) => {
+				const payload = {
+					Memos,
+					AccountTxnID: "16969036626990000000000000000000F236FD752B5E4C84810AB3D41A3C2580",
+					SigningPubKey: publicKey.slice(2),
+					Account: deriveAddress(publicKey.slice(2)),
+				};
+				const signature = sign(encodeForSigning(payload), sender.privateKey.slice(2));
+
+				return new Promise((resolve) => resolve({ signature, message: encode(payload) }));
+			})
+		);
+
+		const remarkResult = await signAndSend(api.tx.system.remarkWithEvent("hello"));
+
+		expect(remarkResult.ok).toBe(true);
+		const { id, result } = remarkResult.value as ExtrinsicResult;
+
+		expect(id).toBeDefined();
+		const [remarkEvent] = filterExtrinsicEvents(result.events, ["system.Remarked"]);
+
+		expect(remarkEvent).toBeDefined();
 	}, 10000);
 });
