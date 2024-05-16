@@ -1,5 +1,11 @@
 # @therootnetwork/extrinsic
 
+## 1.0.6
+
+### Patch Changes
+
+- Fix `feeProxyWrapper` for XRPL dispatcher
+
 ## 1.0.5
 
 ### Patch Changes
