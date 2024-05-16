@@ -1,6 +1,6 @@
 import { ApiPromise } from "@polkadot/api";
 import { ok } from "neverthrow";
-import { Extrinsic } from "../types";
+import { Extrinsic, FeeProxyOptions } from "../types";
 import { errWithPrefix, fetchPaymentInfo } from "../utils";
 
 const errPrefix = errWithPrefix("FeeProxyWrapper");
@@ -18,14 +18,15 @@ export function wrapWithFeeProxy(
 	api: ApiPromise,
 	senderAddress: string,
 	assetId: number,
-	slippage = 0.05
+	{ slippage = 0.05, isXrplDispatcher = false }: FeeProxyOptions = {}
 ) {
 	return async (extrinsic: Extrinsic) => {
 		const fetchResult = await fetchPaymentInfo(
 			api,
 			senderAddress,
 			api.tx.feeProxy.callWithFeePreferences(assetId, 0, extrinsic),
-			assetId
+			assetId,
+			isXrplDispatcher
 		);
 
 		if (fetchResult.isErr()) return errPrefix(fetchResult.error.message, fetchResult.error.cause);
@@ -36,7 +37,7 @@ export function wrapWithFeeProxy(
 	};
 }
 
-export function feeProxyWrapper(assetId: number, slippage = 0.05) {
+export function feeProxyWrapper(assetId: number, options?: FeeProxyOptions) {
 	return (api: ApiPromise, senderAddress: string) =>
-		wrapWithFeeProxy.bind(undefined, api, senderAddress, assetId, slippage);
+		wrapWithFeeProxy.bind(undefined, api, senderAddress, assetId, options);
 }

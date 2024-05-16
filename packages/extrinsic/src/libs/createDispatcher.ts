@@ -1,5 +1,6 @@
 import { ApiPromise } from "@polkadot/api";
 import {
+	DispatcherOptions,
 	Extrinsic,
 	PartialSigner,
 	PartialWrapper,
@@ -24,7 +25,7 @@ export function createDispatcher(
 	senderAddress: string,
 	partialWrappers: PartialWrapper[],
 	partialSigner: PartialSigner,
-	isXrplDispatcher?: boolean
+	options?: DispatcherOptions
 ): SignDispatcher;
 
 /**
@@ -41,13 +42,13 @@ export function createDispatcher(
 	senderAddress: string,
 	partialWrappers: PartialWrapper[] = [],
 	partialSigner?: PartialSigner,
-	isXrplDispatcher = false
+	options: DispatcherOptions = {}
 ): SignDispatcher | UnsignDispatcher {
 	const wrappers = partialWrappers.map((wrapper) => wrapper(api, senderAddress)());
 
 	const estimate = async (extrinsic: Extrinsic, assetId = XRP_ASSET_ID) => {
 		const wrapResult = await wrapFn(extrinsic, wrappers);
-		return await estimateFn(api, senderAddress, wrapResult, assetId, isXrplDispatcher);
+		return await estimateFn(api, senderAddress, wrapResult, assetId, options?.isXrplDispatcher);
 	};
 
 	const send = async (extrinsic: Extrinsic, onProgress?: ProgressCallback) => {
