@@ -78,10 +78,10 @@ export async function fetchPaymentInfo(
 	senderAddress: string,
 	extrinsic: Extrinsic,
 	assetId: number,
-	wrapWithXrpl = false
+	isXrplDispatcher = false
 ) {
 	const paymentInfoResult = await fromPromise(
-		(wrapWithXrpl ? mockWrapWithXrpl(api, extrinsic) : extrinsic).paymentInfo(senderAddress),
+		(isXrplDispatcher ? mockWrapWithXrpl(api, extrinsic) : extrinsic).paymentInfo(senderAddress),
 		(e) => new Error(`Unable to fetch payment info for "${senderAddress}"`, { cause: e })
 	);
 
