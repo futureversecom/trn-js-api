@@ -1,5 +1,11 @@
 # @therootnetwork/extrinsic
 
+## 1.0.7
+
+### Patch Changes
+
+- Fix `hashedExtrinsicWithoutPrefix` calculation for XRPL signer
+
 ## 1.0.5
 
 ### Patch Changes
