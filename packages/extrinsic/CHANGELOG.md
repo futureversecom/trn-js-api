@@ -6,6 +6,12 @@
 
 - Fix `hashedExtrinsicWithoutPrefix` calculation for XRPL signer
 
+## 1.0.6
+
+### Patch Changes
+
+- Fix `feeProxyWrapper` for XRPL dispatcher
+
 ## 1.0.5
 
 ### Patch Changes
