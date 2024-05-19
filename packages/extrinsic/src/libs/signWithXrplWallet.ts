@@ -69,7 +69,9 @@ async function createSignatureOptions(
 		nonce: signingInfo.value.nonce.toString(),
 		genesisHash: api.genesisHash.toHex().slice(2),
 		maxBlockNumber: +blockNumber.value + signingInfo.value.mortalLength,
-		hashedExtrinsicWithoutPrefix: blake256(extrinsic.toHex().slice(6)).toString(),
+		hashedExtrinsicWithoutPrefix: blake256(
+			extrinsic.toHex().slice(extrinsic.length >= 66 ? 8 : 6)
+		).toString(),
 	};
 }
 
