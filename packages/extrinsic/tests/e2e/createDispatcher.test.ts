@@ -236,14 +236,14 @@ describe("createDispatcher", () => {
 		expect(estimatedFee.value).toBeGreaterThanOrEqual(feeEventData[2]);
 	}, 10000);
 
-	test("XRPL signer can call with fee proxy", async () => {
+	test("XRPL signer can call with fee proxy & futurepass wrappers", async () => {
 		const sender = new Wallet(process.env.CALLER_PRIVATE_KEY as string);
 		const publicKey = sender.signingKey.compressedPublicKey;
 
 		const { signAndSend } = createDispatcher(
 			api,
 			sender.address,
-			[feeProxyWrapper(1, { isXrplDispatcher: true })],
+			[futurepassWrapper(), feeProxyWrapper(1, { isXrplDispatcher: true })],
 			xrplWalletSigner((Memos) => {
 				const payload = {
 					Memos,
@@ -257,14 +257,16 @@ describe("createDispatcher", () => {
 			})
 		);
 
-		const remarkResult = await signAndSend(api.tx.system.remarkWithEvent("hello"));
+		const transferResult = await signAndSend(
+			api.tx.assetsExt.transfer(1, sender.address, 1_000, true)
+		);
 
-		expect(remarkResult.ok).toBe(true);
-		const { id, result } = remarkResult.value as ExtrinsicResult;
+		expect(transferResult.ok).toBe(true);
+		const { id, result } = transferResult.value as ExtrinsicResult;
 
 		expect(id).toBeDefined();
-		const [remarkEvent] = filterExtrinsicEvents(result.events, ["system.Remarked"]);
+		const [transferEvent] = filterExtrinsicEvents(result.events, ["assets.Transferred"]);
 
-		expect(remarkEvent).toBeDefined();
+		expect(transferEvent).toBeDefined();
 	}, 10000);
 });
