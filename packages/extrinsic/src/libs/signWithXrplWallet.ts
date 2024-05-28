@@ -70,7 +70,7 @@ async function createSignatureOptions(
 		genesisHash: api.genesisHash.toHex().slice(2),
 		maxBlockNumber: +blockNumber.value + signingInfo.value.mortalLength,
 		hashedExtrinsicWithoutPrefix: blake256(
-			extrinsic.toHex().slice(extrinsic.length >= 66 ? 8 : 6)
+			extrinsic.toHex().slice(extrinsic.encodedLength >= 66 ? 8 : 6)
 		).toString(),
 	};
 }
