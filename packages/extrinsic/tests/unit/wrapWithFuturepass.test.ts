@@ -117,13 +117,13 @@ describe("wrapWithFuturepass", () => {
 		};
 
 		const senderAddress = "0x0";
-		const fpAddress = "0xf";
+		const fpAddressHint = "0xf";
 		const extrinsic = {} as Extrinsic;
-		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise, senderAddress, fpAddress);
+		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise, senderAddress, fpAddressHint);
 		const wrapResult = await wrapper(extrinsic);
 
 		expect(wrapResult.isOk()).toEqual(true);
 		expect(api.tx.futurepass.proxyExtrinsic).toBeCalledTimes(1);
-		expect(api.tx.futurepass.proxyExtrinsic).toHaveBeenCalledWith(fpAddress, extrinsic);
+		expect(api.tx.futurepass.proxyExtrinsic).toHaveBeenCalledWith(fpAddressHint, extrinsic);
 	});
 });
