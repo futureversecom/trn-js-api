@@ -11,11 +11,14 @@ const errPrefix = errWithPrefix("FuturepassWrapper");
  *
  * @param api - An instance of `ApiPromise` from `@polkadot/api`
  * @param senderAddress - The sender's address
+ * @param fpAddressHint - Hinted fpAddress value, used when log in as delegate
  * @returns An `ExtrinsicWrapper` function to be used with the `wrap` function
  */
-export function wrapWithFuturepass(api: ApiPromise, senderAddress: string) {
+export function wrapWithFuturepass(api: ApiPromise, senderAddress: string, fpAddressHint?: string) {
 	return async (extrinsic: Extrinsic) => {
-		const fetchResult = await fetchFuturepassAddress(api, senderAddress);
+		const fetchResult = fpAddressHint
+			? ok(fpAddressHint)
+			: await fetchFuturepassAddress(api, senderAddress);
 		if (fetchResult.isErr()) return errPrefix(fetchResult.error.message, fetchResult.error.cause);
 		const fpAddress = fetchResult.value;
 
@@ -23,9 +26,9 @@ export function wrapWithFuturepass(api: ApiPromise, senderAddress: string) {
 	};
 }
 
-export function futurepassWrapper() {
+export function futurepassWrapper(fpAddressHint?: string) {
 	return (api: ApiPromise, senderAddress: string) =>
-		wrapWithFuturepass.bind(undefined, api, senderAddress);
+		wrapWithFuturepass.bind(undefined, api, senderAddress, fpAddressHint);
 }
 
 async function fetchFuturepassAddress(api: ApiPromise, senderAddress: string) {
