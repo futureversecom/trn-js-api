@@ -1,5 +1,11 @@
 # @therootnetwork/extrinsic
 
+## 1.0.9
+
+### Patch Changes
+
+- Add fpAddressHint parameter to futurepassWrapper
+
 ## 1.0.8
 
 ### Patch Changes
