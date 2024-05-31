@@ -93,4 +93,37 @@ describe("wrapWithFuturepass", () => {
 			`FuturepassWrapper::Unable to extract Futurepass address for "0x0"`
 		);
 	});
+
+	test("wraps extrinsic with `futurepass.proxyExtrinsic` with a preferred fpAddress", async () => {
+		const api = {
+			query: {
+				futurepass: {
+					holders: jest.fn(() => {
+						return Promise.resolve({
+							isEmpty: false,
+							unwrap() {
+								return "0xe";
+							},
+						});
+					}),
+				},
+			},
+
+			tx: {
+				futurepass: {
+					proxyExtrinsic: jest.fn(),
+				},
+			},
+		};
+
+		const senderAddress = "0x0";
+		const fpAddress = "0xf";
+		const extrinsic = {} as Extrinsic;
+		const wrapper = wrapWithFuturepass(api as unknown as ApiPromise, senderAddress, fpAddress);
+		const wrapResult = await wrapper(extrinsic);
+
+		expect(wrapResult.isOk()).toEqual(true);
+		expect(api.tx.futurepass.proxyExtrinsic).toBeCalledTimes(1);
+		expect(api.tx.futurepass.proxyExtrinsic).toHaveBeenCalledWith(fpAddress, extrinsic);
+	});
 });

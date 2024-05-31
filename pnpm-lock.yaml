@@ -78,7 +78,7 @@ importers:
   packages/api-types:
     dependencies:
       '@polkadot/types':
-        specifier: ^10.8.1
+        specifier: 10.9.1
         version: 10.9.1
     devDependencies:
       '@polkadot/api-base':
@@ -127,7 +127,7 @@ importers:
         specifier: ^5.7.0
         version: 5.7.0
       '@polkadot/keyring':
-        specifier: ^12.6.2
+        specifier: 12.6.2
         version: 12.6.2(@polkadot/util-crypto@12.6.2)(@polkadot/util@12.6.2)
       '@therootnetwork/api':
         specifier: ^1.0.8
@@ -1652,7 +1652,7 @@ packages:
     resolution: {integrity: sha512-AJEXChcf/nKXd5Q/YLEV5dXQMle3UNT7jcXYmIffZAo/KI394a+/24PaISyQjoNC0fkzS1Q8T5pnGGHmXiVz2g==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@polkadot/util': '*'
+      '@polkadot/util': 12.6.2
       '@polkadot/x-randomvalues': '*'
     dependencies:
       '@polkadot/util': 12.6.2
@@ -1664,7 +1664,7 @@ packages:
     resolution: {integrity: sha512-QP5eiUqUFur/2UoF2KKKYJcesc71fXhQFLT3D4ZjG28Mfk2ZPI0QNRUfpcxVQmIUpV5USHg4geCBNuCYsMm20Q==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@polkadot/util': '*'
+      '@polkadot/util': 12.6.2
     dependencies:
       '@polkadot/util': 12.6.2
       tslib: 2.6.2
@@ -1673,7 +1673,7 @@ packages:
     resolution: {integrity: sha512-FPq73zGmvZtnuJaFV44brze3Lkrki3b4PebxCy9Fplw8nTmisKo9Xxtfew08r0njyYh+uiJRAxPCXadkC9sc8g==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@polkadot/util': '*'
+      '@polkadot/util': 12.6.2
       '@polkadot/x-randomvalues': '*'
     dependencies:
       '@polkadot/util': 12.6.2
@@ -1688,7 +1688,7 @@ packages:
     resolution: {integrity: sha512-15wd0EMv9IXs5Abp1ZKpKKAVyZPhATIAHfKsyoWCEFDLSOA0/K0QGOxzrAlsrdUkiKZOq7uzSIgIDgW8okx2Mw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@polkadot/util': '*'
+      '@polkadot/util': 12.6.2
     dependencies:
       '@polkadot/util': 12.6.2
       '@polkadot/wasm-util': 7.3.2(@polkadot/util@12.6.2)
@@ -1698,7 +1698,7 @@ packages:
     resolution: {integrity: sha512-+neIDLSJ6jjVXsjyZ5oLSv16oIpwp+PxFqTUaZdZDoA2EyFRQB8pP7+qLsMNk+WJuhuJ4qXil/7XiOnZYZ+wxw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@polkadot/util': '*'
+      '@polkadot/util': 12.6.2
       '@polkadot/x-randomvalues': '*'
     dependencies:
       '@polkadot/util': 12.6.2
@@ -1714,7 +1714,7 @@ packages:
     resolution: {integrity: sha512-bmD+Dxo1lTZyZNxbyPE380wd82QsX+43mgCm40boyKrRppXEyQmWT98v/Poc7chLuskYb6X8IQ6lvvK2bGR4Tg==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@polkadot/util': '*'
+      '@polkadot/util': 12.6.2
     dependencies:
       '@polkadot/util': 12.6.2
       tslib: 2.6.2

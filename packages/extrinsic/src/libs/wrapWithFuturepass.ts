@@ -2,7 +2,6 @@ import { ApiPromise } from "@polkadot/api";
 import { fromPromise, ok, err } from "neverthrow";
 import { errWithPrefix } from "../utils";
 import { Extrinsic } from "../types";
-import { Option, U8aFixed } from "@polkadot/types";
 
 const errPrefix = errWithPrefix("FuturepassWrapper");
 
@@ -11,11 +10,18 @@ const errPrefix = errWithPrefix("FuturepassWrapper");
  *
  * @param api - An instance of `ApiPromise` from `@polkadot/api`
  * @param senderAddress - The sender's address
+ * @param preferFPAddress - The prefer Futurepass address, used when log in as delegate
  * @returns An `ExtrinsicWrapper` function to be used with the `wrap` function
  */
-export function wrapWithFuturepass(api: ApiPromise, senderAddress: string) {
+export function wrapWithFuturepass(
+	api: ApiPromise,
+	senderAddress: string,
+	preferFPAddress?: string
+) {
 	return async (extrinsic: Extrinsic) => {
-		const fetchResult = await fetchFuturepassAddress(api, senderAddress);
+		const fetchResult = preferFPAddress
+			? ok(preferFPAddress)
+			: await fetchFuturepassAddress(api, senderAddress);
 		if (fetchResult.isErr()) return errPrefix(fetchResult.error.message, fetchResult.error.cause);
 		const fpAddress = fetchResult.value;
 
@@ -23,9 +29,9 @@ export function wrapWithFuturepass(api: ApiPromise, senderAddress: string) {
 	};
 }
 
-export function futurepassWrapper() {
+export function futurepassWrapper(preferFPAddress?: string) {
 	return (api: ApiPromise, senderAddress: string) =>
-		wrapWithFuturepass.bind(undefined, api, senderAddress);
+		wrapWithFuturepass.bind(undefined, api, senderAddress, preferFPAddress);
 }
 
 async function fetchFuturepassAddress(api: ApiPromise, senderAddress: string) {
@@ -35,7 +41,7 @@ async function fetchFuturepassAddress(api: ApiPromise, senderAddress: string) {
 	);
 
 	if (result.isErr()) return err(result.error);
-	const fpAddress = result.value as Option<U8aFixed>;
+	const fpAddress = result.value;
 
 	if (fpAddress.isEmpty)
 		return err(new Error(`Unable to extract Futurepass address for "${senderAddress}"`));
