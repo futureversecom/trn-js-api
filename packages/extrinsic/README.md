@@ -2,6 +2,12 @@
 
 A utility package that makes submitting extrinsic on the Root Network as easy as 🥧
 
+## Features
+
+- Wrap extrinsic with FuturePass and Fee Proxy calls.
+- Sign extrinsic with native (Keyring), Ethereum and Xaman wallets.
+- Estimate extrinsic with any token.
+
 ## Install
 
 ```bash
@@ -38,4 +44,8 @@ const fee = await estimate(extrinsic, ROOT_ASSET_ID);
 
 // send an extrinsic that pays gas in ROOT token and via FuturePass account
 const result = await signAndSend();
+
+if (!result.ok) throw result.value;
+
+console.log(result.value);
 ```
