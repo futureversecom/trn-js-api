@@ -40,12 +40,12 @@ const { estimate, signAndSend } = createDispatcher(
 const extrinsic = api.tx.system.remark("🥧");
 
 // estimate an extrinsic in any token
-const fee = await estimate(extrinsic, ROOT_ASSET_ID);
+const feeResult = await estimate(extrinsic, ROOT_ASSET_ID);
+if (!feeResult) throw feeResult.value;
+console.log(feeResult.value);
 
 // send an extrinsic that pays gas in ROOT token and via FuturePass account
-const result = await signAndSend();
-
-if (!result.ok) throw result.value;
-
-console.log(result.value);
+const sendResult = await signAndSend(extrinsic);
+if (!sendResult.ok) throw sendResult.value;
+console.log(sendResult.value);
 ```
