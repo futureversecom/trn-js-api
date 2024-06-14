@@ -1,5 +1,11 @@
 # @therootnetwork/extrinsic
 
+## 1.0.10
+
+### Patch Changes
+
+- Add README.md file for extrinsic package
+
 ## 1.0.9
 
 ### Patch Changes
