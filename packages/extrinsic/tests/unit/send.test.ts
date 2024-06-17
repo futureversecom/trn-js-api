@@ -2,9 +2,10 @@ import { describe, expect, jest, test } from "@jest/globals";
 import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
 import { send } from "@therootnetwork/extrinsic/libs/send";
 import { Extrinsic, ExtrinsicResult, Result } from "@therootnetwork/extrinsic/types";
-
+const api = null;
 describe("send", () => {
 	test("sends a given extrinsic ends with ok result", async () => {
+		//const api = null;
 		const extrinsic = {
 			send: (callback: (result: ISubmittableResult) => void) => {
 				setTimeout(() => {
@@ -47,7 +48,7 @@ describe("send", () => {
 			},
 		};
 
-		const sendResult = await send(extrinsic as unknown as Extrinsic);
+		const sendResult = await send(api, extrinsic as unknown as Extrinsic);
 
 		expect(sendResult.ok).toBe(true);
 		const { events } = sendResult.value as ExtrinsicResult;
@@ -80,7 +81,7 @@ describe("send", () => {
 			},
 		};
 
-		const sendResult = await send(extrinsic as unknown as Extrinsic);
+		const sendResult = await send(api, extrinsic as unknown as Extrinsic);
 
 		expect(sendResult.ok).toBe(false);
 		expect((sendResult.value as Error).message).toEqual("Send::Unable to send the extrinsic");
@@ -100,7 +101,7 @@ describe("send", () => {
 			},
 		};
 
-		const sendResult1 = await send(extrinsic1 as unknown as Extrinsic);
+		const sendResult1 = await send(api, extrinsic1 as unknown as Extrinsic);
 		expect(sendResult1.ok).toBe(false);
 		expect((sendResult1.value as Error).message).toEqual("Send::Unable to send the extrinsic");
 		expect((sendResult1.value as Error).cause).toEqual({});
@@ -127,7 +128,7 @@ describe("send", () => {
 			},
 		};
 
-		const sendResult2 = await send(extrinsic2 as unknown as Extrinsic);
+		const sendResult2 = await send(api, extrinsic2 as unknown as Extrinsic);
 		expect(sendResult2.ok).toBe(false);
 		expect((sendResult2.value as Error).message).toEqual("Send::Unable to send the extrinsic");
 		expect((sendResult2.value as Error).cause).toEqual({
@@ -139,7 +140,7 @@ describe("send", () => {
 
 	test("sends a given extrinsic ends with error from received result", async () => {
 		const extrinsic = { ok: false, value: new Error("error") };
-		const sendResult = await send(extrinsic as Result<never, Error>);
+		const sendResult = await send(api, extrinsic as Result<never, Error>);
 
 		expect(sendResult.ok).toEqual(false);
 		expect((sendResult.value as Error).message).toStrictEqual(`error`);
@@ -147,7 +148,7 @@ describe("send", () => {
 
 	test("sends a given extrinsic ends with error from extrinsic", async () => {
 		const extrinsic = { send: jest.fn(() => Promise.reject("error")) };
-		const sendResult = await send(extrinsic as unknown as Extrinsic);
+		const sendResult = await send(api, extrinsic as unknown as Extrinsic);
 		expect(sendResult.ok).toEqual(false);
 		expect((sendResult.value as Error).message).toStrictEqual(`Send::Unable to send the extrinsic`);
 	});
