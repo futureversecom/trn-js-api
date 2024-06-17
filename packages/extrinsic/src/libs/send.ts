@@ -10,7 +10,13 @@ import {
 	ProgressStatus,
 	Result,
 } from "../types";
-import { errWithPrefix, safeReturn } from "../utils";
+import { errWithPrefix, filterExtrinsicEvents, safeReturn } from "../utils";
+import { ApiPromise } from "@polkadot/api";
+import { Event } from "@polkadot/types/interfaces/system/types";
+import { IEventLike } from "@polkadot/types/types";
+import { DispatchError } from "@polkadot/types/interfaces/system";
+import { proxy } from "@polkadot/types/interfaces/definitions";
+import { BN, hexToU8a } from "@polkadot/util";
 
 const errPrefix = errWithPrefix("Send");
 
@@ -19,11 +25,14 @@ const errPrefix = errWithPrefix("Send");
  *
  * @param extrinsicOrResult - Either extrinsic or result from other functions
  * @param onProgress - Callback to report the progress
+ * @param options - if true, check if internal call for proxy extrinsic is successful or not
  * @returns A result with value either an ExtrinsicResult or an error
  */
 export async function send(
+	api: ApiPromise,
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
-	onProgress?: ProgressCallback
+	onProgress?: ProgressCallback,
+	options: { failedIfProxyError: boolean } = { failedIfProxyError: false }
 ) {
 	try {
 		let extrinsic = extrinsicOrResult;
@@ -34,6 +43,41 @@ export async function send(
 		const result = await sendExtrinsic(extrinsic, onProgress);
 
 		if (result.isErr()) return safeReturn(errPrefix(result.error.message, result.error.cause));
+		if (options.failedIfProxyError) {
+			/*
+			 * In FuturePass or XRPL proxied calls, we need to check each of the events for an error.
+			 */
+			const proxyEvents = filterExtrinsicEvents(result.value.events, [
+				"proxy.ProxyExecuted",
+				"xrpl.XRPLExtrinsicExecuted",
+			]).filter((event): event is ExtrinsicEvent => !!event);
+			if (proxyEvents) {
+				const errorData = proxyEvents.find((data: any) => {
+					const {
+						data: { result },
+					} = data;
+					const err = result.err;
+					if (err) return err;
+				});
+				const {
+					data: { result },
+				} = errorData as any;
+				const err = result.err;
+				console.log("Error::", err);
+				if (!err) return;
+				if (err.module.error) {
+					const { section, method, docs } = api.registry.findMetaError({
+						index: new BN(err.module.index),
+						error: hexToU8a(err.module.error),
+					});
+					console.log(`${section}.${method}: ${docs.join(" ")}`);
+					const errMessage = `Proxied extrinsic sending failed, [${section}.${method}]: ${docs.join(
+						", "
+					)}`;
+					return safeReturn(errPrefix(`${section}.${method}`, errMessage));
+				}
+			}
+		}
 		return safeReturn(ok(result.value));
 	} catch (e) {
 		return safeReturn(errPrefix(e instanceof Error ? e.message : `Unknown error`, e));

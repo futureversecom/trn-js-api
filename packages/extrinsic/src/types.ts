@@ -72,6 +72,7 @@ export interface JsonRpcError {
 
 export interface DispatcherOptions {
 	isXrplDispatcher?: boolean;
+	failedIfProxyError?: boolean;
 }
 
 export interface FeeProxyOptions extends DispatcherOptions {

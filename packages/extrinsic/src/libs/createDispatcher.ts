@@ -53,7 +53,8 @@ export function createDispatcher(
 
 	const send = async (extrinsic: Extrinsic, onProgress?: ProgressCallback) => {
 		const wrapResult = await wrapFn(extrinsic, wrappers);
-		return await sendFn(wrapResult, onProgress);
+		const { failedIfProxyError = false } = options;
+		return await sendFn(api, wrapResult, onProgress, { failedIfProxyError });
 	};
 
 	if (!partialSigner) return { estimate, send } as UnsignDispatcher;
@@ -62,7 +63,7 @@ export function createDispatcher(
 	const signAndSend = async (extrinsic: Extrinsic, onProgress?: ProgressCallback) => {
 		const wrapResult = await wrapFn(extrinsic, wrappers);
 		const signResult = await signFn(wrapResult, signer);
-		return await sendFn(signResult, onProgress);
+		return await sendFn(api, signResult, onProgress);
 	};
 
 	return { estimate, signAndSend } as SignDispatcher;
