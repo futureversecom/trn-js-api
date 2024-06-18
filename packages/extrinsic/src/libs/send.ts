@@ -85,64 +85,66 @@ async function sendExtrinsic(
 						return onProgress?.(status.type as ProgressStatus, result);
 
 					case "InBlock":
-					case "Finalized": {
-						unsubscribe();
-						const { blockNumber, txIndex } = result as InBlockResult;
-						const blockHash = (
-							status.isFinalized ? status.asFinalized.toString() : status.asInBlock.toString()
-						) as string;
-						const height = blockNumber.toString().padStart(10, "0");
-						const index = txIndex.toString().padStart(6, "0");
-						const hash = blockHash.slice(2, 7);
-						const id = `${height}-${index}-${hash}`;
-						const events = result.events.map(formatEvent);
-						const validOutcome = {
-							id,
-							result: result as InBlockResult,
-							events,
-						};
-						if (!options.failedIfProxyError) {
-							return resolve(validOutcome);
-						} else {
-							/*
-							 * In FuturePass or XRPL proxied calls, we need to check each of the events for an error.
-							 */
-							const proxyEvents = filterExtrinsicEvents(events, [
-								"proxy.ProxyExecuted",
-								"xrpl.XRPLExtrinsicExecuted",
-								"utility.BatchInterrupted",
-							]).filter((event): event is ExtrinsicEvent => !!event);
-							if (!proxyEvents) {
+					case "Finalized":
+						{
+							unsubscribe();
+							const { blockNumber, txIndex } = result as InBlockResult;
+							const blockHash = (
+								status.isFinalized ? status.asFinalized.toString() : status.asInBlock.toString()
+							) as string;
+							const height = blockNumber.toString().padStart(10, "0");
+							const index = txIndex.toString().padStart(6, "0");
+							const hash = blockHash.slice(2, 7);
+							const id = `${height}-${index}-${hash}`;
+							const events = result.events.map(formatEvent);
+							const validOutcome = {
+								id,
+								result: result as InBlockResult,
+								events,
+							};
+							if (!options.failedIfProxyError) {
 								return resolve(validOutcome);
 							} else {
-								let dispatchErr: DispatchResultError | null = null;
-								proxyEvents.find((data: ExtrinsicEvent) => {
-									if (data.name === "utility.BatchInterrupted") {
-										const {
-											data: { error },
-										} = data;
-										dispatchErr = error as unknown as DispatchResultError;
-										return dispatchErr;
-									} else {
-										const {
-											data: { result },
-										} = data;
-										const err = (result as DispatcherResult<ExtrinsicResult>).err;
-										dispatchErr = err;
-									}
-								});
-
-								if (!dispatchErr) return resolve(validOutcome);
-								if ((dispatchErr as DispatchResultError).module) {
-									const { section, name, docs } = extrinsic.registry.findMetaError({
-										index: new BN((dispatchErr as DispatchResultError).module.index),
-										error: hexToU8a((dispatchErr as DispatchResultError).module.error.toString()),
+								/*
+								 * In FuturePass or XRPL proxied calls, we need to check each of the events for an error.
+								 */
+								const proxyEvents = filterExtrinsicEvents(events, [
+									"proxy.ProxyExecuted",
+									"xrpl.XRPLExtrinsicExecuted",
+									"utility.BatchInterrupted",
+								]).filter((event): event is ExtrinsicEvent => !!event);
+								if (!proxyEvents) {
+									return resolve(validOutcome);
+								} else {
+									let dispatchErr: DispatchResultError | null = null;
+									proxyEvents.find((data: ExtrinsicEvent) => {
+										if (data.name === "utility.BatchInterrupted") {
+											const {
+												data: { error },
+											} = data;
+											dispatchErr = error as unknown as DispatchResultError;
+											return dispatchErr;
+										} else {
+											const {
+												data: { result },
+											} = data;
+											const err = (result as DispatcherResult<ExtrinsicResult>).err;
+											dispatchErr = err;
+										}
 									});
-									return reject({ section, name, docs });
+
+									if (!dispatchErr) return resolve(validOutcome);
+									if ((dispatchErr as DispatchResultError).module) {
+										const { section, name, docs } = extrinsic.registry.findMetaError({
+											index: new BN((dispatchErr as DispatchResultError).module.index),
+											error: hexToU8a((dispatchErr as DispatchResultError).module.error.toString()),
+										});
+										return reject({ section, name, docs });
+									}
 								}
 							}
 						}
-					}
+						break;
 
 					default:
 						unsubscribe();

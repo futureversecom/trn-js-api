@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, test } from "@jest/globals";
 import { ApiPromise } from "@polkadot/api";
-import { getApiOptions, getLocalProvider, getPublicProvider } from "@therootnetwork/api";
+import { getApiOptions, getPublicProvider } from "@therootnetwork/api";
 import { sign } from "@therootnetwork/extrinsic/libs/sign";
 import { signWithNativeWallet } from "@therootnetwork/extrinsic/libs/signWithNativeWallet";
 import { send } from "@therootnetwork/extrinsic/libs/send";
