@@ -27,24 +27,24 @@ describe("send", () => {
 		await api.disconnect();
 	});
 
-	// test("sends a given extrinsic", async () => {
-	// 	const senderAddress = "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b";
-	// 	const remarkCall = api.tx.system.remarkWithEvent("hello");
-	// 	const signResult = await sign(
-	// 		remarkCall,
-	// 		signWithNativeWallet(api, senderAddress, process.env.CALLER_PRIVATE_KEY as unknown as string)
-	// 	);
-	// 	const sendResult = await send(signResult, (status, result) => {
-	// 		expect(["Future", "Ready", "Broadcast", "Retracted"].includes(status)).toBe(true);
-	// 		expect(result).toBeDefined();
-	// 	});
-	//
-	// 	expect(sendResult.ok).toBe(true);
-	// 	const { result } = sendResult.value as ExtrinsicResult;
-	// 	const remarkEvent = result.findRecord("system", "Remarked");
-	//
-	// 	expect(remarkEvent).toBeDefined();
-	// }, 10000);
+	test("sends a given extrinsic", async () => {
+		const senderAddress = "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b";
+		const remarkCall = api.tx.system.remarkWithEvent("hello");
+		const signResult = await sign(
+			remarkCall,
+			signWithNativeWallet(api, senderAddress, process.env.CALLER_PRIVATE_KEY as unknown as string)
+		);
+		const sendResult = await send(signResult, (status, result) => {
+			expect(["Future", "Ready", "Broadcast", "Retracted"].includes(status)).toBe(true);
+			expect(result).toBeDefined();
+		});
+
+		expect(sendResult.ok).toBe(true);
+		const { result } = sendResult.value as ExtrinsicResult;
+		const remarkEvent = result.findRecord("system", "Remarked");
+
+		expect(remarkEvent).toBeDefined();
+	}, 10000);
 
 	test("sends incorrect fee proxy extrinsic ", async () => {
 		const senderAddress = "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b";
@@ -57,7 +57,6 @@ describe("send", () => {
 		);
 
 		const sendResult = await send(
-			api,
 			signResult,
 			(status, result) => {
 				expect(["Future", "Ready", "Broadcast", "Retracted"].includes(status)).toBe(true);
@@ -69,8 +68,30 @@ describe("send", () => {
 		expect(sendResult.ok).toBe(false);
 		const result = sendResult.value;
 		expect(result).toBeInstanceOf(Error);
-		// const remarkEvent = result.findRecord("system", "Remarked");
-		//
-		// expect(remarkEvent).toBeDefined();
+	}, 10000);
+
+	test("sends incorrect fee proxy batch extrinsic ", async () => {
+		const senderAddress = "0xE04CC55ebEE1cBCE552f250e85c57B70B2E2625b";
+		const setNameNFT = api.tx.nft.setName(676964, "test");
+		const batchTx = api.tx.utility.batch([setNameNFT]);
+		const wrapResult = await wrap(batchTx, [wrapWithFuturepass(api, senderAddress)]);
+
+		const signResult = await sign(
+			wrapResult,
+			signWithNativeWallet(api, senderAddress, process.env.CALLER_PRIVATE_KEY as unknown as string)
+		);
+
+		const sendResult = await send(
+			signResult,
+			(status, result) => {
+				expect(["Future", "Ready", "Broadcast", "Retracted"].includes(status)).toBe(true);
+				expect(result).toBeDefined();
+			},
+			{ failedIfProxyError: true }
+		);
+		console.log("sendResult::", sendResult);
+		expect(sendResult.ok).toBe(false);
+		const result = sendResult.value;
+		expect(result).toBeInstanceOf(Error);
 	}, 10000);
 });

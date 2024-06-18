@@ -2,6 +2,8 @@ import { EventRecord } from "@polkadot/types/interfaces";
 import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
 import { fromPromise, ok } from "neverthrow";
 import {
+	DispatcherResult,
+	DispatchResultError,
 	Extrinsic,
 	ExtrinsicEvent,
 	ExtrinsicResult,
@@ -11,11 +13,6 @@ import {
 	Result,
 } from "../types";
 import { errWithPrefix, filterExtrinsicEvents, safeReturn } from "../utils";
-import { ApiPromise } from "@polkadot/api";
-import { Event } from "@polkadot/types/interfaces/system/types";
-import { IEventLike } from "@polkadot/types/types";
-import { DispatchError } from "@polkadot/types/interfaces/system";
-import { proxy } from "@polkadot/types/interfaces/definitions";
 import { BN, hexToU8a } from "@polkadot/util";
 
 const errPrefix = errWithPrefix("Send");
@@ -29,7 +26,6 @@ const errPrefix = errWithPrefix("Send");
  * @returns A result with value either an ExtrinsicResult or an error
  */
 export async function send(
-	api: ApiPromise,
 	extrinsicOrResult: Extrinsic | Result<Extrinsic, Error>,
 	onProgress?: ProgressCallback,
 	options: { failedIfProxyError: boolean } = { failedIfProxyError: false }
@@ -40,51 +36,21 @@ export async function send(
 			if (!extrinsic.ok) return extrinsic;
 			extrinsic = extrinsic.value;
 		}
-		const result = await sendExtrinsic(extrinsic, onProgress);
+		const result = await sendExtrinsic(extrinsic, onProgress, options);
 
 		if (result.isErr()) return safeReturn(errPrefix(result.error.message, result.error.cause));
-		if (options.failedIfProxyError) {
-			/*
-			 * In FuturePass or XRPL proxied calls, we need to check each of the events for an error.
-			 */
-			const proxyEvents = filterExtrinsicEvents(result.value.events, [
-				"proxy.ProxyExecuted",
-				"xrpl.XRPLExtrinsicExecuted",
-			]).filter((event): event is ExtrinsicEvent => !!event);
-			if (proxyEvents) {
-				const errorData = proxyEvents.find((data: any) => {
-					const {
-						data: { result },
-					} = data;
-					const err = result.err;
-					if (err) return err;
-				});
-				const {
-					data: { result },
-				} = errorData as any;
-				const err = result.err;
-				console.log("Error::", err);
-				if (!err) return;
-				if (err.module.error) {
-					const { section, method, docs } = api.registry.findMetaError({
-						index: new BN(err.module.index),
-						error: hexToU8a(err.module.error),
-					});
-					console.log(`${section}.${method}: ${docs.join(" ")}`);
-					const errMessage = `Proxied extrinsic sending failed, [${section}.${method}]: ${docs.join(
-						", "
-					)}`;
-					return safeReturn(errPrefix(`${section}.${method}`, errMessage));
-				}
-			}
-		}
+
 		return safeReturn(ok(result.value));
 	} catch (e) {
 		return safeReturn(errPrefix(e instanceof Error ? e.message : `Unknown error`, e));
 	}
 }
 
-async function sendExtrinsic(extrinsic: Extrinsic, onProgress?: ProgressCallback) {
+async function sendExtrinsic(
+	extrinsic: Extrinsic,
+	onProgress?: ProgressCallback,
+	options: { failedIfProxyError: boolean } = { failedIfProxyError: false }
+) {
 	const sendPromise = new Promise<ExtrinsicResult>((resolve, reject) => {
 		let unsubscribe: () => void;
 
@@ -130,12 +96,52 @@ async function sendExtrinsic(extrinsic: Extrinsic, onProgress?: ProgressCallback
 						const hash = blockHash.slice(2, 7);
 						const id = `${height}-${index}-${hash}`;
 						const events = result.events.map(formatEvent);
-
-						return resolve({
+						const validOutcome = {
 							id,
 							result: result as InBlockResult,
 							events,
-						});
+						};
+						if (!options.failedIfProxyError) {
+							return resolve(validOutcome);
+						} else {
+							/*
+							 * In FuturePass or XRPL proxied calls, we need to check each of the events for an error.
+							 */
+							const proxyEvents = filterExtrinsicEvents(events, [
+								"proxy.ProxyExecuted",
+								"xrpl.XRPLExtrinsicExecuted",
+								"utility.BatchInterrupted",
+							]).filter((event): event is ExtrinsicEvent => !!event);
+							if (!proxyEvents) {
+								return resolve(validOutcome);
+							} else {
+								let dispatchErr: DispatchResultError | null = null;
+								proxyEvents.find((data: ExtrinsicEvent) => {
+									if (data.name === "utility.BatchInterrupted") {
+										const {
+											data: { error },
+										} = data;
+										dispatchErr = error as unknown as DispatchResultError;
+										return dispatchErr;
+									} else {
+										const {
+											data: { result },
+										} = data;
+										const err = (result as DispatcherResult<ExtrinsicResult>).err;
+										dispatchErr = err;
+									}
+								});
+
+								if (!dispatchErr) return resolve(validOutcome);
+								if ((dispatchErr as DispatchResultError).module) {
+									const { section, name, docs } = extrinsic.registry.findMetaError({
+										index: new BN((dispatchErr as DispatchResultError).module.index),
+										error: hexToU8a((dispatchErr as DispatchResultError).module.error.toString()),
+									});
+									return reject({ section, name, docs });
+								}
+							}
+						}
 					}
 
 					default:

@@ -4,8 +4,11 @@ import { SubmittableExtrinsic } from "@polkadot/api/types";
 import { ISubmittableResult } from "@polkadot/types/types";
 import { Result as NTResult } from "neverthrow";
 import { MemoData } from "./libs/signWithXrplWallet";
+import { DispatchErrorModule } from "@polkadot/types/interfaces/system";
 
 export type Result<T, E = Error> = { ok: true; value: T } | { ok: false; value: E };
+export type DispatcherResult<T> = { ok: T; err: DispatchResultError };
+export type DispatchResultError = { module: DispatchErrorModule };
 export type Extrinsic = SubmittableExtrinsic<"promise", ISubmittableResult>;
 export type ExtrinsicWrapper = (extrinsic: Extrinsic) => Promise<NTResult<Extrinsic, Error>>;
 export type ExtrinsicSigner = (extrinsic: Extrinsic) => Promise<NTResult<Extrinsic, Error>>;
