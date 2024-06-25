@@ -12,7 +12,7 @@ export function getProvider(url: WsProviderUrl | HttpProviderUrl): {
 	throw new Error(`Unrecognized provider url: "${url}"`);
 }
 
-export type NetworkName = "root" | "porcini";
+export type NetworkName = "root" | "porcini" | "sprout-1" | "sprout-2";
 export function getPublicProvider(
 	network: NetworkName,
 	useWsProvider = true,
@@ -36,6 +36,19 @@ export function getPublicProviderUrl(
 			? `wss://porcini.rootnet.app/${useArchiveNode ? "archive/" : ""}ws`
 			: `https://porcini.rootnet.app/${useArchiveNode ? "archive" : ""}`;
 	}
+
+	if (network === "sprout-1") {
+		return useWsProvider
+			? `wss://porcini.devnet.rootnet.app/${useArchiveNode ? "archive/" : ""}ws`
+			: `https://porcini.devnet.rootnet.app/${useArchiveNode ? "archive" : ""}`;
+	}
+
+	if (network === "sprout-2") {
+		return useWsProvider
+			? `wss://root.devnet.rootnet.app/${useArchiveNode ? "archive/" : ""}ws`
+			: `https://root.devnet.rootnet.app/${useArchiveNode ? "archive" : ""}`;
+	}
+
 	throw new Error(`Unrecognized network name: "${network}"`);
 }
 
