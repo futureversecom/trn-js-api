@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+## 1.0.9
+
+### Patch Changes
+
+- Add devnet endpoints
+
 ## 1.0.8
 
 ### Patch Changes
