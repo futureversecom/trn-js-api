@@ -87,6 +87,30 @@ describe("getPublicProvider", () => {
 		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://porcini.rootnet.app/archive");
 	});
 
+	test("creates an instance of WsProvider for `sprout-1` network", async () => {
+		getPublicProvider("sprout-1");
+		expect(WsProviderMock).toHaveBeenCalledTimes(1);
+		expect(WsProviderMock.mock.calls[0][0]).toBe("wss://porcini.devnet.rootnet.app/archive/ws");
+	});
+
+	test("creates an instance of HttpProvider for `sprout-1` network", async () => {
+		getPublicProvider("sprout-1", false);
+		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://porcini.devnet.rootnet.app/archive");
+	});
+
+	test("creates an instance of WsProvider for `sprout-2` network", async () => {
+		getPublicProvider("sprout-2");
+		expect(WsProviderMock).toHaveBeenCalledTimes(1);
+		expect(WsProviderMock.mock.calls[0][0]).toBe("wss://root.devnet.rootnet.app/archive/ws");
+	});
+
+	test("creates an instance of HttpProvider for `sprout-2` network", async () => {
+		getPublicProvider("sprout-2", false);
+		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://root.devnet.rootnet.app/archive");
+	});
+
 	test("creates an instance of WsProvider (full node) for `porcini` network", async () => {
 		getPublicProvider("porcini", true, false);
 		expect(WsProviderMock).toHaveBeenCalledTimes(1);
