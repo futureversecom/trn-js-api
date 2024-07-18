@@ -2,6 +2,10 @@
 export const MAINNET_CHAINID = 7668;
 export const PORCINI_CHAINID = 7672;
 
+// Default token addresses
+export const ROOT_ADDRESS = "0xcCcCCccC00000001000000000000000000000000";
+export const XRP_ADDRESS = "0xCCCCcCCc00000002000000000000000000000000";
+
 // Precompile address for nft precompile is 1721
 export const NFT_PRECOMPILE_ADDRESS = "0x00000000000000000000000000000000000006b9";
 // Precompile address for sft precompile is 1731
