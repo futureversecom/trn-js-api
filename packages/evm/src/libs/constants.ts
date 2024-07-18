@@ -1,3 +1,6 @@
+export const MAINNET_CHAINID = 7668;
+export const PORCINI_CHAINID = 7672;
+
 // Precompile address for nft precompile is 1721
 export const NFT_PRECOMPILE_ADDRESS = "0x00000000000000000000000000000000000006b9";
 // Precompile address for sft precompile is 1731
