@@ -14,7 +14,29 @@ export const DEX_PRECOMPILE_ADDRESS = "0x000000000000000000000000000000000000DDD
 // Precompile address for fee proxy
 export const FEE_PROXY_PRECOMPILE_ADDRESS = "0x00000000000000000000000000000000000004bb";
 
+// Available on both Mainnet and Porcini
+export const MULTICALL3_ADDRESS = "0xc9C2E2429AeC354916c476B30d729deDdC94988d";
+
 /** ABIs */
+
+export const MULTICALL3_ABI = [
+	"function aggregate(tuple(address,bytes)[]) payable returns (uint256, bytes[])",
+	"function aggregate3(tuple(address,bool,bytes)[]) payable returns (tuple(bool,bytes)[])",
+	"function aggregate3Value(tuple(address,bool,uint256,bytes)[]) payable returns (tuple(bool,bytes)[])",
+	"function blockAndAggregate(tuple(address,bytes)[]) payable returns (uint256, bytes32, tuple(bool,bytes)[])",
+	"function getBasefee() view returns (uint256)",
+	"function getBlockHash(uint256) view returns (bytes32)",
+	"function getBlockNumber() view returns (uint256)",
+	"function getChainId() view returns (uint256)",
+	"function getCurrentBlockCoinbase() view returns (address)",
+	"function getCurrentBlockDifficulty() view returns (uint256)",
+	"function getCurrentBlockGasLimit() view returns (uint256)",
+	"function getCurrentBlockTimestamp() view returns (uint256)",
+	"function getEthBalance(address) view returns (uint256)",
+	"function getLastBlockHash() view returns (bytes32)",
+	"function tryAggregate(bool,tuple(address,bytes)[]) payable returns (tuple(bool,bytes)[])",
+	"function tryBlockAndAggregate(bool,tuple(address,bytes)[]) payable returns (uint256, bytes32, tuple(bool,bytes)[])",
+];
 
 export const SFT_PRECOMPILE_ABI = [
 	"event InitializeSftCollection(address indexed collectionOwner, address indexed precompileAddress)",
