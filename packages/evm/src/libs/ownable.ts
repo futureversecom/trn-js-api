@@ -16,11 +16,11 @@ export class Ownable {
 		return c.owner();
 	};
 
-	renounceOwnership = async (): Promise<TAddress> => {
+	renounceOwnership = async () => {
 		const c = new Contract(this.contractAddress, OWNABLE_ABI, this.provider);
 		return c.renounceOwnership();
 	};
-	transferOwnership = async (owner: TAddress): Promise<TAddress> => {
+	transferOwnership = async (owner: TAddress) => {
 		const c = new Contract(this.contractAddress, OWNABLE_ABI, this.provider);
 		return c.transferOwnership(owner);
 	};

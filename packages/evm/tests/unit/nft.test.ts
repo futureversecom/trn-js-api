@@ -34,6 +34,11 @@ test("tokenURI returns a string", async () => {
 	expect(typeof tokenURI).toEqual("string");
 });
 
+test("totalSupply returns a number", async () => {
+	const totalSupply = await amulets.totalSupply();
+	expect(typeof totalSupply).toEqual("bigint");
+});
+
 test("isApprovedForAll returns a boolean value", async () => {
 	const ownerOne = await amulets.ownerOf(1);
 	const ownerTwo = await amulets.ownerOf(2);
