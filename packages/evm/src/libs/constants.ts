@@ -67,7 +67,7 @@ export const NFT_PRECOMPILE_ABI = [
 	"function initializeCollection(address owner, bytes name, uint32 maxIssuance, bytes metadataPath, address[] royaltyAddresses, uint32[] royaltyEntitlements) returns (address, uint32)",
 ];
 
-const OWNABLE_ABI = [
+export const OWNABLE_ABI = [
 	"event OwnershipTransferred(address indexed previousOwner, address indexed newOwner)",
 	"function owner() public view returns (address)",
 	"function renounceOwnership()",
