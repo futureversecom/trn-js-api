@@ -11,6 +11,9 @@
     "test": "jest -c ../../jest.config.js evm/tests",
     "test:watch": "jest -c ../../jest.config.js evm/tests --watch --coverage"
   },
+  "peerDependencies": {
+    "ethers": "^6.6.5"
+  },
   "devDependencies": {
     "ethers": "^6.6.5"
   }
