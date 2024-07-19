@@ -1,4 +1,4 @@
-import { BytesLike, Contract, TransactionResponse, solidityPackedKeccak256 } from "ethers";
+import { BytesLike, Contract, Signer, TransactionResponse, solidityPackedKeccak256 } from "ethers";
 import { Ownable } from "./ownable";
 import { FUTUREPASS_PRECOMPILE_ABI } from "./constants";
 import { CallType, ProxyType, TAddress, TProviderOrSigner } from "../types";
@@ -55,12 +55,15 @@ export class Futurepass extends Ownable {
 		if (Math.floor(new Date().getTime() / 1000.0) >= deadline) {
 			throw new Error("Provided deadline has already passed");
 		}
+		const repProvider: Signer = this.provider as Signer;
+		if (!repProvider?.signMessage) throw new Error("Given provider is not a signer");
+
 		const message = solidityPackedKeccak256(
 			["address", "address", "uint8", "uint32"],
 			[this.futurepassAddress, delegate, proxyType, deadline]
 		).substring(2);
 
-		const signature = await this.provider?.provider?.signMessage(message);
+		const signature = await repProvider.signMessage(message);
 
 		return this.contract.registerDelegateWithSignature(delegate, proxyType, deadline, signature);
 	};
