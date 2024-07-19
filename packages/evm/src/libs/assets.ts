@@ -2,17 +2,20 @@ import { Contract, TransactionResponse } from "ethers";
 import { TAddress, TProviderOrSigner } from "../types";
 import { Ownable } from "./ownable";
 import { ERC20_PRECOMPILE_ABI } from "./constants";
+import { ERC20_ABI, Multicall } from "..";
 
 export class Assets extends Ownable {
 	provider: TProviderOrSigner;
 	contractAddress: TAddress;
 	contract: Contract;
+	multicall: Multicall;
 
 	constructor(provider: TProviderOrSigner, contractAddress: TAddress) {
 		super(provider, contractAddress);
 		this.provider = provider;
 		this.contractAddress = contractAddress;
 		this.contract = new Contract(this.contractAddress, ERC20_PRECOMPILE_ABI, this.provider);
+		this.multicall = new Multicall(this.provider);
 	}
 
 	/**
@@ -80,5 +83,21 @@ export class Assets extends Ownable {
 	 */
 	transfer = async (who: TAddress, amount: number): Promise<TransactionResponse> => {
 		return this.contract.transfer(who, amount);
+	};
+
+	/**
+	 * Gives back balances of owners in a single aggregated query
+	 */
+	getMultipleBalances = async (owners: TAddress[]) => {
+		const calls = owners.map((owner) => {
+			return {
+				target: this.contractAddress,
+				abi: ERC20_ABI,
+				functionName: "balanceOf",
+				args: [owner],
+			};
+		});
+
+		return this.multicall.calls(calls);
 	};
 }

@@ -1,14 +1,8 @@
-import {
-	BytesLike,
-	Contract,
-	hexlify,
-	toUtf8Bytes,
-	toUtf8String,
-	TransactionResponse,
-} from "ethers";
+import { BytesLike, Contract, hexlify, toUtf8Bytes, TransactionResponse } from "ethers";
 import { TAddress, TProviderOrSigner, TTokenId } from "../types";
 import { Ownable } from "./ownable";
 import { ERC1155_PRECOMPILE_ABI } from "./constants";
+import { contractAddressToNativeId } from "./commonUtils";
 
 export class Sft extends Ownable {
 	provider: TProviderOrSigner;
@@ -206,6 +200,13 @@ export class Sft extends Ownable {
 	 */
 	setBaseURI = async (baseURI: string): Promise<TransactionResponse> => {
 		return this.contract.setBaseURI(hexlify(toUtf8Bytes(baseURI)));
+	};
+
+	/**
+	 * Gives back the assetId for the collection if there is one
+	 */
+	getAssetId = () => {
+		return contractAddressToNativeId(this.contractAddress);
 	};
 
 	// "function createToken(bytes name, uint128 initialIssuance, uint128 maxIssuance, address tokenOwner) external returns (uint32)",
