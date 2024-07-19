@@ -1,5 +1,6 @@
 import { Contract, getAddress, hexlify, toUtf8Bytes, TransactionResponse } from "ethers";
 import {
+	collectionIdToERC721Address,
 	contractAddressToNativeId,
 	ERC721_ABI,
 	NFT_PRECOMPILE_ABI,
@@ -16,7 +17,17 @@ export class Nft extends Ownable {
 	contract: Contract;
 	multicall: Multicall;
 
-	constructor(provider: TProviderOrSigner, contractAddress: TAddress) {
+	constructor(provider: TProviderOrSigner, contractAddress?: TAddress, collectionId?: number) {
+		if (!contractAddress && !collectionId) {
+			throw new Error("Either contractAddress or collectionId should be passed");
+		}
+
+		if (collectionId) {
+			contractAddress = collectionIdToERC721Address(collectionId);
+		}
+
+		if (!contractAddress) throw new Error("No contractAddress detected to initialize");
+
 		super(provider, contractAddress);
 		this.provider = provider;
 		this.contractAddress = contractAddress;
@@ -214,9 +225,9 @@ export class Nft extends Ownable {
 	};
 
 	/**
-	 * Gives back the assetId of the initialized collection
+	 * Gives back the collectionId of the initialized collection
 	 */
-	getAssetId = async (): Promise<number | null> => {
+	getCollectionId = async (): Promise<number | null> => {
 		return contractAddressToNativeId(this.contractAddress);
 	};
 

@@ -2,14 +2,24 @@ import { BytesLike, Contract, hexlify, toUtf8Bytes, TransactionResponse } from "
 import { TAddress, TProviderOrSigner, TTokenId } from "../types";
 import { Ownable } from "./ownable";
 import { ERC1155_PRECOMPILE_ABI } from "./constants";
-import { contractAddressToNativeId } from "./commonUtils";
+import { collectionIdToERC1155Address, contractAddressToNativeId } from "./commonUtils";
 
 export class Sft extends Ownable {
 	provider: TProviderOrSigner;
 	contractAddress: TAddress;
 	contract: Contract;
 
-	constructor(provider: TProviderOrSigner, contractAddress: TAddress) {
+	constructor(provider: TProviderOrSigner, contractAddress?: TAddress, collectionId?: number) {
+		if (!contractAddress && !collectionId) {
+			throw new Error("Either contractAddress or collectionId should be passed");
+		}
+
+		if (collectionId) {
+			contractAddress = collectionIdToERC1155Address(collectionId);
+		}
+
+		if (!contractAddress) throw new Error("No contractAddress detected to initialize");
+
 		super(provider, contractAddress);
 		this.provider = provider;
 		this.contractAddress = contractAddress;
@@ -203,9 +213,9 @@ export class Sft extends Ownable {
 	};
 
 	/**
-	 * Gives back the assetId for the collection if there is one
+	 * Gives back the collectionId for the collection if there is one
 	 */
-	getAssetId = () => {
+	getCollectionId = () => {
 		return contractAddressToNativeId(this.contractAddress);
 	};
 
