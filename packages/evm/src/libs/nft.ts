@@ -5,12 +5,19 @@ import { TAddress, TProviderOrSigner, TTokenId } from "../types";
 import { Ownable } from "./ownable";
 import { Multicall } from "./multicall";
 
+/** Class that allows to use a nft collection. */
 export class Nft extends Ownable {
 	provider: TProviderOrSigner;
 	contractAddress: TAddress;
 	contract: Contract;
 	multicall: Multicall;
 
+	/**
+	 * Initialize a new nft instance
+	 * @param {TProviderOrSigner} provider - An ethers provider.
+	 * @param {TAddress} contractAddress - The contractAddress of the collection
+	 * @param {number} collectionId - The collectionId of the collection
+	 */
 	constructor(provider: TProviderOrSigner, contractAddress?: TAddress, collectionId?: number) {
 		if (!contractAddress && !collectionId) {
 			throw new Error("Either contractAddress or collectionId should be passed");
@@ -31,16 +38,17 @@ export class Nft extends Ownable {
 
 	/**
 	 * Returns the contract instance
+	 * @returns {Contract} Contract instance
 	 */
-	getContract() {
+	getContract(): Contract {
 		return this.contract;
 	}
 
 	/**
 	 * Retrieves the current owner of an NFT
 	 *
-	 * @param tokenId - The tokenId of the nft we wish to query
-	 * @returns The address of the owner
+	 * @param {TTokenId} tokenId - The tokenId of the nft we wish to query
+	 * @returns {TAddress} The address of the owner
 	 */
 	ownerOf = async (tokenId: TTokenId): Promise<TAddress> => {
 		return this.contract.ownerOf(tokenId);
@@ -49,8 +57,8 @@ export class Nft extends Ownable {
 	/**
 	 * Retrieves the balance of an address, as in: how many nft's do they own of this collection
 	 *
-	 * @param owner - The owner's address we wish to query
-	 * @returns The balance as an integer
+	 * @param {TAddress} owner - The owner's address we wish to query
+	 * @returns {number} The balance as an integer
 	 */
 	balanceOf = async (owner: TAddress): Promise<number> => {
 		return this.contract.balanceOf(owner);
@@ -59,7 +67,7 @@ export class Nft extends Ownable {
 	/**
 	 * Retrieves name of the collection
 	 *
-	 * @returns The name
+	 * @returns {string} The name
 	 */
 	name = async (): Promise<string> => {
 		return this.contract.name();
@@ -68,7 +76,7 @@ export class Nft extends Ownable {
 	/**
 	 * Retrieves symbol of the collection
 	 *
-	 * @returns The symbol
+	 * @returns {string} The symbol
 	 */
 	symbol = async (): Promise<string> => {
 		return this.contract.symbol();
@@ -77,7 +85,7 @@ export class Nft extends Ownable {
 	/**
 	 * Retrieves the tokenUri of a specific tokenId
 	 *
-	 * @returns The tokenUri as a string
+	 * @returns {string} The tokenUri as a string
 	 */
 	tokenURI = async (tokenId: TTokenId): Promise<string> => {
 		return this.contract.tokenURI(tokenId);
@@ -86,7 +94,7 @@ export class Nft extends Ownable {
 	/**
 	 * Retrieves whether operator is approved to operate
 	 *
-	 * @returns Returns a boolean value
+	 * @returns {boolean} Returns a boolean value
 	 */
 	isApprovedForAll = async (owner: TAddress, operator: TAddress): Promise<boolean> => {
 		return this.contract.isApprovedForAll(owner, operator);
@@ -95,7 +103,7 @@ export class Nft extends Ownable {
 	/**
 	 * Retrieves the total supply of the nft collection
 	 *
-	 * @returns Returns the supply an integer
+	 * @returns {bigint} Returns the supply an integer
 	 */
 	totalSupply = async (): Promise<bigint> => {
 		return this.contract.totalSupply();
@@ -115,9 +123,10 @@ export class Nft extends Ownable {
 	/**
 	 * Allows one to transfer an nft to another address
 	 *
-	 * @param from - The address from where it gets transferred
-	 * @param to - The address to where it gets transferred
-	 * @param tokenId - The tokenId to be transferred
+	 * @param {TAddress} from - The address from where it gets transferred
+	 * @param {TAddress} to - The address to where it gets transferred
+	 * @param {TTokenId} tokenId - The tokenId to be transferred
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	safeTransferFrom = async (
 		from: TAddress,
@@ -130,38 +139,46 @@ export class Nft extends Ownable {
 	/**
 	 * Allows one to transfer an nft to another address
 	 *
-	 * @param from - The address from where it gets transferred
-	 * @param to - The address to where it gets transferred
-	 * @param tokenId - The tokenId to be transferred
+	 * @param {TAddress} from - The address from where it gets transferred
+	 * @param {TAddress} to - The address to where it gets transferred
+	 * @param {TTokenId} tokenId - The tokenId to be transferred
+	 * @returns {TransactionResponse} Transaction object
 	 */
-	transferFrom = async (from: TAddress, to: TAddress, tokenId: TTokenId) => {
+	transferFrom = async (
+		from: TAddress,
+		to: TAddress,
+		tokenId: TTokenId
+	): Promise<TransactionResponse> => {
 		return this.contract.transferFrom(from, to, tokenId);
 	};
 
 	/**
 	 * Sets approval for specific address on a specific tokenId
 	 *
-	 * @param to - The address that gets the approval
-	 * @param tokenId - The tokenId that gets approved
+	 * @param {TAddress} to - The address that gets the approval
+	 * @param {TTokenId} tokenId - The tokenId that gets approved
+	 * @returns {TransactionResponse} Transaction object
 	 */
-	approve = async (to: TAddress, tokenId: TTokenId) => {
+	approve = async (to: TAddress, tokenId: TTokenId): Promise<TransactionResponse> => {
 		return this.contract.approve(to, tokenId);
 	};
 
 	/**
 	 * Get approval of a specific tokenId
 	 *
-	 * @param tokenId - The tokenId to get the approval for
+	 * @param {TTokenId} tokenId - The tokenId to get the approval for
+	 * @returns {TAddress} The approved address
 	 */
-	getApproved = async (tokenId: TTokenId) => {
+	getApproved = async (tokenId: TTokenId): Promise<TAddress> => {
 		return this.contract.getApproved(tokenId);
 	};
 
 	/**
 	 * Sets approval for entire collection for specific address
 	 *
-	 * @param to - The address that gets the approval
-	 * @param approved - Whether approved or not
+	 * @param {TAddress} operator - The address that gets the approval
+	 * @param {boolean} approved - Whether approved or not
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	setApprovalForAll = async (
 		operator: TAddress,
@@ -173,8 +190,9 @@ export class Nft extends Ownable {
 	/**
 	 * Allows for minting new nft's
 	 *
-	 * @param owner - The address that the minted NFTs will end up
-	 * @param approved - The amount we wish to mint
+	 * @param {TAddress} owner - The address that the minted NFTs will end up
+	 * @param {number} quantity - The amount we wish to mint
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	mint = async (owner: TAddress, quantity: number): Promise<TransactionResponse> => {
 		return this.contract.mint(owner, quantity);
@@ -183,7 +201,8 @@ export class Nft extends Ownable {
 	/**
 	 * Allows to set a hard cap on the amount of NFT's that can be issued
 	 *
-	 * @param maxSupply - The cap amount
+	 * @param {number} maxSupply - The cap amount
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	setMaxSupply = async (maxSupply: number): Promise<TransactionResponse> => {
 		return this.contract.setMaxSupply(maxSupply);
@@ -192,7 +211,8 @@ export class Nft extends Ownable {
 	/**
 	 * Allows the metadata uri to be updated
 	 *
-	 * @param baseURI - The new metadata uri
+	 * @param {string} baseURI - The new metadata uri
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	setBaseURI = async (baseURI: string): Promise<TransactionResponse> => {
 		return this.contract.setBaseURI(hexlify(toUtf8Bytes(baseURI)));
@@ -200,6 +220,7 @@ export class Nft extends Ownable {
 
 	/**
 	 * Gives back the collectionId of the initialized collection
+	 * @returns {number | null} The assetId
 	 */
 	getCollectionId = async (): Promise<number | null> => {
 		return contractAddressToNativeId(this.contractAddress);
@@ -207,6 +228,9 @@ export class Nft extends Ownable {
 
 	/**
 	 * Gives back whether provided address is owner of tokenId
+	 * @param {TAddress} owner - The address we are querying
+	 * @param {TTokenId} tokenId - The tokenId
+	 * @returns {boolean} Whether owned or not
 	 */
 	isOwnerOf = async (owner: TAddress, tokenId: TTokenId): Promise<boolean> => {
 		const currentOwner = await this.ownerOf(tokenId);
@@ -215,8 +239,12 @@ export class Nft extends Ownable {
 
 	/**
 	 * Gives back owners of Nft's in a single aggregated query
+	 * @param {number[]} tokenIds - The desired tokenIds
+	 * @returns {{ success: boolean; result: TAddress }[]} The owners and whether the call succeeded or failed
 	 */
-	getMultipleOwners = async (tokenIds: number[]) => {
+	getMultipleOwners = async (
+		tokenIds: number[]
+	): Promise<{ success: boolean; result: TAddress }[]> => {
 		const calls = tokenIds.map((tokenId) => {
 			return {
 				target: this.contractAddress,
