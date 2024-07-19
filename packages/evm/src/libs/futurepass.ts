@@ -1,7 +1,7 @@
 import { BytesLike, Contract, TransactionResponse, solidityPackedKeccak256 } from "ethers";
 import { Ownable } from "./ownable";
 import { FUTUREPASS_PRECOMPILE_ABI } from "./constants";
-import { ProxyType, TAddress, TProviderOrSigner } from "../types";
+import { CallType, ProxyType, TAddress, TProviderOrSigner } from "../types";
 
 /** Class that allows to use the futurepass pallet. */
 export class Futurepass extends Ownable {
@@ -78,14 +78,14 @@ export class Futurepass extends Ownable {
 	/**
 	 * Proxy a call
 	 *
-	 * @param {number} callType - The type of call
+	 * @param {CallType} callType - The type of call
 	 * @param {TAddress} callTo - The destination
 	 * @param {number} value - The value of the transaction
 	 * @param {BytesLike} callData - The data input of the transaction
 	 * @returns {TransactionResponse} Transaction object
 	 */
 	proxyCall = async (
-		callType: number,
+		callType: CallType,
 		callTo: TAddress,
 		value: number,
 		callData: BytesLike

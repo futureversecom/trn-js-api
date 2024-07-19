@@ -19,3 +19,11 @@ export interface IMultiCallResponse {
 	success: boolean;
 	result: any;
 }
+
+export enum CallType {
+	StaticCall = 0,
+	Call = 1,
+	DelegateCall = 2,
+	Create = 3,
+	Create2 = 4,
+}
