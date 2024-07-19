@@ -2,7 +2,7 @@ import { BytesLike, Contract, hexlify, toUtf8Bytes, TransactionResponse } from "
 import { TAddress, TProviderOrSigner, TTokenId } from "../types";
 import { Ownable } from "./ownable";
 import { ERC1155_PRECOMPILE_ABI } from "./constants";
-import { collectionIdToERC1155Address, contractAddressToNativeId } from "./commonUtils";
+import { collectionIdToERC1155Address, contractAddressToNativeId } from "./utils";
 
 /** Class that allows to use a sft collection. */
 export class Sft extends Ownable {
