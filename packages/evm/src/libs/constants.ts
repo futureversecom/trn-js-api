@@ -33,7 +33,39 @@ export const FEE_PROXY_PRECOMPILE_ADDRESS = "0x000000000000000000000000000000000
 // Available on both Mainnet and Porcini
 export const MULTICALL3_ADDRESS = "0xc9C2E2429AeC354916c476B30d729deDdC94988d";
 
+export const MARKETPLACE_PRECOMPILE_ADDRESS = "0x00000000000000000000000000000000000006CD";
+
 /** ABIs */
+
+export const MARKETPLACE_PRECOMPILE_ABI = [
+	"event AuctionClose(uint256 indexed collectionId, uint256 indexed listingId, address sender, uint256[] serialNumbers)",
+	"event AuctionOpen(uint256 indexed collectionId, uint256 indexed listingId, uint256 indexed reservePrice, address sender, uint256[] serialNumbers)",
+	"event Bid(address indexed bidder, uint256 indexed listingId, uint256 indexed amount)",
+	"event FixedPriceSaleClose(uint256 indexed collectionId, uint256 indexed listingId, address sender, uint256[] serialNumbers)",
+	"event FixedPriceSaleComplete(uint256 indexed collectionId, uint256 indexed listingId, uint256 indexed fixedPrice, address sender, uint256[] serialNumbers)",
+	"event FixedPriceSaleList(address indexed seller, uint256 indexed listingId, uint256 indexed fixedPrice, uint256[] serialNumbers, address collectionAddress)",
+	"event FixedPriceSaleUpdate(uint256 indexed collectionId, uint256 indexed listingId, uint256 indexed newPrice, address sender, uint256[] serialNumbers)",
+	"event MarketplaceRegister(address indexed sender, uint256 indexed marketplaceId, address marketplace_account)",
+	"event Offer(uint256 indexed offerId, address indexed sender, uint256 collectionId, uint256 seriesId)",
+	"event OfferAccept(uint256 indexed offerId, uint256 indexed amount, address indexed sender, uint256 collectionId, uint256 seriesId)",
+	"event OfferCancel(uint256 indexed offerId, address indexed sender, uint256 collectionId, uint256 seriesId)",
+	"function acceptOffer(uint64 offerId)",
+	"function auctionNftWithMarketplaceId(address collectionAddress, uint256[] serialNumberIds, address paymentAsset, uint256 reservePrice, uint256 duration, uint256 marketplaceId) payable",
+	"function auctionNftWithoutMarketplace(address collectionAddress, uint256[] serialNumberIds, address paymentAsset, uint256 reservePrice, uint256 duration) payable",
+	"function bid(uint128 listingId, uint256 amount)",
+	"function buy(uint128 listingId) payable",
+	"function cancelOffer(uint64 offerId)",
+	"function cancelSale(uint128 listingId)",
+	"function getListingFromId(uint128 listingId) view returns (uint32 collectionId, uint32[] serialNumbers, uint128 price, uint32 paymentAsset)",
+	"function getMarketplaceAccount(uint32 marketplaceId) view returns (address marketplaceAccount)",
+	"function getOfferFromId(uint64 offerId) view returns (uint32 collectionId, uint32 serialNumber, uint128 amount, address buyer)",
+	"function makeSimpleOfferWithMarketplaceId(address collectionAddress, uint32 serialNumber, uint256 amount, address assetId, uint32 marketplaceId) returns (uint256 offerId)",
+	"function makeSimpleOfferWithoutMarketplace(address collectionAddress, uint32 serialNumber, uint256 amount, address assetId) returns (uint256 offerId)",
+	"function registerMarketplace(address marketplaceAccount, uint256 entitlement) returns (uint256 marketplaceId)",
+	"function sellNftWithMarketplaceId(address collectionAddress, uint256[] serialNumberIds, address buyer, address paymentAsset, uint256 fixedPrice, uint256 duration, uint32 marketplaceId) returns (uint256 listingId)",
+	"function sellNftWithoutMarketplace(address collectionAddress, uint256[] serialNumberIds, address buyer, address paymentAsset, uint256 fixedPrice, uint256 duration) returns (uint256 listingId)",
+	"function updateFixedPrice(uint128 listingId, uint256 newPrice)",
+];
 
 export const MULTICALL3_ABI = [
 	"function aggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes[] returnData)",
