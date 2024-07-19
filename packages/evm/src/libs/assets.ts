@@ -2,7 +2,7 @@ import { Contract, TransactionResponse } from "ethers";
 import { TAddress, TProviderOrSigner } from "../types";
 import { Ownable } from "./ownable";
 import { ERC20_PRECOMPILE_ABI } from "./constants";
-import { ERC20_ABI, Multicall } from "..";
+import { assetIdToERC20Address, ERC20_ABI, Multicall } from "..";
 
 export class Assets extends Ownable {
 	provider: TProviderOrSigner;
@@ -10,7 +10,17 @@ export class Assets extends Ownable {
 	contract: Contract;
 	multicall: Multicall;
 
-	constructor(provider: TProviderOrSigner, contractAddress: TAddress) {
+	constructor(provider: TProviderOrSigner, contractAddress?: TAddress, assetId?: number) {
+		if (!contractAddress && !assetId) {
+			throw new Error("Either contractAddress or collectionId should be passed");
+		}
+
+		if (assetId) {
+			contractAddress = assetIdToERC20Address(assetId);
+		}
+
+		if (!contractAddress) throw new Error("No contractAddress detected to initialize");
+
 		super(provider, contractAddress);
 		this.provider = provider;
 		this.contractAddress = contractAddress;
