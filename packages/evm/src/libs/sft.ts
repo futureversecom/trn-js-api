@@ -1,4 +1,11 @@
-import { BytesLike, Contract, TransactionResponse } from "ethers";
+import {
+	BytesLike,
+	Contract,
+	hexlify,
+	toUtf8Bytes,
+	toUtf8String,
+	TransactionResponse,
+} from "ethers";
 import { TAddress, TProviderOrSigner, TTokenId } from "../types";
 import { Ownable } from "./ownable";
 import { ERC1155_PRECOMPILE_ABI } from "./constants";
@@ -77,7 +84,7 @@ export class Sft extends Ownable {
 	safeTransferFrom = async (
 		from: TAddress,
 		to: TAddress,
-		id: number,
+		id: TTokenId,
 		amount: number,
 		data: BytesLike
 	): Promise<TransactionResponse> => {
@@ -96,25 +103,110 @@ export class Sft extends Ownable {
 	safeBatchTransferFrom = async (
 		from: TAddress,
 		to: TAddress,
-		ids: number[],
+		ids: TTokenId[],
 		amounts: number[],
 		data: BytesLike
 	): Promise<TransactionResponse> => {
 		return this.contract.safeBatchTransferFrom(from, to, ids, amounts, data);
 	};
 
-	// // Burnable
-	// "function burn(address account, uint256 id, uint256 value) external",
-	// "function burnBatch(address account, uint256[] ids, uint256[] values) external",
-	// // Supply
-	// "function totalSupply(uint256 id) external view returns (uint256)",
-	// "function exists(uint256 id) external view returns (bool)",
-	// // Metadata
-	// "function uri(uint256 id) external view returns (string memory)",
+	/**
+	 * Allows to burn a sft token with a set quantity
+	 *
+	 * @param account - The address to burn from
+	 * @param id - The tokenId to burn
+	 * @param value - The quantity to burn
+	 */
+	burn = async (account: TAddress, id: TTokenId, value: number): Promise<TransactionResponse> => {
+		return this.contract.burn(account, id, value);
+	};
+
+	/**
+	 * Allows to burn a sft tokens with set quantities
+	 *
+	 * @param account - The address to burn from
+	 * @param ids - The tokenIds to burn
+	 * @param values - The quantities to burn
+	 */
+	burnBatch = async (
+		account: TAddress,
+		ids: TTokenId[],
+		values: number[]
+	): Promise<TransactionResponse> => {
+		return this.contract.burnBatch(account, ids, values);
+	};
+
+	/**
+	 * Returns the total supply of a specific tokenId
+	 *
+	 * @param id - The tokenId
+	 */
+	totalSupply = async (id: TTokenId): Promise<string> => {
+		return this.contract.totalSupply(id);
+	};
+
+	/**
+	 * Check whether specific token exists
+	 *
+	 * @param id - The tokenId
+	 */
+	exists = async (id: TTokenId): Promise<string> => {
+		return this.contract.exists(id);
+	};
+
+	/**
+	 * Retrieve the metadata uri for a specific token
+	 *
+	 * @param id - The tokenId
+	 */
+	uri = async (id: TTokenId): Promise<string> => {
+		return this.contract.uri(id);
+	};
+
+	/**
+	 * Allows to mint new sft tokens
+	 *
+	 * @param account - The address to mint to
+	 * @param id - The tokenId to mint
+	 * @param amount - The quantity to mint
+	 */
+	mint = async (owner: TAddress, id: TTokenId, amount: number): Promise<TransactionResponse> => {
+		return this.contract.mint(owner, id, amount);
+	};
+
+	/**
+	 * Allows to mint multiple sft tokens at once
+	 *
+	 * @param account - The address to mint to
+	 * @param ids - The tokenIds to mint
+	 * @param amounts - The quantities to mint
+	 */
+	mintBatch = async (
+		owner: TAddress,
+		ids: TTokenId,
+		amounts: number
+	): Promise<TransactionResponse> => {
+		return this.contract.mintBatch(owner, ids, amounts);
+	};
+
+	/**
+	 * Update the maximum supply for a specific tokenId
+	 *
+	 * @param id - The tokenIds set the max supply for
+	 * @param maxSupply - The maximum supply
+	 */
+	setMaxSupply = async (id: TTokenId, maxSupply: number): Promise<TransactionResponse> => {
+		return this.contract.setMaxSupply(id, maxSupply);
+	};
+
+	/**
+	 * Updates the metadata uri for the entire collection
+	 *
+	 * @param baseURI - The new baseUri
+	 */
+	setBaseURI = async (baseURI: string): Promise<TransactionResponse> => {
+		return this.contract.setBaseURI(hexlify(toUtf8Bytes(baseURI)));
+	};
 
 	// "function createToken(bytes name, uint128 initialIssuance, uint128 maxIssuance, address tokenOwner) external returns (uint32)",
-	// "function mint(address owner, uint256 id, uint256 amount) external",
-	// "function mintBatch(address owner, uint256[] ids, uint256[] amounts) external",
-	// "function setMaxSupply(uint256 id, uint32 maxSupply) external",
-	// "function setBaseURI(bytes baseURI) external",
 }
