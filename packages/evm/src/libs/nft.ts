@@ -201,27 +201,7 @@ export class Nft extends Ownable {
 	 * @param baseURI - The new metadata uri
 	 */
 	setBaseURI = async (baseURI: string): Promise<TransactionResponse> => {
-		const cb = toUtf8Bytes(baseURI);
-		return this.contract.setBaseURI(cb);
-	};
-
-	initializeCollection = async (
-		owner: TAddress,
-		name: string,
-		maxIssuance: number,
-		metadataPath: string,
-		royaltyAddresses: TAddress[],
-		royaltyEntitlements: number[]
-	): Promise<TransactionResponse> => {
-		const c = new Contract(NFT_PRECOMPILE_ADDRESS, NFT_PRECOMPILE_ABI, this.provider);
-		return c.initializeCollection(
-			owner,
-			hexlify(toUtf8Bytes(name)),
-			maxIssuance,
-			hexlify(toUtf8Bytes(metadataPath)),
-			royaltyAddresses,
-			royaltyEntitlements
-		);
+		return this.contract.setBaseURI(hexlify(toUtf8Bytes(baseURI)));
 	};
 
 	/**
