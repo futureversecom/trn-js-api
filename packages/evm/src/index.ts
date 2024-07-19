@@ -6,8 +6,12 @@ export * from "./libs/ownable";
 export * from "./libs/futurepass";
 export * from "./libs/futurepassRegistry";
 export * from "./libs/sft";
+export * from "./libs/sft-precompile";
+export * from "./libs/nft-precompile";
 export * from "./libs/multicall";
 export * from "./libs/feeProxy";
+export * from "./libs/rns";
+export * from "./libs/provider";
 
 // re-export the old alias for backward compatibility
 export {

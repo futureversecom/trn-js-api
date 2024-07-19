@@ -1,10 +1,11 @@
 import { expect, test } from "@jest/globals";
-import { ethers, isAddress } from "ethers";
-import { Nft, getPublicProviderUrl } from "@therootnetwork/evm/index";
+import { isAddress } from "ethers";
+import { Nft } from "@therootnetwork/evm/index";
+import { getProvider } from "@therootnetwork/evm/libs/provider";
 
 // Amulets on Mainnet
 const contractAddress = "0xAAaaAAaa00000864000000000000000000000000";
-const provider = new ethers.JsonRpcProvider(getPublicProviderUrl("root"));
+const provider = getProvider("root");
 const amulets = new Nft(provider, contractAddress);
 
 test("ownerOf indeed returns", async () => {
