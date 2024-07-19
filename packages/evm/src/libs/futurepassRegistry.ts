@@ -24,11 +24,20 @@ export class FuturepassRegistry {
 	getContract() {
 		return this.contract;
 	}
-
+	/**
+	 * Returns the futurepass for given address
+	 *
+	 * @param owner - The address
+	 */
 	futurepassOf = async (owner: TAddress): Promise<TAddress> => {
 		return this.contract.futurepassOf(owner);
 	};
 
+	/**
+	 * Allows for creation of a new futurepass
+	 *
+	 * @param owner - The owner of the futurepass
+	 */
 	create = async (owner: TAddress): Promise<TransactionResponse> => {
 		return this.contract.create(owner);
 	};
