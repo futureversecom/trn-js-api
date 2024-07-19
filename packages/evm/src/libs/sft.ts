@@ -4,11 +4,18 @@ import { Ownable } from "./ownable";
 import { ERC1155_PRECOMPILE_ABI } from "./constants";
 import { collectionIdToERC1155Address, contractAddressToNativeId } from "./commonUtils";
 
+/** Class that allows to use a sft collection. */
 export class Sft extends Ownable {
 	provider: TProviderOrSigner;
 	contractAddress: TAddress;
 	contract: Contract;
 
+	/**
+	 * Initialize a new sft instance
+	 * @param {TProviderOrSigner} provider - An ethers provider.
+	 * @param {TAddress} contractAddress - The contractAddress of the collection
+	 * @param {number} collectionId - The collectionId of the collection
+	 */
 	constructor(provider: TProviderOrSigner, contractAddress?: TAddress, collectionId?: number) {
 		if (!contractAddress && !collectionId) {
 			throw new Error("Either contractAddress or collectionId should be passed");
@@ -28,16 +35,18 @@ export class Sft extends Ownable {
 
 	/**
 	 * Returns the contract instance
+	 * @returns {Contract} Contract instance
 	 */
-	getContract() {
+	getContract(): Contract {
 		return this.contract;
 	}
 
 	/**
 	 * Get back the balance for a user of a specific tokenId
 	 *
-	 * @param owner - The owner we are querying the balance for
-	 * @param amount - The tokenId we query the balance of
+	 * @param {TAddress} owner - The owner we are querying the balance for
+	 * @param {TTokenId} id - The tokenId we query the balance of
+	 * @returns {bigint} The balance
 	 */
 	balanceOf = async (owner: TAddress, id: TTokenId): Promise<bigint> => {
 		return this.contract.balanceOf(owner, id);
@@ -46,18 +55,20 @@ export class Sft extends Ownable {
 	/**
 	 * Get back the balances for different addresses of specific tokenIds
 	 *
-	 * @param owner - The owner we are querying the balance for
-	 * @param ids - The tokenIds we query the balance of
+	 * @param {TAddress[]}owners - The owner we are querying the balance for
+	 * @param {TTokenId[]} ids - The tokenIds we query the balance of
+	 * @returns {bigint[]} The balances
 	 */
-	balanceOfBatch = async (owner: TAddress[], ids: TTokenId[]): Promise<bigint[]> => {
-		return this.contract.balanceOfBatch(owner, ids);
+	balanceOfBatch = async (owners: TAddress[], ids: TTokenId[]): Promise<bigint[]> => {
+		return this.contract.balanceOfBatch(owners, ids);
 	};
 
 	/**
 	 * Sets approval for a specific operator
 	 *
-	 * @param operator - The address that becomes approved
-	 * @param approved - Whether the approval is true or false
+	 * @param {TAddress} operator - The address that becomes approved
+	 * @param {boolean} approved - Whether the approval is true or false
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	setApprovalForAll = async (
 		operator: TAddress,
@@ -69,8 +80,9 @@ export class Sft extends Ownable {
 	/**
 	 * Checks the whether operator is approved on account
 	 *
-	 * @param account - The account that the operator operates
-	 * @param operator - The operator address to check
+	 * @param {TAddress} account - The account that the operator operates
+	 * @param {TAddress} operator - The operator address to check
+	 * @returns {boolean} Whether approved or not
 	 */
 	isApprovedForAll = async (account: TAddress, operator: TAddress): Promise<boolean> => {
 		return this.contract.isApprovedForAll(account, operator);
@@ -79,11 +91,12 @@ export class Sft extends Ownable {
 	/**
 	 * Allows to transfer a sft token with a certain quantity
 	 *
-	 * @param from - The sender
-	 * @param to - The receiver
-	 * @param id - The tokenId
-	 * @param amount - The quantity of the tokenId we wish to send
-	 * @param data - Any additional hexadecimal data
+	 * @param {TAddress} from - The sender
+	 * @param {TAddress} to - The receiver
+	 * @param {TTokenId} id - The tokenId
+	 * @param {number} amount - The quantity of the tokenId we wish to send
+	 * @param {BytesLike} data - Any additional data
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	safeTransferFrom = async (
 		from: TAddress,
@@ -98,11 +111,12 @@ export class Sft extends Ownable {
 	/**
 	 * Allows to transfer sft tokens with a certain quantity in a batch
 	 *
-	 * @param from - The sender
-	 * @param to - The receiver
-	 * @param ids - The tokenIds
-	 * @param amounts - The quantities of the tokenIds we wish to send
-	 * @param data - Any additional hexadecimal data
+	 * @param {TAddress} from - The sender
+	 * @param {TAddress} to - The receiver
+	 * @param {TTokenId[]} ids - The tokenIds
+	 * @param {number[]}amounts - The quantities of the tokenIds we wish to send
+	 * @param {BytesLike} data - Any additional hexadecimal data
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	safeBatchTransferFrom = async (
 		from: TAddress,
@@ -117,9 +131,10 @@ export class Sft extends Ownable {
 	/**
 	 * Allows to burn a sft token with a set quantity
 	 *
-	 * @param account - The address to burn from
-	 * @param id - The tokenId to burn
-	 * @param value - The quantity to burn
+	 * @param {TAddress} account - The address to burn from
+	 * @param {TTokenId} id - The tokenId to burn
+	 * @param {number} value - The quantity to burn
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	burn = async (account: TAddress, id: TTokenId, value: number): Promise<TransactionResponse> => {
 		return this.contract.burn(account, id, value);
@@ -128,9 +143,10 @@ export class Sft extends Ownable {
 	/**
 	 * Allows to burn a sft tokens with set quantities
 	 *
-	 * @param account - The address to burn from
-	 * @param ids - The tokenIds to burn
-	 * @param values - The quantities to burn
+	 * @param {TAddress} account - The address to burn from
+	 * @param {TTokenId[]} ids - The tokenIds to burn
+	 * @param {number[]} values - The quantities to burn
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	burnBatch = async (
 		account: TAddress,
@@ -143,25 +159,28 @@ export class Sft extends Ownable {
 	/**
 	 * Returns the total supply of a specific tokenId
 	 *
-	 * @param id - The tokenId
+	 * @param {TTokenId} id - The tokenId
+	 * @returns {bigint} The total supply
 	 */
-	totalSupply = async (id: TTokenId): Promise<string> => {
+	totalSupply = async (id: TTokenId): Promise<bigint> => {
 		return this.contract.totalSupply(id);
 	};
 
 	/**
 	 * Check whether specific token exists
 	 *
-	 * @param id - The tokenId
+	 * @param {TTokenId} id - The tokenId
+	 * @returns {boolean} Whether token exists or not
 	 */
-	exists = async (id: TTokenId): Promise<string> => {
+	exists = async (id: TTokenId): Promise<boolean> => {
 		return this.contract.exists(id);
 	};
 
 	/**
 	 * Retrieve the metadata uri for a specific token
 	 *
-	 * @param id - The tokenId
+	 * @param {TTokenId} id - The tokenId
+	 * @returns {string} The uri
 	 */
 	uri = async (id: TTokenId): Promise<string> => {
 		return this.contract.uri(id);
@@ -170,9 +189,10 @@ export class Sft extends Ownable {
 	/**
 	 * Allows to mint new sft tokens
 	 *
-	 * @param account - The address to mint to
-	 * @param id - The tokenId to mint
-	 * @param amount - The quantity to mint
+	 * @param {TAddress} owner - The address to mint to
+	 * @param {TTokenId} id - The tokenId to mint
+	 * @param {number} amount - The quantity to mint
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	mint = async (owner: TAddress, id: TTokenId, amount: number): Promise<TransactionResponse> => {
 		return this.contract.mint(owner, id, amount);
@@ -181,14 +201,15 @@ export class Sft extends Ownable {
 	/**
 	 * Allows to mint multiple sft tokens at once
 	 *
-	 * @param account - The address to mint to
-	 * @param ids - The tokenIds to mint
-	 * @param amounts - The quantities to mint
+	 * @param {TAddress} owner - The address to mint to
+	 * @param {TTokenId[]} ids - The tokenIds to mint
+	 * @param {number[]} amounts - The quantities to mint
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	mintBatch = async (
 		owner: TAddress,
-		ids: TTokenId,
-		amounts: number
+		ids: TTokenId[],
+		amounts: number[]
 	): Promise<TransactionResponse> => {
 		return this.contract.mintBatch(owner, ids, amounts);
 	};
@@ -196,8 +217,9 @@ export class Sft extends Ownable {
 	/**
 	 * Update the maximum supply for a specific tokenId
 	 *
-	 * @param id - The tokenIds set the max supply for
-	 * @param maxSupply - The maximum supply
+	 * @param {TTokenId} id - The tokenIds set the max supply for
+	 * @param {number} maxSupply - The maximum supply
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	setMaxSupply = async (id: TTokenId, maxSupply: number): Promise<TransactionResponse> => {
 		return this.contract.setMaxSupply(id, maxSupply);
@@ -206,7 +228,8 @@ export class Sft extends Ownable {
 	/**
 	 * Updates the metadata uri for the entire collection
 	 *
-	 * @param baseURI - The new baseUri
+	 * @param {string} baseURI - The new baseUri
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	setBaseURI = async (baseURI: string): Promise<TransactionResponse> => {
 		return this.contract.setBaseURI(hexlify(toUtf8Bytes(baseURI)));
@@ -214,8 +237,9 @@ export class Sft extends Ownable {
 
 	/**
 	 * Gives back the collectionId for the collection if there is one
+	 * @returns {number | null} CollectionId if available
 	 */
-	getCollectionId = () => {
+	getCollectionId = (): number | null => {
 		return contractAddressToNativeId(this.contractAddress);
 	};
 
