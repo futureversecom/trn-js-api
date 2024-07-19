@@ -1,11 +1,16 @@
 import { Contract, Interface } from "ethers";
 import { MULTICALL3_ABI, MULTICALL3_ADDRESS } from "./constants";
-import { IMultiCall, TProviderOrSigner } from "../types";
+import { IMultiCall, IMultiCallResponse, TProviderOrSigner } from "../types";
 
+/** Class that allows to use Multicall. */
 export class Multicall {
 	provider: TProviderOrSigner;
 	contract: Contract;
 
+	/**
+	 * Initialize a new Multicall instance
+	 * @param {TProviderOrSigner} provider - An ethers provider.
+	 */
 	constructor(provider: TProviderOrSigner) {
 		this.provider = provider;
 		this.contract = new Contract(MULTICALL3_ADDRESS, MULTICALL3_ABI, this.provider);
@@ -14,16 +19,18 @@ export class Multicall {
 	/**
 	 * Returns the contract instance
 	 */
-	getContract() {
+	getContract(): Contract {
 		return this.contract;
 	}
 
-	calls = async (
-		calls: IMultiCall[],
-		allowFailure?: boolean
-	): Promise<{ success: boolean; result: any }[]> => {
+	/**
+	 * Initialize a new Multicall instance
+	 * @param {IMultiCall[]} calls - Multicall calldata.
+	 * @param {boolean} allowFailure - Whether all calls have to succeed
+	 */
+	calls = async (calls: IMultiCall[], allowFailure?: boolean): Promise<IMultiCallResponse[]> => {
 		const data = await this.contract.aggregate3.staticCall(
-			calls.map(({ target, functionName, args, abi }) => {
+			calls.map(({ target, functionName, args, abi }: IMultiCall) => {
 				const iface = new Interface(abi);
 				return {
 					target,

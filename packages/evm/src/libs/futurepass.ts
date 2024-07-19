@@ -75,6 +75,15 @@ export class Futurepass extends Ownable {
 		return this.contract.unregisterDelegate(delegate);
 	};
 
+	/**
+	 * Proxy a call
+	 *
+	 * @param {number} callType - The type of call
+	 * @param {TAddress} callTo - The destination
+	 * @param {number} value - The value of the transaction
+	 * @param {BytesLike} callData - The data input of the transaction
+	 * @returns {TransactionResponse} Transaction object
+	 */
 	proxyCall = async (
 		callType: number,
 		callTo: TAddress,
