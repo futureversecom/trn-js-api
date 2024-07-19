@@ -1,15 +1,22 @@
 import { Contract, TransactionResponse } from "ethers";
-import { TAddress, TProviderOrSigner } from "../types";
+import { IMultiCallResponse, TAddress, TProviderOrSigner } from "../types";
 import { Ownable } from "./ownable";
 import { ERC20_PRECOMPILE_ABI } from "./constants";
 import { assetIdToERC20Address, ERC20_ABI, Multicall } from "..";
 
+/** Class that allows to interact with a specific asset. */
 export class Assets extends Ownable {
 	provider: TProviderOrSigner;
 	contractAddress: TAddress;
 	contract: Contract;
 	multicall: Multicall;
 
+	/**
+	 * Initialize a new asset instance.
+	 * @param {TProviderOrSigner} provider - An ethers provider.
+	 * @param {TAddress} contractAddress - The contractAddress of the asset.
+	 * @param {number} assetId - The assetId
+	 */
 	constructor(provider: TProviderOrSigner, contractAddress?: TAddress, assetId?: number) {
 		if (!contractAddress && !assetId) {
 			throw new Error("Either contractAddress or collectionId should be passed");
@@ -30,16 +37,18 @@ export class Assets extends Ownable {
 
 	/**
 	 * Returns the contract instance
+	 * @returns {Contract} - The contractInstance
 	 */
-	getContract() {
+	getContract(): Contract {
 		return this.contract;
 	}
 
 	/**
 	 * Adjusts the approval amount for spender
 	 *
-	 * @param spender - The spender's address
-	 * @param amount - The approval amount
+	 * @param {TAddress} spender - The spender's address
+	 * @param {number} amount - The approval amount
+	 * @return {TransactionResponse} - Transaction object
 	 */
 	approve = async (spender: TAddress, amount: number): Promise<TransactionResponse> => {
 		return this.contract.approve(spender, amount);
@@ -48,8 +57,9 @@ export class Assets extends Ownable {
 	/**
 	 * Returns the allowance of the spender for owner address
 	 *
-	 * @param owner - The owner's address
-	 * @param spender - The spender's address
+	 * @param {TAddress} owner - The owner's address
+	 * @param {TAddress} spender - The spender's address
+	 * @returns {bigint} The allowance
 	 */
 	allowance = async (owner: TAddress, spender: TAddress): Promise<bigint> => {
 		return this.contract.allowance(owner, spender);
@@ -58,7 +68,8 @@ export class Assets extends Ownable {
 	/**
 	 * Returns the balance for given address
 	 *
-	 * @param owner - The owner's address
+	 * @param {TAddress} owner - The owner's address
+	 * @returns {bigint} The balance
 	 */
 	balanceOf = async (owner: TAddress): Promise<bigint> => {
 		return this.contract.balanceOf(owner);
@@ -66,6 +77,7 @@ export class Assets extends Ownable {
 
 	/**
 	 * Returns the token name
+	 * @returns {string} The name.
 	 */
 	name = async (): Promise<string> => {
 		return this.contract.name();
@@ -73,6 +85,7 @@ export class Assets extends Ownable {
 
 	/**
 	 * Returns the token symbol
+	 * @returns {string} The symbol
 	 */
 	symbol = async (): Promise<string> => {
 		return this.contract.symbol();
@@ -80,6 +93,7 @@ export class Assets extends Ownable {
 
 	/**
 	 * Returns the token decimals
+	 * @returns {bigint} The decimals
 	 */
 	decimals = async (): Promise<bigint> => {
 		return this.contract.decimals();
@@ -88,8 +102,9 @@ export class Assets extends Ownable {
 	/**
 	 * Transfer token to given address
 	 *
-	 * @param who - The address to transfer to
-	 * @param amount - The amount to transfer
+	 * @param {TAddress} who - The address to transfer to
+	 * @param {number} amount - The amount to transfer
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	transfer = async (who: TAddress, amount: number): Promise<TransactionResponse> => {
 		return this.contract.transfer(who, amount);
@@ -97,9 +112,11 @@ export class Assets extends Ownable {
 
 	/**
 	 * Gives back balances of owners in a single aggregated query
+	 * @param {TAddress[]} owners - An array of addresses to query
+	 * @returns {IMultiCallResponse[]} The balances and whether each call succeeded
 	 */
-	getMultipleBalances = async (owners: TAddress[]) => {
-		const calls = owners.map((owner) => {
+	getMultipleBalances = async (owners: TAddress[]): Promise<IMultiCallResponse[]> => {
+		const calls = owners.map((owner: TAddress) => {
 			return {
 				target: this.contractAddress,
 				abi: ERC20_ABI,

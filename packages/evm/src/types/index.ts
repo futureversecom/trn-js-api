@@ -14,3 +14,8 @@ export interface IMultiCall {
 	functionName: string;
 	args?: ReadonlyArray<any>;
 }
+
+export interface IMultiCallResponse {
+	success: boolean;
+	result: any;
+}

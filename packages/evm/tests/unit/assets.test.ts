@@ -1,5 +1,5 @@
 import { expect, test } from "@jest/globals";
-import { ethers } from "ethers";
+import { ethers, ZeroAddress } from "ethers";
 import { ROOT_ADDRESS, getPublicProviderUrl } from "@therootnetwork/evm/index";
 import { Assets } from "@therootnetwork/evm/libs/assets";
 
