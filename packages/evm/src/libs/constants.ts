@@ -9,6 +9,10 @@ export const XRP_ADDRESS = "0xCCCCcCCc00000002000000000000000000000000";
 export const XRP_ASSET_ID = 2;
 export const RNS_REGISTRAR_ADDRESS_ROOT = "0xEC58C26B8E0A4bc0fe1ad21D216e4ecAd9e037A8";
 export const RNS_REGISTRAR_ADDRESS_PORCINI = "0xA931c1F9621ECa562c258B81bF9fA8401f12241B";
+export const ROOTSCAN_URL = "https://rootscan.io";
+export const ROOTSCAN_PORCINI_URL = "https://porcini.rootscan.io";
+export const BLOCK_EXPLORER_ROOT_URL = "https://explorer.rootnet.live";
+export const BLOCK_EXPLORER_PORCINI_URL = "https://explorer.rootnet.cloud/";
 
 // Precompile address for nft precompile is 1721
 export const NFT_PRECOMPILE_ADDRESS = "0x00000000000000000000000000000000000006b9";
