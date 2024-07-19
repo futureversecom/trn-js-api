@@ -31,6 +31,13 @@ export class Futurepass extends Ownable {
 		return this.contract.delegateType(delegate);
 	};
 
+	/**
+	 * Registers a new delegate using a signature
+	 *
+	 * @param delegate - The delegate address
+	 * @param proxyType - The proxyType
+	 * @param deadline - The epoch timestamp
+	 */
 	registerDelegateWithSignature = async (
 		delegate: TAddress,
 		proxyType: ProxyType,
