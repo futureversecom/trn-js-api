@@ -1,11 +1,5 @@
 import { Contract, getAddress, hexlify, toUtf8Bytes, TransactionResponse } from "ethers";
-import {
-	collectionIdToERC721Address,
-	contractAddressToNativeId,
-	ERC721_ABI,
-	NFT_PRECOMPILE_ABI,
-	NFT_PRECOMPILE_ADDRESS,
-} from "..";
+import { collectionIdToERC721Address, contractAddressToNativeId, ERC721_ABI } from "..";
 
 import { TAddress, TProviderOrSigner, TTokenId } from "../types";
 import { Ownable } from "./ownable";

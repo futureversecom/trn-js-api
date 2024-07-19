@@ -1,7 +1,21 @@
-import { TAddress } from "../types";
+import { HttpProviderUrl, TAddress } from "../types";
 import { getPublicProviderUrl } from "./getPublicProviderUrl";
 
-export const getHardhatNetworkConfig = (accounts: TAddress[]) => {
+interface IHardhatNetworks {
+	networks: Record<"porcini" | "root", IHardhatNetworkConfig>;
+}
+
+interface IHardhatNetworkConfig {
+	url: HttpProviderUrl;
+	chainId: number;
+	accounts: TAddress[];
+}
+/**
+ * Retrieve Hardhat network config
+ * @param {TAddress[]} accounts - An array of private keys
+ * @returns {IHardhatNetworks} Networks to be used in a hardhat config
+ */
+export const getHardhatNetworkConfig = (accounts: TAddress[]): IHardhatNetworks => {
 	return {
 		networks: {
 			porcini: {

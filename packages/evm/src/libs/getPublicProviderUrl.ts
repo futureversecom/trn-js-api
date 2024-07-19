@@ -1,6 +1,10 @@
-export type NetworkName = "root" | "porcini" | "sprout-1" | "sprout-2";
+import { HttpProviderUrl, NetworkName } from "../types";
 
-export type HttpProviderUrl = `http${string}`;
+/**
+ * Retrieve RPC URL for given network
+ * @param {NetworkName} network - The desired network
+ * @returns {HttpProviderUrl} The rpc url
+ */
 export function getPublicProviderUrl(network: NetworkName): HttpProviderUrl {
 	const networks: Record<NetworkName, HttpProviderUrl> = {
 		"root": "https://root.rootnet.live/archive",

@@ -18,6 +18,7 @@ export class Multicall {
 
 	/**
 	 * Returns the contract instance
+	 * @returns {Contract} Contract instance
 	 */
 	getContract(): Contract {
 		return this.contract;
