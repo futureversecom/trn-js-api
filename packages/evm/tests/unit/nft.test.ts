@@ -1,11 +1,10 @@
 import { expect, test } from "@jest/globals";
-import { ethers } from "ethers";
-import { getPublicProviderUrl } from "@therootnetwork/api/index";
-import { Nft } from "@therootnetwork/evm/index";
+import { ethers, isAddress } from "ethers";
+import { Nft, getPublicProviderUrl } from "@therootnetwork/evm/index";
 
 // Amulets on Mainnet
 const contractAddress = "0xAAaaAAaa00000864000000000000000000000000";
-const provider = new ethers.JsonRpcProvider(getPublicProviderUrl("root", false, true));
+const provider = new ethers.JsonRpcProvider(getPublicProviderUrl("root"));
 const amulets = new Nft(provider, contractAddress);
 
 test("ownerOf indeed returns", async () => {
@@ -50,4 +49,21 @@ test("ownedTokens returns an array with values", async () => {
 	const owner = await amulets.ownerOf(1);
 	const ownedTokens = await amulets.ownedTokens(owner, 10, 0);
 	expect(typeof ownedTokens).toEqual("object");
+});
+
+test("getMultipleOwners should returns an array of owners", async () => {
+	const owners = await amulets.getMultipleOwners([1, 2, 3, 4, 5]);
+	for (const owner of owners) {
+		await expect(owner.success).toEqual(true);
+		await expect(isAddress(owner.result)).toEqual(true);
+	}
+});
+
+test("getMultipleBalances should returns an array of balances", async () => {
+	const owner = await amulets.ownerOf(1);
+	const owners = await amulets.getMultipleBalances([owner, owner, owner]);
+	for (const owner of owners) {
+		await expect(owner.success).toEqual(true);
+		await expect(typeof owner.result).toEqual("bigint");
+	}
 });

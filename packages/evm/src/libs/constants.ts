@@ -4,7 +4,9 @@ export const PORCINI_CHAINID = 7672;
 
 // Default token addresses
 export const ROOT_ADDRESS = "0xcCcCCccC00000001000000000000000000000000";
+export const ROOT_ASSET_ID = 1;
 export const XRP_ADDRESS = "0xCCCCcCCc00000002000000000000000000000000";
+export const XRP_ASSET_ID = 2;
 
 // Precompile address for nft precompile is 1721
 export const NFT_PRECOMPILE_ADDRESS = "0x00000000000000000000000000000000000006b9";
@@ -28,22 +30,22 @@ export const MULTICALL3_ADDRESS = "0xc9C2E2429AeC354916c476B30d729deDdC94988d";
 /** ABIs */
 
 export const MULTICALL3_ABI = [
-	"function aggregate(tuple(address,bytes)[]) payable returns (uint256, bytes[])",
-	"function aggregate3(tuple(address,bool,bytes)[]) payable returns (tuple(bool,bytes)[])",
-	"function aggregate3Value(tuple(address,bool,uint256,bytes)[]) payable returns (tuple(bool,bytes)[])",
-	"function blockAndAggregate(tuple(address,bytes)[]) payable returns (uint256, bytes32, tuple(bool,bytes)[])",
-	"function getBasefee() view returns (uint256)",
-	"function getBlockHash(uint256) view returns (bytes32)",
-	"function getBlockNumber() view returns (uint256)",
-	"function getChainId() view returns (uint256)",
-	"function getCurrentBlockCoinbase() view returns (address)",
-	"function getCurrentBlockDifficulty() view returns (uint256)",
-	"function getCurrentBlockGasLimit() view returns (uint256)",
-	"function getCurrentBlockTimestamp() view returns (uint256)",
-	"function getEthBalance(address) view returns (uint256)",
-	"function getLastBlockHash() view returns (bytes32)",
-	"function tryAggregate(bool,tuple(address,bytes)[]) payable returns (tuple(bool,bytes)[])",
-	"function tryBlockAndAggregate(bool,tuple(address,bytes)[]) payable returns (uint256, bytes32, tuple(bool,bytes)[])",
+	"function aggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes[] returnData)",
+	"function aggregate3(tuple(address target, bool allowFailure, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+	"function aggregate3Value(tuple(address target, bool allowFailure, uint256 value, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+	"function blockAndAggregate(tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
+	"function getBasefee() view returns (uint256 basefee)",
+	"function getBlockHash(uint256 blockNumber) view returns (bytes32 blockHash)",
+	"function getBlockNumber() view returns (uint256 blockNumber)",
+	"function getChainId() view returns (uint256 chainid)",
+	"function getCurrentBlockCoinbase() view returns (address coinbase)",
+	"function getCurrentBlockDifficulty() view returns (uint256 difficulty)",
+	"function getCurrentBlockGasLimit() view returns (uint256 gaslimit)",
+	"function getCurrentBlockTimestamp() view returns (uint256 timestamp)",
+	"function getEthBalance(address addr) view returns (uint256 balance)",
+	"function getLastBlockHash() view returns (bytes32 blockHash)",
+	"function tryAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (tuple(bool success, bytes returnData)[] returnData)",
+	"function tryBlockAndAggregate(bool requireSuccess, tuple(address target, bytes callData)[] calls) payable returns (uint256 blockNumber, bytes32 blockHash, tuple(bool success, bytes returnData)[] returnData)",
 ];
 
 export const SFT_PRECOMPILE_ABI = [

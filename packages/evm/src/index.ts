@@ -1,6 +1,13 @@
 export * from "./libs/commonUtils";
 export * from "./libs/constants";
-export * from './libs/nft';
+export * from "./libs/nft";
+export * from "./libs/assets";
+export * from "./libs/ownable";
+export * from "./libs/futurepass";
+export * from "./libs/futurepassRegistry";
+export * from "./libs/sft";
+export * from "./libs/multicall";
+export * from "./libs/feeProxy";
 
 // re-export the old alias for backward compatibility
 export {
