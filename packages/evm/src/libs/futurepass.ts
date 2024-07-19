@@ -3,11 +3,17 @@ import { Ownable } from "./ownable";
 import { FUTUREPASS_PRECOMPILE_ABI } from "./constants";
 import { ProxyType, TAddress, TProviderOrSigner } from "../types";
 
+/** Class that allows to use the futurepass pallet. */
 export class Futurepass extends Ownable {
 	provider: TProviderOrSigner;
 	futurepassAddress: TAddress;
 	contract: Contract;
 
+	/**
+	 * Initialize a new futurepass instance
+	 * @param {TProviderOrSigner} provider - An ethers provider.
+	 * @param {TAddress} futurepassAddress - The futurepass address we want to use
+	 */
 	constructor(provider: TProviderOrSigner, futurepassAddress: TAddress) {
 		super(provider, futurepassAddress);
 		this.provider = provider;
@@ -17,15 +23,17 @@ export class Futurepass extends Ownable {
 
 	/**
 	 * Returns the contract instance
+	 * @returns {Contract} A contract instance
 	 */
-	getContract() {
+	getContract(): Contract {
 		return this.contract;
 	}
 
 	/**
 	 * Gets the delegate type for given delegate
 	 *
-	 * @param delegate - The address to get the type for
+	 * @param {TAddress} delegate - The address to get the type for
+	 * @returns {ProxyType} The proxy type
 	 */
 	deletegateType = async (delegate: TAddress): Promise<ProxyType> => {
 		return this.contract.delegateType(delegate);
@@ -34,9 +42,10 @@ export class Futurepass extends Ownable {
 	/**
 	 * Registers a new delegate using a signature
 	 *
-	 * @param delegate - The delegate address
-	 * @param proxyType - The proxyType
-	 * @param deadline - The epoch timestamp
+	 * @param {TAddress} delegate - The delegate address
+	 * @param {ProxyType} proxyType - The proxyType
+	 * @param {number} deadline - The epoch timestamp
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	registerDelegateWithSignature = async (
 		delegate: TAddress,
@@ -59,7 +68,8 @@ export class Futurepass extends Ownable {
 	/**
 	 * Unregisters given delegate
 	 *
-	 * @param delegate - The address to unregister
+	 * @param {TAddress} delegate - The address to unregister
+	 * @returns {TransactionResponse} Transaction object
 	 */
 	unregisterDelegate = async (delegate: TAddress): Promise<TransactionResponse> => {
 		return this.contract.unregisterDelegate(delegate);
