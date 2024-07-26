@@ -27,11 +27,11 @@ import type {
 	EthereumLog,
 	EvmCoreErrorExitReason,
 	FrameSupportDispatchDispatchInfo,
-	FrameSupportScheduleLookupError,
 	FrameSupportTokensMiscBalanceStatus,
 	PalletCrowdsaleSaleInformation,
 	PalletDexTradingPair,
 	PalletElectionProviderMultiPhaseElectionCompute,
+	PalletElectionProviderMultiPhasePhase,
 	PalletEthyEthySigningRequest,
 	PalletEthyEventClaim,
 	PalletImOnlineSr25519AppSr25519Public,
@@ -41,13 +41,14 @@ import type {
 	PalletMultisigTimepoint,
 	PalletNftCrossChainCompatibility,
 	PalletStakingExposure,
+	PalletStakingForcing,
 	PalletStakingValidatorPrefs,
 	SeedPalletCommonEventRouterError,
+	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesNftOriginChain,
 	SeedPrimitivesNftRoyaltiesSchedule,
 	SeedPrimitivesSignatureAccountId20,
 	SeedRuntimeImplsProxyType,
-	SpFinalityGrandpaAppPublic,
 	SpNposElectionsElectionScore,
 	SpRuntimeDispatchError,
 } from "@polkadot/types/lookup";
@@ -66,6 +67,14 @@ declare module "@polkadot/api-base/types/events" {
 	interface AugmentedEvents<ApiType extends ApiTypes> {
 		assets: {
 			/**
+			 * Accounts were destroyed for given asset.
+			 **/
+			AccountsDestroyed: AugmentedEvent<
+				ApiType,
+				[assetId: u32, accountsDestroyed: u32, accountsRemaining: u32],
+				{ assetId: u32; accountsDestroyed: u32; accountsRemaining: u32 }
+			>;
+			/**
 			 * An approval for account `delegate` was cancelled by `owner`.
 			 **/
 			ApprovalCancelled: AugmentedEvent<
@@ -80,6 +89,14 @@ declare module "@polkadot/api-base/types/events" {
 					owner: SeedPrimitivesSignatureAccountId20;
 					delegate: SeedPrimitivesSignatureAccountId20;
 				}
+			>;
+			/**
+			 * Approvals were destroyed for given asset.
+			 **/
+			ApprovalsDestroyed: AugmentedEvent<
+				ApiType,
+				[assetId: u32, approvalsDestroyed: u32, approvalsRemaining: u32],
+				{ assetId: u32; approvalsDestroyed: u32; approvalsRemaining: u32 }
 			>;
 			/**
 			 * (Additional) funds have been approved for transfer to a destination account.
@@ -104,6 +121,14 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			AssetFrozen: AugmentedEvent<ApiType, [assetId: u32], { assetId: u32 }>;
 			/**
+			 * The min_balance of an asset has been updated by the asset owner.
+			 **/
+			AssetMinBalanceChanged: AugmentedEvent<
+				ApiType,
+				[assetId: u32, newMinBalance: u128],
+				{ assetId: u32; newMinBalance: u128 }
+			>;
+			/**
 			 * An asset has had its attributes changed by the `Force` origin.
 			 **/
 			AssetStatusChanged: AugmentedEvent<ApiType, [assetId: u32], { assetId: u32 }>;
@@ -111,6 +136,14 @@ declare module "@polkadot/api-base/types/events" {
 			 * Some asset `asset_id` was thawed.
 			 **/
 			AssetThawed: AugmentedEvent<ApiType, [assetId: u32], { assetId: u32 }>;
+			/**
+			 * Some account `who` was blocked.
+			 **/
+			Blocked: AugmentedEvent<
+				ApiType,
+				[assetId: u32, who: SeedPrimitivesSignatureAccountId20],
+				{ assetId: u32; who: SeedPrimitivesSignatureAccountId20 }
+			>;
 			/**
 			 * Some assets were destroyed.
 			 **/
@@ -140,6 +173,10 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			Destroyed: AugmentedEvent<ApiType, [assetId: u32], { assetId: u32 }>;
 			/**
+			 * An asset class is in the process of being destroyed.
+			 **/
+			DestructionStarted: AugmentedEvent<ApiType, [assetId: u32], { assetId: u32 }>;
+			/**
 			 * Some asset class was force-created.
 			 **/
 			ForceCreated: AugmentedEvent<
@@ -160,8 +197,8 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			Issued: AugmentedEvent<
 				ApiType,
-				[assetId: u32, owner: SeedPrimitivesSignatureAccountId20, totalSupply: u128],
-				{ assetId: u32; owner: SeedPrimitivesSignatureAccountId20; totalSupply: u128 }
+				[assetId: u32, owner: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ assetId: u32; owner: SeedPrimitivesSignatureAccountId20; amount: u128 }
 			>;
 			/**
 			 * Metadata has been cleared for an asset.
@@ -208,6 +245,22 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[assetId: u32, who: SeedPrimitivesSignatureAccountId20],
 				{ assetId: u32; who: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * Some account `who` was created with a deposit from `depositor`.
+			 **/
+			Touched: AugmentedEvent<
+				ApiType,
+				[
+					assetId: u32,
+					who: SeedPrimitivesSignatureAccountId20,
+					depositor: SeedPrimitivesSignatureAccountId20,
+				],
+				{
+					assetId: u32;
+					who: SeedPrimitivesSignatureAccountId20;
+					depositor: SeedPrimitivesSignatureAccountId20;
+				}
 			>;
 			/**
 			 * Some assets were transferred.
@@ -343,8 +396,16 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			BalanceSet: AugmentedEvent<
 				ApiType,
-				[who: SeedPrimitivesSignatureAccountId20, free: u128, reserved: u128],
-				{ who: SeedPrimitivesSignatureAccountId20; free: u128; reserved: u128 }
+				[who: SeedPrimitivesSignatureAccountId20, free: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; free: u128 }
+			>;
+			/**
+			 * Some amount was burned from an account.
+			 **/
+			Burned: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
 			>;
 			/**
 			 * Some amount was deposited (e.g. for transaction fees).
@@ -371,6 +432,38 @@ declare module "@polkadot/api-base/types/events" {
 				[account: SeedPrimitivesSignatureAccountId20, freeBalance: u128],
 				{ account: SeedPrimitivesSignatureAccountId20; freeBalance: u128 }
 			>;
+			/**
+			 * Some balance was frozen.
+			 **/
+			Frozen: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Total issuance was increased by `amount`, creating a credit to be balanced.
+			 **/
+			Issued: AugmentedEvent<ApiType, [amount: u128], { amount: u128 }>;
+			/**
+			 * Some balance was locked.
+			 **/
+			Locked: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Some amount was minted into an account.
+			 **/
+			Minted: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Total issuance was decreased by `amount`, creating a debt to be balanced.
+			 **/
+			Rescinded: AugmentedEvent<ApiType, [amount: u128], { amount: u128 }>;
 			/**
 			 * Some balance was reserved (moved from free to reserved).
 			 **/
@@ -399,9 +492,33 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * Some amount was restored into an account.
+			 **/
+			Restored: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
 			 * Some amount was removed from the account (e.g. for misbehavior).
 			 **/
 			Slashed: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Some amount was suspended from an account (it can be restored later).
+			 **/
+			Suspended: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Some balance was thawed.
+			 **/
+			Thawed: AugmentedEvent<
 				ApiType,
 				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
 				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
@@ -423,12 +540,28 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * Some balance was unlocked.
+			 **/
+			Unlocked: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
 			 * Some balance was unreserved (moved from reserved to free).
 			 **/
 			Unreserved: AugmentedEvent<
 				ApiType,
 				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
 				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * An account was upgraded.
+			 **/
+			Upgraded: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20],
+				{ who: SeedPrimitivesSignatureAccountId20 }
 			>;
 			/**
 			 * Some amount was withdrawn from the account (e.g. for transaction fees).
@@ -723,6 +856,22 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * There was a phase transition in a given round.
+			 **/
+			PhaseTransitioned: AugmentedEvent<
+				ApiType,
+				[
+					from: PalletElectionProviderMultiPhasePhase,
+					to: PalletElectionProviderMultiPhasePhase,
+					round: u32,
+				],
+				{
+					from: PalletElectionProviderMultiPhasePhase;
+					to: PalletElectionProviderMultiPhasePhase;
+					round: u32;
+				}
+			>;
+			/**
 			 * An account has been rewarded for their signed submission being finalized.
 			 **/
 			Rewarded: AugmentedEvent<
@@ -730,10 +879,6 @@ declare module "@polkadot/api-base/types/events" {
 				[account: SeedPrimitivesSignatureAccountId20, value: u128],
 				{ account: SeedPrimitivesSignatureAccountId20; value: u128 }
 			>;
-			/**
-			 * The signed phase of the given round has started.
-			 **/
-			SignedPhaseStarted: AugmentedEvent<ApiType, [round: u32], { round: u32 }>;
 			/**
 			 * An account has been slashed for submitting an invalid signed submission.
 			 **/
@@ -745,20 +890,25 @@ declare module "@polkadot/api-base/types/events" {
 			/**
 			 * A solution was stored with the given compute.
 			 *
-			 * If the solution is signed, this means that it hasn't yet been processed. If the
-			 * solution is unsigned, this means that it has also been processed.
-			 *
-			 * The `bool` is `true` when a previous solution was ejected to make room for this one.
+			 * The `origin` indicates the origin of the solution. If `origin` is `Some(AccountId)`,
+			 * the stored solution was submited in the signed phase by a miner with the `AccountId`.
+			 * Otherwise, the solution was stored either during the unsigned phase or by
+			 * `T::ForceOrigin`. The `bool` is `true` when a previous solution was ejected to make
+			 * room for this one.
 			 **/
 			SolutionStored: AugmentedEvent<
 				ApiType,
-				[compute: PalletElectionProviderMultiPhaseElectionCompute, prevEjected: bool],
-				{ compute: PalletElectionProviderMultiPhaseElectionCompute; prevEjected: bool }
+				[
+					compute: PalletElectionProviderMultiPhaseElectionCompute,
+					origin: Option<SeedPrimitivesSignatureAccountId20>,
+					prevEjected: bool,
+				],
+				{
+					compute: PalletElectionProviderMultiPhaseElectionCompute;
+					origin: Option<SeedPrimitivesSignatureAccountId20>;
+					prevEjected: bool;
+				}
 			>;
-			/**
-			 * The unsigned phase of the given round has started.
-			 **/
-			UnsignedPhaseStarted: AugmentedEvent<ApiType, [round: u32], { round: u32 }>;
 			/**
 			 * Generic event
 			 **/
@@ -766,52 +916,141 @@ declare module "@polkadot/api-base/types/events" {
 		};
 		erc20Peg: {
 			/**
-			 * A delayed erc20 deposit has failed (payment_id, beneficiary)
+			 * Toggle deposit delay.
 			 **/
-			DelayedErc20DepositFailed: AugmentedEvent<ApiType, [u64, SeedPrimitivesSignatureAccountId20]>;
+			ActivateDepositDelay: AugmentedEvent<ApiType, [active: bool], { active: bool }>;
 			/**
-			 * A delayed erc20 withdrawal has failed (asset_id, beneficiary)
+			 * Toggle deposits.
 			 **/
-			DelayedErc20WithdrawalFailed: AugmentedEvent<ApiType, [u32, H160]>;
+			ActivateDeposits: AugmentedEvent<ApiType, [active: bool], { active: bool }>;
 			/**
-			 * A bridged erc20 deposit succeeded. (asset, amount, beneficiary)
+			 * Toggle withdrawal delay.
 			 **/
-			Erc20Deposit: AugmentedEvent<ApiType, [u32, u128, SeedPrimitivesSignatureAccountId20]>;
+			ActivateWithdrawalDelay: AugmentedEvent<ApiType, [active: bool], { active: bool }>;
 			/**
-			 * An erc20 deposit has been delayed.(payment_id, scheduled block, amount, beneficiary)
+			 * Toggle withdrawals.
+			 **/
+			ActivateWithdrawals: AugmentedEvent<ApiType, [active: bool], { active: bool }>;
+			/**
+			 * A delayed erc20 deposit has failed.
+			 **/
+			DelayedErc20DepositFailed: AugmentedEvent<
+				ApiType,
+				[paymentId: u64, beneficiary: SeedPrimitivesSignatureAccountId20],
+				{ paymentId: u64; beneficiary: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * A delayed erc20 withdrawal has failed.
+			 **/
+			DelayedErc20WithdrawalFailed: AugmentedEvent<
+				ApiType,
+				[assetId: u32, beneficiary: H160],
+				{ assetId: u32; beneficiary: H160 }
+			>;
+			/**
+			 * An ERC20 delay has failed due to storage bounds.
+			 **/
+			Erc20DelayFailed: AugmentedEvent<
+				ApiType,
+				[
+					paymentId: u64,
+					scheduledBlock: u32,
+					assetId: u32,
+					source: SeedPrimitivesSignatureAccountId20,
+				],
+				{
+					paymentId: u64;
+					scheduledBlock: u32;
+					assetId: u32;
+					source: SeedPrimitivesSignatureAccountId20;
+				}
+			>;
+			/**
+			 * A bridged erc20 deposit succeeded.
+			 **/
+			Erc20Deposit: AugmentedEvent<
+				ApiType,
+				[assetId: u32, amount: u128, beneficiary: SeedPrimitivesSignatureAccountId20],
+				{ assetId: u32; amount: u128; beneficiary: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * An erc20 deposit has been delayed.
 			 **/
 			Erc20DepositDelayed: AugmentedEvent<
 				ApiType,
-				[u64, u32, u128, SeedPrimitivesSignatureAccountId20]
+				[
+					paymentId: u64,
+					scheduledBlock: u32,
+					amount: u128,
+					beneficiary: SeedPrimitivesSignatureAccountId20,
+					assetId: u32,
+				],
+				{
+					paymentId: u64;
+					scheduledBlock: u32;
+					amount: u128;
+					beneficiary: SeedPrimitivesSignatureAccountId20;
+					assetId: u32;
+				}
 			>;
 			/**
-			 * A bridged erc20 deposit failed. (source address, abi data)
+			 * A bridged erc20 deposit failed.
 			 **/
-			Erc20DepositFail: AugmentedEvent<ApiType, [H160, Bytes]>;
+			Erc20DepositFail: AugmentedEvent<
+				ApiType,
+				[source: H160, abiData: Bytes],
+				{ source: H160; abiData: Bytes }
+			>;
 			/**
-			 * Tokens were burnt for withdrawal on Ethereum as ERC20s (asset, amount, beneficiary)
+			 * Tokens were burnt for withdrawal on Ethereum as ERC20s
 			 **/
-			Erc20Withdraw: AugmentedEvent<ApiType, [u32, u128, H160]>;
+			Erc20Withdraw: AugmentedEvent<
+				ApiType,
+				[assetId: u32, amount: u128, beneficiary: H160],
+				{ assetId: u32; amount: u128; beneficiary: H160 }
+			>;
 			/**
-			 * A withdrawal has been delayed.(payment_id, scheduled block, amount, beneficiary)
+			 * A withdrawal has been delayed.
 			 **/
-			Erc20WithdrawalDelayed: AugmentedEvent<ApiType, [u64, u32, u128, H160]>;
+			Erc20WithdrawalDelayed: AugmentedEvent<
+				ApiType,
+				[
+					paymentId: u64,
+					scheduledBlock: u32,
+					amount: u128,
+					beneficiary: H160,
+					assetId: u32,
+					source: SeedPrimitivesSignatureAccountId20,
+				],
+				{
+					paymentId: u64;
+					scheduledBlock: u32;
+					amount: u128;
+					beneficiary: H160;
+					assetId: u32;
+					source: SeedPrimitivesSignatureAccountId20;
+				}
+			>;
 			/**
-			 * There are no more payment ids available, they've been exhausted
+			 * There are no more payment ids available, they've been exhausted.
 			 **/
 			NoAvailableDelayedPaymentIds: AugmentedEvent<ApiType, []>;
 			/**
-			 * A delay was added for an asset_id (asset_id, min_balance, delay)
+			 * A delay was added for an asset_id.
 			 **/
-			PaymentDelaySet: AugmentedEvent<ApiType, [u32, u128, u32]>;
+			PaymentDelaySet: AugmentedEvent<
+				ApiType,
+				[assetId: u32, minBalance: u128, delay: u32],
+				{ assetId: u32; minBalance: u128; delay: u32 }
+			>;
 			/**
-			 * The peg contract address has been set
+			 * The peg contract address has been set.
 			 **/
-			SetContractAddress: AugmentedEvent<ApiType, [H160]>;
+			SetContractAddress: AugmentedEvent<ApiType, [address: H160], { address: H160 }>;
 			/**
-			 * The ROOT peg contract address has been set
+			 * The ROOT peg contract address has been set.
 			 **/
-			SetRootPegContract: AugmentedEvent<ApiType, [H160]>;
+			SetRootPegContract: AugmentedEvent<ApiType, [address: H160], { address: H160 }>;
 			/**
 			 * Generic event
 			 **/
@@ -819,14 +1058,42 @@ declare module "@polkadot/api-base/types/events" {
 		};
 		ethBridge: {
 			/**
-			 * A notary (validator) set change is in motion (event_id, new_validator_set_id)
+			 * A notary (validator) set change is in motion
 			 * A proof for the change will be generated with the given `event_id`
 			 **/
-			AuthoritySetChange: AugmentedEvent<ApiType, [u64, u64]>;
+			AuthoritySetChange: AugmentedEvent<
+				ApiType,
+				[eventProofId: u64, validatorSetId: u64],
+				{ eventProofId: u64; validatorSetId: u64 }
+			>;
 			/**
-			 * An event has been challenged (claim_id, challenger)
+			 * The bridge has been manually paused or unpaused
 			 **/
-			Challenged: AugmentedEvent<ApiType, [u64, SeedPrimitivesSignatureAccountId20]>;
+			BridgeManualPause: AugmentedEvent<ApiType, [paused: bool], { paused: bool }>;
+			/**
+			 * An event has been challenged
+			 **/
+			Challenged: AugmentedEvent<
+				ApiType,
+				[eventClaimId: u64, challenger: SeedPrimitivesSignatureAccountId20],
+				{ eventClaimId: u64; challenger: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * A new challenge period was set
+			 **/
+			ChallengePeriodSet: AugmentedEvent<ApiType, [period: u32], { period: u32 }>;
+			/**
+			 * DelayedEventProofsPerBlock was set
+			 **/
+			DelayedEventProofsPerBlockSet: AugmentedEvent<ApiType, [count: u8], { count: u8 }>;
+			/**
+			 * Ethereum event confirmations were set
+			 **/
+			EventBlockConfirmationsSet: AugmentedEvent<
+				ApiType,
+				[confirmations: u64],
+				{ confirmations: u64 }
+			>;
 			/**
 			 * An event proof has been sent for signing by ethy-gadget
 			 **/
@@ -836,66 +1103,110 @@ declare module "@polkadot/api-base/types/events" {
 				{ eventProofId: u64; signingRequest: PalletEthyEthySigningRequest }
 			>;
 			/**
-			 * An event has been submitted from Ethereum (event_claim_id, event_claim, process_at)
+			 * An event has been submitted from Ethereum
 			 **/
-			EventSubmit: AugmentedEvent<ApiType, [u64, PalletEthyEventClaim, u32]>;
+			EventSubmit: AugmentedEvent<
+				ApiType,
+				[eventClaimId: u64, eventClaim: PalletEthyEventClaim, processAt: u32],
+				{ eventClaimId: u64; eventClaim: PalletEthyEventClaim; processAt: u32 }
+			>;
 			/**
-			 * The schedule to unpause the bridge has failed (scheduled_block)
+			 * The schedule to unpause the bridge has failed
 			 **/
-			FinaliseScheduleFail: AugmentedEvent<ApiType, [u32]>;
+			FinaliseScheduleFail: AugmentedEvent<ApiType, [scheduledBlock: u32], { scheduledBlock: u32 }>;
 			/**
 			 * Verifying an event failed
 			 **/
-			Invalid: AugmentedEvent<ApiType, [u64]>;
+			Invalid: AugmentedEvent<ApiType, [eventClaimId: u64], { eventClaimId: u64 }>;
 			/**
-			 * The event is still awaiting consensus. Process block pushed out (claim_id, process_at)
+			 * A range of missing event Ids were removed
 			 **/
-			ProcessAtExtended: AugmentedEvent<ApiType, [u64, u32]>;
+			MissingEventIdsRemoved: AugmentedEvent<
+				ApiType,
+				[range: ITuple<[u64, u64]>],
+				{ range: ITuple<[u64, u64]> }
+			>;
+			/**
+			 * The event is still awaiting consensus. Process block pushed out
+			 **/
+			ProcessAtExtended: AugmentedEvent<
+				ApiType,
+				[eventClaimId: u64, processAt: u32],
+				{ eventClaimId: u64; processAt: u32 }
+			>;
 			/**
 			 * Processing an event failed
 			 **/
-			ProcessingFailed: AugmentedEvent<ApiType, [u64, SeedPalletCommonEventRouterError]>;
+			ProcessingFailed: AugmentedEvent<
+				ApiType,
+				[eventClaimId: u64, routerError: SeedPalletCommonEventRouterError],
+				{ eventClaimId: u64; routerError: SeedPalletCommonEventRouterError }
+			>;
 			/**
 			 * Processing an event succeeded
 			 **/
-			ProcessingOk: AugmentedEvent<ApiType, [u64]>;
+			ProcessingOk: AugmentedEvent<ApiType, [eventClaimId: u64], { eventClaimId: u64 }>;
 			/**
 			 * Generating event proof delayed as bridge is paused
 			 **/
-			ProofDelayed: AugmentedEvent<ApiType, [u64]>;
+			ProofDelayed: AugmentedEvent<ApiType, [eventProofId: u64], { eventProofId: u64 }>;
 			/**
 			 * An account has deposited a relayer bond
 			 **/
-			RelayerBondDeposit: AugmentedEvent<ApiType, [SeedPrimitivesSignatureAccountId20, u128]>;
+			RelayerBondDeposit: AugmentedEvent<
+				ApiType,
+				[relayer: SeedPrimitivesSignatureAccountId20, bond: u128],
+				{ relayer: SeedPrimitivesSignatureAccountId20; bond: u128 }
+			>;
 			/**
 			 * An account has withdrawn a relayer bond
 			 **/
-			RelayerBondWithdraw: AugmentedEvent<ApiType, [SeedPrimitivesSignatureAccountId20, u128]>;
+			RelayerBondWithdraw: AugmentedEvent<
+				ApiType,
+				[relayer: SeedPrimitivesSignatureAccountId20, bond: u128],
+				{ relayer: SeedPrimitivesSignatureAccountId20; bond: u128 }
+			>;
 			/**
 			 * A new relayer has been set
 			 **/
-			RelayerSet: AugmentedEvent<ApiType, [Option<SeedPrimitivesSignatureAccountId20>]>;
+			RelayerSet: AugmentedEvent<
+				ApiType,
+				[relayer: Option<SeedPrimitivesSignatureAccountId20>],
+				{ relayer: Option<SeedPrimitivesSignatureAccountId20> }
+			>;
 			/**
 			 * The bridge contract address has been set
 			 **/
-			SetContractAddress: AugmentedEvent<ApiType, [H160]>;
+			SetContractAddress: AugmentedEvent<ApiType, [address: H160], { address: H160 }>;
 			/**
 			 * Verifying an event succeeded
 			 **/
-			Verified: AugmentedEvent<ApiType, [u64]>;
+			Verified: AugmentedEvent<ApiType, [eventClaimId: u64], { eventClaimId: u64 }>;
 			/**
-			 * A notary (validator) set change for Xrpl is in motion (event_id, new_validator_set_id)
+			 * A notary (validator) set change for Xrpl is in motion
 			 * A proof for the change will be generated with the given `event_id`
 			 **/
-			XrplAuthoritySetChange: AugmentedEvent<ApiType, [u64, u64]>;
+			XrplAuthoritySetChange: AugmentedEvent<
+				ApiType,
+				[eventProofId: u64, validatorSetId: u64],
+				{ eventProofId: u64; validatorSetId: u64 }
+			>;
 			/**
 			 * Xrpl authority set change request failed
 			 **/
-			XrplAuthoritySetChangeRequestFailed: AugmentedEvent<ApiType, []>;
+			XrplAuthoritySetChangeRequestFailed: AugmentedEvent<
+				ApiType,
+				[error: SpRuntimeDispatchError],
+				{ error: SpRuntimeDispatchError }
+			>;
 			/**
 			 * Xrpl Door signers are set
 			 **/
-			XrplDoorSignersSet: AugmentedEvent<ApiType, []>;
+			XrplDoorSignersSet: AugmentedEvent<
+				ApiType,
+				[newSigners: Vec<ITuple<[SeedPrimitivesEthyCryptoAppCryptoPublic, bool]>>],
+				{ newSigners: Vec<ITuple<[SeedPrimitivesEthyCryptoAppCryptoPublic, bool]>> }
+			>;
 			/**
 			 * Generic event
 			 **/
@@ -907,8 +1218,20 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			Executed: AugmentedEvent<
 				ApiType,
-				[from: H160, to: H160, transactionHash: H256, exitReason: EvmCoreErrorExitReason],
-				{ from: H160; to: H160; transactionHash: H256; exitReason: EvmCoreErrorExitReason }
+				[
+					from: H160,
+					to: H160,
+					transactionHash: H256,
+					exitReason: EvmCoreErrorExitReason,
+					extraData: Bytes,
+				],
+				{
+					from: H160;
+					to: H160;
+					transactionHash: H256;
+					exitReason: EvmCoreErrorExitReason;
+					extraData: Bytes;
+				}
 			>;
 			/**
 			 * Generic event
@@ -990,20 +1313,6 @@ declare module "@polkadot/api-base/types/events" {
 		};
 		futurepass: {
 			/**
-			 * Futurepass set as default proxy
-			 **/
-			DefaultFuturepassSet: AugmentedEvent<
-				ApiType,
-				[
-					delegate: SeedPrimitivesSignatureAccountId20,
-					futurepass: Option<SeedPrimitivesSignatureAccountId20>,
-				],
-				{
-					delegate: SeedPrimitivesSignatureAccountId20;
-					futurepass: Option<SeedPrimitivesSignatureAccountId20>;
-				}
-			>;
-			/**
 			 * Delegate registration to Futurepass account
 			 **/
 			DelegateRegistered: AugmentedEvent<
@@ -1034,24 +1343,6 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
-			 * Migration of Futurepass assets
-			 **/
-			FuturepassAssetsMigrated: AugmentedEvent<
-				ApiType,
-				[
-					evmFuturepass: SeedPrimitivesSignatureAccountId20,
-					futurepass: SeedPrimitivesSignatureAccountId20,
-					assets: Vec<u32>,
-					collections: Vec<u32>,
-				],
-				{
-					evmFuturepass: SeedPrimitivesSignatureAccountId20;
-					futurepass: SeedPrimitivesSignatureAccountId20;
-					assets: Vec<u32>;
-					collections: Vec<u32>;
-				}
-			>;
-			/**
 			 * Futurepass creation
 			 **/
 			FuturepassCreated: AugmentedEvent<
@@ -1064,14 +1355,6 @@ declare module "@polkadot/api-base/types/events" {
 					futurepass: SeedPrimitivesSignatureAccountId20;
 					delegate: SeedPrimitivesSignatureAccountId20;
 				}
-			>;
-			/**
-			 * Updating Futurepass migrator account
-			 **/
-			FuturepassMigratorSet: AugmentedEvent<
-				ApiType,
-				[migrator: SeedPrimitivesSignatureAccountId20],
-				{ migrator: SeedPrimitivesSignatureAccountId20 }
 			>;
 			/**
 			 * Futurepass transfer
@@ -1114,8 +1397,8 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			NewAuthorities: AugmentedEvent<
 				ApiType,
-				[authoritySet: Vec<ITuple<[SpFinalityGrandpaAppPublic, u64]>>],
-				{ authoritySet: Vec<ITuple<[SpFinalityGrandpaAppPublic, u64]>> }
+				[authoritySet: Vec<ITuple<[SpConsensusGrandpaAppPublic, u64]>>],
+				{ authoritySet: Vec<ITuple<[SpConsensusGrandpaAppPublic, u64]>> }
 			>;
 			/**
 			 * Current authority set has been paused.
@@ -1939,10 +2222,10 @@ declare module "@polkadot/api-base/types/events" {
 			/**
 			 * The call for the provided hash was not found so the task has been aborted.
 			 **/
-			CallLookupFailed: AugmentedEvent<
+			CallUnavailable: AugmentedEvent<
 				ApiType,
-				[task: ITuple<[u32, u32]>, id: Option<Bytes>, error: FrameSupportScheduleLookupError],
-				{ task: ITuple<[u32, u32]>; id: Option<Bytes>; error: FrameSupportScheduleLookupError }
+				[task: ITuple<[u32, u32]>, id: Option<U8aFixed>],
+				{ task: ITuple<[u32, u32]>; id: Option<U8aFixed> }
 			>;
 			/**
 			 * Canceled some task.
@@ -1953,12 +2236,32 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			Dispatched: AugmentedEvent<
 				ApiType,
-				[task: ITuple<[u32, u32]>, id: Option<Bytes>, result: Result<Null, SpRuntimeDispatchError>],
+				[
+					task: ITuple<[u32, u32]>,
+					id: Option<U8aFixed>,
+					result: Result<Null, SpRuntimeDispatchError>,
+				],
 				{
 					task: ITuple<[u32, u32]>;
-					id: Option<Bytes>;
+					id: Option<U8aFixed>;
 					result: Result<Null, SpRuntimeDispatchError>;
 				}
+			>;
+			/**
+			 * The given task was unable to be renewed since the agenda is full at that block.
+			 **/
+			PeriodicFailed: AugmentedEvent<
+				ApiType,
+				[task: ITuple<[u32, u32]>, id: Option<U8aFixed>],
+				{ task: ITuple<[u32, u32]>; id: Option<U8aFixed> }
+			>;
+			/**
+			 * The given task can never be executed since it is overweight.
+			 **/
+			PermanentlyOverweight: AugmentedEvent<
+				ApiType,
+				[task: ITuple<[u32, u32]>, id: Option<U8aFixed>],
+				{ task: ITuple<[u32, u32]>; id: Option<U8aFixed> }
 			>;
 			/**
 			 * Scheduled some task.
@@ -2190,6 +2493,14 @@ declare module "@polkadot/api-base/types/events" {
 				{ eraIndex: u32; validatorPayout: u128; remainder: u128 }
 			>;
 			/**
+			 * A new force era mode was set.
+			 **/
+			ForceEra: AugmentedEvent<
+				ApiType,
+				[mode: PalletStakingForcing],
+				{ mode: PalletStakingForcing }
+			>;
+			/**
 			 * A nominator has been kicked from a validator.
 			 **/
 			Kicked: AugmentedEvent<
@@ -2223,12 +2534,21 @@ declare module "@polkadot/api-base/types/events" {
 				{ stash: SeedPrimitivesSignatureAccountId20; amount: u128 }
 			>;
 			/**
-			 * One staker (and potentially its nominators) has been slashed by the given amount.
+			 * A staker (validator or nominator) has been slashed by the given amount.
 			 **/
 			Slashed: AugmentedEvent<
 				ApiType,
 				[staker: SeedPrimitivesSignatureAccountId20, amount: u128],
 				{ staker: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * A slash for the given validator, for the given percentage of their stake, at the given
+			 * era as been reported.
+			 **/
+			SlashReported: AugmentedEvent<
+				ApiType,
+				[validator: SeedPrimitivesSignatureAccountId20, fraction: Perbill, slashEra: u32],
+				{ validator: SeedPrimitivesSignatureAccountId20; fraction: Perbill; slashEra: u32 }
 			>;
 			/**
 			 * A new set of stakers was elected.
@@ -2557,13 +2877,13 @@ declare module "@polkadot/api-base/types/events" {
 			XRPLExtrinsicExecuted: AugmentedEvent<
 				ApiType,
 				[
-					publicKey: U8aFixed,
+					publicKey: PalletXrplXrplPublicKey,
 					caller: SeedPrimitivesSignatureAccountId20,
 					rAddress: Text,
 					call: Call,
 				],
 				{
-					publicKey: U8aFixed;
+					publicKey: PalletXrplXrplPublicKey;
 					caller: SeedPrimitivesSignatureAccountId20;
 					rAddress: Text;
 					call: Call;
