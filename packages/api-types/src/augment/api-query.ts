@@ -99,6 +99,10 @@ import type {
 	SpNposElectionsElectionScore,
 	SpRuntimeDigest,
 	SpStakingOffenceOffenceDetails,
+	PalletBalancesIdAmount,
+	PalletEthyBridgePauseStatus,
+	PalletEvmCodeMetadata,
+	PalletSchedulerScheduled,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {

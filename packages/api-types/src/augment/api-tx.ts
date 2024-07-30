@@ -56,6 +56,8 @@ import type {
 	SpNposElectionsElectionScore,
 	SpNposElectionsSupport,
 	SpSessionMembershipProof,
+	SpConsensusGrandpaEquivocationProof,
+	SpWeightsWeightV2Weight,
 } from "@polkadot/types/lookup";
 import type {
 	Call,

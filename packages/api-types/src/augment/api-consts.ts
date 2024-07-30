@@ -14,6 +14,7 @@ import type {
 	FrameSystemLimitsBlockWeights,
 	SpVersionRuntimeVersion,
 	SpWeightsRuntimeDbWeight,
+	SpWeightsWeightV2Weight,
 } from "@polkadot/types/lookup";
 import type { Perbill, Percent } from "@therootnetwork/api-types/interfaces/runtime";
 
