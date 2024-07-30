@@ -103,6 +103,7 @@ import type {
 	PalletEthyBridgePauseStatus,
 	PalletEvmCodeMetadata,
 	PalletSchedulerScheduled,
+	PalletVortexDistributionVtxDistStatus,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {
