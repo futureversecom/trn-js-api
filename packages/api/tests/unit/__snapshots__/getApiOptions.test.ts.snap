@@ -561,6 +561,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "InvalidCode": "u8",
           "InvalidJump": "Null",
           "InvalidRange": "Null",
+          "MaxNonce": "Null",
           "Other": "Text",
           "OutOfFund": "Null",
           "OutOfGas": "Null",
@@ -568,7 +569,6 @@ exports[`getApiOptions returns expected options 1`] = `
           "PCUnderflow": "Null",
           "StackOverflow": "Null",
           "StackUnderflow": "Null",
-          "__Unused14": "Null",
         },
       },
       "EvmCoreErrorExitFatal": {
@@ -600,16 +600,16 @@ exports[`getApiOptions returns expected options 1`] = `
         ],
       },
       "FinalityGrandpaEquivocationPrecommit": {
-        "first": "(FinalityGrandpaPrecommit,SpFinalityGrandpaAppSignature)",
-        "identity": "SpFinalityGrandpaAppPublic",
+        "first": "(FinalityGrandpaPrecommit,SpConsensusGrandpaAppSignature)",
+        "identity": "SpConsensusGrandpaAppPublic",
         "roundNumber": "u64",
-        "second": "(FinalityGrandpaPrecommit,SpFinalityGrandpaAppSignature)",
+        "second": "(FinalityGrandpaPrecommit,SpConsensusGrandpaAppSignature)",
       },
       "FinalityGrandpaEquivocationPrevote": {
-        "first": "(FinalityGrandpaPrevote,SpFinalityGrandpaAppSignature)",
-        "identity": "SpFinalityGrandpaAppPublic",
+        "first": "(FinalityGrandpaPrevote,SpConsensusGrandpaAppSignature)",
+        "identity": "SpConsensusGrandpaAppPublic",
         "roundNumber": "u64",
-        "second": "(FinalityGrandpaPrevote,SpFinalityGrandpaAppSignature)",
+        "second": "(FinalityGrandpaPrevote,SpConsensusGrandpaAppSignature)",
       },
       "FinalityGrandpaPrecommit": {
         "targetHash": "H256",
@@ -638,7 +638,7 @@ exports[`getApiOptions returns expected options 1`] = `
       "FrameSupportDispatchDispatchInfo": {
         "class": "FrameSupportDispatchDispatchClass",
         "paysFee": "FrameSupportDispatchPays",
-        "weight": "WeightV1",
+        "weight": "SpWeightsWeightV2Weight",
       },
       "FrameSupportDispatchPays": {
         "_enum": [
@@ -652,9 +652,9 @@ exports[`getApiOptions returns expected options 1`] = `
         "operational": "u32",
       },
       "FrameSupportDispatchPerDispatchClassWeight": {
-        "mandatory": "WeightV1",
-        "normal": "WeightV1",
-        "operational": "WeightV1",
+        "mandatory": "SpWeightsWeightV2Weight",
+        "normal": "SpWeightsWeightV2Weight",
+        "operational": "SpWeightsWeightV2Weight",
       },
       "FrameSupportDispatchPerDispatchClassWeightsPerClass": {
         "mandatory": "FrameSystemLimitsWeightsPerClass",
@@ -669,16 +669,22 @@ exports[`getApiOptions returns expected options 1`] = `
         },
       },
       "FrameSupportPalletId": "[u8;8]",
-      "FrameSupportScheduleLookupError": {
-        "_enum": [
-          "Unknown",
-          "BadFormat",
-        ],
-      },
-      "FrameSupportScheduleMaybeHashed": {
+      "FrameSupportPreimagesBounded": {
         "_enum": {
-          "Hash": "H256",
-          "Value": "Call",
+          "Inline": "Bytes",
+          "Legacy": {
+            "_alias": {
+              "hash_": "hash",
+            },
+            "hash_": "H256",
+          },
+          "Lookup": {
+            "_alias": {
+              "hash_": "hash",
+            },
+            "hash_": "H256",
+            "len": "u32",
+          },
         },
       },
       "FrameSupportTokensMiscBalanceStatus": {
@@ -696,9 +702,6 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "FrameSystemCall": {
         "_enum": {
-          "fill_block": {
-            "ratio": "Perbill",
-          },
           "kill_prefix": {
             "prefix": "Bytes",
             "subkeys": "u32",
@@ -783,15 +786,15 @@ exports[`getApiOptions returns expected options 1`] = `
         "max": "FrameSupportDispatchPerDispatchClassU32",
       },
       "FrameSystemLimitsBlockWeights": {
-        "baseBlock": "WeightV1",
-        "maxBlock": "WeightV1",
+        "baseBlock": "SpWeightsWeightV2Weight",
+        "maxBlock": "SpWeightsWeightV2Weight",
         "perClass": "FrameSupportDispatchPerDispatchClassWeightsPerClass",
       },
       "FrameSystemLimitsWeightsPerClass": {
-        "baseExtrinsic": "WeightV1",
-        "maxExtrinsic": "Option<WeightV1>",
-        "maxTotal": "Option<WeightV1>",
-        "reserved": "Option<WeightV1>",
+        "baseExtrinsic": "SpWeightsWeightV2Weight",
+        "maxExtrinsic": "Option<SpWeightsWeightV2Weight>",
+        "maxTotal": "Option<SpWeightsWeightV2Weight>",
+        "reserved": "Option<SpWeightsWeightV2Weight>",
       },
       "FrameSystemPhase": {
         "_enum": {
@@ -800,6 +803,13 @@ exports[`getApiOptions returns expected options 1`] = `
           "Initialization": "Null",
         },
       },
+      "PalletAssetsAccountStatus": {
+        "_enum": [
+          "Liquid",
+          "Frozen",
+          "Blocked",
+        ],
+      },
       "PalletAssetsApproval": {
         "amount": "u128",
         "deposit": "u128",
@@ -807,8 +817,8 @@ exports[`getApiOptions returns expected options 1`] = `
       "PalletAssetsAssetAccount": {
         "balance": "u128",
         "extra": "Null",
-        "isFrozen": "bool",
         "reason": "PalletAssetsExistenceReason",
+        "status": "PalletAssetsAccountStatus",
       },
       "PalletAssetsAssetDetails": {
         "accounts": "u32",
@@ -816,11 +826,11 @@ exports[`getApiOptions returns expected options 1`] = `
         "approvals": "u32",
         "deposit": "u128",
         "freezer": "SeedPrimitivesSignatureAccountId20",
-        "isFrozen": "bool",
         "isSufficient": "bool",
         "issuer": "SeedPrimitivesSignatureAccountId20",
         "minBalance": "u128",
         "owner": "SeedPrimitivesSignatureAccountId20",
+        "status": "PalletAssetsAssetStatus",
         "sufficients": "u32",
         "supply": "u128",
       },
@@ -831,38 +841,54 @@ exports[`getApiOptions returns expected options 1`] = `
         "name": "Bytes",
         "symbol": "Bytes",
       },
+      "PalletAssetsAssetStatus": {
+        "_enum": [
+          "Live",
+          "Frozen",
+          "Destroying",
+        ],
+      },
       "PalletAssetsCall": {
         "_enum": {
           "approve_transfer": {
             "amount": "Compact<u128>",
             "delegate": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
+          },
+          "block": {
+            "id": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
           },
           "burn": {
             "amount": "Compact<u128>",
-            "id": "Compact<u32>",
+            "id": "u32",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
           "cancel_approval": {
             "delegate": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
           },
           "clear_metadata": {
-            "id": "Compact<u32>",
+            "id": "u32",
           },
           "create": {
             "admin": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
             "minBalance": "u128",
           },
-          "destroy": {
-            "id": "Compact<u32>",
-            "witness": "PalletAssetsDestroyWitness",
+          "destroy_accounts": {
+            "id": "u32",
+          },
+          "destroy_approvals": {
+            "id": "u32",
+          },
+          "finish_destroy": {
+            "id": "u32",
           },
           "force_asset_status": {
             "admin": "SeedPrimitivesSignatureAccountId20",
             "freezer": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
             "isFrozen": "bool",
             "isSufficient": "bool",
             "issuer": "SeedPrimitivesSignatureAccountId20",
@@ -871,21 +897,21 @@ exports[`getApiOptions returns expected options 1`] = `
           },
           "force_cancel_approval": {
             "delegate": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
             "owner": "SeedPrimitivesSignatureAccountId20",
           },
           "force_clear_metadata": {
-            "id": "Compact<u32>",
+            "id": "u32",
           },
           "force_create": {
-            "id": "Compact<u32>",
+            "id": "u32",
             "isSufficient": "bool",
             "minBalance": "Compact<u128>",
             "owner": "SeedPrimitivesSignatureAccountId20",
           },
           "force_set_metadata": {
             "decimals": "u8",
-            "id": "Compact<u32>",
+            "id": "u32",
             "isFrozen": "bool",
             "name": "Bytes",
             "symbol": "Bytes",
@@ -893,73 +919,83 @@ exports[`getApiOptions returns expected options 1`] = `
           "force_transfer": {
             "amount": "Compact<u128>",
             "dest": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
             "source": "SeedPrimitivesSignatureAccountId20",
           },
           "freeze": {
-            "id": "Compact<u32>",
+            "id": "u32",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
           "freeze_asset": {
-            "id": "Compact<u32>",
+            "id": "u32",
           },
           "mint": {
             "amount": "Compact<u128>",
             "beneficiary": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
           },
           "refund": {
             "allowBurn": "bool",
-            "id": "Compact<u32>",
+            "id": "u32",
+          },
+          "refund_other": {
+            "id": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
           },
           "set_metadata": {
             "decimals": "u8",
-            "id": "Compact<u32>",
+            "id": "u32",
             "name": "Bytes",
             "symbol": "Bytes",
+          },
+          "set_min_balance": {
+            "id": "u32",
+            "minBalance": "u128",
           },
           "set_team": {
             "admin": "SeedPrimitivesSignatureAccountId20",
             "freezer": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
             "issuer": "SeedPrimitivesSignatureAccountId20",
           },
+          "start_destroy": {
+            "id": "u32",
+          },
           "thaw": {
-            "id": "Compact<u32>",
+            "id": "u32",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
           "thaw_asset": {
-            "id": "Compact<u32>",
+            "id": "u32",
           },
           "touch": {
-            "id": "Compact<u32>",
+            "id": "u32",
+          },
+          "touch_other": {
+            "id": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
           },
           "transfer": {
             "amount": "Compact<u128>",
-            "id": "Compact<u32>",
+            "id": "u32",
             "target": "SeedPrimitivesSignatureAccountId20",
           },
           "transfer_approved": {
             "amount": "Compact<u128>",
             "destination": "SeedPrimitivesSignatureAccountId20",
-            "id": "Compact<u32>",
+            "id": "u32",
             "owner": "SeedPrimitivesSignatureAccountId20",
           },
           "transfer_keep_alive": {
             "amount": "Compact<u128>",
-            "id": "Compact<u32>",
+            "id": "u32",
             "target": "SeedPrimitivesSignatureAccountId20",
           },
           "transfer_ownership": {
-            "id": "Compact<u32>",
+            "id": "u32",
             "owner": "SeedPrimitivesSignatureAccountId20",
           },
         },
-      },
-      "PalletAssetsDestroyWitness": {
-        "accounts": "Compact<u32>",
-        "approvals": "Compact<u32>",
-        "sufficients": "Compact<u32>",
       },
       "PalletAssetsError": {
         "_enum": [
@@ -971,21 +1007,36 @@ exports[`getApiOptions returns expected options 1`] = `
           "InUse",
           "BadWitness",
           "MinBalanceZero",
-          "NoProvider",
+          "UnavailableConsumer",
           "BadMetadata",
           "Unapproved",
           "WouldDie",
           "AlreadyExists",
           "NoDeposit",
           "WouldBurn",
+          "LiveAsset",
+          "AssetNotLive",
+          "IncorrectStatus",
+          "NotFrozen",
+          "CallbackFailed",
         ],
       },
       "PalletAssetsEvent": {
         "_enum": {
+          "AccountsDestroyed": {
+            "accountsDestroyed": "u32",
+            "accountsRemaining": "u32",
+            "assetId": "u32",
+          },
           "ApprovalCancelled": {
             "assetId": "u32",
             "delegate": "SeedPrimitivesSignatureAccountId20",
             "owner": "SeedPrimitivesSignatureAccountId20",
+          },
+          "ApprovalsDestroyed": {
+            "approvalsDestroyed": "u32",
+            "approvalsRemaining": "u32",
+            "assetId": "u32",
           },
           "ApprovedTransfer": {
             "amount": "u128",
@@ -996,11 +1047,19 @@ exports[`getApiOptions returns expected options 1`] = `
           "AssetFrozen": {
             "assetId": "u32",
           },
+          "AssetMinBalanceChanged": {
+            "assetId": "u32",
+            "newMinBalance": "u128",
+          },
           "AssetStatusChanged": {
             "assetId": "u32",
           },
           "AssetThawed": {
             "assetId": "u32",
+          },
+          "Blocked": {
+            "assetId": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
           },
           "Burned": {
             "assetId": "u32",
@@ -1015,6 +1074,9 @@ exports[`getApiOptions returns expected options 1`] = `
           "Destroyed": {
             "assetId": "u32",
           },
+          "DestructionStarted": {
+            "assetId": "u32",
+          },
           "ForceCreated": {
             "assetId": "u32",
             "owner": "SeedPrimitivesSignatureAccountId20",
@@ -1024,9 +1086,9 @@ exports[`getApiOptions returns expected options 1`] = `
             "who": "SeedPrimitivesSignatureAccountId20",
           },
           "Issued": {
+            "amount": "u128",
             "assetId": "u32",
             "owner": "SeedPrimitivesSignatureAccountId20",
-            "totalSupply": "u128",
           },
           "MetadataCleared": {
             "assetId": "u32",
@@ -1052,6 +1114,11 @@ exports[`getApiOptions returns expected options 1`] = `
             "assetId": "u32",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
+          "Touched": {
+            "assetId": "u32",
+            "depositor": "SeedPrimitivesSignatureAccountId20",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
           "Transferred": {
             "amount": "u128",
             "assetId": "u32",
@@ -1070,6 +1137,7 @@ exports[`getApiOptions returns expected options 1`] = `
       "PalletAssetsExistenceReason": {
         "_enum": {
           "Consumer": "Null",
+          "DepositFrom": "(SeedPrimitivesSignatureAccountId20,u128)",
           "DepositHeld": "u128",
           "DepositRefunded": "Null",
           "Sufficient": "Null",
@@ -1162,30 +1230,6 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
-      "PalletAuthorshipCall": {
-        "_enum": {
-          "set_uncles": {
-            "newUncles": "Vec<SpRuntimeHeader>",
-          },
-        },
-      },
-      "PalletAuthorshipError": {
-        "_enum": [
-          "InvalidUncleParent",
-          "UnclesAlreadySet",
-          "TooManyUncles",
-          "GenesisUncle",
-          "TooHighUncle",
-          "UncleAlreadyIncluded",
-          "OldUncle",
-        ],
-      },
-      "PalletAuthorshipUncleEntryItem": {
-        "_enum": {
-          "InclusionHeight": "u32",
-          "Uncle": "(H256,Option<SeedPrimitivesSignatureAccountId20>)",
-        },
-      },
       "PalletBabeCall": {
         "_enum": {
           "plan_config_change": {
@@ -1257,9 +1301,9 @@ exports[`getApiOptions returns expected options 1`] = `
         "score": "u64",
       },
       "PalletBalancesAccountData": {
-        "feeFrozen": "u128",
+        "flags": "u128",
         "free": "u128",
-        "miscFrozen": "u128",
+        "frozen": "u128",
         "reserved": "u128",
       },
       "PalletBalancesBalanceLock": {
@@ -1269,6 +1313,10 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletBalancesCall": {
         "_enum": {
+          "force_set_balance": {
+            "newFree": "Compact<u128>",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
           "force_transfer": {
             "dest": "SeedPrimitivesSignatureAccountId20",
             "source": "SeedPrimitivesSignatureAccountId20",
@@ -1278,9 +1326,9 @@ exports[`getApiOptions returns expected options 1`] = `
             "amount": "u128",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
-          "set_balance": {
+          "set_balance_deprecated": {
             "newFree": "Compact<u128>",
-            "newReserved": "Compact<u128>",
+            "oldReserved": "Compact<u128>",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
           "transfer": {
@@ -1291,9 +1339,16 @@ exports[`getApiOptions returns expected options 1`] = `
             "dest": "SeedPrimitivesSignatureAccountId20",
             "keepAlive": "bool",
           },
+          "transfer_allow_death": {
+            "dest": "SeedPrimitivesSignatureAccountId20",
+            "value": "Compact<u128>",
+          },
           "transfer_keep_alive": {
             "dest": "SeedPrimitivesSignatureAccountId20",
             "value": "Compact<u128>",
+          },
+          "upgrade_accounts": {
+            "who": "Vec<SeedPrimitivesSignatureAccountId20>",
           },
         },
       },
@@ -1303,17 +1358,22 @@ exports[`getApiOptions returns expected options 1`] = `
           "LiquidityRestrictions",
           "InsufficientBalance",
           "ExistentialDeposit",
-          "KeepAlive",
+          "Expendability",
           "ExistingVestingSchedule",
           "DeadAccount",
           "TooManyReserves",
+          "TooManyHolds",
+          "TooManyFreezes",
         ],
       },
       "PalletBalancesEvent": {
         "_enum": {
           "BalanceSet": {
             "free": "u128",
-            "reserved": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Burned": {
+            "amount": "u128",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
           "Deposit": {
@@ -1328,6 +1388,24 @@ exports[`getApiOptions returns expected options 1`] = `
             "account": "SeedPrimitivesSignatureAccountId20",
             "freeBalance": "u128",
           },
+          "Frozen": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Issued": {
+            "amount": "u128",
+          },
+          "Locked": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Minted": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Rescinded": {
+            "amount": "u128",
+          },
           "ReserveRepatriated": {
             "amount": "u128",
             "destinationStatus": "FrameSupportTokensMiscBalanceStatus",
@@ -1338,7 +1416,19 @@ exports[`getApiOptions returns expected options 1`] = `
             "amount": "u128",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
+          "Restored": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
           "Slashed": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Suspended": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Thawed": {
             "amount": "u128",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
@@ -1347,8 +1437,15 @@ exports[`getApiOptions returns expected options 1`] = `
             "from": "SeedPrimitivesSignatureAccountId20",
             "to": "SeedPrimitivesSignatureAccountId20",
           },
+          "Unlocked": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
           "Unreserved": {
             "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Upgraded": {
             "who": "SeedPrimitivesSignatureAccountId20",
           },
           "Withdraw": {
@@ -1357,17 +1454,15 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
+      "PalletBalancesIdAmount": {
+        "amount": "u128",
+        "id": "Null",
+      },
       "PalletBalancesReasons": {
         "_enum": [
           "Fee",
           "Misc",
           "All",
-        ],
-      },
-      "PalletBalancesReleases": {
-        "_enum": [
-          "V1_0_0",
-          "V2_0_0",
         ],
       },
       "PalletBalancesReserveData": {
@@ -1742,6 +1837,8 @@ exports[`getApiOptions returns expected options 1`] = `
           "InvalidSubmissionIndex",
           "CallNotAllowed",
           "FallbackFailed",
+          "BoundNotMet",
+          "TooManyWinners",
         ],
       },
       "PalletElectionProviderMultiPhaseEvent": {
@@ -1751,12 +1848,14 @@ exports[`getApiOptions returns expected options 1`] = `
             "compute": "PalletElectionProviderMultiPhaseElectionCompute",
             "score": "SpNposElectionsElectionScore",
           },
+          "PhaseTransitioned": {
+            "from": "PalletElectionProviderMultiPhasePhase",
+            "round": "u32",
+            "to": "PalletElectionProviderMultiPhasePhase",
+          },
           "Rewarded": {
             "account": "SeedPrimitivesSignatureAccountId20",
             "value": "u128",
-          },
-          "SignedPhaseStarted": {
-            "round": "u32",
           },
           "Slashed": {
             "account": "SeedPrimitivesSignatureAccountId20",
@@ -1764,10 +1863,8 @@ exports[`getApiOptions returns expected options 1`] = `
           },
           "SolutionStored": {
             "compute": "PalletElectionProviderMultiPhaseElectionCompute",
+            "origin": "Option<SeedPrimitivesSignatureAccountId20>",
             "prevEjected": "bool",
-          },
-          "UnsignedPhaseStarted": {
-            "round": "u32",
           },
         },
       },
@@ -1808,7 +1905,13 @@ exports[`getApiOptions returns expected options 1`] = `
           "activate_deposits": {
             "activate": "bool",
           },
+          "activate_deposits_delay": {
+            "activate": "bool",
+          },
           "activate_withdrawals": {
+            "activate": "bool",
+          },
+          "activate_withdrawals_delay": {
             "activate": "bool",
           },
           "set_erc20_asset_map": {
@@ -1854,25 +1957,81 @@ exports[`getApiOptions returns expected options 1`] = `
           "InvalidAbiEncoding",
         ],
       },
+      "PalletErc20PegEvent": {
+        "_enum": {
+          "ActivateDepositDelay": {
+            "active": "bool",
+          },
+          "ActivateDeposits": {
+            "active": "bool",
+          },
+          "ActivateWithdrawalDelay": {
+            "active": "bool",
+          },
+          "ActivateWithdrawals": {
+            "active": "bool",
+          },
+          "DelayedErc20DepositFailed": {
+            "beneficiary": "SeedPrimitivesSignatureAccountId20",
+            "paymentId": "u64",
+          },
+          "DelayedErc20WithdrawalFailed": {
+            "assetId": "u32",
+            "beneficiary": "H160",
+          },
+          "Erc20DelayFailed": {
+            "assetId": "u32",
+            "paymentId": "u64",
+            "scheduledBlock": "u32",
+            "source": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Erc20Deposit": {
+            "amount": "u128",
+            "assetId": "u32",
+            "beneficiary": "SeedPrimitivesSignatureAccountId20",
+          },
+          "Erc20DepositDelayed": {
+            "amount": "u128",
+            "assetId": "u32",
+            "beneficiary": "SeedPrimitivesSignatureAccountId20",
+            "paymentId": "u64",
+            "scheduledBlock": "u32",
+          },
+          "Erc20DepositFail": {
+            "abiData": "Bytes",
+            "source": "H160",
+          },
+          "Erc20Withdraw": {
+            "amount": "u128",
+            "assetId": "u32",
+            "beneficiary": "H160",
+          },
+          "Erc20WithdrawalDelayed": {
+            "amount": "u128",
+            "assetId": "u32",
+            "beneficiary": "H160",
+            "paymentId": "u64",
+            "scheduledBlock": "u32",
+            "source": "SeedPrimitivesSignatureAccountId20",
+          },
+          "NoAvailableDelayedPaymentIds": "Null",
+          "PaymentDelaySet": {
+            "assetId": "u32",
+            "delay": "u32",
+            "minBalance": "u128",
+          },
+          "SetContractAddress": {
+            "address": "H160",
+          },
+          "SetRootPegContract": {
+            "address": "H160",
+          },
+        },
+      },
       "PalletErc20PegPendingPayment": {
         "_enum": {
           "Deposit": "PalletErc20PegErc20DepositEvent",
           "Withdrawal": "PalletErc20PegWithdrawMessage",
-        },
-      },
-      "PalletErc20PegRawEvent": {
-        "_enum": {
-          "DelayedErc20DepositFailed": "(u64,SeedPrimitivesSignatureAccountId20)",
-          "DelayedErc20WithdrawalFailed": "(u32,H160)",
-          "Erc20Deposit": "(u32,u128,SeedPrimitivesSignatureAccountId20)",
-          "Erc20DepositDelayed": "(u64,u32,u128,SeedPrimitivesSignatureAccountId20)",
-          "Erc20DepositFail": "(H160,Bytes)",
-          "Erc20Withdraw": "(u32,u128,H160)",
-          "Erc20WithdrawalDelayed": "(u64,u32,u128,H160)",
-          "NoAvailableDelayedPaymentIds": "Null",
-          "PaymentDelaySet": "(u32,u128,u32)",
-          "SetContractAddress": "H160",
-          "SetRootPegContract": "H160",
         },
       },
       "PalletErc20PegWithdrawMessage": {
@@ -1903,6 +2062,7 @@ exports[`getApiOptions returns expected options 1`] = `
         "_enum": {
           "Executed": {
             "exitReason": "EvmCoreErrorExitReason",
+            "extraData": "Bytes",
             "from": "H160",
             "to": "H160",
             "transactionHash": "H256",
@@ -1914,11 +2074,18 @@ exports[`getApiOptions returns expected options 1`] = `
           "EthereumTransaction": "H160",
         },
       },
+      "PalletEthyBridgePauseStatus": {
+        "authoritiesChange": "bool",
+        "manualPause": "bool",
+      },
       "PalletEthyCall": {
         "_enum": {
           "deposit_relayer_bond": "Null",
           "finalise_authorities_change": {
             "nextNotaryKeys": "Vec<SeedPrimitivesEthyCryptoAppCryptoPublic>",
+          },
+          "remove_missing_event_id": {
+            "eventIdRange": "(u64,u64)",
           },
           "set_bridge_paused": {
             "paused": "bool",
@@ -1945,6 +2112,10 @@ exports[`getApiOptions returns expected options 1`] = `
             "eventClaimId": "u64",
           },
           "submit_event": {
+            "event": "Bytes",
+            "txHash": "H256",
+          },
+          "submit_missing_event": {
             "event": "Bytes",
             "txHash": "H256",
           },
@@ -1992,6 +2163,8 @@ exports[`getApiOptions returns expected options 1`] = `
           "CantBondRelayer",
           "NoBondPaid",
           "MaxNewSignersExceeded",
+          "MaxChallengesExceeded",
+          "MessageTooLarge",
         ],
       },
       "PalletEthyEthereumEventInfo": {
@@ -2005,6 +2178,89 @@ exports[`getApiOptions returns expected options 1`] = `
         "_enum": {
           "Ethereum": "PalletEthyEthereumEventInfo",
           "XrplTx": "Bytes",
+        },
+      },
+      "PalletEthyEvent": {
+        "_enum": {
+          "AuthoritySetChange": {
+            "eventProofId": "u64",
+            "validatorSetId": "u64",
+          },
+          "BridgeManualPause": {
+            "paused": "bool",
+          },
+          "ChallengePeriodSet": {
+            "period": "u32",
+          },
+          "Challenged": {
+            "challenger": "SeedPrimitivesSignatureAccountId20",
+            "eventClaimId": "u64",
+          },
+          "DelayedEventProofsPerBlockSet": {
+            "count": "u8",
+          },
+          "EventBlockConfirmationsSet": {
+            "confirmations": "u64",
+          },
+          "EventSend": {
+            "eventProofId": "u64",
+            "signingRequest": "PalletEthyEthySigningRequest",
+          },
+          "EventSubmit": {
+            "eventClaim": "PalletEthyEventClaim",
+            "eventClaimId": "u64",
+            "processAt": "u32",
+          },
+          "FinaliseScheduleFail": {
+            "scheduledBlock": "u32",
+          },
+          "Invalid": {
+            "eventClaimId": "u64",
+          },
+          "MissingEventIdsRemoved": {
+            "range": "(u64,u64)",
+          },
+          "ProcessAtExtended": {
+            "eventClaimId": "u64",
+            "processAt": "u32",
+          },
+          "ProcessingFailed": {
+            "eventClaimId": "u64",
+            "routerError": "SeedPalletCommonEventRouterError",
+          },
+          "ProcessingOk": {
+            "eventClaimId": "u64",
+          },
+          "ProofDelayed": {
+            "eventProofId": "u64",
+          },
+          "RelayerBondDeposit": {
+            "bond": "u128",
+            "relayer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "RelayerBondWithdraw": {
+            "bond": "u128",
+            "relayer": "SeedPrimitivesSignatureAccountId20",
+          },
+          "RelayerSet": {
+            "relayer": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "SetContractAddress": {
+            "address": "H160",
+          },
+          "Verified": {
+            "eventClaimId": "u64",
+          },
+          "XrplAuthoritySetChange": {
+            "eventProofId": "u64",
+            "validatorSetId": "u64",
+          },
+          "XrplAuthoritySetChangeRequestFailed": {
+            "error": "SpRuntimeDispatchError",
+          },
+          "XrplDoorSignersSet": {
+            "newSigners": "Vec<(SeedPrimitivesEthyCryptoAppCryptoPublic,bool)>",
+          },
         },
       },
       "PalletEthyEventClaim": {
@@ -2045,31 +2301,6 @@ exports[`getApiOptions returns expected options 1`] = `
             "eventClaimId": "u64",
             "result": "PalletEthyEventClaimResult",
           },
-        },
-      },
-      "PalletEthyRawEvent": {
-        "_enum": {
-          "AuthoritySetChange": "(u64,u64)",
-          "Challenged": "(u64,SeedPrimitivesSignatureAccountId20)",
-          "EventSend": {
-            "eventProofId": "u64",
-            "signingRequest": "PalletEthyEthySigningRequest",
-          },
-          "EventSubmit": "(u64,PalletEthyEventClaim,u32)",
-          "FinaliseScheduleFail": "u32",
-          "Invalid": "u64",
-          "ProcessAtExtended": "(u64,u32)",
-          "ProcessingFailed": "(u64,SeedPalletCommonEventRouterError)",
-          "ProcessingOk": "u64",
-          "ProofDelayed": "u64",
-          "RelayerBondDeposit": "(SeedPrimitivesSignatureAccountId20,u128)",
-          "RelayerBondWithdraw": "(SeedPrimitivesSignatureAccountId20,u128)",
-          "RelayerSet": "Option<SeedPrimitivesSignatureAccountId20>",
-          "SetContractAddress": "H160",
-          "Verified": "u64",
-          "XrplAuthoritySetChange": "(u64,u64)",
-          "XrplAuthoritySetChangeRequestFailed": "Null",
-          "XrplDoorSignersSet": "Null",
         },
       },
       "PalletEvmCall": {
@@ -2124,6 +2355,14 @@ exports[`getApiOptions returns expected options 1`] = `
           "ChainIdSet": "u64",
         },
       },
+      "PalletEvmCodeMetadata": {
+        "_alias": {
+          "hash_": "hash",
+          "size_": "size",
+        },
+        "hash_": "H256",
+        "size_": "u64",
+      },
       "PalletEvmError": {
         "_enum": [
           "BalanceLow",
@@ -2136,6 +2375,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "GasLimitTooHigh",
           "Undefined",
           "Reentrancy",
+          "TransactionMustComeFromEOA",
         ],
       },
       "PalletEvmEvent": {
@@ -2217,12 +2457,6 @@ exports[`getApiOptions returns expected options 1`] = `
           "create": {
             "account": "SeedPrimitivesSignatureAccountId20",
           },
-          "migrate_evm_futurepass": {
-            "assetIds": "Vec<u32>",
-            "collectionIds": "Vec<u32>",
-            "evmFuturepass": "SeedPrimitivesSignatureAccountId20",
-            "owner": "SeedPrimitivesSignatureAccountId20",
-          },
           "proxy_extrinsic": {
             "call": "Call",
             "futurepass": "SeedPrimitivesSignatureAccountId20",
@@ -2233,9 +2467,6 @@ exports[`getApiOptions returns expected options 1`] = `
             "futurepass": "SeedPrimitivesSignatureAccountId20",
             "proxyType": "SeedRuntimeImplsProxyType",
             "signature": "[u8;65]",
-          },
-          "set_futurepass_migrator": {
-            "migrator": "SeedPrimitivesSignatureAccountId20",
           },
           "transfer_futurepass": {
             "currentOwner": "SeedPrimitivesSignatureAccountId20",
@@ -2256,10 +2487,8 @@ exports[`getApiOptions returns expected options 1`] = `
           "NotFuturepassOwner",
           "OwnerCannotUnregister",
           "PermissionDenied",
-          "MigratorNotSet",
           "InvalidProxyType",
           "ExpiredDeadline",
-          "InvalidDeadline",
           "InvalidSignature",
           "AccountParsingFailure",
           "RegisterDelegateSignerMismatch",
@@ -2267,10 +2496,6 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletFuturepassEvent": {
         "_enum": {
-          "DefaultFuturepassSet": {
-            "delegate": "SeedPrimitivesSignatureAccountId20",
-            "futurepass": "Option<SeedPrimitivesSignatureAccountId20>",
-          },
           "DelegateRegistered": {
             "delegate": "SeedPrimitivesSignatureAccountId20",
             "futurepass": "SeedPrimitivesSignatureAccountId20",
@@ -2280,18 +2505,9 @@ exports[`getApiOptions returns expected options 1`] = `
             "delegate": "SeedPrimitivesSignatureAccountId20",
             "futurepass": "SeedPrimitivesSignatureAccountId20",
           },
-          "FuturepassAssetsMigrated": {
-            "assets": "Vec<u32>",
-            "collections": "Vec<u32>",
-            "evmFuturepass": "SeedPrimitivesSignatureAccountId20",
-            "futurepass": "SeedPrimitivesSignatureAccountId20",
-          },
           "FuturepassCreated": {
             "delegate": "SeedPrimitivesSignatureAccountId20",
             "futurepass": "SeedPrimitivesSignatureAccountId20",
-          },
-          "FuturepassMigratorSet": {
-            "migrator": "SeedPrimitivesSignatureAccountId20",
           },
           "FuturepassTransferred": {
             "futurepass": "SeedPrimitivesSignatureAccountId20",
@@ -2311,12 +2527,12 @@ exports[`getApiOptions returns expected options 1`] = `
             "delay": "u32",
           },
           "report_equivocation": {
-            "equivocationProof": "SpFinalityGrandpaEquivocationProof",
-            "keyOwnerProof": "SpCoreVoid",
+            "equivocationProof": "SpConsensusGrandpaEquivocationProof",
+            "keyOwnerProof": "SpSessionMembershipProof",
           },
           "report_equivocation_unsigned": {
-            "equivocationProof": "SpFinalityGrandpaEquivocationProof",
-            "keyOwnerProof": "SpCoreVoid",
+            "equivocationProof": "SpConsensusGrandpaEquivocationProof",
+            "keyOwnerProof": "SpSessionMembershipProof",
           },
         },
       },
@@ -2334,7 +2550,7 @@ exports[`getApiOptions returns expected options 1`] = `
       "PalletGrandpaEvent": {
         "_enum": {
           "NewAuthorities": {
-            "authoritySet": "Vec<(SpFinalityGrandpaAppPublic,u64)>",
+            "authoritySet": "Vec<(SpConsensusGrandpaAppPublic,u64)>",
           },
           "Paused": "Null",
           "Resumed": "Null",
@@ -2343,7 +2559,7 @@ exports[`getApiOptions returns expected options 1`] = `
       "PalletGrandpaStoredPendingChange": {
         "delay": "u32",
         "forced": "Option<u32>",
-        "nextAuthorities": "Vec<(SpFinalityGrandpaAppPublic,u64)>",
+        "nextAuthorities": "Vec<(SpConsensusGrandpaAppPublic,u64)>",
         "scheduledAt": "u32",
       },
       "PalletGrandpaStoredState": {
@@ -2359,10 +2575,6 @@ exports[`getApiOptions returns expected options 1`] = `
             "scheduledAt": "u32",
           },
         },
-      },
-      "PalletImOnlineBoundedOpaqueNetworkState": {
-        "externalAddresses": "Vec<Bytes>",
-        "peerId": "Bytes",
       },
       "PalletImOnlineCall": {
         "_enum": {
@@ -2392,7 +2604,6 @@ exports[`getApiOptions returns expected options 1`] = `
       "PalletImOnlineHeartbeat": {
         "authorityIndex": "u32",
         "blockNumber": "u32",
-        "networkState": "SpCoreOffchainOpaqueNetworkState",
         "sessionIndex": "u32",
         "validatorsLen": "u32",
       },
@@ -2716,17 +2927,16 @@ exports[`getApiOptions returns expected options 1`] = `
         "_enum": {
           "approve_as_multi": {
             "callHash": "[u8;32]",
-            "maxWeight": "WeightV1",
+            "maxWeight": "SpWeightsWeightV2Weight",
             "maybeTimepoint": "Option<PalletMultisigTimepoint>",
             "otherSignatories": "Vec<SeedPrimitivesSignatureAccountId20>",
             "threshold": "u16",
           },
           "as_multi": {
-            "call": "WrapperKeepOpaque<Call>",
-            "maxWeight": "WeightV1",
+            "call": "Call",
+            "maxWeight": "SpWeightsWeightV2Weight",
             "maybeTimepoint": "Option<PalletMultisigTimepoint>",
             "otherSignatories": "Vec<SeedPrimitivesSignatureAccountId20>",
-            "storeCall": "bool",
             "threshold": "u16",
           },
           "as_multi_threshold_1": {
@@ -3074,7 +3284,7 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletPreimageError": {
         "_enum": [
-          "TooLarge",
+          "TooBig",
           "AlreadyNoted",
           "NotAuthorized",
           "NotNoted",
@@ -3106,8 +3316,15 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletPreimageRequestStatus": {
         "_enum": {
-          "Requested": "u32",
-          "Unrequested": "Option<(SeedPrimitivesSignatureAccountId20,u128)>",
+          "Requested": {
+            "count": "u32",
+            "deposit": "Option<(SeedPrimitivesSignatureAccountId20,u128)>",
+            "len": "Option<u32>",
+          },
+          "Unrequested": {
+            "deposit": "(SeedPrimitivesSignatureAccountId20,u128)",
+            "len": "u32",
+          },
         },
       },
       "PalletProxyAnnouncement": {
@@ -3311,31 +3528,31 @@ exports[`getApiOptions returns expected options 1`] = `
             "when": "u32",
           },
           "cancel_named": {
-            "id": "Bytes",
+            "id": "[u8;32]",
           },
           "schedule": {
-            "call": "FrameSupportScheduleMaybeHashed",
+            "call": "Call",
             "maybePeriodic": "Option<(u32,u32)>",
             "priority": "u8",
             "when": "u32",
           },
           "schedule_after": {
             "after": "u32",
-            "call": "FrameSupportScheduleMaybeHashed",
+            "call": "Call",
             "maybePeriodic": "Option<(u32,u32)>",
             "priority": "u8",
           },
           "schedule_named": {
-            "call": "FrameSupportScheduleMaybeHashed",
-            "id": "Bytes",
+            "call": "Call",
+            "id": "[u8;32]",
             "maybePeriodic": "Option<(u32,u32)>",
             "priority": "u8",
             "when": "u32",
           },
           "schedule_named_after": {
             "after": "u32",
-            "call": "FrameSupportScheduleMaybeHashed",
-            "id": "Bytes",
+            "call": "Call",
+            "id": "[u8;32]",
             "maybePeriodic": "Option<(u32,u32)>",
             "priority": "u8",
           },
@@ -3347,13 +3564,13 @@ exports[`getApiOptions returns expected options 1`] = `
           "NotFound",
           "TargetBlockNumberInPast",
           "RescheduleNoChange",
+          "Named",
         ],
       },
       "PalletSchedulerEvent": {
         "_enum": {
-          "CallLookupFailed": {
-            "error": "FrameSupportScheduleLookupError",
-            "id": "Option<Bytes>",
+          "CallUnavailable": {
+            "id": "Option<[u8;32]>",
             "task": "(u32,u32)",
           },
           "Canceled": {
@@ -3361,8 +3578,16 @@ exports[`getApiOptions returns expected options 1`] = `
             "when": "u32",
           },
           "Dispatched": {
-            "id": "Option<Bytes>",
+            "id": "Option<[u8;32]>",
             "result": "Result<Null, SpRuntimeDispatchError>",
+            "task": "(u32,u32)",
+          },
+          "PeriodicFailed": {
+            "id": "Option<[u8;32]>",
+            "task": "(u32,u32)",
+          },
+          "PermanentlyOverweight": {
+            "id": "Option<[u8;32]>",
             "task": "(u32,u32)",
           },
           "Scheduled": {
@@ -3371,9 +3596,9 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
-      "PalletSchedulerScheduledV3": {
-        "call": "FrameSupportScheduleMaybeHashed",
-        "maybeId": "Option<Bytes>",
+      "PalletSchedulerScheduled": {
+        "call": "FrameSupportPreimagesBounded",
+        "maybeId": "Option<[u8;32]>",
         "maybePeriodic": "Option<(u32,u32)>",
         "origin": "SeedRuntimeOriginCaller",
         "priority": "u8",
@@ -3609,7 +3834,6 @@ exports[`getApiOptions returns expected options 1`] = `
       "PalletStakingPalletCall": {
         "_enum": {
           "bond": {
-            "controller": "SeedPrimitivesSignatureAccountId20",
             "payee": "PalletStakingRewardDestination",
             "value": "Compact<u128>",
           },
@@ -3657,11 +3881,15 @@ exports[`getApiOptions returns expected options 1`] = `
           "scale_validator_count": {
             "factor": "Percent",
           },
-          "set_controller": {
-            "controller": "SeedPrimitivesSignatureAccountId20",
-          },
+          "set_controller": "Null",
           "set_invulnerables": {
             "invulnerables": "Vec<SeedPrimitivesSignatureAccountId20>",
+          },
+          "set_min_commission": {
+            "_alias": {
+              "new_": "new",
+            },
+            "new_": "Perbill",
           },
           "set_payee": {
             "payee": "PalletStakingRewardDestination",
@@ -3762,6 +3990,9 @@ exports[`getApiOptions returns expected options 1`] = `
             "remainder": "u128",
             "validatorPayout": "u128",
           },
+          "ForceEra": {
+            "mode": "PalletStakingForcing",
+          },
           "Kicked": {
             "nominator": "SeedPrimitivesSignatureAccountId20",
             "stash": "SeedPrimitivesSignatureAccountId20",
@@ -3776,6 +4007,11 @@ exports[`getApiOptions returns expected options 1`] = `
           "Rewarded": {
             "amount": "u128",
             "stash": "SeedPrimitivesSignatureAccountId20",
+          },
+          "SlashReported": {
+            "fraction": "Perbill",
+            "slashEra": "u32",
+            "validator": "SeedPrimitivesSignatureAccountId20",
           },
           "Slashed": {
             "amount": "u128",
@@ -3796,22 +4032,6 @@ exports[`getApiOptions returns expected options 1`] = `
             "stash": "SeedPrimitivesSignatureAccountId20",
           },
         },
-      },
-      "PalletStakingReleases": {
-        "_enum": [
-          "V1_0_0Ancient",
-          "V2_0_0",
-          "V3_0_0",
-          "V4_0_0",
-          "V5_0_0",
-          "V6_0_0",
-          "V7_0_0",
-          "V8_0_0",
-          "V9_0_0",
-          "V10_0_0",
-          "V11_0_0",
-          "V12_0_0",
-        ],
       },
       "PalletStakingRewardDestination": {
         "_enum": {
@@ -3871,7 +4091,7 @@ exports[`getApiOptions returns expected options 1`] = `
           },
           "sudo_unchecked_weight": {
             "call": "Call",
-            "weight": "WeightV1",
+            "weight": "SpWeightsWeightV2Weight",
           },
         },
       },
@@ -3983,6 +4203,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "force_batch": {
             "calls": "Vec<Call>",
           },
+          "with_weight": {
+            "call": "Call",
+            "weight": "SpWeightsWeightV2Weight",
+          },
         },
       },
       "PalletUtilityError": {
@@ -4007,7 +4231,7 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
-      "PalletVortexCall": {
+      "PalletVortexDistributionCall": {
         "_enum": {
           "create_vtx_dist": "Null",
           "disable_vtx_dist": {
@@ -4048,7 +4272,7 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
-      "PalletVortexError": {
+      "PalletVortexDistributionError": {
         "_enum": [
           "RequireAdmin",
           "VtxDistIdNotAvailable",
@@ -4067,7 +4291,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "NotTriggered",
         ],
       },
-      "PalletVortexEvent": {
+      "PalletVortexDistributionEvent": {
         "_enum": {
           "AdminAccountChanged": {
             "newKey": "SeedPrimitivesSignatureAccountId20",
@@ -4108,7 +4332,7 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
-      "PalletVortexVtxDistStatus": {
+      "PalletVortexDistributionVtxDistStatus": {
         "_enum": [
           "Disabled",
           "Enabled",
@@ -4354,9 +4578,15 @@ exports[`getApiOptions returns expected options 1`] = `
           "XRPLExtrinsicExecuted": {
             "call": "Call",
             "caller": "SeedPrimitivesSignatureAccountId20",
-            "publicKey": "[u8;33]",
+            "publicKey": "PalletXrplXrplPublicKey",
             "rAddress": "Text",
           },
+        },
+      },
+      "PalletXrplXrplPublicKey": {
+        "_enum": {
+          "ECDSA": "SpCoreEcdsaPublic",
+          "ED25519": "SpCoreEd25519Public",
         },
       },
       "SeedPalletCommonEventRouterError": {
@@ -4709,8 +4939,15 @@ exports[`getApiOptions returns expected options 1`] = `
       "SeedRuntimeSessionKeys": {
         "babe": "SpConsensusBabeAppPublic",
         "ethy": "SeedPrimitivesEthyCryptoAppCryptoPublic",
-        "grandpa": "SpFinalityGrandpaAppPublic",
+        "grandpa": "SpConsensusGrandpaAppPublic",
         "imOnline": "PalletImOnlineSr25519AppSr25519Public",
+      },
+      "SpArithmeticArithmeticError": {
+        "_enum": [
+          "Underflow",
+          "Overflow",
+          "DivisionByZero",
+        ],
       },
       "SpConsensusBabeAllowedSlots": {
         "_enum": [
@@ -4744,8 +4981,7 @@ exports[`getApiOptions returns expected options 1`] = `
       "SpConsensusBabeDigestsPrimaryPreDigest": {
         "authorityIndex": "u32",
         "slot": "u64",
-        "vrfOutput": "[u8;32]",
-        "vrfProof": "[u8;64]",
+        "vrfSignature": "SpCoreSr25519VrfVrfSignature",
       },
       "SpConsensusBabeDigestsSecondaryPlainPreDigest": {
         "authorityIndex": "u32",
@@ -4754,8 +4990,19 @@ exports[`getApiOptions returns expected options 1`] = `
       "SpConsensusBabeDigestsSecondaryVRFPreDigest": {
         "authorityIndex": "u32",
         "slot": "u64",
-        "vrfOutput": "[u8;32]",
-        "vrfProof": "[u8;64]",
+        "vrfSignature": "SpCoreSr25519VrfVrfSignature",
+      },
+      "SpConsensusGrandpaAppPublic": "SpCoreEd25519Public",
+      "SpConsensusGrandpaAppSignature": "SpCoreEd25519Signature",
+      "SpConsensusGrandpaEquivocation": {
+        "_enum": {
+          "Precommit": "FinalityGrandpaEquivocationPrecommit",
+          "Prevote": "FinalityGrandpaEquivocationPrevote",
+        },
+      },
+      "SpConsensusGrandpaEquivocationProof": {
+        "equivocation": "SpConsensusGrandpaEquivocation",
+        "setId": "u64",
       },
       "SpConsensusSlotsEquivocationProof": {
         "firstHeader": "SpRuntimeHeader",
@@ -4768,25 +5015,13 @@ exports[`getApiOptions returns expected options 1`] = `
       "SpCoreEcdsaSignature": "[u8;65]",
       "SpCoreEd25519Public": "[u8;32]",
       "SpCoreEd25519Signature": "[u8;64]",
-      "SpCoreOffchainOpaqueNetworkState": {
-        "externalAddresses": "Vec<OpaqueMultiaddr>",
-        "peerId": "OpaquePeerId",
-      },
       "SpCoreSr25519Public": "[u8;32]",
       "SpCoreSr25519Signature": "[u8;64]",
+      "SpCoreSr25519VrfVrfSignature": {
+        "output": "[u8;32]",
+        "proof": "[u8;64]",
+      },
       "SpCoreVoid": "Null",
-      "SpFinalityGrandpaAppPublic": "SpCoreEd25519Public",
-      "SpFinalityGrandpaAppSignature": "SpCoreEd25519Signature",
-      "SpFinalityGrandpaEquivocation": {
-        "_enum": {
-          "Precommit": "FinalityGrandpaEquivocationPrecommit",
-          "Prevote": "FinalityGrandpaEquivocationPrevote",
-        },
-      },
-      "SpFinalityGrandpaEquivocationProof": {
-        "equivocation": "SpFinalityGrandpaEquivocation",
-        "setId": "u64",
-      },
       "SpNposElectionsElectionScore": {
         "minimalStake": "u128",
         "sumStake": "u128",
@@ -4796,14 +5031,6 @@ exports[`getApiOptions returns expected options 1`] = `
         "total": "u128",
         "voters": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
       },
-      "SpRuntimeArithmeticError": {
-        "_enum": [
-          "Underflow",
-          "Overflow",
-          "DivisionByZero",
-        ],
-      },
-      "SpRuntimeBlakeTwo256": "Null",
       "SpRuntimeDigest": {
         "logs": "Vec<SpRuntimeDigestDigestItem>",
       },
@@ -4822,16 +5049,20 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "SpRuntimeDispatchError": {
         "_enum": {
-          "Arithmetic": "SpRuntimeArithmeticError",
+          "Arithmetic": "SpArithmeticArithmeticError",
           "BadOrigin": "Null",
           "CannotLookup": "Null",
           "ConsumerRemaining": "Null",
+          "Corruption": "Null",
+          "Exhausted": "Null",
           "Module": "SpRuntimeModuleError",
           "NoProviders": "Null",
           "Other": "Null",
+          "RootNotAllowed": "Null",
           "Token": "SpRuntimeTokenError",
           "TooManyConsumers": "Null",
           "Transactional": "SpRuntimeTransactionalError",
+          "Unavailable": "Null",
         },
       },
       "SpRuntimeHeader": {
@@ -4847,13 +5078,16 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "SpRuntimeTokenError": {
         "_enum": [
-          "NoFunds",
-          "WouldDie",
+          "FundsUnavailable",
+          "OnlyProvider",
           "BelowMinimum",
           "CannotCreate",
           "UnknownAsset",
           "Frozen",
           "Unsupported",
+          "CannotCreateHold",
+          "NotExpendable",
+          "Blocked",
         ],
       },
       "SpRuntimeTransactionalError": {
@@ -4884,6 +5118,10 @@ exports[`getApiOptions returns expected options 1`] = `
       "SpWeightsRuntimeDbWeight": {
         "read": "u64",
         "write": "u64",
+      },
+      "SpWeightsWeightV2Weight": {
+        "proofSize": "Compact<u64>",
+        "refTime": "Compact<u64>",
       },
     },
   },

@@ -14,8 +14,9 @@ import type {
 	FrameSystemLimitsBlockWeights,
 	SpVersionRuntimeVersion,
 	SpWeightsRuntimeDbWeight,
+	SpWeightsWeightV2Weight,
 } from "@polkadot/types/lookup";
-import type { Perbill, WeightV1 } from "@therootnetwork/api-types/interfaces/runtime";
+import type { Perbill, Percent } from "@therootnetwork/api-types/interfaces/runtime";
 
 export type __AugmentedConst<ApiType extends ApiTypes> = AugmentedConst<ApiType>;
 
@@ -45,6 +46,12 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			metadataDepositPerByte: u128 & AugmentedConst<ApiType>;
 			/**
+			 * Max number of items to destroy per `destroy_accounts` and `destroy_approvals` call.
+			 *
+			 * Must be configured to result in a weight that makes each call fit in a block.
+			 **/
+			removeItemsLimit: u32 & AugmentedConst<ApiType>;
+			/**
 			 * The maximum length of a name or symbol stored on-chain.
 			 **/
 			stringLimit: u32 & AugmentedConst<ApiType>;
@@ -66,18 +73,6 @@ declare module "@polkadot/api-base/types/consts" {
 			 * This pallet's Id, used for deriving a sovereign account ID
 			 **/
 			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
-			/**
-			 * Generic const
-			 **/
-			[key: string]: Codec;
-		};
-		authorship: {
-			/**
-			 * The number of blocks back we should accept uncles.
-			 * This means that we will deal with uncle-parents that are
-			 * `UncleGenerations + 1` before `now`.
-			 **/
-			uncleGenerations: u32 & AugmentedConst<ApiType>;
 			/**
 			 * Generic const
 			 **/
@@ -109,9 +104,24 @@ declare module "@polkadot/api-base/types/consts" {
 		};
 		balances: {
 			/**
-			 * The minimum amount required to keep an account open.
+			 * The minimum amount required to keep an account open. MUST BE GREATER THAN ZERO!
+			 *
+			 * If you *really* need it to be zero, you can enable the feature `insecure_zero_ed` for
+			 * this pallet. However, you do so at your own risk: this will open up a major DoS vector.
+			 * In case you have multiple sources of provider references, you may also get unexpected
+			 * behaviour if you set this to zero.
+			 *
+			 * Bottom line: Do yourself a favour and make it at least one!
 			 **/
 			existentialDeposit: u128 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of individual freeze locks that can exist on an account at any time.
+			 **/
+			maxFreezes: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of holds that can exist on an account at any time.
+			 **/
+			maxHolds: u32 & AugmentedConst<ApiType>;
 			/**
 			 * The maximum number of locks that should exist on an account.
 			 * Not strictly enforced, but used for weight estimation.
@@ -221,9 +231,17 @@ declare module "@polkadot/api-base/types/consts" {
 			 * take place over multiple blocks.
 			 **/
 			maxElectingVoters: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of winners that can be elected by this `ElectionProvider`
+			 * implementation.
+			 *
+			 * Note: This must always be greater or equal to `T::DataProvider::desired_targets()`.
+			 **/
+			maxWinners: u32 & AugmentedConst<ApiType>;
 			minerMaxLength: u32 & AugmentedConst<ApiType>;
 			minerMaxVotesPerVoter: u32 & AugmentedConst<ApiType>;
-			minerMaxWeight: WeightV1 & AugmentedConst<ApiType>;
+			minerMaxWeight: SpWeightsWeightV2Weight & AugmentedConst<ApiType>;
+			minerMaxWinners: u32 & AugmentedConst<ApiType>;
 			/**
 			 * The priority of the unsigned transaction submitted in the unsigned-phase
 			 **/
@@ -268,7 +286,7 @@ declare module "@polkadot/api-base/types/consts" {
 			 * this pallet), then [`MinerConfig::solution_weight`] is used to compare against
 			 * this value.
 			 **/
-			signedMaxWeight: WeightV1 & AugmentedConst<ApiType>;
+			signedMaxWeight: SpWeightsWeightV2Weight & AugmentedConst<ApiType>;
 			/**
 			 * Duration of the signed phase.
 			 **/
@@ -281,6 +299,92 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Duration of the unsigned phase.
 			 **/
 			unsignedPhase: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
+		erc20Peg: {
+			/**
+			 * The maximum number of delayed payments allowed per block
+			 **/
+			maxDelaysPerBlock: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of ready blocks allowed per storage
+			 **/
+			maxReadyBlocks: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The native token asset Id (managed by pallet-balances)
+			 **/
+			nativeAssetId: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum length of an ERC20 token symbol
+			 **/
+			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
+		ethBridge: {
+			/**
+			 * Length of time the bridge will be paused while the authority set changes
+			 **/
+			authorityChangeDelay: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The pallet bridge address (destination for incoming messages, source for outgoing)
+			 **/
+			bridgePalletId: FrameSupportPalletId & AugmentedConst<ApiType>;
+			/**
+			 * Bond required by challenger to make a challenge
+			 **/
+			challengeBond: u128 & AugmentedConst<ApiType>;
+			epochDuration: u64 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum count of notary keys
+			 **/
+			maxAuthorities: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum number of Eth Call Requests
+			 **/
+			maxCallRequests: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum number of pending challenges
+			 **/
+			maxChallenges: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum size of eth abi and message data
+			 **/
+			maxEthData: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum number of valid messages per block
+			 **/
+			maxMessagesPerBlock: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Max amount of new signers that can be set an in extrinsic
+			 **/
+			maxNewSigners: u8 & AugmentedConst<ApiType>;
+			/**
+			 * Maximum number of processed message Ids that will we keep as a buffer to prevent
+			 * replays.
+			 **/
+			maxProcessedMessageIds: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Max Xrpl notary (validator) public keys
+			 **/
+			maxXrplKeys: u8 & AugmentedConst<ApiType>;
+			/**
+			 * The native token asset Id (managed by pallet-balances)
+			 **/
+			nativeAssetId: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The threshold of notarizations required to approve an Ethereum event
+			 **/
+			notarizationThreshold: Percent & AugmentedConst<ApiType>;
+			/**
+			 * Bond required for an account to act as relayer
+			 **/
+			relayerBond: u128 & AugmentedConst<ApiType>;
 			/**
 			 * Generic const
 			 **/
@@ -301,6 +405,15 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Max Authorities in use
 			 **/
 			maxAuthorities: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of entries to keep in the set id to session index mapping.
+			 *
+			 * Since the `SetIdSession` map is only used for validating equivocations this
+			 * value should relate to the bonding duration of whatever staking system is
+			 * being used (if any). If equivocation handling is not enabled then this value
+			 * can be zero.
+			 **/
+			maxSetIdSessionEntries: u64 & AugmentedConst<ApiType>;
 			/**
 			 * Generic const
 			 **/
@@ -366,7 +479,7 @@ declare module "@polkadot/api-base/types/consts" {
 			/**
 			 * The maximum amount of signatories allowed in the multisig.
 			 **/
-			maxSignatories: u16 & AugmentedConst<ApiType>;
+			maxSignatories: u32 & AugmentedConst<ApiType>;
 			/**
 			 * Generic const
 			 **/
@@ -478,13 +591,15 @@ declare module "@polkadot/api-base/types/consts" {
 		};
 		scheduler: {
 			/**
-			 * The maximum weight that may be scheduled per block for any dispatchables of less
-			 * priority than `schedule::HARD_DEADLINE`.
+			 * The maximum weight that may be scheduled per block for any dispatchables.
 			 **/
-			maximumWeight: WeightV1 & AugmentedConst<ApiType>;
+			maximumWeight: SpWeightsWeightV2Weight & AugmentedConst<ApiType>;
 			/**
 			 * The maximum number of scheduled calls in the queue for a single block.
-			 * Not strictly enforced, but used for weight estimation.
+			 *
+			 * NOTE:
+			 * + Dependent pallets' benchmarks might require a higher limit for the setting. Set a
+			 * higher limit under `runtime-benchmarks` feature.
 			 **/
 			maxScheduledPerBlock: u32 & AugmentedConst<ApiType>;
 			/**
