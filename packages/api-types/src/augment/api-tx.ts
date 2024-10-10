@@ -61,7 +61,8 @@ import type {
 	PalletNfiNfiSubType,
 	PalletNfiFeeDetails,
 	PalletNfiNfiDataType,
-	SeedPalletCommonUtilsCollectionUtilityFlags, PalletXrplBridgeXrplCurrency,
+	SeedPalletCommonUtilsCollectionUtilityFlags,
+	PalletXrplBridgeXrplCurrency,
 } from "@polkadot/types/lookup";
 import type {
 	Call,

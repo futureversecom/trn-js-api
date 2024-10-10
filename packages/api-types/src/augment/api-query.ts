@@ -107,7 +107,8 @@ import type {
 	PalletNfiFeeDetails,
 	PalletNfiNfiSubType,
 	PalletNfiNfiDataType,
-	SeedPalletCommonUtilsCollectionUtilityFlags, PalletXrplBridgeXrplCurrency,
+	SeedPalletCommonUtilsCollectionUtilityFlags,
+	PalletXrplBridgeXrplCurrency,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {
