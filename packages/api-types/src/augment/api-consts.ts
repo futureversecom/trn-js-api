@@ -16,7 +16,7 @@ import type {
 	SpWeightsRuntimeDbWeight,
 	SpWeightsWeightV2Weight,
 } from "@polkadot/types/lookup";
-import type { Perbill, Percent } from "@therootnetwork/api-types/interfaces/runtime";
+import type { Perbill, Percent, Permill } from "@therootnetwork/api-types/interfaces/runtime";
 
 export type __AugmentedConst<ApiType extends ApiTypes> = AugmentedConst<ApiType>;
 
@@ -485,6 +485,20 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		nfi: {
+			/**
+			 * Max length of data stored per token
+			 **/
+			maxDataLength: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Percentage of sale price to charge for network fee
+			 **/
+			networkFeePercentage: Permill & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		nft: {
 			/**
 			 * This pallet's Id, used for deriving a sovereign account ID
@@ -916,6 +930,14 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Maximum number of transactions that can be pruned in on_idle
 			 **/
 			maxPrunedTransactionsPerBlock: u32 & AugmentedConst<ApiType>;
+			/**
+			 * ROOT AssetId set at runtime
+			 **/
+			nativeAssetId: u32 & AugmentedConst<ApiType>;
+			/**
+			 * This pallet's Id, used for deriving a sovereign account ID
+			 **/
+			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
 			/**
 			 * XRP Asset Id set at runtime
 			 **/

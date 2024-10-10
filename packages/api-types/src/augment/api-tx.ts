@@ -52,12 +52,17 @@ import type {
 	SeedRuntimeOriginCaller,
 	SeedRuntimeSessionKeys,
 	SpConsensusBabeDigestsNextConfigDescriptor,
+	SpConsensusGrandpaEquivocationProof,
 	SpConsensusSlotsEquivocationProof,
 	SpNposElectionsElectionScore,
 	SpNposElectionsSupport,
 	SpSessionMembershipProof,
-	SpConsensusGrandpaEquivocationProof,
 	SpWeightsWeightV2Weight,
+	PalletNfiNfiSubType,
+	PalletNfiFeeDetails,
+	PalletNfiNfiDataType,
+	SeedPalletCommonUtilsCollectionUtilityFlags,
+	PalletXrplBridgeXrplCurrency,
 } from "@polkadot/types/lookup";
 import type {
 	Call,
@@ -1889,6 +1894,85 @@ declare module "@polkadot/api-base/types/submittable" {
 			 **/
 			[key: string]: SubmittableExtrinsicFunction<ApiType>;
 		};
+		nfi: {
+			/**
+			 * See [`Pallet::enable_nfi`].
+			 **/
+			enableNfi: AugmentedSubmittable<
+				(
+					collectionId: u32 | AnyNumber | Uint8Array,
+					subType: PalletNfiNfiSubType | "NFI" | number | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, PalletNfiNfiSubType]
+			>;
+			/**
+			 * See [`Pallet::manual_data_request`].
+			 **/
+			manualDataRequest: AugmentedSubmittable<
+				(
+					tokenId:
+						| ITuple<[u32, u32]>
+						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+					subType: PalletNfiNfiSubType | "NFI" | number | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[ITuple<[u32, u32]>, PalletNfiNfiSubType]
+			>;
+			/**
+			 * See [`Pallet::set_fee_details`].
+			 **/
+			setFeeDetails: AugmentedSubmittable<
+				(
+					subType: PalletNfiNfiSubType | "NFI" | number | Uint8Array,
+					feeDetails:
+						| Option<PalletNfiFeeDetails>
+						| null
+						| Uint8Array
+						| PalletNfiFeeDetails
+						| { assetId?: any; amount?: any; receiver?: any }
+						| string
+				) => SubmittableExtrinsic<ApiType>,
+				[PalletNfiNfiSubType, Option<PalletNfiFeeDetails>]
+			>;
+			/**
+			 * See [`Pallet::set_fee_to`].
+			 **/
+			setFeeTo: AugmentedSubmittable<
+				(
+					feeTo:
+						| Option<SeedPrimitivesSignatureAccountId20>
+						| null
+						| Uint8Array
+						| SeedPrimitivesSignatureAccountId20
+						| string
+				) => SubmittableExtrinsic<ApiType>,
+				[Option<SeedPrimitivesSignatureAccountId20>]
+			>;
+			/**
+			 * See [`Pallet::set_relayer`].
+			 **/
+			setRelayer: AugmentedSubmittable<
+				(
+					relayer: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20]
+			>;
+			/**
+			 * See [`Pallet::submit_nfi_data`].
+			 **/
+			submitNfiData: AugmentedSubmittable<
+				(
+					tokenId:
+						| ITuple<[u32, u32]>
+						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+					dataItem: PalletNfiNfiDataType | { NFI: any } | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[ITuple<[u32, u32]>, PalletNfiNfiDataType]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
 		nft: {
 			/**
 			 * See [`Pallet::burn`].
@@ -2031,6 +2115,20 @@ declare module "@polkadot/api-base/types/submittable" {
 						| Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, SeedPrimitivesNftRoyaltiesSchedule]
+			>;
+			/**
+			 * See [`Pallet::set_utility_flags`].
+			 **/
+			setUtilityFlags: AugmentedSubmittable<
+				(
+					collectionId: u32 | AnyNumber | Uint8Array,
+					utilityFlags:
+						| SeedPalletCommonUtilsCollectionUtilityFlags
+						| { transferable?: any; burnable?: any; mintable?: any }
+						| string
+						| Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, SeedPalletCommonUtilsCollectionUtilityFlags]
 			>;
 			/**
 			 * See [`Pallet::toggle_public_mint`].
@@ -2659,6 +2757,20 @@ declare module "@polkadot/api-base/types/submittable" {
 						| Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, SeedPrimitivesNftRoyaltiesSchedule]
+			>;
+			/**
+			 * See [`Pallet::set_utility_flags`].
+			 **/
+			setUtilityFlags: AugmentedSubmittable<
+				(
+					collectionId: u32 | AnyNumber | Uint8Array,
+					utilityFlags:
+						| SeedPalletCommonUtilsCollectionUtilityFlags
+						| { transferable?: any; burnable?: any; mintable?: any }
+						| string
+						| Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, SeedPalletCommonUtilsCollectionUtilityFlags]
 			>;
 			/**
 			 * See [`Pallet::toggle_public_mint`].
@@ -3519,6 +3631,7 @@ declare module "@polkadot/api-base/types/submittable" {
 			 **/
 			setPaymentDelay: AugmentedSubmittable<
 				(
+					assetId: u32 | AnyNumber | Uint8Array,
 					paymentDelay:
 						| Option<ITuple<[u128, u32]>>
 						| null
@@ -3526,7 +3639,7 @@ declare module "@polkadot/api-base/types/submittable" {
 						| ITuple<[u128, u32]>
 						| [u128 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
 				) => SubmittableExtrinsic<ApiType>,
-				[Option<ITuple<[u128, u32]>>]
+				[u32, Option<ITuple<[u128, u32]>>]
 			>;
 			/**
 			 * See [`Pallet::set_ticket_sequence_current_allocation`].
@@ -3548,6 +3661,20 @@ declare module "@polkadot/api-base/types/submittable" {
 					ticketBucketSize: u32 | AnyNumber | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, u32]
+			>;
+			/**
+			 * See [`Pallet::set_xrpl_asset_map`].
+			 **/
+			setXrplAssetMap: AugmentedSubmittable<
+				(
+					assetId: u32 | AnyNumber | Uint8Array,
+					xrplCurrency:
+						| PalletXrplBridgeXrplCurrency
+						| { symbol?: any; issuer?: any }
+						| string
+						| Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, PalletXrplBridgeXrplCurrency]
 			>;
 			/**
 			 * See [`Pallet::set_xrp_source_tag`].
@@ -3580,6 +3707,18 @@ declare module "@polkadot/api-base/types/submittable" {
 					timestamp: u64 | AnyNumber | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[u64, H512, PalletXrplBridgeXrplTxData, u64]
+			>;
+			/**
+			 * See [`Pallet::withdraw`].
+			 **/
+			withdraw: AugmentedSubmittable<
+				(
+					assetId: u32 | AnyNumber | Uint8Array,
+					amount: u128 | AnyNumber | Uint8Array,
+					destination: H160 | string | Uint8Array,
+					destinationTag: Option<u32> | null | Uint8Array | u32 | AnyNumber
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, u128, H160, Option<u32>]
 			>;
 			/**
 			 * See [`Pallet::withdraw_xrp`].
