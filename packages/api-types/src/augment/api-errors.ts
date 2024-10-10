@@ -17,6 +17,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			AlreadyExists: AugmentedError<ApiType>;
 			/**
+			 * The asset is not live, and likely being destroyed.
+			 **/
+			AssetNotLive: AugmentedError<ApiType>;
+			/**
 			 * Invalid metadata given.
 			 **/
 			BadMetadata: AugmentedError<ApiType>;
@@ -29,13 +33,26 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			BalanceLow: AugmentedError<ApiType>;
 			/**
+			 * Callback action resulted in error
+			 **/
+			CallbackFailed: AugmentedError<ApiType>;
+			/**
 			 * The origin account is frozen.
 			 **/
 			Frozen: AugmentedError<ApiType>;
 			/**
+			 * The asset status is not the expected status.
+			 **/
+			IncorrectStatus: AugmentedError<ApiType>;
+			/**
 			 * The asset ID is already taken.
 			 **/
 			InUse: AugmentedError<ApiType>;
+			/**
+			 * The asset is a live asset and is actively being used. Usually emit for operations such
+			 * as `start_destroy` which require the asset to be in a destroying state.
+			 **/
+			LiveAsset: AugmentedError<ApiType>;
 			/**
 			 * Minimum balance should be non-zero.
 			 **/
@@ -53,15 +70,19 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			NoPermission: AugmentedError<ApiType>;
 			/**
-			 * Unable to increment the consumer reference counters on the account. Either no provider
-			 * reference exists to allow a non-zero balance of a non-self-sufficient asset, or the
-			 * maximum number of consumers has been reached.
+			 * The asset should be frozen before the given operation.
 			 **/
-			NoProvider: AugmentedError<ApiType>;
+			NotFrozen: AugmentedError<ApiType>;
 			/**
 			 * No approval exists that would allow the transfer.
 			 **/
 			Unapproved: AugmentedError<ApiType>;
+			/**
+			 * Unable to increment the consumer reference counters on the account. Either no provider
+			 * reference exists to allow a non-zero balance of a non-self-sufficient asset, or one
+			 * fewer then the maximum number of consumers has been reached.
+			 **/
+			UnavailableConsumer: AugmentedError<ApiType>;
 			/**
 			 * The given asset ID is unknown.
 			 **/
@@ -117,40 +138,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
-		authorship: {
-			/**
-			 * The uncle is genesis.
-			 **/
-			GenesisUncle: AugmentedError<ApiType>;
-			/**
-			 * The uncle parent not in the chain.
-			 **/
-			InvalidUncleParent: AugmentedError<ApiType>;
-			/**
-			 * The uncle isn't recent enough to be included.
-			 **/
-			OldUncle: AugmentedError<ApiType>;
-			/**
-			 * The uncle is too high in chain.
-			 **/
-			TooHighUncle: AugmentedError<ApiType>;
-			/**
-			 * Too many uncles.
-			 **/
-			TooManyUncles: AugmentedError<ApiType>;
-			/**
-			 * The uncle is already included.
-			 **/
-			UncleAlreadyIncluded: AugmentedError<ApiType>;
-			/**
-			 * Uncles already set in the block.
-			 **/
-			UnclesAlreadySet: AugmentedError<ApiType>;
-			/**
-			 * Generic error
-			 **/
-			[key: string]: AugmentedError<ApiType>;
-		};
 		babe: {
 			/**
 			 * A given equivocation report is valid but already previously reported.
@@ -175,35 +162,43 @@ declare module "@polkadot/api-base/types/errors" {
 		};
 		balances: {
 			/**
-			 * Beneficiary account must pre-exist
+			 * Beneficiary account must pre-exist.
 			 **/
 			DeadAccount: AugmentedError<ApiType>;
 			/**
-			 * Value too low to create account due to existential deposit
+			 * Value too low to create account due to existential deposit.
 			 **/
 			ExistentialDeposit: AugmentedError<ApiType>;
 			/**
-			 * A vesting schedule already exists for this account
+			 * A vesting schedule already exists for this account.
 			 **/
 			ExistingVestingSchedule: AugmentedError<ApiType>;
 			/**
-			 * Balance too low to send value
+			 * Transfer/payment would kill account.
+			 **/
+			Expendability: AugmentedError<ApiType>;
+			/**
+			 * Balance too low to send value.
 			 **/
 			InsufficientBalance: AugmentedError<ApiType>;
 			/**
-			 * Transfer/payment would kill account
-			 **/
-			KeepAlive: AugmentedError<ApiType>;
-			/**
-			 * Account liquidity restrictions prevent withdrawal
+			 * Account liquidity restrictions prevent withdrawal.
 			 **/
 			LiquidityRestrictions: AugmentedError<ApiType>;
 			/**
-			 * Number of named reserves exceed MaxReserves
+			 * Number of freezes exceed `MaxFreezes`.
+			 **/
+			TooManyFreezes: AugmentedError<ApiType>;
+			/**
+			 * Number of holds exceed `MaxHolds`.
+			 **/
+			TooManyHolds: AugmentedError<ApiType>;
+			/**
+			 * Number of named reserves exceed `MaxReserves`.
 			 **/
 			TooManyReserves: AugmentedError<ApiType>;
 			/**
-			 * Vesting balance too high to send value
+			 * Vesting balance too high to send value.
 			 **/
 			VestingBalance: AugmentedError<ApiType>;
 			/**
@@ -466,6 +461,10 @@ declare module "@polkadot/api-base/types/errors" {
 		};
 		electionProviderMultiPhase: {
 			/**
+			 * Some bound not met
+			 **/
+			BoundNotMet: AugmentedError<ApiType>;
+			/**
 			 * The call is not allowed at this point.
 			 **/
 			CallNotAllowed: AugmentedError<ApiType>;
@@ -513,6 +512,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The signed submission consumes too much weight
 			 **/
 			SignedTooMuchWeight: AugmentedError<ApiType>;
+			/**
+			 * Submitted solution has too many winners
+			 **/
+			TooManyWinners: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
@@ -600,9 +603,17 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InvalidNotarization: AugmentedError<ApiType>;
 			/**
+			 * No more challenges are allowed for this claim_id
+			 **/
+			MaxChallengesExceeded: AugmentedError<ApiType>;
+			/**
 			 * Someone tried to set a greater amount of validators than allowed
 			 **/
 			MaxNewSignersExceeded: AugmentedError<ApiType>;
+			/**
+			 * The supplied message length is above the specified bounds
+			 **/
+			MessageTooLarge: AugmentedError<ApiType>;
 			/**
 			 * The relayer hasn't paid the relayer bond so can't be set as the active relayer
 			 **/
@@ -680,6 +691,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			Reentrancy: AugmentedError<ApiType>;
 			/**
+			 * EIP-3607,
+			 **/
+			TransactionMustComeFromEOA: AugmentedError<ApiType>;
+			/**
 			 * Undefined error.
 			 **/
 			Undefined: AugmentedError<ApiType>;
@@ -732,10 +747,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			ExpiredDeadline: AugmentedError<ApiType>;
 			/**
-			 * Invalid deadline
-			 **/
-			InvalidDeadline: AugmentedError<ApiType>;
-			/**
 			 * Invalid proxy type
 			 **/
 			InvalidProxyType: AugmentedError<ApiType>;
@@ -743,10 +754,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Invalid signature
 			 **/
 			InvalidSignature: AugmentedError<ApiType>;
-			/**
-			 * Futurepass migrator admin account is not set
-			 **/
-			MigratorNotSet: AugmentedError<ApiType>;
 			/**
 			 * Account is not futurepass owner
 			 **/
@@ -1165,7 +1172,7 @@ declare module "@polkadot/api-base/types/errors" {
 			/**
 			 * Preimage is too large to store on-chain.
 			 **/
-			TooLarge: AugmentedError<ApiType>;
+			TooBig: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
@@ -1284,6 +1291,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Failed to schedule a call
 			 **/
 			FailedToSchedule: AugmentedError<ApiType>;
+			/**
+			 * Attempt to use a non-named function on a named task.
+			 **/
+			Named: AugmentedError<ApiType>;
 			/**
 			 * Cannot find the scheduled call.
 			 **/
@@ -1495,8 +1506,8 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			TooManyTargets: AugmentedError<ApiType>;
 			/**
-			 * There are too many validators in the system. Governance needs to adjust the staking
-			 * settings to keep things safe for the runtime.
+			 * There are too many validator candidates in the system. Governance needs to adjust the
+			 * staking settings to keep things safe for the runtime.
 			 **/
 			TooManyValidators: AugmentedError<ApiType>;
 			/**

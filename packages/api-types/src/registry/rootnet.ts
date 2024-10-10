@@ -38,8 +38,7 @@ import type {
 	FrameSupportDispatchPerDispatchClassWeightsPerClass,
 	FrameSupportDispatchRawOrigin,
 	FrameSupportPalletId,
-	FrameSupportScheduleLookupError,
-	FrameSupportScheduleMaybeHashed,
+	FrameSupportPreimagesBounded,
 	FrameSupportTokensMiscBalanceStatus,
 	FrameSystemAccountInfo,
 	FrameSystemCall,
@@ -57,21 +56,19 @@ import type {
 	FrameSystemLimitsBlockWeights,
 	FrameSystemLimitsWeightsPerClass,
 	FrameSystemPhase,
+	PalletAssetsAccountStatus,
 	PalletAssetsApproval,
 	PalletAssetsAssetAccount,
 	PalletAssetsAssetDetails,
 	PalletAssetsAssetMetadata,
+	PalletAssetsAssetStatus,
 	PalletAssetsCall,
-	PalletAssetsDestroyWitness,
 	PalletAssetsError,
 	PalletAssetsEvent,
 	PalletAssetsExistenceReason,
 	PalletAssetsExtCall,
 	PalletAssetsExtError,
 	PalletAssetsExtEvent,
-	PalletAuthorshipCall,
-	PalletAuthorshipError,
-	PalletAuthorshipUncleEntryItem,
 	PalletBabeCall,
 	PalletBabeError,
 	PalletBagsListCall,
@@ -85,8 +82,8 @@ import type {
 	PalletBalancesCall,
 	PalletBalancesError,
 	PalletBalancesEvent,
+	PalletBalancesIdAmount,
 	PalletBalancesReasons,
-	PalletBalancesReleases,
 	PalletBalancesReserveData,
 	PalletCrowdsaleCall,
 	PalletCrowdsaleError,
@@ -117,27 +114,29 @@ import type {
 	PalletErc20PegCall,
 	PalletErc20PegErc20DepositEvent,
 	PalletErc20PegError,
+	PalletErc20PegEvent,
 	PalletErc20PegPendingPayment,
-	PalletErc20PegRawEvent,
 	PalletErc20PegWithdrawMessage,
 	PalletEthereumCall,
 	PalletEthereumError,
 	PalletEthereumEvent,
 	PalletEthereumRawOrigin,
+	PalletEthyBridgePauseStatus,
 	PalletEthyCall,
 	PalletEthyCheckedEthCallRequest,
 	PalletEthyCheckedEthCallResult,
 	PalletEthyError,
 	PalletEthyEthereumEventInfo,
 	PalletEthyEthySigningRequest,
+	PalletEthyEvent,
 	PalletEthyEventClaim,
 	PalletEthyEventClaimResult,
 	PalletEthyEventClaimStatus,
 	PalletEthyNotarizationPayload,
-	PalletEthyRawEvent,
 	PalletEvmCall,
 	PalletEvmChainIdCall,
 	PalletEvmChainIdEvent,
+	PalletEvmCodeMetadata,
 	PalletEvmError,
 	PalletEvmEvent,
 	PalletFeeControlCall,
@@ -154,7 +153,6 @@ import type {
 	PalletGrandpaEvent,
 	PalletGrandpaStoredPendingChange,
 	PalletGrandpaStoredState,
-	PalletImOnlineBoundedOpaqueNetworkState,
 	PalletImOnlineCall,
 	PalletImOnlineError,
 	PalletImOnlineEvent,
@@ -212,7 +210,7 @@ import type {
 	PalletSchedulerCall,
 	PalletSchedulerError,
 	PalletSchedulerEvent,
-	PalletSchedulerScheduledV3,
+	PalletSchedulerScheduled,
 	PalletSessionCall,
 	PalletSessionError,
 	PalletSessionEvent,
@@ -235,7 +233,6 @@ import type {
 	PalletStakingPalletConfigOpU32,
 	PalletStakingPalletError,
 	PalletStakingPalletEvent,
-	PalletStakingReleases,
 	PalletStakingRewardDestination,
 	PalletStakingSlashingSlashingSpans,
 	PalletStakingSlashingSpanRecord,
@@ -255,10 +252,10 @@ import type {
 	PalletUtilityCall,
 	PalletUtilityError,
 	PalletUtilityEvent,
-	PalletVortexCall,
-	PalletVortexError,
-	PalletVortexEvent,
-	PalletVortexVtxDistStatus,
+	PalletVortexDistributionCall,
+	PalletVortexDistributionError,
+	PalletVortexDistributionEvent,
+	PalletVortexDistributionVtxDistStatus,
 	PalletXls20Call,
 	PalletXls20Error,
 	PalletXls20Event,
@@ -273,6 +270,7 @@ import type {
 	PalletXrplCall,
 	PalletXrplError,
 	PalletXrplEvent,
+	PalletXrplXrplPublicKey,
 	SeedPalletCommonEventRouterError,
 	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
@@ -287,6 +285,7 @@ import type {
 	SeedRuntimeOriginCaller,
 	SeedRuntimeRuntime,
 	SeedRuntimeSessionKeys,
+	SpArithmeticArithmeticError,
 	SpConsensusBabeAllowedSlots,
 	SpConsensusBabeAppPublic,
 	SpConsensusBabeBabeEpochConfiguration,
@@ -295,24 +294,22 @@ import type {
 	SpConsensusBabeDigestsPrimaryPreDigest,
 	SpConsensusBabeDigestsSecondaryPlainPreDigest,
 	SpConsensusBabeDigestsSecondaryVRFPreDigest,
+	SpConsensusGrandpaAppPublic,
+	SpConsensusGrandpaAppSignature,
+	SpConsensusGrandpaEquivocation,
+	SpConsensusGrandpaEquivocationProof,
 	SpConsensusSlotsEquivocationProof,
 	SpCoreCryptoKeyTypeId,
 	SpCoreEcdsaPublic,
 	SpCoreEcdsaSignature,
 	SpCoreEd25519Public,
 	SpCoreEd25519Signature,
-	SpCoreOffchainOpaqueNetworkState,
 	SpCoreSr25519Public,
 	SpCoreSr25519Signature,
+	SpCoreSr25519VrfVrfSignature,
 	SpCoreVoid,
-	SpFinalityGrandpaAppPublic,
-	SpFinalityGrandpaAppSignature,
-	SpFinalityGrandpaEquivocation,
-	SpFinalityGrandpaEquivocationProof,
 	SpNposElectionsElectionScore,
 	SpNposElectionsSupport,
-	SpRuntimeArithmeticError,
-	SpRuntimeBlakeTwo256,
 	SpRuntimeDigest,
 	SpRuntimeDigestDigestItem,
 	SpRuntimeDispatchError,
@@ -324,6 +321,7 @@ import type {
 	SpStakingOffenceOffenceDetails,
 	SpVersionRuntimeVersion,
 	SpWeightsRuntimeDbWeight,
+	SpWeightsWeightV2Weight,
 } from "@polkadot/types/lookup";
 
 declare module "@polkadot/types/types/registry" {
@@ -360,8 +358,7 @@ declare module "@polkadot/types/types/registry" {
 		FrameSupportDispatchPerDispatchClassWeightsPerClass: FrameSupportDispatchPerDispatchClassWeightsPerClass;
 		FrameSupportDispatchRawOrigin: FrameSupportDispatchRawOrigin;
 		FrameSupportPalletId: FrameSupportPalletId;
-		FrameSupportScheduleLookupError: FrameSupportScheduleLookupError;
-		FrameSupportScheduleMaybeHashed: FrameSupportScheduleMaybeHashed;
+		FrameSupportPreimagesBounded: FrameSupportPreimagesBounded;
 		FrameSupportTokensMiscBalanceStatus: FrameSupportTokensMiscBalanceStatus;
 		FrameSystemAccountInfo: FrameSystemAccountInfo;
 		FrameSystemCall: FrameSystemCall;
@@ -379,21 +376,19 @@ declare module "@polkadot/types/types/registry" {
 		FrameSystemLimitsBlockWeights: FrameSystemLimitsBlockWeights;
 		FrameSystemLimitsWeightsPerClass: FrameSystemLimitsWeightsPerClass;
 		FrameSystemPhase: FrameSystemPhase;
+		PalletAssetsAccountStatus: PalletAssetsAccountStatus;
 		PalletAssetsApproval: PalletAssetsApproval;
 		PalletAssetsAssetAccount: PalletAssetsAssetAccount;
 		PalletAssetsAssetDetails: PalletAssetsAssetDetails;
 		PalletAssetsAssetMetadata: PalletAssetsAssetMetadata;
+		PalletAssetsAssetStatus: PalletAssetsAssetStatus;
 		PalletAssetsCall: PalletAssetsCall;
-		PalletAssetsDestroyWitness: PalletAssetsDestroyWitness;
 		PalletAssetsError: PalletAssetsError;
 		PalletAssetsEvent: PalletAssetsEvent;
 		PalletAssetsExistenceReason: PalletAssetsExistenceReason;
 		PalletAssetsExtCall: PalletAssetsExtCall;
 		PalletAssetsExtError: PalletAssetsExtError;
 		PalletAssetsExtEvent: PalletAssetsExtEvent;
-		PalletAuthorshipCall: PalletAuthorshipCall;
-		PalletAuthorshipError: PalletAuthorshipError;
-		PalletAuthorshipUncleEntryItem: PalletAuthorshipUncleEntryItem;
 		PalletBabeCall: PalletBabeCall;
 		PalletBabeError: PalletBabeError;
 		PalletBagsListCall: PalletBagsListCall;
@@ -407,8 +402,8 @@ declare module "@polkadot/types/types/registry" {
 		PalletBalancesCall: PalletBalancesCall;
 		PalletBalancesError: PalletBalancesError;
 		PalletBalancesEvent: PalletBalancesEvent;
+		PalletBalancesIdAmount: PalletBalancesIdAmount;
 		PalletBalancesReasons: PalletBalancesReasons;
-		PalletBalancesReleases: PalletBalancesReleases;
 		PalletBalancesReserveData: PalletBalancesReserveData;
 		PalletCrowdsaleCall: PalletCrowdsaleCall;
 		PalletCrowdsaleError: PalletCrowdsaleError;
@@ -439,27 +434,29 @@ declare module "@polkadot/types/types/registry" {
 		PalletErc20PegCall: PalletErc20PegCall;
 		PalletErc20PegErc20DepositEvent: PalletErc20PegErc20DepositEvent;
 		PalletErc20PegError: PalletErc20PegError;
+		PalletErc20PegEvent: PalletErc20PegEvent;
 		PalletErc20PegPendingPayment: PalletErc20PegPendingPayment;
-		PalletErc20PegRawEvent: PalletErc20PegRawEvent;
 		PalletErc20PegWithdrawMessage: PalletErc20PegWithdrawMessage;
 		PalletEthereumCall: PalletEthereumCall;
 		PalletEthereumError: PalletEthereumError;
 		PalletEthereumEvent: PalletEthereumEvent;
 		PalletEthereumRawOrigin: PalletEthereumRawOrigin;
+		PalletEthyBridgePauseStatus: PalletEthyBridgePauseStatus;
 		PalletEthyCall: PalletEthyCall;
 		PalletEthyCheckedEthCallRequest: PalletEthyCheckedEthCallRequest;
 		PalletEthyCheckedEthCallResult: PalletEthyCheckedEthCallResult;
 		PalletEthyError: PalletEthyError;
 		PalletEthyEthereumEventInfo: PalletEthyEthereumEventInfo;
 		PalletEthyEthySigningRequest: PalletEthyEthySigningRequest;
+		PalletEthyEvent: PalletEthyEvent;
 		PalletEthyEventClaim: PalletEthyEventClaim;
 		PalletEthyEventClaimResult: PalletEthyEventClaimResult;
 		PalletEthyEventClaimStatus: PalletEthyEventClaimStatus;
 		PalletEthyNotarizationPayload: PalletEthyNotarizationPayload;
-		PalletEthyRawEvent: PalletEthyRawEvent;
 		PalletEvmCall: PalletEvmCall;
 		PalletEvmChainIdCall: PalletEvmChainIdCall;
 		PalletEvmChainIdEvent: PalletEvmChainIdEvent;
+		PalletEvmCodeMetadata: PalletEvmCodeMetadata;
 		PalletEvmError: PalletEvmError;
 		PalletEvmEvent: PalletEvmEvent;
 		PalletFeeControlCall: PalletFeeControlCall;
@@ -476,7 +473,6 @@ declare module "@polkadot/types/types/registry" {
 		PalletGrandpaEvent: PalletGrandpaEvent;
 		PalletGrandpaStoredPendingChange: PalletGrandpaStoredPendingChange;
 		PalletGrandpaStoredState: PalletGrandpaStoredState;
-		PalletImOnlineBoundedOpaqueNetworkState: PalletImOnlineBoundedOpaqueNetworkState;
 		PalletImOnlineCall: PalletImOnlineCall;
 		PalletImOnlineError: PalletImOnlineError;
 		PalletImOnlineEvent: PalletImOnlineEvent;
@@ -534,7 +530,7 @@ declare module "@polkadot/types/types/registry" {
 		PalletSchedulerCall: PalletSchedulerCall;
 		PalletSchedulerError: PalletSchedulerError;
 		PalletSchedulerEvent: PalletSchedulerEvent;
-		PalletSchedulerScheduledV3: PalletSchedulerScheduledV3;
+		PalletSchedulerScheduled: PalletSchedulerScheduled;
 		PalletSessionCall: PalletSessionCall;
 		PalletSessionError: PalletSessionError;
 		PalletSessionEvent: PalletSessionEvent;
@@ -557,7 +553,6 @@ declare module "@polkadot/types/types/registry" {
 		PalletStakingPalletConfigOpU32: PalletStakingPalletConfigOpU32;
 		PalletStakingPalletError: PalletStakingPalletError;
 		PalletStakingPalletEvent: PalletStakingPalletEvent;
-		PalletStakingReleases: PalletStakingReleases;
 		PalletStakingRewardDestination: PalletStakingRewardDestination;
 		PalletStakingSlashingSlashingSpans: PalletStakingSlashingSlashingSpans;
 		PalletStakingSlashingSpanRecord: PalletStakingSlashingSpanRecord;
@@ -577,10 +572,10 @@ declare module "@polkadot/types/types/registry" {
 		PalletUtilityCall: PalletUtilityCall;
 		PalletUtilityError: PalletUtilityError;
 		PalletUtilityEvent: PalletUtilityEvent;
-		PalletVortexCall: PalletVortexCall;
-		PalletVortexError: PalletVortexError;
-		PalletVortexEvent: PalletVortexEvent;
-		PalletVortexVtxDistStatus: PalletVortexVtxDistStatus;
+		PalletVortexDistributionCall: PalletVortexDistributionCall;
+		PalletVortexDistributionError: PalletVortexDistributionError;
+		PalletVortexDistributionEvent: PalletVortexDistributionEvent;
+		PalletVortexDistributionVtxDistStatus: PalletVortexDistributionVtxDistStatus;
 		PalletXls20Call: PalletXls20Call;
 		PalletXls20Error: PalletXls20Error;
 		PalletXls20Event: PalletXls20Event;
@@ -595,6 +590,7 @@ declare module "@polkadot/types/types/registry" {
 		PalletXrplCall: PalletXrplCall;
 		PalletXrplError: PalletXrplError;
 		PalletXrplEvent: PalletXrplEvent;
+		PalletXrplXrplPublicKey: PalletXrplXrplPublicKey;
 		SeedPalletCommonEventRouterError: SeedPalletCommonEventRouterError;
 		SeedPalletCommonUtilsPublicMintInformation: SeedPalletCommonUtilsPublicMintInformation;
 		SeedPrimitivesEthyCryptoAppCryptoPublic: SeedPrimitivesEthyCryptoAppCryptoPublic;
@@ -609,6 +605,7 @@ declare module "@polkadot/types/types/registry" {
 		SeedRuntimeOriginCaller: SeedRuntimeOriginCaller;
 		SeedRuntimeRuntime: SeedRuntimeRuntime;
 		SeedRuntimeSessionKeys: SeedRuntimeSessionKeys;
+		SpArithmeticArithmeticError: SpArithmeticArithmeticError;
 		SpConsensusBabeAllowedSlots: SpConsensusBabeAllowedSlots;
 		SpConsensusBabeAppPublic: SpConsensusBabeAppPublic;
 		SpConsensusBabeBabeEpochConfiguration: SpConsensusBabeBabeEpochConfiguration;
@@ -617,24 +614,22 @@ declare module "@polkadot/types/types/registry" {
 		SpConsensusBabeDigestsPrimaryPreDigest: SpConsensusBabeDigestsPrimaryPreDigest;
 		SpConsensusBabeDigestsSecondaryPlainPreDigest: SpConsensusBabeDigestsSecondaryPlainPreDigest;
 		SpConsensusBabeDigestsSecondaryVRFPreDigest: SpConsensusBabeDigestsSecondaryVRFPreDigest;
+		SpConsensusGrandpaAppPublic: SpConsensusGrandpaAppPublic;
+		SpConsensusGrandpaAppSignature: SpConsensusGrandpaAppSignature;
+		SpConsensusGrandpaEquivocation: SpConsensusGrandpaEquivocation;
+		SpConsensusGrandpaEquivocationProof: SpConsensusGrandpaEquivocationProof;
 		SpConsensusSlotsEquivocationProof: SpConsensusSlotsEquivocationProof;
 		SpCoreCryptoKeyTypeId: SpCoreCryptoKeyTypeId;
 		SpCoreEcdsaPublic: SpCoreEcdsaPublic;
 		SpCoreEcdsaSignature: SpCoreEcdsaSignature;
 		SpCoreEd25519Public: SpCoreEd25519Public;
 		SpCoreEd25519Signature: SpCoreEd25519Signature;
-		SpCoreOffchainOpaqueNetworkState: SpCoreOffchainOpaqueNetworkState;
 		SpCoreSr25519Public: SpCoreSr25519Public;
 		SpCoreSr25519Signature: SpCoreSr25519Signature;
+		SpCoreSr25519VrfVrfSignature: SpCoreSr25519VrfVrfSignature;
 		SpCoreVoid: SpCoreVoid;
-		SpFinalityGrandpaAppPublic: SpFinalityGrandpaAppPublic;
-		SpFinalityGrandpaAppSignature: SpFinalityGrandpaAppSignature;
-		SpFinalityGrandpaEquivocation: SpFinalityGrandpaEquivocation;
-		SpFinalityGrandpaEquivocationProof: SpFinalityGrandpaEquivocationProof;
 		SpNposElectionsElectionScore: SpNposElectionsElectionScore;
 		SpNposElectionsSupport: SpNposElectionsSupport;
-		SpRuntimeArithmeticError: SpRuntimeArithmeticError;
-		SpRuntimeBlakeTwo256: SpRuntimeBlakeTwo256;
 		SpRuntimeDigest: SpRuntimeDigest;
 		SpRuntimeDigestDigestItem: SpRuntimeDigestDigestItem;
 		SpRuntimeDispatchError: SpRuntimeDispatchError;
@@ -646,5 +641,6 @@ declare module "@polkadot/types/types/registry" {
 		SpStakingOffenceOffenceDetails: SpStakingOffenceOffenceDetails;
 		SpVersionRuntimeVersion: SpVersionRuntimeVersion;
 		SpWeightsRuntimeDbWeight: SpWeightsRuntimeDbWeight;
+		SpWeightsWeightV2Weight: SpWeightsWeightV2Weight;
 	} // InterfaceTypes
 } // declare module
