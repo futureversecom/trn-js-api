@@ -1,5 +1,13 @@
 # @therootnetwork/extrinsic
 
+## 1.0.11
+
+### Patch Changes
+
+- Updated metadata for RTM V55
+- Updated dependencies
+  - @therootnetwork/api-types@1.0.4
+
 ## 1.0.10
 
 ### Patch Changes
