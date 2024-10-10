@@ -1799,6 +1799,100 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
 		};
+		nfi: {
+			/**
+			 * NFI storage has been removed for a token
+			 **/
+			DataRemoved: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>],
+				{ tokenId: ITuple<[u32, u32]> }
+			>;
+			/**
+			 * Request for new NFI data creation
+			 **/
+			DataRequest: AugmentedEvent<
+				ApiType,
+				[
+					subType: PalletNfiNfiSubType,
+					caller: SeedPrimitivesSignatureAccountId20,
+					collectionId: u32,
+					serialNumbers: Vec<u32>,
+				],
+				{
+					subType: PalletNfiNfiSubType;
+					caller: SeedPrimitivesSignatureAccountId20;
+					collectionId: u32;
+					serialNumbers: Vec<u32>;
+				}
+			>;
+			/**
+			 * A new NFI storage item has been set
+			 **/
+			DataSet: AugmentedEvent<
+				ApiType,
+				[subType: PalletNfiNfiSubType, tokenId: ITuple<[u32, u32]>, dataItem: PalletNfiNfiDataType],
+				{
+					subType: PalletNfiNfiSubType;
+					tokenId: ITuple<[u32, u32]>;
+					dataItem: PalletNfiNfiDataType;
+				}
+			>;
+			/**
+			 * New Fee details have been set
+			 **/
+			FeeDetailsSet: AugmentedEvent<
+				ApiType,
+				[subType: PalletNfiNfiSubType, feeDetails: Option<PalletNfiFeeDetails>],
+				{ subType: PalletNfiNfiSubType; feeDetails: Option<PalletNfiFeeDetails> }
+			>;
+			/**
+			 * The network fee receiver address has been updated
+			 **/
+			FeeToSet: AugmentedEvent<
+				ApiType,
+				[account: Option<SeedPrimitivesSignatureAccountId20>],
+				{ account: Option<SeedPrimitivesSignatureAccountId20> }
+			>;
+			/**
+			 * Additional mint fee has been paid to the receiver address
+			 **/
+			MintFeePaid: AugmentedEvent<
+				ApiType,
+				[
+					subType: PalletNfiNfiSubType,
+					who: SeedPrimitivesSignatureAccountId20,
+					assetId: u32,
+					totalFee: u128,
+				],
+				{
+					subType: PalletNfiNfiSubType;
+					who: SeedPrimitivesSignatureAccountId20;
+					assetId: u32;
+					totalFee: u128;
+				}
+			>;
+			/**
+			 * NFI compatibility enabled for a collection
+			 **/
+			NfiEnabled: AugmentedEvent<
+				ApiType,
+				[subType: PalletNfiNfiSubType, collectionId: u32],
+				{ subType: PalletNfiNfiSubType; collectionId: u32 }
+			>;
+			/**
+			 * A new relayer has been set
+			 **/
+			RelayerSet: AugmentedEvent<
+				ApiType,
+				[account: SeedPrimitivesSignatureAccountId20],
+				{ account: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
 		nft: {
 			/**
 			 * Base URI was set
@@ -1953,6 +2047,14 @@ declare module "@polkadot/api-base/types/events" {
 					serialNumbers: Vec<u32>;
 					newOwner: SeedPrimitivesSignatureAccountId20;
 				}
+			>;
+			/**
+			 * Utility flags were set for a collection
+			 **/
+			UtilityFlagsSet: AugmentedEvent<
+				ApiType,
+				[collectionId: u32, utilityFlags: SeedPalletCommonUtilsCollectionUtilityFlags],
+				{ collectionId: u32; utilityFlags: SeedPalletCommonUtilsCollectionUtilityFlags }
 			>;
 			/**
 			 * Generic event
@@ -2461,6 +2563,14 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * Utility flags were set for a collection
+			 **/
+			UtilityFlagsSet: AugmentedEvent<
+				ApiType,
+				[collectionId: u32, utilityFlags: SeedPalletCommonUtilsCollectionUtilityFlags],
+				{ collectionId: u32; utilityFlags: SeedPalletCommonUtilsCollectionUtilityFlags }
+			>;
+			/**
 			 * Generic event
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
@@ -2920,14 +3030,14 @@ declare module "@polkadot/api-base/types/events" {
 			/**
 			 * The payment delay was removed
 			 **/
-			PaymentDelayRemoved: AugmentedEvent<ApiType, []>;
+			PaymentDelayRemoved: AugmentedEvent<ApiType, [assetId: u32], { assetId: u32 }>;
 			/**
 			 * The payment delay was set
 			 **/
 			PaymentDelaySet: AugmentedEvent<
 				ApiType,
-				[paymentThreshold: u128, delay: u32],
-				{ paymentThreshold: u128; delay: u32 }
+				[assetId: u32, paymentThreshold: u128, delay: u32],
+				{ assetId: u32; paymentThreshold: u128; delay: u32 }
 			>;
 			/**
 			 * Processing an event failed
@@ -2949,6 +3059,7 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[
 					sender: SeedPrimitivesSignatureAccountId20,
+					assetId: u32,
 					amount: u128,
 					destination: H160,
 					delayedPaymentId: u64,
@@ -2956,6 +3067,7 @@ declare module "@polkadot/api-base/types/events" {
 				],
 				{
 					sender: SeedPrimitivesSignatureAccountId20;
+					assetId: u32;
 					amount: u128;
 					destination: H160;
 					delayedPaymentId: u64;
@@ -2967,13 +3079,25 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			WithdrawRequest: AugmentedEvent<
 				ApiType,
-				[proofId: u64, sender: SeedPrimitivesSignatureAccountId20, amount: u128, destination: H160],
+				[
+					proofId: u64,
+					sender: SeedPrimitivesSignatureAccountId20,
+					assetId: u32,
+					amount: u128,
+					destination: H160,
+				],
 				{
 					proofId: u64;
 					sender: SeedPrimitivesSignatureAccountId20;
+					assetId: u32;
 					amount: u128;
 					destination: H160;
 				}
+			>;
+			XrplAssetMapSet: AugmentedEvent<
+				ApiType,
+				[assetId: u32, xrplCurrency: PalletXrplBridgeXrplCurrency],
+				{ assetId: u32; xrplCurrency: PalletXrplBridgeXrplCurrency }
 			>;
 			/**
 			 * Generic event

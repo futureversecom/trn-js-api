@@ -905,6 +905,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			NotForFixedPriceSale: AugmentedError<ApiType>;
 			/**
+			 * The token does not exist
+			 **/
+			NoToken: AugmentedError<ApiType>;
+			/**
 			 * The caller is not the seller of the NFT
 			 **/
 			NotSeller: AugmentedError<ApiType>;
@@ -1003,6 +1007,36 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		nfi: {
+			/**
+			 * The mint fee must be a valid integer above 0
+			 **/
+			InvalidMintFee: AugmentedError<ApiType>;
+			/**
+			 * No the owner of the collection
+			 **/
+			NotCollectionOwner: AugmentedError<ApiType>;
+			/**
+			 * NFI storage is not enabled for this collection
+			 **/
+			NotEnabled: AugmentedError<ApiType>;
+			/**
+			 * The token does not exist
+			 **/
+			NoToken: AugmentedError<ApiType>;
+			/**
+			 * The caller is not the relayer and does not have permission to perform this action
+			 **/
+			NotRelayer: AugmentedError<ApiType>;
+			/**
+			 * The caller is not the owner of the token
+			 **/
+			NotTokenOwner: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		nft: {
 			/**
 			 * Attemped to mint a token that was bridged from a different chain
@@ -1012,6 +1046,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Token(s) blocked from minting during the bridging process
 			 **/
 			BlockedMint: AugmentedError<ApiType>;
+			/**
+			 * Burning has been disabled for tokens within this collection
+			 **/
+			BurnUtilityBlocked: AugmentedError<ApiType>;
 			/**
 			 * Cannot claim already claimed collections
 			 **/
@@ -1054,6 +1092,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			MintLimitExceeded: AugmentedError<ApiType>;
 			/**
+			 * Minting has been disabled for tokens within this collection
+			 **/
+			MintUtilityBlocked: AugmentedError<ApiType>;
+			/**
 			 * No more Ids are available, they've been exhausted
 			 **/
 			NoAvailableIds: AugmentedError<ApiType>;
@@ -1089,6 +1131,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Cannot operate on a listed NFT
 			 **/
 			TokenLocked: AugmentedError<ApiType>;
+			/**
+			 * Transfer has been disabled for tokens within this collection
+			 **/
+			TransferUtilityBlocked: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
@@ -1340,6 +1386,10 @@ declare module "@polkadot/api-base/types/errors" {
 		};
 		sft: {
 			/**
+			 * Burning has been disabled for tokens within this collection
+			 **/
+			BurnUtilityBlocked: AugmentedError<ApiType>;
+			/**
 			 * The user does not own enough of this token to perform the operation
 			 **/
 			InsufficientBalance: AugmentedError<ApiType>;
@@ -1368,6 +1418,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The max amount of owners per token has been reached
 			 **/
 			MaxOwnersReached: AugmentedError<ApiType>;
+			/**
+			 * Minting has been disabled for tokens within this collection
+			 **/
+			MintUtilityBlocked: AugmentedError<ApiType>;
 			/**
 			 * Given collection or token name is invalid (invalid utf-8, empty)
 			 **/
@@ -1400,6 +1454,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The number of tokens have exceeded the max tokens allowed
 			 **/
 			TokenLimitExceeded: AugmentedError<ApiType>;
+			/**
+			 * Transfer has been disabled for tokens within this collection
+			 **/
+			TransferUtilityBlocked: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
@@ -1733,6 +1791,14 @@ declare module "@polkadot/api-base/types/errors" {
 		};
 		xrplBridge: {
 			/**
+			 * This asset is not supported by the bridge
+			 **/
+			AssetNotSupported: AugmentedError<ApiType>;
+			/**
+			 * The asset rounding due to saturation is too high, reduce the significant digits
+			 **/
+			AssetRoundingTooHigh: AugmentedError<ApiType>;
+			/**
 			 * Cannot process more transactions at that block
 			 **/
 			CannotProcessMoreTransactionsAtThatBlock: AugmentedError<ApiType>;
@@ -1749,14 +1815,30 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			DoorAddressNotSet: AugmentedError<ApiType>;
 			/**
+			 * The asset decimals are too high to bridge to XRPL
+			 **/
+			InvalidAssetDecimals: AugmentedError<ApiType>;
+			/**
+			 * The issued amount currency code is invalid
+			 **/
+			InvalidCurrencyCode: AugmentedError<ApiType>;
+			/**
 			 * highest_pruned_ledger_index must be less than highest_settled_ledger_index -
 			 * submission_window_width
 			 **/
 			InvalidHighestPrunedIndex: AugmentedError<ApiType>;
 			/**
+			 * Could not convert Balance to Mantissa Exponent
+			 **/
+			InvalidMantissaExponentConversion: AugmentedError<ApiType>;
+			/**
 			 * The signers are not known by ethy
 			 **/
 			InvalidSigners: AugmentedError<ApiType>;
+			/**
+			 * XRPL symbol to TRN asset id mapping is invalid
+			 **/
+			InvalidSymbolMapping: AugmentedError<ApiType>;
 			/**
 			 * The NextTicketSequenceParams is invalid
 			 **/
@@ -1769,6 +1851,9 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The paymentIds have been exhausted
 			 **/
 			NoAvailablePaymentIds: AugmentedError<ApiType>;
+			/**
+			 * Only the active relayer is permitted to perform this action
+			 **/
 			NotPermitted: AugmentedError<ApiType>;
 			/**
 			 * There is no settledXRPTransactionDetails for this ledger index
@@ -1779,6 +1864,7 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			OutSideSubmissionWindow: AugmentedError<ApiType>;
 			RelayerDoesNotExists: AugmentedError<ApiType>;
+			TestErrorRemoveAfterUsing: AugmentedError<ApiType>;
 			/**
 			 * The TicketSequenceParams is invalid
 			 **/

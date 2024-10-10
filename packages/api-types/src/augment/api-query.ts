@@ -38,6 +38,7 @@ import type {
 	PalletBagsListListNode,
 	PalletBalancesAccountData,
 	PalletBalancesBalanceLock,
+	PalletBalancesIdAmount,
 	PalletBalancesReserveData,
 	PalletCrowdsaleSaleInformation,
 	PalletDexTradingPair,
@@ -48,12 +49,14 @@ import type {
 	PalletElectionProviderMultiPhaseSignedSignedSubmission,
 	PalletElectionProviderMultiPhaseSolutionOrSnapshotSize,
 	PalletErc20PegPendingPayment,
+	PalletEthyBridgePauseStatus,
 	PalletEthyCheckedEthCallRequest,
 	PalletEthyCheckedEthCallResult,
 	PalletEthyEthySigningRequest,
 	PalletEthyEventClaim,
 	PalletEthyEventClaimResult,
 	PalletEthyEventClaimStatus,
+	PalletEvmCodeMetadata,
 	PalletFeeControlFeeControlFeeConfig,
 	PalletGrandpaStoredPendingChange,
 	PalletGrandpaStoredState,
@@ -69,6 +72,7 @@ import type {
 	PalletProxyProxyDefinition,
 	PalletRecoveryActiveRecovery,
 	PalletRecoveryRecoveryConfig,
+	PalletSchedulerScheduled,
 	PalletSftSftCollectionInformation,
 	PalletSftSftTokenInformation,
 	PalletStakingActiveEraInfo,
@@ -83,6 +87,7 @@ import type {
 	PalletStakingUnappliedSlash,
 	PalletStakingValidatorPrefs,
 	PalletTransactionPaymentReleases,
+	PalletVortexDistributionVtxDistStatus,
 	PalletXrplBridgeDelayedWithdrawal,
 	PalletXrplBridgeXrpTransaction,
 	PalletXrplBridgeXrplTicketSequenceParams,
@@ -99,11 +104,6 @@ import type {
 	SpNposElectionsElectionScore,
 	SpRuntimeDigest,
 	SpStakingOffenceOffenceDetails,
-	PalletBalancesIdAmount,
-	PalletEthyBridgePauseStatus,
-	PalletEvmCodeMetadata,
-	PalletSchedulerScheduled,
-	PalletVortexDistributionVtxDistStatus,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {
@@ -1490,6 +1490,51 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
+		nfi: {
+			/**
+			 * The pallet id for the tx fee pot
+			 **/
+			feeTo: AugmentedQuery<ApiType, () => Observable<Option<U8aFixed>>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * The extra cost to cover
+			 **/
+			mintFee: AugmentedQuery<
+				ApiType,
+				(
+					arg: PalletNfiNfiSubType | "NFI" | number | Uint8Array
+				) => Observable<Option<PalletNfiFeeDetails>>,
+				[PalletNfiNfiSubType]
+			> &
+				QueryableStorageEntry<ApiType, [PalletNfiNfiSubType]>;
+			nfiData: AugmentedQuery<
+				ApiType,
+				(
+					arg1: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+					arg2: PalletNfiNfiSubType | "NFI" | number | Uint8Array
+				) => Observable<Option<PalletNfiNfiDataType>>,
+				[ITuple<[u32, u32]>, PalletNfiNfiSubType]
+			> &
+				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>, PalletNfiNfiSubType]>;
+			nfiEnabled: AugmentedQuery<
+				ApiType,
+				(
+					arg1: u32 | AnyNumber | Uint8Array,
+					arg2: PalletNfiNfiSubType | "NFI" | number | Uint8Array
+				) => Observable<bool>,
+				[u32, PalletNfiNfiSubType]
+			> &
+				QueryableStorageEntry<ApiType, [u32, PalletNfiNfiSubType]>;
+			/**
+			 * The permission enabled relayer
+			 **/
+			relayer: AugmentedQuery<ApiType, () => Observable<Option<U8aFixed>>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
 		nft: {
 			/**
 			 * Map from collection to its information
@@ -1527,6 +1572,17 @@ declare module "@polkadot/api-base/types/storage" {
 				[ITuple<[u32, u32]>]
 			> &
 				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
+			/**
+			 * Map from a collection to additional utility flags
+			 **/
+			utilityFlags: AugmentedQuery<
+				ApiType,
+				(
+					arg: u32 | AnyNumber | Uint8Array
+				) => Observable<SeedPalletCommonUtilsCollectionUtilityFlags>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
 			/**
 			 * Generic query
 			 **/
@@ -1822,6 +1878,17 @@ declare module "@polkadot/api-base/types/storage" {
 				[ITuple<[u32, u32]>]
 			> &
 				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
+			/**
+			 * Map from a collection to additional utility flags
+			 **/
+			utilityFlags: AugmentedQuery<
+				ApiType,
+				(
+					arg: u32 | AnyNumber | Uint8Array
+				) => Observable<SeedPalletCommonUtilsCollectionUtilityFlags>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
 			/**
 			 * Generic query
 			 **/
@@ -2603,6 +2670,15 @@ declare module "@polkadot/api-base/types/storage" {
 		};
 		xrplBridge: {
 			/**
+			 * Map TRN asset Id to XRPL symbol, storage to keep mapping between TRN -> XRPL tokens/assets
+			 **/
+			assetIdToXRPL: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Option<PalletXrplBridgeXrplCurrency>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
 			 * Challenge received for a transaction mapped by hash, will be cleared when validator
 			 * validates
 			 **/
@@ -2624,7 +2700,7 @@ declare module "@polkadot/api-base/types/storage" {
 			> &
 				QueryableStorageEntry<ApiType, [u64]>;
 			/**
-			 * Map from block number to DelayedPatmentIds scheduled for that block
+			 * Map from block number to DelayedPaymentIds scheduled for that block
 			 **/
 			delayedPaymentSchedule: AugmentedQuery<
 				ApiType,
@@ -2688,8 +2764,12 @@ declare module "@polkadot/api-base/types/storage" {
 			/**
 			 * Payment delay for any withdraw over the specified Balance threshold
 			 **/
-			paymentDelay: AugmentedQuery<ApiType, () => Observable<Option<ITuple<[u128, u32]>>>, []> &
-				QueryableStorageEntry<ApiType, []>;
+			paymentDelay: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Option<ITuple<[u128, u32]>>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
 			/**
 			 * Temporary storage to set the transactions ready to be processed at specified block number
 			 **/
@@ -2746,6 +2826,17 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			ticketSequenceThresholdReachedEmitted: AugmentedQuery<ApiType, () => Observable<bool>, []> &
 				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Map XRPL symbol to TRN asset Id, storage to keep mapping between XRPL -> TRN tokens/assets
+			 **/
+			xrplToAssetId: AugmentedQuery<
+				ApiType,
+				(
+					arg: PalletXrplBridgeXrplCurrency | { symbol?: any; issuer?: any } | string | Uint8Array
+				) => Observable<Option<u32>>,
+				[PalletXrplBridgeXrplCurrency]
+			> &
+				QueryableStorageEntry<ApiType, [PalletXrplBridgeXrplCurrency]>;
 			/**
 			 * Generic query
 			 **/
