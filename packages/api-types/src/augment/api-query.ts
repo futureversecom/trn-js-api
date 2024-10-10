@@ -104,6 +104,10 @@ import type {
 	SpNposElectionsElectionScore,
 	SpRuntimeDigest,
 	SpStakingOffenceOffenceDetails,
+	PalletNfiFeeDetails,
+	PalletNfiNfiSubType,
+	PalletNfiNfiDataType,
+	SeedPalletCommonUtilsCollectionUtilityFlags, PalletXrplBridgeXrplCurrency,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {

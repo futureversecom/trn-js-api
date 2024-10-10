@@ -58,6 +58,10 @@ import type {
 	SpNposElectionsSupport,
 	SpSessionMembershipProof,
 	SpWeightsWeightV2Weight,
+	PalletNfiNfiSubType,
+	PalletNfiFeeDetails,
+	PalletNfiNfiDataType,
+	SeedPalletCommonUtilsCollectionUtilityFlags, PalletXrplBridgeXrplCurrency,
 } from "@polkadot/types/lookup";
 import type {
 	Call,
