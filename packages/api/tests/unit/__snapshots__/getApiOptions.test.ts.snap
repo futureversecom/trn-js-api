@@ -145,6 +145,16 @@ exports[`getApiOptions returns expected options 1`] = `
       },
     },
     "nft": {
+      "collectionDetails": {
+        "description": "Returns the collection info for a NFT collection",
+        "params": [
+          {
+            "name": "collectionId",
+            "type": "u32",
+          },
+        ],
+        "type": "CollectionDetail",
+      },
       "ownedTokens": {
         "description": "Get all NFTs owned by an account",
         "params": [
@@ -219,6 +229,17 @@ exports[`getApiOptions returns expected options 1`] = `
       },
     },
     "CodecHash": "Hash",
+    "CollectionDetail": {
+      "collectionIssuance": "u32",
+      "crossChainCompatibility": "CrossChainCompatibility",
+      "maxIssuance": "Option<u32>",
+      "metadataScheme": "Vec<u8>",
+      "name": "Vec<u8>",
+      "nextSerialNumber": "u32",
+      "originChain": "Text",
+      "owner": "AccountId",
+      "royaltiesSchedule": "Option<Vec<(T::AccountId, Permill)>>",
+    },
     "CollectionUuid": "u32",
     "Consensus": "(ConsensusEngineId, Bytes)",
     "ConsensusEngineId": "GenericConsensusEngineId",
@@ -226,6 +247,9 @@ exports[`getApiOptions returns expected options 1`] = `
       "major": "u16",
       "minor": "u8",
       "patch": "u8",
+    },
+    "CrossChainCompatibility": {
+      "xrpl": "bool",
     },
     "Digest": {
       "logs": "Vec<DigestItem>",
@@ -270,6 +294,12 @@ exports[`getApiOptions returns expected options 1`] = `
       "validatorSetId": "ValidatorSetId",
     },
     "EventProofId": "u64",
+    "ExtrinsicInclusionMode": {
+      "_enum": [
+        "AllExtrinsics",
+        "OnlyInherents",
+      ],
+    },
     "ExtrinsicSignature": "EthereumSignature",
     "ExtrinsicsWeight": {
       "normal": "Weight",

@@ -65,6 +65,9 @@ import type {
 	PalletMarketplaceMarketplace,
 	PalletMarketplaceOfferType,
 	PalletMultisigMultisig,
+	PalletNfiFeeDetails,
+	PalletNfiNfiDataType,
+	PalletNfiNfiSubType,
 	PalletNftCollectionInformation,
 	PalletNftPegBlockedTokenInfo,
 	PalletPreimageRequestStatus,
@@ -90,7 +93,9 @@ import type {
 	PalletVortexDistributionVtxDistStatus,
 	PalletXrplBridgeDelayedWithdrawal,
 	PalletXrplBridgeXrpTransaction,
+	PalletXrplBridgeXrplCurrency,
 	PalletXrplBridgeXrplTicketSequenceParams,
+	SeedPalletCommonUtilsCollectionUtilityFlags,
 	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesNftTokenLockReason,
@@ -104,11 +109,6 @@ import type {
 	SpNposElectionsElectionScore,
 	SpRuntimeDigest,
 	SpStakingOffenceOffenceDetails,
-	PalletNfiFeeDetails,
-	PalletNfiNfiSubType,
-	PalletNfiNfiDataType,
-	SeedPalletCommonUtilsCollectionUtilityFlags,
-	PalletXrplBridgeXrplCurrency,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {
