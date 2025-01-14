@@ -294,12 +294,6 @@ exports[`getApiOptions returns expected options 1`] = `
       "validatorSetId": "ValidatorSetId",
     },
     "EventProofId": "u64",
-    "ExtrinsicInclusionMode": {
-      "_enum": [
-        "AllExtrinsics",
-        "OnlyInherents",
-      ],
-    },
     "ExtrinsicSignature": "EthereumSignature",
     "ExtrinsicsWeight": {
       "normal": "Weight",
