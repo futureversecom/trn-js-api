@@ -1129,7 +1129,9 @@ import type {
 	VersionedEventProof,
 } from "@therootnetwork/api-types/interfaces/ethy";
 import type {
+	CollectionDetail,
 	CollectionUuid,
+	CrossChainCompatibility,
 	SerialNumber,
 	TokenId,
 } from "@therootnetwork/api-types/interfaces/nft";
@@ -1403,6 +1405,7 @@ declare module "@polkadot/types/types/registry" {
 		CollationInfoV1: CollationInfoV1;
 		CollatorId: CollatorId;
 		CollatorSignature: CollatorSignature;
+		CollectionDetail: CollectionDetail;
 		CollectionUuid: CollectionUuid;
 		CollectiveOrigin: CollectiveOrigin;
 		CommittedCandidateReceipt: CommittedCandidateReceipt;
@@ -1495,6 +1498,7 @@ declare module "@polkadot/types/types/registry" {
 		CoreState: CoreState;
 		CrateVersion: CrateVersion;
 		CreatedBlock: CreatedBlock;
+		CrossChainCompatibility: CrossChainCompatibility;
 		Data: Data;
 		DeferredOffenceOf: DeferredOffenceOf;
 		DefunctVoter: DefunctVoter;

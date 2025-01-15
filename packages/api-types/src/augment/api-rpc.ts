@@ -89,6 +89,7 @@ import type {
 	EventProofId,
 } from "@therootnetwork/api-types/interfaces/ethy";
 import type {
+	CollectionDetail,
 	CollectionUuid,
 	SerialNumber,
 	TokenId,
@@ -879,6 +880,12 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			version: AugmentedRpc<() => Observable<Text>>;
 		};
 		nft: {
+			/**
+			 * Returns the collection info for a NFT collection
+			 **/
+			collectionDetails: AugmentedRpc<
+				(collectionId: u32 | AnyNumber | Uint8Array) => Observable<CollectionDetail>
+			>;
 			/**
 			 * Get all NFTs owned by an account
 			 **/
