@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+## 1.0.10
+
+### Patch Changes
+
+- Add NFT RPC for collection info
+
 ## 1.0.9
 
 ### Patch Changes
