@@ -2,9 +2,9 @@ import { describe, expect, jest, test } from "@jest/globals";
 import { ISubmittableResult } from "@polkadot/types/types/extrinsic";
 import { send } from "@therootnetwork/extrinsic/libs/send";
 import { Extrinsic, ExtrinsicResult, Result } from "@therootnetwork/extrinsic/types";
-
 describe("send", () => {
 	test("sends a given extrinsic ends with ok result", async () => {
+		//const api = null;
 		const extrinsic = {
 			send: (callback: (result: ISubmittableResult) => void) => {
 				setTimeout(() => {
