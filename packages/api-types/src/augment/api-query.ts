@@ -109,6 +109,14 @@ import type {
 	SpNposElectionsElectionScore,
 	SpRuntimeDigest,
 	SpStakingOffenceOffenceDetails,
+	PalletMigrationMigrationStatus,
+	PalletNfiMultiChainTokenId,
+	PalletNfiGenericCollectionId,
+	PalletPartnerAttributionPartnerInformation,
+	PalletSyloDataVerificationResolver,
+	PalletSyloDataVerificationValidationRecord,
+	PalletXls20Xls20Collection,
+	PalletXrplBridgeXrplDoorAccount,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {

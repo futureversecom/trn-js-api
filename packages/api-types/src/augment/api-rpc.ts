@@ -111,6 +111,7 @@ import type {
 	StorageData,
 } from "@therootnetwork/api-types/interfaces/runtime";
 import type { XrplEventProofResponse } from "@therootnetwork/api-types/interfaces/xrplBridge";
+import { SpRuntimeDispatchError } from "@polkadot/types/lookup";
 
 export type __AugmentedRpc = AugmentedRpc<() => unknown>;
 
@@ -885,7 +886,9 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 * Returns the collection info for a NFT collection
 			 **/
 			collectionDetails: AugmentedRpc<
-				(collectionId: u32 | AnyNumber | Uint8Array) => Observable<Result<CollectionDetail, Error>>
+				(
+					collectionId: u32 | AnyNumber | Uint8Array
+				) => Observable<Result<CollectionDetail, SpRuntimeDispatchError>>
 			>;
 			/**
 			 * Get all NFTs owned by an account
