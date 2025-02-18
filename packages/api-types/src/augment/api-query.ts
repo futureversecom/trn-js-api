@@ -1477,6 +1477,38 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
+		migration: {
+			/**
+			 * The delay between migration blocks
+			 **/
+			blockDelay: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * The maximum number of individual items to migrate in a single block
+			 * Will still respect maximum weight rules
+			 **/
+			blockLimit: AugmentedQuery<ApiType, () => Observable<u32>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * The last key that was migrated
+			 **/
+			lastKey: AugmentedQuery<ApiType, () => Observable<Option<Bytes>>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Are we currently migrating data
+			 **/
+			migrationEnabled: AugmentedQuery<ApiType, () => Observable<bool>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * What is the current status of the migration
+			 **/
+			status: AugmentedQuery<ApiType, () => Observable<PalletMigrationMigrationStatus>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
 		multisig: {
 			/**
 			 * The set of open multisig operations.
@@ -1515,21 +1547,48 @@ declare module "@polkadot/api-base/types/storage" {
 			nfiData: AugmentedQuery<
 				ApiType,
 				(
-					arg1: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+					arg1:
+						| PalletNfiMultiChainTokenId
+						| { chainId?: any; collectionId?: any; serialNumber?: any }
+						| string
+						| Uint8Array,
 					arg2: PalletNfiNfiSubType | "NFI" | number | Uint8Array
 				) => Observable<Option<PalletNfiNfiDataType>>,
-				[ITuple<[u32, u32]>, PalletNfiNfiSubType]
+				[PalletNfiMultiChainTokenId, PalletNfiNfiSubType]
 			> &
-				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>, PalletNfiNfiSubType]>;
+				QueryableStorageEntry<ApiType, [PalletNfiMultiChainTokenId, PalletNfiNfiSubType]>;
+			/**
+			 * Flag to enable NFI for collections across chains
+			 **/
 			nfiEnabled: AugmentedQuery<
 				ApiType,
 				(
-					arg1: u32 | AnyNumber | Uint8Array,
+					arg1:
+						| ITuple<[u64, PalletNfiGenericCollectionId]>
+						| [
+								u64 | AnyNumber | Uint8Array,
+								(
+									| PalletNfiGenericCollectionId
+									| { U32: any }
+									| { U64: any }
+									| { U128: any }
+									| { H160: any }
+									| { H256: any }
+									| { Bytes: any }
+									| { Empty: any }
+									| { U256: any }
+									| string
+									| Uint8Array
+								),
+						  ],
 					arg2: PalletNfiNfiSubType | "NFI" | number | Uint8Array
 				) => Observable<bool>,
-				[u32, PalletNfiNfiSubType]
+				[ITuple<[u64, PalletNfiGenericCollectionId]>, PalletNfiNfiSubType]
 			> &
-				QueryableStorageEntry<ApiType, [u32, PalletNfiNfiSubType]>;
+				QueryableStorageEntry<
+					ApiType,
+					[ITuple<[u64, PalletNfiGenericCollectionId]>, PalletNfiNfiSubType]
+				>;
 			/**
 			 * The permission enabled relayer
 			 **/
@@ -1646,6 +1705,37 @@ declare module "@polkadot/api-base/types/storage" {
 				[H256]
 			> &
 				QueryableStorageEntry<ApiType, [H256]>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
+		partnerAttribution: {
+			/**
+			 * User-partner attributions
+			 **/
+			attributions: AugmentedQuery<
+				ApiType,
+				(arg: SeedPrimitivesSignatureAccountId20 | string | Uint8Array) => Observable<Option<u128>>,
+				[SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<ApiType, [SeedPrimitivesSignatureAccountId20]>;
+			/**
+			 * The next available partner id
+			 **/
+			nextPartnerId: AugmentedQuery<ApiType, () => Observable<u128>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Partner information
+			 **/
+			partners: AugmentedQuery<
+				ApiType,
+				(
+					arg: u128 | AnyNumber | Uint8Array
+				) => Observable<Option<PalletPartnerAttributionPartnerInformation>>,
+				[u128]
+			> &
+				QueryableStorageEntry<ApiType, [u128]>;
 			/**
 			 * Generic query
 			 **/
@@ -2290,6 +2380,33 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
+		syloDataVerification: {
+			resolvers: AugmentedQuery<
+				ApiType,
+				(
+					arg: Bytes | string | Uint8Array
+				) => Observable<Option<PalletSyloDataVerificationResolver>>,
+				[Bytes]
+			> &
+				QueryableStorageEntry<ApiType, [Bytes]>;
+			syloAssetId: AugmentedQuery<ApiType, () => Observable<Option<u32>>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			syloResolverMethod: AugmentedQuery<ApiType, () => Observable<Bytes>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			validationRecords: AugmentedQuery<
+				ApiType,
+				(
+					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg2: Bytes | string | Uint8Array
+				) => Observable<Option<PalletSyloDataVerificationValidationRecord>>,
+				[SeedPrimitivesSignatureAccountId20, Bytes]
+			> &
+				QueryableStorageEntry<ApiType, [SeedPrimitivesSignatureAccountId20, Bytes]>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
 		system: {
 			/**
 			 * The full account information for a particular account ID.
@@ -2647,6 +2764,21 @@ declare module "@polkadot/api-base/types/storage" {
 		};
 		xls20: {
 			/**
+			 * Map from XLs-20 Collection to CollectionUuid
+			 **/
+			collectionMapping: AugmentedQuery<
+				ApiType,
+				(
+					arg:
+						| PalletXls20Xls20Collection
+						| { issuerAddress?: any; taxon?: any }
+						| string
+						| Uint8Array
+				) => Observable<Option<u32>>,
+				[PalletXls20Xls20Collection]
+			> &
+				QueryableStorageEntry<ApiType, [PalletXls20Xls20Collection]>;
+			/**
 			 * The permissioned relayer
 			 **/
 			relayer: AugmentedQuery<ApiType, () => Observable<Option<U8aFixed>>, []> &
@@ -2716,36 +2848,58 @@ declare module "@polkadot/api-base/types/storage" {
 			/**
 			 * The door address on XRPL
 			 **/
-			doorAddress: AugmentedQuery<ApiType, () => Observable<Option<H160>>, []> &
-				QueryableStorageEntry<ApiType, []>;
+			doorAddress: AugmentedQuery<
+				ApiType,
+				(
+					arg: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array
+				) => Observable<Option<H160>>,
+				[PalletXrplBridgeXrplDoorAccount]
+			> &
+				QueryableStorageEntry<ApiType, [PalletXrplBridgeXrplDoorAccount]>;
 			/**
-			 * The current ticket sequence of the XRPL door account
+			 * The current ticket sequence of the XRPL door accounts
 			 **/
-			doorTicketSequence: AugmentedQuery<ApiType, () => Observable<u32>, []> &
-				QueryableStorageEntry<ApiType, []>;
+			doorTicketSequence: AugmentedQuery<
+				ApiType,
+				(
+					arg: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array
+				) => Observable<u32>,
+				[PalletXrplBridgeXrplDoorAccount]
+			> &
+				QueryableStorageEntry<ApiType, [PalletXrplBridgeXrplDoorAccount]>;
 			/**
-			 * The Ticket sequence params of the XRPL door account for the current allocation
+			 * The Ticket sequence params of the XRPL door accounts for the current allocation
 			 **/
 			doorTicketSequenceParams: AugmentedQuery<
 				ApiType,
-				() => Observable<PalletXrplBridgeXrplTicketSequenceParams>,
-				[]
+				(
+					arg: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array
+				) => Observable<PalletXrplBridgeXrplTicketSequenceParams>,
+				[PalletXrplBridgeXrplDoorAccount]
 			> &
-				QueryableStorageEntry<ApiType, []>;
+				QueryableStorageEntry<ApiType, [PalletXrplBridgeXrplDoorAccount]>;
 			/**
-			 * The Ticket sequence params of the XRPL door account for the next allocation
+			 * The Ticket sequence params of the XRPL door accounts for the next allocation
 			 **/
 			doorTicketSequenceParamsNext: AugmentedQuery<
 				ApiType,
-				() => Observable<PalletXrplBridgeXrplTicketSequenceParams>,
-				[]
+				(
+					arg: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array
+				) => Observable<PalletXrplBridgeXrplTicketSequenceParams>,
+				[PalletXrplBridgeXrplDoorAccount]
 			> &
-				QueryableStorageEntry<ApiType, []>;
+				QueryableStorageEntry<ApiType, [PalletXrplBridgeXrplDoorAccount]>;
 			/**
 			 * The flat fee for XRPL door txs
 			 **/
-			doorTxFee: AugmentedQuery<ApiType, () => Observable<u64>, []> &
-				QueryableStorageEntry<ApiType, []>;
+			doorTxFee: AugmentedQuery<
+				ApiType,
+				(
+					arg: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array
+				) => Observable<u64>,
+				[PalletXrplBridgeXrplDoorAccount]
+			> &
+				QueryableStorageEntry<ApiType, [PalletXrplBridgeXrplDoorAccount]>;
 			/**
 			 * Highest pruned XRPL ledger index
 			 **/
@@ -2827,10 +2981,16 @@ declare module "@polkadot/api-base/types/storage" {
 			submissionWindowWidth: AugmentedQuery<ApiType, () => Observable<u32>, []> &
 				QueryableStorageEntry<ApiType, []>;
 			/**
-			 * Keeps track whether the TicketSequenceThresholdReached event is emitted
+			 * Keeps track whether the TicketSequenceThresholdReached event is emitted for XRPL door accounts
 			 **/
-			ticketSequenceThresholdReachedEmitted: AugmentedQuery<ApiType, () => Observable<bool>, []> &
-				QueryableStorageEntry<ApiType, []>;
+			ticketSequenceThresholdReachedEmitted: AugmentedQuery<
+				ApiType,
+				(
+					arg: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array
+				) => Observable<bool>,
+				[PalletXrplBridgeXrplDoorAccount]
+			> &
+				QueryableStorageEntry<ApiType, [PalletXrplBridgeXrplDoorAccount]>;
 			/**
 			 * Map XRPL symbol to TRN asset Id, storage to keep mapping between XRPL -> TRN tokens/assets
 			 **/

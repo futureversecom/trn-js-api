@@ -551,6 +551,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InvalidSourceAddress: AugmentedError<ApiType>;
 			/**
+			 * Supplied payment id not in storage
+			 **/
+			PaymentIdNotFound: AugmentedError<ApiType>;
+			/**
 			 * Withdrawals of this asset are not supported
 			 **/
 			UnsupportedAsset: AugmentedError<ApiType>;
@@ -857,6 +861,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			BidTooLow: AugmentedError<ApiType>;
 			/**
+			 * The listing duration is too short
+			 **/
+			DurationTooShort: AugmentedError<ApiType>;
+			/**
 			 * No tokens were specified in the listing
 			 **/
 			EmptyTokens: AugmentedError<ApiType>;
@@ -945,6 +953,24 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		migration: {
+			/**
+			 * The block delay must be set to None or a value greater than 1
+			 **/
+			InvalidBlockDelay: AugmentedError<ApiType>;
+			/**
+			 * The block limit must be greater than 0
+			 **/
+			InvalidBlockLimit: AugmentedError<ApiType>;
+			/**
+			 * The extrinsic cannot be executed while an active multi-block migration is in progress
+			 **/
+			MigrationInProgress: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		multisig: {
 			/**
 			 * Call is already approved by this signatory.
@@ -1013,6 +1039,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InvalidMintFee: AugmentedError<ApiType>;
 			/**
+			 * The token format for TRN tokens is invalid
+			 **/
+			InvalidTokenFormat: AugmentedError<ApiType>;
+			/**
 			 * No the owner of the collection
 			 **/
 			NotCollectionOwner: AugmentedError<ApiType>;
@@ -1054,6 +1084,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Cannot claim already claimed collections
 			 **/
 			CannotClaimNonClaimableCollections: AugmentedError<ApiType>;
+			/**
+			 * Only Root originated NFTs that are not XLS-20 compatible can have their metadata updated
+			 **/
+			CannotUpdateMetadata: AugmentedError<ApiType>;
 			/**
 			 * Total issuance of collection must be zero to add xls20 compatibility
 			 **/
@@ -1189,6 +1223,36 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Multiple tokens were passed from contract, but amounts were unqeual per each array
 			 **/
 			TokenListLengthMismatch: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
+		partnerAttribution: {
+			/**
+			 * Account already attributed to another partner
+			 **/
+			AccountAlreadyAttributed: AugmentedError<ApiType>;
+			/**
+			 * Caller is not a futurepass account
+			 **/
+			CallerNotFuturepass: AugmentedError<ApiType>;
+			/**
+			 * No available ids
+			 **/
+			NoAvailableIds: AugmentedError<ApiType>;
+			/**
+			 * Partner already exists
+			 **/
+			PartnerAlreadyExists: AugmentedError<ApiType>;
+			/**
+			 * Partner not found
+			 **/
+			PartnerNotFound: AugmentedError<ApiType>;
+			/**
+			 * Unauthorized
+			 **/
+			Unauthorized: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/
@@ -1583,6 +1647,32 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		syloDataVerification: {
+			/**
+			 * Account is not controller of resolver
+			 **/
+			NotController: AugmentedError<ApiType>;
+			/**
+			 * The validation record to be updated has not been created
+			 **/
+			NoValidationRecord: AugmentedError<ApiType>;
+			/**
+			 * A validation record with the given data id has already been created
+			 **/
+			RecordAlreadyCreated: AugmentedError<ApiType>;
+			/**
+			 * The Resolver identifier is already in use
+			 **/
+			ResolverAlreadyRegistered: AugmentedError<ApiType>;
+			/**
+			 * The Resolver has not been registered
+			 **/
+			ResolverNotRegistered: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		system: {
 			/**
 			 * The origin filter prevent the call to be dispatched.
@@ -1743,6 +1833,14 @@ declare module "@polkadot/api-base/types/errors" {
 		};
 		xls20: {
 			/**
+			 * The token is burnable and cannot be bridged
+			 **/
+			CannotBridgeBurnableToken: AugmentedError<ApiType>;
+			/**
+			 * The XLS20 token ID failed to decode
+			 **/
+			CouldNotDecodeXls20Token: AugmentedError<ApiType>;
+			/**
 			 * There is already a Root native -> XLS-20 mapping for this token
 			 **/
 			MappingAlreadyExists: AugmentedError<ApiType>;
@@ -1863,6 +1961,9 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Transaction submitted is outside the submission window
 			 **/
 			OutSideSubmissionWindow: AugmentedError<ApiType>;
+			/**
+			 * The relayer account does not exist
+			 **/
 			RelayerDoesNotExists: AugmentedError<ApiType>;
 			TestErrorRemoveAfterUsing: AugmentedError<ApiType>;
 			/**
@@ -1885,6 +1986,14 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Withdraw amount must be non-zero and <= u64
 			 **/
 			WithdrawInvalidAmount: AugmentedError<ApiType>;
+			/**
+			 * XLS20 incompatible NFT
+			 **/
+			Xls20Incompatible: AugmentedError<ApiType>;
+			/**
+			 * XLS20 token id not found
+			 **/
+			Xls20TokenIDNotFound: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/

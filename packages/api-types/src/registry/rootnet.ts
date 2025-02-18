@@ -177,6 +177,10 @@ import type {
 	PalletMarketplaceOfferType,
 	PalletMarketplaceSftListing,
 	PalletMarketplaceSimpleOffer,
+	PalletMigrationCall,
+	PalletMigrationError,
+	PalletMigrationEvent,
+	PalletMigrationMigrationStatus,
 	PalletMultisigCall,
 	PalletMultisigError,
 	PalletMultisigEvent,
@@ -186,12 +190,14 @@ import type {
 	PalletNfiError,
 	PalletNfiEvent,
 	PalletNfiFeeDetails,
+	PalletNfiGenericCollectionId,
+	PalletNfiGenericSerialNumber,
+	PalletNfiMultiChainTokenId,
 	PalletNfiNfiDataType,
 	PalletNfiNfiMatrix,
 	PalletNfiNfiSubType,
 	PalletNftCall,
 	PalletNftCollectionInformation,
-	PalletNftCrossChainCompatibility,
 	PalletNftError,
 	PalletNftEvent,
 	PalletNftPegBlockedTokenInfo,
@@ -200,6 +206,10 @@ import type {
 	PalletNftPegEvent,
 	PalletNftTokenOwnership,
 	PalletOffencesEvent,
+	PalletPartnerAttributionCall,
+	PalletPartnerAttributionError,
+	PalletPartnerAttributionEvent,
+	PalletPartnerAttributionPartnerInformation,
 	PalletPreimageCall,
 	PalletPreimageError,
 	PalletPreimageEvent,
@@ -250,6 +260,13 @@ import type {
 	PalletSudoCall,
 	PalletSudoError,
 	PalletSudoEvent,
+	PalletSyloDataVerificationCall,
+	PalletSyloDataVerificationError,
+	PalletSyloDataVerificationEvent,
+	PalletSyloDataVerificationResolver,
+	PalletSyloDataVerificationResolverId,
+	PalletSyloDataVerificationValidationEntry,
+	PalletSyloDataVerificationValidationRecord,
 	PalletTimestampCall,
 	PalletTokenApprovalsCall,
 	PalletTokenApprovalsError,
@@ -266,17 +283,22 @@ import type {
 	PalletXls20Call,
 	PalletXls20Error,
 	PalletXls20Event,
+	PalletXls20Xls20Collection,
 	PalletXrplBridgeAssetWithdrawTransaction,
 	PalletXrplBridgeCall,
 	PalletXrplBridgeDelayedWithdrawal,
 	PalletXrplBridgeError,
 	PalletXrplBridgeEvent,
+	PalletXrplBridgeNfTokenAcceptOfferTransaction,
+	PalletXrplBridgeNfTokenCreateOfferTransaction,
 	PalletXrplBridgeWithdrawTransaction,
 	PalletXrplBridgeXrpTransaction,
 	PalletXrplBridgeXrpWithdrawTransaction,
 	PalletXrplBridgeXrplCurrency,
 	PalletXrplBridgeXrplCurrencyType,
+	PalletXrplBridgeXrplDoorAccount,
 	PalletXrplBridgeXrplTicketSequenceParams,
+	PalletXrplBridgeXrplTransaction,
 	PalletXrplBridgeXrplTxData,
 	PalletXrplCall,
 	PalletXrplError,
@@ -287,6 +309,7 @@ import type {
 	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesEthyCryptoAppCryptoSignature,
+	SeedPrimitivesNftCrossChainCompatibility,
 	SeedPrimitivesNftOriginChain,
 	SeedPrimitivesNftRoyaltiesSchedule,
 	SeedPrimitivesNftTokenLockReason,
@@ -509,6 +532,10 @@ declare module "@polkadot/types/types/registry" {
 		PalletMarketplaceOfferType: PalletMarketplaceOfferType;
 		PalletMarketplaceSftListing: PalletMarketplaceSftListing;
 		PalletMarketplaceSimpleOffer: PalletMarketplaceSimpleOffer;
+		PalletMigrationCall: PalletMigrationCall;
+		PalletMigrationError: PalletMigrationError;
+		PalletMigrationEvent: PalletMigrationEvent;
+		PalletMigrationMigrationStatus: PalletMigrationMigrationStatus;
 		PalletMultisigCall: PalletMultisigCall;
 		PalletMultisigError: PalletMultisigError;
 		PalletMultisigEvent: PalletMultisigEvent;
@@ -518,12 +545,14 @@ declare module "@polkadot/types/types/registry" {
 		PalletNfiError: PalletNfiError;
 		PalletNfiEvent: PalletNfiEvent;
 		PalletNfiFeeDetails: PalletNfiFeeDetails;
+		PalletNfiGenericCollectionId: PalletNfiGenericCollectionId;
+		PalletNfiGenericSerialNumber: PalletNfiGenericSerialNumber;
+		PalletNfiMultiChainTokenId: PalletNfiMultiChainTokenId;
 		PalletNfiNfiDataType: PalletNfiNfiDataType;
 		PalletNfiNfiMatrix: PalletNfiNfiMatrix;
 		PalletNfiNfiSubType: PalletNfiNfiSubType;
 		PalletNftCall: PalletNftCall;
 		PalletNftCollectionInformation: PalletNftCollectionInformation;
-		PalletNftCrossChainCompatibility: PalletNftCrossChainCompatibility;
 		PalletNftError: PalletNftError;
 		PalletNftEvent: PalletNftEvent;
 		PalletNftPegBlockedTokenInfo: PalletNftPegBlockedTokenInfo;
@@ -532,6 +561,10 @@ declare module "@polkadot/types/types/registry" {
 		PalletNftPegEvent: PalletNftPegEvent;
 		PalletNftTokenOwnership: PalletNftTokenOwnership;
 		PalletOffencesEvent: PalletOffencesEvent;
+		PalletPartnerAttributionCall: PalletPartnerAttributionCall;
+		PalletPartnerAttributionError: PalletPartnerAttributionError;
+		PalletPartnerAttributionEvent: PalletPartnerAttributionEvent;
+		PalletPartnerAttributionPartnerInformation: PalletPartnerAttributionPartnerInformation;
 		PalletPreimageCall: PalletPreimageCall;
 		PalletPreimageError: PalletPreimageError;
 		PalletPreimageEvent: PalletPreimageEvent;
@@ -582,6 +615,13 @@ declare module "@polkadot/types/types/registry" {
 		PalletSudoCall: PalletSudoCall;
 		PalletSudoError: PalletSudoError;
 		PalletSudoEvent: PalletSudoEvent;
+		PalletSyloDataVerificationCall: PalletSyloDataVerificationCall;
+		PalletSyloDataVerificationError: PalletSyloDataVerificationError;
+		PalletSyloDataVerificationEvent: PalletSyloDataVerificationEvent;
+		PalletSyloDataVerificationResolver: PalletSyloDataVerificationResolver;
+		PalletSyloDataVerificationResolverId: PalletSyloDataVerificationResolverId;
+		PalletSyloDataVerificationValidationEntry: PalletSyloDataVerificationValidationEntry;
+		PalletSyloDataVerificationValidationRecord: PalletSyloDataVerificationValidationRecord;
 		PalletTimestampCall: PalletTimestampCall;
 		PalletTokenApprovalsCall: PalletTokenApprovalsCall;
 		PalletTokenApprovalsError: PalletTokenApprovalsError;
@@ -598,17 +638,22 @@ declare module "@polkadot/types/types/registry" {
 		PalletXls20Call: PalletXls20Call;
 		PalletXls20Error: PalletXls20Error;
 		PalletXls20Event: PalletXls20Event;
+		PalletXls20Xls20Collection: PalletXls20Xls20Collection;
 		PalletXrplBridgeAssetWithdrawTransaction: PalletXrplBridgeAssetWithdrawTransaction;
 		PalletXrplBridgeCall: PalletXrplBridgeCall;
 		PalletXrplBridgeDelayedWithdrawal: PalletXrplBridgeDelayedWithdrawal;
 		PalletXrplBridgeError: PalletXrplBridgeError;
 		PalletXrplBridgeEvent: PalletXrplBridgeEvent;
+		PalletXrplBridgeNfTokenAcceptOfferTransaction: PalletXrplBridgeNfTokenAcceptOfferTransaction;
+		PalletXrplBridgeNfTokenCreateOfferTransaction: PalletXrplBridgeNfTokenCreateOfferTransaction;
 		PalletXrplBridgeWithdrawTransaction: PalletXrplBridgeWithdrawTransaction;
 		PalletXrplBridgeXrpTransaction: PalletXrplBridgeXrpTransaction;
 		PalletXrplBridgeXrpWithdrawTransaction: PalletXrplBridgeXrpWithdrawTransaction;
 		PalletXrplBridgeXrplCurrency: PalletXrplBridgeXrplCurrency;
 		PalletXrplBridgeXrplCurrencyType: PalletXrplBridgeXrplCurrencyType;
+		PalletXrplBridgeXrplDoorAccount: PalletXrplBridgeXrplDoorAccount;
 		PalletXrplBridgeXrplTicketSequenceParams: PalletXrplBridgeXrplTicketSequenceParams;
+		PalletXrplBridgeXrplTransaction: PalletXrplBridgeXrplTransaction;
 		PalletXrplBridgeXrplTxData: PalletXrplBridgeXrplTxData;
 		PalletXrplCall: PalletXrplCall;
 		PalletXrplError: PalletXrplError;
@@ -619,6 +664,7 @@ declare module "@polkadot/types/types/registry" {
 		SeedPalletCommonUtilsPublicMintInformation: SeedPalletCommonUtilsPublicMintInformation;
 		SeedPrimitivesEthyCryptoAppCryptoPublic: SeedPrimitivesEthyCryptoAppCryptoPublic;
 		SeedPrimitivesEthyCryptoAppCryptoSignature: SeedPrimitivesEthyCryptoAppCryptoSignature;
+		SeedPrimitivesNftCrossChainCompatibility: SeedPrimitivesNftCrossChainCompatibility;
 		SeedPrimitivesNftOriginChain: SeedPrimitivesNftOriginChain;
 		SeedPrimitivesNftRoyaltiesSchedule: SeedPrimitivesNftRoyaltiesSchedule;
 		SeedPrimitivesNftTokenLockReason: SeedPrimitivesNftTokenLockReason;

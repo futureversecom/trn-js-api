@@ -133,7 +133,7 @@ importers:
         specifier: ^1.0.8
         version: link:../api
       '@therootnetwork/api-types':
-        specifier: ^1.0.3
+        specifier: ^1.0.4
         version: link:../api-types
       codechain-primitives:
         specifier: ^1.0.4

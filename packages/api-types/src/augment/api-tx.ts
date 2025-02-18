@@ -38,7 +38,6 @@ import type {
 	PalletNfiFeeDetails,
 	PalletNfiNfiDataType,
 	PalletNfiNfiSubType,
-	PalletNftCrossChainCompatibility,
 	PalletStakingPalletConfigOpPerbill,
 	PalletStakingPalletConfigOpPercent,
 	PalletStakingPalletConfigOpU128,
@@ -1028,6 +1027,16 @@ declare module "@polkadot/api-base/types/submittable" {
 				[bool]
 			>;
 			/**
+			 * See [`Pallet::claim_delayed_payment`].
+			 **/
+			claimDelayedPayment: AugmentedSubmittable<
+				(
+					blockNumber: u32 | AnyNumber | Uint8Array,
+					paymentId: u64 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[u32, u64]
+			>;
+			/**
 			 * See [`Pallet::set_erc20_asset_map`].
 			 **/
 			setErc20AssetMap: AugmentedSubmittable<
@@ -1800,6 +1809,35 @@ declare module "@polkadot/api-base/types/submittable" {
 			 **/
 			[key: string]: SubmittableExtrinsicFunction<ApiType>;
 		};
+		migration: {
+			/**
+			 * See [`Pallet::enable_migration`].
+			 **/
+			enableMigration: AugmentedSubmittable<
+				(enabled: bool | boolean | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[bool]
+			>;
+			/**
+			 * See [`Pallet::set_block_delay`].
+			 **/
+			setBlockDelay: AugmentedSubmittable<
+				(
+					blockDelay: Option<u32> | null | Uint8Array | u32 | AnyNumber
+				) => SubmittableExtrinsic<ApiType>,
+				[Option<u32>]
+			>;
+			/**
+			 * See [`Pallet::set_block_limit`].
+			 **/
+			setBlockLimit: AugmentedSubmittable<
+				(blockLimit: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u32]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
 		multisig: {
 			/**
 			 * See [`Pallet::approve_as_multi`].
@@ -1896,9 +1934,9 @@ declare module "@polkadot/api-base/types/submittable" {
 		};
 		nfi: {
 			/**
-			 * See [`Pallet::enable_nfi`].
+			 * See [`Pallet::enable_nfi_for_trn_collection`].
 			 **/
-			enableNfi: AugmentedSubmittable<
+			enableNfiForTrnCollection: AugmentedSubmittable<
 				(
 					collectionId: u32 | AnyNumber | Uint8Array,
 					subType: PalletNfiNfiSubType | "NFI" | number | Uint8Array
@@ -1911,11 +1949,13 @@ declare module "@polkadot/api-base/types/submittable" {
 			manualDataRequest: AugmentedSubmittable<
 				(
 					tokenId:
-						| ITuple<[u32, u32]>
-						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+						| PalletNfiMultiChainTokenId
+						| { chainId?: any; collectionId?: any; serialNumber?: any }
+						| string
+						| Uint8Array,
 					subType: PalletNfiNfiSubType | "NFI" | number | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[ITuple<[u32, u32]>, PalletNfiNfiSubType]
+				[PalletNfiMultiChainTokenId, PalletNfiNfiSubType]
 			>;
 			/**
 			 * See [`Pallet::set_fee_details`].
@@ -1962,11 +2002,13 @@ declare module "@polkadot/api-base/types/submittable" {
 			submitNfiData: AugmentedSubmittable<
 				(
 					tokenId:
-						| ITuple<[u32, u32]>
-						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+						| PalletNfiMultiChainTokenId
+						| { chainId?: any; collectionId?: any; serialNumber?: any }
+						| string
+						| Uint8Array,
 					dataItem: PalletNfiNfiDataType | { NFI: any } | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[ITuple<[u32, u32]>, PalletNfiNfiDataType]
+				[PalletNfiMultiChainTokenId, PalletNfiNfiDataType]
 			>;
 			/**
 			 * Generic tx
@@ -2016,7 +2058,7 @@ declare module "@polkadot/api-base/types/submittable" {
 						| { entitlements?: any }
 						| string,
 					crossChainCompatibility:
-						| PalletNftCrossChainCompatibility
+						| SeedPrimitivesNftCrossChainCompatibility
 						| { xrpl?: any }
 						| string
 						| Uint8Array
@@ -2028,7 +2070,7 @@ declare module "@polkadot/api-base/types/submittable" {
 					Option<SeedPrimitivesSignatureAccountId20>,
 					Bytes,
 					Option<SeedPrimitivesNftRoyaltiesSchedule>,
-					PalletNftCrossChainCompatibility,
+					SeedPrimitivesNftCrossChainCompatibility,
 				]
 			>;
 			/**
@@ -2184,6 +2226,53 @@ declare module "@polkadot/api-base/types/submittable" {
 					destination: H160 | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[Vec<u32>, Vec<Vec<u32>>, H160]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
+		partnerAttribution: {
+			/**
+			 * See [`Pallet::attribute_account`].
+			 **/
+			attributeAccount: AugmentedSubmittable<
+				(partnerId: u128 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u128]
+			>;
+			/**
+			 * See [`Pallet::register_partner_account`].
+			 **/
+			registerPartnerAccount: AugmentedSubmittable<
+				(
+					account: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20]
+			>;
+			/**
+			 * See [`Pallet::update_partner_account`].
+			 **/
+			updatePartnerAccount: AugmentedSubmittable<
+				(
+					partnerId: Compact<u128> | AnyNumber | Uint8Array,
+					partnerAccount:
+						| Option<SeedPrimitivesSignatureAccountId20>
+						| null
+						| Uint8Array
+						| SeedPrimitivesSignatureAccountId20
+						| string
+				) => SubmittableExtrinsic<ApiType>,
+				[Compact<u128>, Option<SeedPrimitivesSignatureAccountId20>]
+			>;
+			/**
+			 * See [`Pallet::upgrade_partner`].
+			 **/
+			upgradePartner: AugmentedSubmittable<
+				(
+					partnerId: Compact<u128> | AnyNumber | Uint8Array,
+					feePercentage: Compact<Permill> | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Compact<u128>, Compact<Permill>]
 			>;
 			/**
 			 * Generic tx
@@ -2759,6 +2848,18 @@ declare module "@polkadot/api-base/types/submittable" {
 				[u32, SeedPrimitivesNftRoyaltiesSchedule]
 			>;
 			/**
+			 * See [`Pallet::set_token_name`].
+			 **/
+			setTokenName: AugmentedSubmittable<
+				(
+					tokenId:
+						| ITuple<[u32, u32]>
+						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+					tokenName: Bytes | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[ITuple<[u32, u32]>, Bytes]
+			>;
+			/**
 			 * See [`Pallet::set_utility_flags`].
 			 **/
 			setUtilityFlags: AugmentedSubmittable<
@@ -3116,6 +3217,122 @@ declare module "@polkadot/api-base/types/submittable" {
 					weight: SpWeightsWeightV2Weight | { refTime?: any; proofSize?: any } | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[Call, SpWeightsWeightV2Weight]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
+		syloDataVerification: {
+			/**
+			 * See [`Pallet::add_validation_record_entry`].
+			 **/
+			addValidationRecordEntry: AugmentedSubmittable<
+				(
+					dataId: Bytes | string | Uint8Array,
+					checksum: H256 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Bytes, H256]
+			>;
+			/**
+			 * See [`Pallet::create_validation_record`].
+			 **/
+			createValidationRecord: AugmentedSubmittable<
+				(
+					dataId: Bytes | string | Uint8Array,
+					resolvers:
+						| Vec<PalletSyloDataVerificationResolverId>
+						| (
+								| PalletSyloDataVerificationResolverId
+								| { method?: any; identifier?: any }
+								| string
+								| Uint8Array
+						  )[],
+					dataType: Bytes | string | Uint8Array,
+					tags: Vec<Bytes> | (Bytes | string | Uint8Array)[],
+					checksum: H256 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[Bytes, Vec<PalletSyloDataVerificationResolverId>, Bytes, Vec<Bytes>, H256]
+			>;
+			/**
+			 * See [`Pallet::delete_validation_record`].
+			 **/
+			deleteValidationRecord: AugmentedSubmittable<
+				(dataId: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[Bytes]
+			>;
+			/**
+			 * See [`Pallet::deregister_resolver`].
+			 **/
+			deregisterResolver: AugmentedSubmittable<
+				(identifier: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[Bytes]
+			>;
+			/**
+			 * See [`Pallet::register_resolver`].
+			 **/
+			registerResolver: AugmentedSubmittable<
+				(
+					identifier: Bytes | string | Uint8Array,
+					serviceEndpoints: Vec<Bytes> | (Bytes | string | Uint8Array)[]
+				) => SubmittableExtrinsic<ApiType>,
+				[Bytes, Vec<Bytes>]
+			>;
+			/**
+			 * See [`Pallet::set_payment_asset`].
+			 **/
+			setPaymentAsset: AugmentedSubmittable<
+				(paymentAsset: u32 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[u32]
+			>;
+			/**
+			 * See [`Pallet::set_sylo_resolver_method`].
+			 **/
+			setSyloResolverMethod: AugmentedSubmittable<
+				(resolverMethod: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[Bytes]
+			>;
+			/**
+			 * See [`Pallet::update_resolver`].
+			 **/
+			updateResolver: AugmentedSubmittable<
+				(
+					identifier: Bytes | string | Uint8Array,
+					serviceEndpoints: Vec<Bytes> | (Bytes | string | Uint8Array)[]
+				) => SubmittableExtrinsic<ApiType>,
+				[Bytes, Vec<Bytes>]
+			>;
+			/**
+			 * See [`Pallet::update_validation_record`].
+			 **/
+			updateValidationRecord: AugmentedSubmittable<
+				(
+					dataId: Bytes | string | Uint8Array,
+					resolvers:
+						| Option<Vec<PalletSyloDataVerificationResolverId>>
+						| null
+						| Uint8Array
+						| Vec<PalletSyloDataVerificationResolverId>
+						| (
+								| PalletSyloDataVerificationResolverId
+								| { method?: any; identifier?: any }
+								| string
+								| Uint8Array
+						  )[],
+					dataType: Option<Bytes> | null | Uint8Array | Bytes | string,
+					tags:
+						| Option<Vec<Bytes>>
+						| null
+						| Uint8Array
+						| Vec<Bytes>
+						| (Bytes | string | Uint8Array)[]
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					Bytes,
+					Option<Vec<PalletSyloDataVerificationResolverId>>,
+					Option<Bytes>,
+					Option<Vec<Bytes>>,
+				]
 			>;
 			/**
 			 * Generic tx
@@ -3501,6 +3718,25 @@ declare module "@polkadot/api-base/types/submittable" {
 				[u32, Vec<u32>]
 			>;
 			/**
+			 * See [`Pallet::set_collection_mappings`].
+			 **/
+			setCollectionMappings: AugmentedSubmittable<
+				(
+					mappings:
+						| Vec<ITuple<[u32, PalletXls20Xls20Collection]>>
+						| [
+								u32 | AnyNumber | Uint8Array,
+								(
+									| PalletXls20Xls20Collection
+									| { issuerAddress?: any; taxon?: any }
+									| string
+									| Uint8Array
+								),
+						  ][]
+				) => SubmittableExtrinsic<ApiType>,
+				[Vec<ITuple<[u32, PalletXls20Xls20Collection]>>]
+			>;
+			/**
 			 * See [`Pallet::set_relayer`].
 			 **/
 			setRelayer: AugmentedSubmittable<
@@ -3547,6 +3783,13 @@ declare module "@polkadot/api-base/types/submittable" {
 					relayer: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[SeedPrimitivesSignatureAccountId20]
+			>;
+			/**
+			 * See [`Pallet::generate_nft_accept_offer`].
+			 **/
+			generateNftAcceptOffer: AugmentedSubmittable<
+				(nftokenSellOffer: U8aFixed | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
+				[U8aFixed]
 			>;
 			/**
 			 * See [`Pallet::prune_settled_ledger_index`].
@@ -3616,15 +3859,21 @@ declare module "@polkadot/api-base/types/submittable" {
 			 * See [`Pallet::set_door_address`].
 			 **/
 			setDoorAddress: AugmentedSubmittable<
-				(doorAddress: H160 | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
-				[H160]
+				(
+					doorAccount: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array,
+					doorAddress: Option<H160> | null | Uint8Array | H160 | string
+				) => SubmittableExtrinsic<ApiType>,
+				[PalletXrplBridgeXrplDoorAccount, Option<H160>]
 			>;
 			/**
 			 * See [`Pallet::set_door_tx_fee`].
 			 **/
 			setDoorTxFee: AugmentedSubmittable<
-				(fee: u64 | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
-				[u64]
+				(
+					doorType: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array,
+					fee: u64 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[PalletXrplBridgeXrplDoorAccount, u64]
 			>;
 			/**
 			 * See [`Pallet::set_payment_delay`].
@@ -3646,21 +3895,23 @@ declare module "@polkadot/api-base/types/submittable" {
 			 **/
 			setTicketSequenceCurrentAllocation: AugmentedSubmittable<
 				(
+					doorAccount: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array,
 					ticketSequence: u32 | AnyNumber | Uint8Array,
 					startTicketSequence: u32 | AnyNumber | Uint8Array,
 					ticketBucketSize: u32 | AnyNumber | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[u32, u32, u32]
+				[PalletXrplBridgeXrplDoorAccount, u32, u32, u32]
 			>;
 			/**
 			 * See [`Pallet::set_ticket_sequence_next_allocation`].
 			 **/
 			setTicketSequenceNextAllocation: AugmentedSubmittable<
 				(
+					doorAccount: PalletXrplBridgeXrplDoorAccount | "Main" | "NFT" | number | Uint8Array,
 					startTicketSequence: u32 | AnyNumber | Uint8Array,
 					ticketBucketSize: u32 | AnyNumber | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[u32, u32]
+				[PalletXrplBridgeXrplDoorAccount, u32, u32]
 			>;
 			/**
 			 * See [`Pallet::set_xrpl_asset_map`].
@@ -3669,12 +3920,14 @@ declare module "@polkadot/api-base/types/submittable" {
 				(
 					assetId: u32 | AnyNumber | Uint8Array,
 					xrplCurrency:
+						| Option<PalletXrplBridgeXrplCurrency>
+						| null
+						| Uint8Array
 						| PalletXrplBridgeXrplCurrency
 						| { symbol?: any; issuer?: any }
 						| string
-						| Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[u32, PalletXrplBridgeXrplCurrency]
+				[u32, Option<PalletXrplBridgeXrplCurrency>]
 			>;
 			/**
 			 * See [`Pallet::set_xrp_source_tag`].
@@ -3719,6 +3972,18 @@ declare module "@polkadot/api-base/types/submittable" {
 					destinationTag: Option<u32> | null | Uint8Array | u32 | AnyNumber
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, u128, H160, Option<u32>]
+			>;
+			/**
+			 * See [`Pallet::withdraw_nft`].
+			 **/
+			withdrawNft: AugmentedSubmittable<
+				(
+					tokenId:
+						| ITuple<[u32, u32]>
+						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
+					destination: H160 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[ITuple<[u32, u32]>, H160]
 			>;
 			/**
 			 * See [`Pallet::withdraw_xrp`].

@@ -13,6 +13,7 @@ import type {
 	Json,
 	Null,
 	Option,
+	Result,
 	Text,
 	U256,
 	U64,
@@ -884,7 +885,7 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 * Returns the collection info for a NFT collection
 			 **/
 			collectionDetails: AugmentedRpc<
-				(collectionId: u32 | AnyNumber | Uint8Array) => Observable<CollectionDetail>
+				(collectionId: u32 | AnyNumber | Uint8Array) => Observable<Result<CollectionDetail, Error>>
 			>;
 			/**
 			 * Get all NFTs owned by an account

@@ -202,7 +202,7 @@ declare module "@polkadot/api-base/types/consts" {
 		};
 		echo: {
 			/**
-			 * This pallet's Id, used for deriving a sovereign account ID
+			 * This pallet's ID, used for deriving a sovereign account ID
 			 **/
 			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
 			/**
@@ -460,6 +460,16 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		migration: {
+			/**
+			 * The maximum weight this pallet can use in on_idle
+			 **/
+			maxMigrationWeight: SpWeightsWeightV2Weight & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		multisig: {
 			/**
 			 * The base amount of currency needed to reserve for creating a multisig execution or to
@@ -486,6 +496,10 @@ declare module "@polkadot/api-base/types/consts" {
 			[key: string]: Codec;
 		};
 		nfi: {
+			/**
+			 * Max length of bytes stored for MultiChainTokenId
+			 **/
+			maxByteLength: u32 & AugmentedConst<ApiType>;
 			/**
 			 * Max length of data stored per token
 			 **/
@@ -715,6 +729,34 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		syloDataVerification: {
+			/**
+			 * The maximum number of validation entries in a record.
+			 **/
+			maxEntries: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximim number of resolvers in a validation record.
+			 **/
+			maxResolvers: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of service endpoints for a registered resolver.
+			 **/
+			maxServiceEndpoints: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of tags in a validation record.
+			 **/
+			maxTags: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The max length of strings used within the Sylo Pallet. This limits
+			 * the maximum size for resolver identifiers, data identifier, service
+			 * endpoint strings, and tag strings.
+			 **/
+			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		system: {
 			/**
 			 * Maximum number of block number to block hash mappings to keep (oldest pruned first).
@@ -894,6 +936,16 @@ declare module "@polkadot/api-base/types/consts" {
 			 * With that `List::migrate` can be called, which will perform the appropriate migration.
 			 **/
 			bagThresholds: Vec<u64> & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
+		xls20: {
+			/**
+			 * This pallet's ID, used for deriving a sovereign account ID
+			 **/
+			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
 			/**
 			 * Generic const
 			 **/

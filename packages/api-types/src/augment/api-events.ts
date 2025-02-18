@@ -42,7 +42,6 @@ import type {
 	PalletNfiFeeDetails,
 	PalletNfiNfiDataType,
 	PalletNfiNfiSubType,
-	PalletNftCrossChainCompatibility,
 	PalletStakingExposure,
 	PalletStakingForcing,
 	PalletStakingValidatorPrefs,
@@ -1013,8 +1012,13 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			Erc20Withdraw: AugmentedEvent<
 				ApiType,
-				[assetId: u32, amount: u128, beneficiary: H160],
-				{ assetId: u32; amount: u128; beneficiary: H160 }
+				[assetId: u32, amount: u128, beneficiary: H160, source: SeedPrimitivesSignatureAccountId20],
+				{
+					assetId: u32;
+					amount: u128;
+					beneficiary: H160;
+					source: SeedPrimitivesSignatureAccountId20;
+				}
 			>;
 			/**
 			 * A withdrawal has been delayed.
@@ -1191,12 +1195,12 @@ declare module "@polkadot/api-base/types/events" {
 			Verified: AugmentedEvent<ApiType, [eventClaimId: u64], { eventClaimId: u64 }>;
 			/**
 			 * A notary (validator) set change for Xrpl is in motion
-			 * A proof for the change will be generated with the given `event_id`
+			 * A set of proofs for the change will be generated with the given `event_proof_ids`
 			 **/
 			XrplAuthoritySetChange: AugmentedEvent<
 				ApiType,
-				[eventProofId: u64, validatorSetId: u64],
-				{ eventProofId: u64; validatorSetId: u64 }
+				[eventProofIds: Vec<u64>, validatorSetId: u64],
+				{ eventProofIds: Vec<u64>; validatorSetId: u64 }
 			>;
 			/**
 			 * Xrpl authority set change request failed
@@ -1726,6 +1730,40 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
 		};
+		migration: {
+			/**
+			 * The block delay has been set
+			 **/
+			BlockDelaySet: AugmentedEvent<
+				ApiType,
+				[blockDelay: Option<u32>],
+				{ blockDelay: Option<u32> }
+			>;
+			/**
+			 * The block limit has been set
+			 **/
+			BlockLimitSet: AugmentedEvent<ApiType, [blockLimit: u32], { blockLimit: u32 }>;
+			/**
+			 * The current migration has completed
+			 **/
+			MigrationComplete: AugmentedEvent<ApiType, [itemsMigrated: u32], { itemsMigrated: u32 }>;
+			/**
+			 * Multi-Block migration has been disabled
+			 **/
+			MigrationDisabled: AugmentedEvent<ApiType, []>;
+			/**
+			 * Multi-Block migration has been enabled
+			 **/
+			MigrationEnabled: AugmentedEvent<ApiType, []>;
+			/**
+			 * A Migration has started
+			 **/
+			MigrationStarted: AugmentedEvent<ApiType, []>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
 		multisig: {
 			/**
 			 * A multisig operation has been approved by someone.
@@ -1810,25 +1848,39 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			DataRemoved: AugmentedEvent<
 				ApiType,
-				[tokenId: ITuple<[u32, u32]>],
-				{ tokenId: ITuple<[u32, u32]> }
+				[tokenId: PalletNfiMultiChainTokenId],
+				{ tokenId: PalletNfiMultiChainTokenId }
 			>;
 			/**
-			 * Request for new NFI data creation
+			 * Request for new NFI data creation on a token with pre-existing data
 			 **/
-			DataRequest: AugmentedEvent<
+			DataRequestExisting: AugmentedEvent<
 				ApiType,
 				[
 					subType: PalletNfiNfiSubType,
 					caller: SeedPrimitivesSignatureAccountId20,
-					collectionId: u32,
-					serialNumbers: Vec<u32>,
+					tokenId: PalletNfiMultiChainTokenId,
 				],
 				{
 					subType: PalletNfiNfiSubType;
 					caller: SeedPrimitivesSignatureAccountId20;
-					collectionId: u32;
-					serialNumbers: Vec<u32>;
+					tokenId: PalletNfiMultiChainTokenId;
+				}
+			>;
+			/**
+			 * Request for new NFI data creation on a token without existing data
+			 **/
+			DataRequestNew: AugmentedEvent<
+				ApiType,
+				[
+					subType: PalletNfiNfiSubType,
+					caller: SeedPrimitivesSignatureAccountId20,
+					tokenId: PalletNfiMultiChainTokenId,
+				],
+				{
+					subType: PalletNfiNfiSubType;
+					caller: SeedPrimitivesSignatureAccountId20;
+					tokenId: PalletNfiMultiChainTokenId;
 				}
 			>;
 			/**
@@ -1836,10 +1888,14 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			DataSet: AugmentedEvent<
 				ApiType,
-				[subType: PalletNfiNfiSubType, tokenId: ITuple<[u32, u32]>, dataItem: PalletNfiNfiDataType],
+				[
+					subType: PalletNfiNfiSubType,
+					tokenId: PalletNfiMultiChainTokenId,
+					dataItem: PalletNfiNfiDataType,
+				],
 				{
 					subType: PalletNfiNfiSubType;
-					tokenId: ITuple<[u32, u32]>;
+					tokenId: PalletNfiMultiChainTokenId;
 					dataItem: PalletNfiNfiDataType;
 				}
 			>;
@@ -1882,8 +1938,8 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			NfiEnabled: AugmentedEvent<
 				ApiType,
-				[subType: PalletNfiNfiSubType, collectionId: u32],
-				{ subType: PalletNfiNfiSubType; collectionId: u32 }
+				[subType: PalletNfiNfiSubType, collectionId: PalletNfiGenericCollectionId],
+				{ subType: PalletNfiNfiSubType; collectionId: PalletNfiGenericCollectionId }
 			>;
 			/**
 			 * A new relayer has been set
@@ -1920,8 +1976,8 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			Burn: AugmentedEvent<
 				ApiType,
-				[collectionId: u32, serialNumber: u32],
-				{ collectionId: u32; serialNumber: u32 }
+				[tokenOwner: SeedPrimitivesSignatureAccountId20, collectionId: u32, serialNumber: u32],
+				{ tokenOwner: SeedPrimitivesSignatureAccountId20; collectionId: u32; serialNumber: u32 }
 			>;
 			/**
 			 * Collection has been claimed
@@ -1945,7 +2001,7 @@ declare module "@polkadot/api-base/types/events" {
 					name: Bytes,
 					royaltiesSchedule: Option<SeedPrimitivesNftRoyaltiesSchedule>,
 					originChain: SeedPrimitivesNftOriginChain,
-					compatibility: PalletNftCrossChainCompatibility,
+					compatibility: SeedPrimitivesNftCrossChainCompatibility,
 				],
 				{
 					collectionUuid: u32;
@@ -1956,7 +2012,7 @@ declare module "@polkadot/api-base/types/events" {
 					name: Bytes;
 					royaltiesSchedule: Option<SeedPrimitivesNftRoyaltiesSchedule>;
 					originChain: SeedPrimitivesNftOriginChain;
-					compatibility: PalletNftCrossChainCompatibility;
+					compatibility: SeedPrimitivesNftCrossChainCompatibility;
 				}
 			>;
 			/**
@@ -2138,6 +2194,37 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[kind: U8aFixed, timeslot: Bytes],
 				{ kind: U8aFixed; timeslot: Bytes }
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
+		partnerAttribution: {
+			AccountAttributed: AugmentedEvent<
+				ApiType,
+				[partnerId: u128, account: SeedPrimitivesSignatureAccountId20],
+				{ partnerId: u128; account: SeedPrimitivesSignatureAccountId20 }
+			>;
+			PartnerRegistered: AugmentedEvent<
+				ApiType,
+				[partnerId: u128, partner: PalletPartnerAttributionPartnerInformation],
+				{ partnerId: u128; partner: PalletPartnerAttributionPartnerInformation }
+			>;
+			PartnerRemoved: AugmentedEvent<
+				ApiType,
+				[partnerId: u128, account: SeedPrimitivesSignatureAccountId20],
+				{ partnerId: u128; account: SeedPrimitivesSignatureAccountId20 }
+			>;
+			PartnerUpdated: AugmentedEvent<
+				ApiType,
+				[partnerId: u128, account: SeedPrimitivesSignatureAccountId20],
+				{ partnerId: u128; account: SeedPrimitivesSignatureAccountId20 }
+			>;
+			PartnerUpgraded: AugmentedEvent<
+				ApiType,
+				[partnerId: u128, account: SeedPrimitivesSignatureAccountId20, feePercentage: Permill],
+				{ partnerId: u128; account: SeedPrimitivesSignatureAccountId20; feePercentage: Permill }
 			>;
 			/**
 			 * Generic event
@@ -2548,6 +2635,14 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * Token name was set
+			 **/
+			TokenNameSet: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>, tokenName: Bytes],
+				{ tokenId: ITuple<[u32, u32]>; tokenName: Bytes }
+			>;
+			/**
 			 * A token was transferred
 			 **/
 			Transfer: AugmentedEvent<
@@ -2729,6 +2824,85 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[sudoResult: Result<Null, SpRuntimeDispatchError>],
 				{ sudoResult: Result<Null, SpRuntimeDispatchError> }
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
+		syloDataVerification: {
+			/**
+			 * The asset used to for extrinsics has been set
+			 **/
+			PaymentAssetSet: AugmentedEvent<ApiType, [assetId: u32], { assetId: u32 }>;
+			/**
+			 * An existing resolver has been deregistered and removed from storage
+			 **/
+			ResolverDeregistered: AugmentedEvent<ApiType, [id: Bytes], { id: Bytes }>;
+			/**
+			 * A new resolver has been registered and set in storage
+			 **/
+			ResolverRegistered: AugmentedEvent<
+				ApiType,
+				[id: Bytes, controller: SeedPrimitivesSignatureAccountId20, serviceEndpoints: Vec<Bytes>],
+				{ id: Bytes; controller: SeedPrimitivesSignatureAccountId20; serviceEndpoints: Vec<Bytes> }
+			>;
+			/**
+			 * An existing resolver has had it's service endpoints updated
+			 **/
+			ResolverUpdated: AugmentedEvent<
+				ApiType,
+				[id: Bytes, controller: SeedPrimitivesSignatureAccountId20, serviceEndpoints: Vec<Bytes>],
+				{ id: Bytes; controller: SeedPrimitivesSignatureAccountId20; serviceEndpoints: Vec<Bytes> }
+			>;
+			/**
+			 * The string reserved for the method used by sylo resolvers has been set
+			 **/
+			SyloResolverMethodSet: AugmentedEvent<ApiType, [method: Bytes], { method: Bytes }>;
+			/**
+			 * An entry of an existing validation record has been added
+			 **/
+			ValidationEntryAdded: AugmentedEvent<
+				ApiType,
+				[author: SeedPrimitivesSignatureAccountId20, id: Bytes, checksum: H256],
+				{ author: SeedPrimitivesSignatureAccountId20; id: Bytes; checksum: H256 }
+			>;
+			/**
+			 * A new validation record has been created and set in storage
+			 **/
+			ValidationRecordCreated: AugmentedEvent<
+				ApiType,
+				[author: SeedPrimitivesSignatureAccountId20, id: Bytes],
+				{ author: SeedPrimitivesSignatureAccountId20; id: Bytes }
+			>;
+			/**
+			 * An existing validation record has been deleted and removed from
+			 * storage
+			 **/
+			ValidationRecordDeleted: AugmentedEvent<
+				ApiType,
+				[author: SeedPrimitivesSignatureAccountId20, id: Bytes],
+				{ author: SeedPrimitivesSignatureAccountId20; id: Bytes }
+			>;
+			/**
+			 * An existing validation record has had its fields updated
+			 **/
+			ValidationRecordUpdated: AugmentedEvent<
+				ApiType,
+				[
+					author: SeedPrimitivesSignatureAccountId20,
+					id: Bytes,
+					resolvers: Option<Vec<Bytes>>,
+					dataType: Option<Bytes>,
+					tags: Option<Vec<Bytes>>,
+				],
+				{
+					author: SeedPrimitivesSignatureAccountId20;
+					id: Bytes;
+					resolvers: Option<Vec<Bytes>>;
+					dataType: Option<Bytes>;
+					tags: Option<Vec<Bytes>>;
+				}
 			>;
 			/**
 			 * Generic event
@@ -2947,6 +3121,14 @@ declare module "@polkadot/api-base/types/events" {
 				{ account: SeedPrimitivesSignatureAccountId20 }
 			>;
 			/**
+			 * Xls20 collection mappings have been set
+			 **/
+			Xls20CollectionMappingsSet: AugmentedEvent<
+				ApiType,
+				[mappings: Vec<ITuple<[u32, PalletXls20Xls20Collection]>>],
+				{ mappings: Vec<ITuple<[u32, PalletXls20Xls20Collection]>> }
+			>;
+			/**
 			 * A collection has had XLS-20 compatibility enabled
 			 **/
 			Xls20CompatibilityEnabled: AugmentedEvent<
@@ -3012,16 +3194,47 @@ declare module "@polkadot/api-base/types/events" {
 			[key: string]: AugmentedEvent<ApiType>;
 		};
 		xrplBridge: {
-			DoorAddressSet: AugmentedEvent<ApiType, [H160]>;
+			/**
+			 * XRPL Door address set/reset
+			 **/
+			DoorAddressSet: AugmentedEvent<
+				ApiType,
+				[doorAccount: PalletXrplBridgeXrplDoorAccount, address: Option<H160>],
+				{ doorAccount: PalletXrplBridgeXrplDoorAccount; address: Option<H160> }
+			>;
+			/**
+			 * Next ticket sequence params set for the XRPL door account
+			 **/
 			DoorNextTicketSequenceParamSet: AugmentedEvent<
 				ApiType,
-				[ticketSequenceStartNext: u32, ticketBucketSizeNext: u32],
-				{ ticketSequenceStartNext: u32; ticketBucketSizeNext: u32 }
+				[
+					doorAccount: PalletXrplBridgeXrplDoorAccount,
+					ticketSequenceStartNext: u32,
+					ticketBucketSizeNext: u32,
+				],
+				{
+					doorAccount: PalletXrplBridgeXrplDoorAccount;
+					ticketSequenceStartNext: u32;
+					ticketBucketSizeNext: u32;
+				}
 			>;
+			/**
+			 * ticket sequence params set for the XRPL door account
+			 **/
 			DoorTicketSequenceParamSet: AugmentedEvent<
 				ApiType,
-				[ticketSequence: u32, ticketSequenceStart: u32, ticketBucketSize: u32],
-				{ ticketSequence: u32; ticketSequenceStart: u32; ticketBucketSize: u32 }
+				[
+					doorAccount: PalletXrplBridgeXrplDoorAccount,
+					ticketSequence: u32,
+					ticketSequenceStart: u32,
+					ticketBucketSize: u32,
+				],
+				{
+					doorAccount: PalletXrplBridgeXrplDoorAccount;
+					ticketSequence: u32;
+					ticketSequenceStart: u32;
+					ticketBucketSize: u32;
+				}
 			>;
 			LedgerIndexManualPrune: AugmentedEvent<
 				ApiType,
@@ -3054,7 +3267,14 @@ declare module "@polkadot/api-base/types/events" {
 			ProcessingOk: AugmentedEvent<ApiType, [u64, H512]>;
 			RelayerAdded: AugmentedEvent<ApiType, [SeedPrimitivesSignatureAccountId20]>;
 			RelayerRemoved: AugmentedEvent<ApiType, [SeedPrimitivesSignatureAccountId20]>;
-			TicketSequenceThresholdReached: AugmentedEvent<ApiType, [u32]>;
+			/**
+			 * ticket sequence threshold reached for the XRPL door account
+			 **/
+			TicketSequenceThresholdReached: AugmentedEvent<
+				ApiType,
+				[doorAccount: PalletXrplBridgeXrplDoorAccount, currentTicket: u32],
+				{ doorAccount: PalletXrplBridgeXrplDoorAccount; currentTicket: u32 }
+			>;
 			TransactionAdded: AugmentedEvent<ApiType, [u64, H512]>;
 			TransactionChallenge: AugmentedEvent<ApiType, [u64, H512]>;
 			/**
@@ -3099,10 +3319,23 @@ declare module "@polkadot/api-base/types/events" {
 					destination: H160;
 				}
 			>;
+			XrplAssetMapRemoved: AugmentedEvent<
+				ApiType,
+				[assetId: u32, xrplCurrency: PalletXrplBridgeXrplCurrency],
+				{ assetId: u32; xrplCurrency: PalletXrplBridgeXrplCurrency }
+			>;
 			XrplAssetMapSet: AugmentedEvent<
 				ApiType,
 				[assetId: u32, xrplCurrency: PalletXrplBridgeXrplCurrency],
 				{ assetId: u32; xrplCurrency: PalletXrplBridgeXrplCurrency }
+			>;
+			/**
+			 * Submit XRPL Tx signing request
+			 **/
+			XrplTxSignRequest: AugmentedEvent<
+				ApiType,
+				[proofId: u64, tx: PalletXrplBridgeXrplTransaction],
+				{ proofId: u64; tx: PalletXrplBridgeXrplTransaction }
 			>;
 			/**
 			 * Generic event
