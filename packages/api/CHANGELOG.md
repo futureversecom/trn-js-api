@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+## 1.0.11
+
+### Patch Changes
+
+- Fix return type of NFT collection details rpc
+
 ## 1.0.10
 
 ### Patch Changes
