@@ -62,6 +62,11 @@ import type {
 	SpNposElectionsSupport,
 	SpSessionMembershipProof,
 	SpWeightsWeightV2Weight,
+	PalletNfiMultiChainTokenId,
+	SeedPrimitivesNftCrossChainCompatibility,
+	PalletSyloDataVerificationResolverId,
+	PalletXls20Xls20Collection,
+	PalletXrplBridgeXrplDoorAccount,
 } from "@polkadot/types/lookup";
 import type {
 	Call,
