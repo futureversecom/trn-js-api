@@ -1,5 +1,11 @@
 # @therootnetwork/api-types
 
+## 1.0.7
+
+### Patch Changes
+
+- Update metadata for runtime version 65
+
 ## 1.0.6
 
 ### Patch Changes
