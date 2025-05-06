@@ -9,3 +9,4 @@ export * from "./runtime/types.js";
 export * from "./xrplBridge/types.js";
 export * from "./assetsExt/types.js";
 export * from "./sft/types.js";
+export * from "./syloDataPermissions/types.js";

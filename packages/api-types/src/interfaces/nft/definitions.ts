@@ -34,7 +34,7 @@ export default {
 					type: "u32",
 				},
 			],
-			type: "Result<CollectionDetail, Error>",
+			type: "Result<CollectionDetail, Text>",
 		},
 	},
 	types: {

@@ -1239,6 +1239,11 @@ import type {
 	WeightV2,
 } from "@therootnetwork/api-types/interfaces/runtime";
 import type {
+	DataPermission,
+	GetPermissionsResult,
+	PermissionReferenceRecord,
+} from "@therootnetwork/api-types/interfaces/syloDataPermissions";
+import type {
 	XRPLTxData,
 	XrplEventProofResponse,
 } from "@therootnetwork/api-types/interfaces/xrplBridge";
@@ -1500,6 +1505,7 @@ declare module "@polkadot/types/types/registry" {
 		CreatedBlock: CreatedBlock;
 		CrossChainCompatibility: CrossChainCompatibility;
 		Data: Data;
+		DataPermission: DataPermission;
 		DeferredOffenceOf: DeferredOffenceOf;
 		DefunctVoter: DefunctVoter;
 		DelayKind: DelayKind;
@@ -1691,6 +1697,7 @@ declare module "@polkadot/types/types/registry" {
 		FungibilityV2: FungibilityV2;
 		FungiblesAccessError: FungiblesAccessError;
 		Gas: Gas;
+		GetPermissionsResult: GetPermissionsResult;
 		GiltBid: GiltBid;
 		GlobalValidationData: GlobalValidationData;
 		GlobalValidationSchedule: GlobalValidationSchedule;
@@ -1982,6 +1989,7 @@ declare module "@polkadot/types/types/registry" {
 		Period: Period;
 		Permill: Permill;
 		PermissionLatest: PermissionLatest;
+		PermissionReferenceRecord: PermissionReferenceRecord;
 		PermissionsV1: PermissionsV1;
 		PermissionVersions: PermissionVersions;
 		Perquintill: Perquintill;

@@ -153,7 +153,7 @@ exports[`getApiOptions returns expected options 1`] = `
             "type": "u32",
           },
         ],
-        "type": "Result<CollectionDetail, Error>",
+        "type": "Result<CollectionDetail, Text>",
       },
       "ownedTokens": {
         "description": "Get all NFTs owned by an account",
@@ -198,6 +198,26 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         ],
         "type": "Json",
+      },
+    },
+    "syloDataPermissions": {
+      "getPermissions": {
+        "description": "Get all permissions granted to a grantee by a data author for a given set of data ids",
+        "params": [
+          {
+            "name": "dataAuthor",
+            "type": "AccountId",
+          },
+          {
+            "name": "grantee",
+            "type": "AccountId",
+          },
+          {
+            "name": "dataIds",
+            "type": "Vec<Text>",
+          },
+        ],
+        "type": "Result<GetPermissionsResult, Text>",
       },
     },
   },
@@ -251,6 +271,7 @@ exports[`getApiOptions returns expected options 1`] = `
     "CrossChainCompatibility": {
       "xrpl": "bool",
     },
+    "DataPermission": "Text",
     "Digest": {
       "logs": "Vec<DigestItem>",
     },
@@ -305,6 +326,10 @@ exports[`getApiOptions returns expected options 1`] = `
     "FixedI64": "Int<64, FixedI64>",
     "FixedU128": "UInt<128, FixedU128>",
     "FixedU64": "UInt<64, FixedU64>",
+    "GetPermissionsResult": {
+      "permission_reference": "Option<PermissionReferenceRecord>",
+      "permissions": "Vec<(Text, Vec<DataPermission>)>",
+    },
     "H1024": "[u8; 128; H1024]",
     "H128": "[u8; 16; H128]",
     "H160": "[u8; 20; H160]",
@@ -370,6 +395,10 @@ exports[`getApiOptions returns expected options 1`] = `
     "Perbill": "UInt<32, Perbill>",
     "Percent": "UInt<8, Percent>",
     "Permill": "UInt<32, Permill>",
+    "PermissionReferenceRecord": {
+      "permission_record_id": "Text",
+      "resolvers": "Vec<(Text, Vec<Text>)>",
+    },
     "Perquintill": "UInt<64, Perquintill>",
     "Phantom": "Null",
     "PhantomData": "Null",
@@ -2639,6 +2668,155 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletImOnlineSr25519AppSr25519Public": "SpCoreSr25519Public",
       "PalletImOnlineSr25519AppSr25519Signature": "SpCoreSr25519Signature",
+      "PalletLiquidityPoolsCall": {
+        "_enum": {
+          "claim_reward": {
+            "id": "u32",
+          },
+          "close_pool": {
+            "id": "u32",
+          },
+          "create_pool": {
+            "interestRate": "u32",
+            "lockEndBlock": "u32",
+            "lockStartBlock": "u32",
+            "maxTokens": "u128",
+            "rewardAssetId": "u32",
+            "stakedAssetId": "u32",
+          },
+          "enter_pool": {
+            "amount": "u128",
+            "poolId": "u32",
+          },
+          "exit_pool": {
+            "id": "u32",
+          },
+          "rollover_unsigned": {
+            "currentBlock": "u32",
+            "id": "u32",
+          },
+          "set_pool_rollover": {
+            "id": "u32",
+            "shouldRollover": "bool",
+          },
+          "set_pool_succession": {
+            "predecessorPoolId": "u32",
+            "successorPoolId": "u32",
+          },
+        },
+      },
+      "PalletLiquidityPoolsError": {
+        "_enum": [
+          "NotPoolCreator",
+          "InvalidBlockRange",
+          "PoolAlreadyExists",
+          "PoolDoesNotExist",
+          "SuccessorPoolDoesNotExist",
+          "PredecessorPoolDoesNotExist",
+          "SuccessorPoolSizeShouldBeGreaterThanPredecessor",
+          "SuccessorPoolSizeShouldBeLockedAfterPredecessor",
+          "RolloverPoolsShouldBeTheSameAsset",
+          "NoTokensStaked",
+          "PoolNotOpen",
+          "NotReadyForClaimingReward",
+          "NoAvailablePoolId",
+          "StakingLimitExceeded",
+          "OffchainErrNotValidator",
+          "OffchainErrTooEarly",
+          "OffchainErrSubmitTransaction",
+          "OffchainErrWrongTransactionSource",
+          "PivotStringTooLong",
+        ],
+      },
+      "PalletLiquidityPoolsEvent": {
+        "_enum": {
+          "PoolClosed": {
+            "poolId": "u32",
+            "receiver": "SeedPrimitivesSignatureAccountId20",
+            "rewardAssetAmount": "u128",
+            "stakedAssetAmount": "u128",
+          },
+          "PoolMatured": {
+            "poolId": "u32",
+          },
+          "PoolOpen": {
+            "interestRate": "u32",
+            "lockEndBlock": "u32",
+            "lockStartBlock": "u32",
+            "maxTokens": "u128",
+            "poolId": "u32",
+            "rewardAssetId": "u32",
+            "stakedAssetId": "u32",
+          },
+          "PoolRenewing": {
+            "poolId": "u32",
+          },
+          "PoolStarted": {
+            "poolId": "u32",
+          },
+          "RewardsClaimed": {
+            "accountId": "SeedPrimitivesSignatureAccountId20",
+            "amount": "u128",
+            "poolId": "u32",
+          },
+          "SetSuccession": {
+            "predecessorPoolId": "u32",
+            "successorPoolId": "u32",
+          },
+          "UserExited": {
+            "accountId": "SeedPrimitivesSignatureAccountId20",
+            "amount": "u128",
+            "poolId": "u32",
+          },
+          "UserInfoUpdated": {
+            "accountId": "SeedPrimitivesSignatureAccountId20",
+            "poolId": "u32",
+            "shouldRollover": "bool",
+          },
+          "UserJoined": {
+            "accountId": "SeedPrimitivesSignatureAccountId20",
+            "amount": "u128",
+            "poolId": "u32",
+          },
+          "UserRolledOver": {
+            "accountId": "SeedPrimitivesSignatureAccountId20",
+            "amount": "u128",
+            "poolId": "u32",
+            "rolledToPoolId": "u32",
+          },
+        },
+      },
+      "PalletLiquidityPoolsPoolInfo": {
+        "creator": "SeedPrimitivesSignatureAccountId20",
+        "id": "u32",
+        "interestRate": "u32",
+        "lastUpdated": "u32",
+        "lockEndBlock": "u32",
+        "lockStartBlock": "u32",
+        "lockedAmount": "u128",
+        "maxTokens": "u128",
+        "poolStatus": "PalletLiquidityPoolsPoolStatus",
+        "rewardAssetId": "u32",
+        "stakedAssetId": "u32",
+      },
+      "PalletLiquidityPoolsPoolRelationship": {
+        "successorId": "Option<u32>",
+      },
+      "PalletLiquidityPoolsPoolStatus": {
+        "_enum": [
+          "Closed",
+          "Open",
+          "Started",
+          "Renewing",
+          "Matured",
+        ],
+      },
+      "PalletLiquidityPoolsUserInfo": {
+        "amount": "u128",
+        "rewardDebt": "u128",
+        "rolledOver": "bool",
+        "shouldRollover": "bool",
+      },
       "PalletMaintenanceModeCall": {
         "_enum": {
           "block_account": {
@@ -3211,6 +3389,10 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletNftCall": {
         "_enum": {
+          "accept_soulbound_issuance": {
+            "collectionId": "u32",
+            "issuanceId": "u32",
+          },
           "burn": {
             "tokenId": "(u32,u32)",
           },
@@ -3226,6 +3408,12 @@ exports[`getApiOptions returns expected options 1`] = `
             "name": "Bytes",
             "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
             "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "issue_soulbound": {
+            "burnAuthority": "SeedPalletCommonUtilsTokenBurnAuthority",
+            "collectionId": "u32",
+            "quantity": "u32",
+            "tokenOwner": "SeedPrimitivesSignatureAccountId20",
           },
           "mint": {
             "collectionId": "u32",
@@ -3256,6 +3444,10 @@ exports[`getApiOptions returns expected options 1`] = `
             "collectionId": "u32",
             "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
           },
+          "set_token_transferable_flag": {
+            "tokenId": "(u32,u32)",
+            "transferable": "bool",
+          },
           "set_utility_flags": {
             "collectionId": "u32",
             "utilityFlags": "SeedPalletCommonUtilsCollectionUtilityFlags",
@@ -3282,6 +3474,10 @@ exports[`getApiOptions returns expected options 1`] = `
         "ownedTokens": "Vec<PalletNftTokenOwnership>",
         "owner": "SeedPrimitivesSignatureAccountId20",
         "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+      },
+      "PalletNftCollectionPendingIssuances": {
+        "nextIssuanceId": "u32",
+        "pendingIssuances": "Vec<(SeedPrimitivesSignatureAccountId20,Vec<PalletNftPendingIssuance>)>",
       },
       "PalletNftError": {
         "_enum": [
@@ -3310,6 +3506,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "MintUtilityBlocked",
           "TransferUtilityBlocked",
           "BurnUtilityBlocked",
+          "PendingIssuanceLimitExceeded",
+          "InvalidPendingIssuance",
+          "CannotUpdateTokenUtility",
+          "InvalidBurnAuthority",
         ],
       },
       "PalletNftEvent": {
@@ -3343,6 +3543,12 @@ exports[`getApiOptions returns expected options 1`] = `
             "originChain": "SeedPrimitivesNftOriginChain",
             "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
           },
+          "Issued": {
+            "burnAuthority": "SeedPalletCommonUtilsTokenBurnAuthority",
+            "end": "u32",
+            "start": "u32",
+            "tokenOwner": "SeedPrimitivesSignatureAccountId20",
+          },
           "MaxIssuanceSet": {
             "collectionId": "u32",
             "maxIssuance": "u32",
@@ -3373,6 +3579,13 @@ exports[`getApiOptions returns expected options 1`] = `
             "collectionId": "u32",
             "newOwner": "SeedPrimitivesSignatureAccountId20",
           },
+          "PendingIssuanceCreated": {
+            "burnAuthority": "SeedPalletCommonUtilsTokenBurnAuthority",
+            "collectionId": "u32",
+            "issuanceId": "u32",
+            "quantity": "u32",
+            "tokenOwner": "SeedPrimitivesSignatureAccountId20",
+          },
           "PublicMintToggle": {
             "collectionId": "u32",
             "enabled": "bool",
@@ -3380,6 +3593,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "RoyaltiesScheduleSet": {
             "collectionId": "u32",
             "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
+          },
+          "TokenTransferableFlagSet": {
+            "tokenId": "(u32,u32)",
+            "transferable": "bool",
           },
           "Transfer": {
             "collectionId": "u32",
@@ -3457,6 +3674,11 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
+      "PalletNftPendingIssuance": {
+        "burnAuthority": "SeedPalletCommonUtilsTokenBurnAuthority",
+        "issuanceId": "u32",
+        "quantity": "u32",
+      },
       "PalletNftTokenOwnership": {
         "ownedSerials": "Vec<u32>",
         "owner": "SeedPrimitivesSignatureAccountId20",
@@ -3474,11 +3696,15 @@ exports[`getApiOptions returns expected options 1`] = `
           "attribute_account": {
             "partnerId": "u128",
           },
+          "create_futurepass_with_partner": {
+            "account": "SeedPrimitivesSignatureAccountId20",
+            "partnerId": "u128",
+          },
           "register_partner_account": {
             "account": "SeedPrimitivesSignatureAccountId20",
           },
           "update_partner_account": {
-            "partnerAccount": "Option<SeedPrimitivesSignatureAccountId20>",
+            "partnerAccount": "SeedPrimitivesSignatureAccountId20",
             "partnerId": "Compact<u128>",
           },
           "upgrade_partner": {
@@ -3904,9 +4130,18 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletSftCall": {
         "_enum": {
+          "accept_soulbound_issuance": {
+            "collectionId": "u32",
+            "issuanceId": "u32",
+          },
           "burn": {
             "collectionId": "u32",
             "serialNumbers": "Vec<(u32,u128)>",
+          },
+          "burn_as_collection_owner": {
+            "collectionId": "u32",
+            "serialNumbers": "Vec<(u32,u128)>",
+            "tokenOwner": "SeedPrimitivesSignatureAccountId20",
           },
           "create_collection": {
             "collectionName": "Bytes",
@@ -3920,6 +4155,11 @@ exports[`getApiOptions returns expected options 1`] = `
             "maxIssuance": "Option<u128>",
             "tokenName": "Bytes",
             "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "issue_soulbound": {
+            "collectionId": "u32",
+            "serialNumbers": "Vec<(u32,u128)>",
+            "tokenOwner": "SeedPrimitivesSignatureAccountId20",
           },
           "mint": {
             "collectionId": "u32",
@@ -3950,9 +4190,17 @@ exports[`getApiOptions returns expected options 1`] = `
             "collectionId": "u32",
             "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
           },
+          "set_token_burn_authority": {
+            "burnAuthority": "SeedPalletCommonUtilsTokenBurnAuthority",
+            "tokenId": "(u32,u32)",
+          },
           "set_token_name": {
             "tokenId": "(u32,u32)",
             "tokenName": "Bytes",
+          },
+          "set_token_transferable_flag": {
+            "tokenId": "(u32,u32)",
+            "transferable": "bool",
           },
           "set_utility_flags": {
             "collectionId": "u32",
@@ -3989,6 +4237,13 @@ exports[`getApiOptions returns expected options 1`] = `
           "MintUtilityBlocked",
           "TransferUtilityBlocked",
           "BurnUtilityBlocked",
+          "BurnAuthorityAlreadySet",
+          "TokenAlreadyIssued",
+          "PendingIssuanceLimitExceeded",
+          "NoBurnAuthority",
+          "InvalidPendingIssuance",
+          "CannotUpdateTokenUtility",
+          "InvalidBurnAuthority",
         ],
       },
       "PalletSftEvent": {
@@ -4010,6 +4265,11 @@ exports[`getApiOptions returns expected options 1`] = `
             "name": "Bytes",
             "originChain": "SeedPrimitivesNftOriginChain",
             "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+          },
+          "Issued": {
+            "balances": "Vec<u128>",
+            "serialNumbers": "Vec<u32>",
+            "tokenOwner": "SeedPrimitivesSignatureAccountId20",
           },
           "MaxIssuanceSet": {
             "maxIssuance": "u128",
@@ -4041,6 +4301,13 @@ exports[`getApiOptions returns expected options 1`] = `
             "collectionId": "u32",
             "newOwner": "SeedPrimitivesSignatureAccountId20",
           },
+          "PendingIssuanceCreated": {
+            "balances": "Vec<u128>",
+            "collectionId": "u32",
+            "issuanceId": "u32",
+            "serialNumbers": "Vec<u32>",
+            "tokenOwner": "SeedPrimitivesSignatureAccountId20",
+          },
           "PublicMintToggle": {
             "enabled": "bool",
             "tokenId": "(u32,u32)",
@@ -4048,6 +4315,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "RoyaltiesScheduleSet": {
             "collectionId": "u32",
             "royaltiesSchedule": "SeedPrimitivesNftRoyaltiesSchedule",
+          },
+          "TokenBurnAuthoritySet": {
+            "burnAuthority": "SeedPalletCommonUtilsTokenBurnAuthority",
+            "tokenId": "(u32,u32)",
           },
           "TokenCreate": {
             "initialIssuance": "u128",
@@ -4059,6 +4330,10 @@ exports[`getApiOptions returns expected options 1`] = `
           "TokenNameSet": {
             "tokenId": "(u32,u32)",
             "tokenName": "Bytes",
+          },
+          "TokenTransferableFlagSet": {
+            "tokenId": "(u32,u32)",
+            "transferable": "bool",
           },
           "Transfer": {
             "balances": "Vec<u128>",
@@ -4080,6 +4355,14 @@ exports[`getApiOptions returns expected options 1`] = `
         "nextSerialNumber": "u32",
         "originChain": "SeedPrimitivesNftOriginChain",
         "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
+      },
+      "PalletSftSftCollectionPendingIssuances": {
+        "nextIssuanceId": "u32",
+        "pendingIssuances": "Vec<(SeedPrimitivesSignatureAccountId20,Vec<PalletSftSftPendingIssuance>)>",
+      },
+      "PalletSftSftPendingIssuance": {
+        "issuanceId": "u32",
+        "serialNumbers": "Vec<(u32,u128)>",
       },
       "PalletSftSftTokenBalance": {
         "freeBalance": "u128",
@@ -4647,12 +4930,19 @@ exports[`getApiOptions returns expected options 1`] = `
             "id": "u32",
           },
           "redeem_tokens_from_vault": {
-            "id": "u32",
             "vortexTokenAmount": "u128",
+          },
+          "register_reward_points": {
+            "id": "u32",
+            "rewardPoints": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
           },
           "register_rewards": {
             "id": "u32",
             "rewards": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
+          },
+          "register_work_points": {
+            "id": "u32",
+            "workPoints": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
           },
           "set_admin": {
             "_alias": {
@@ -4664,10 +4954,29 @@ exports[`getApiOptions returns expected options 1`] = `
             "assetPrices": "Vec<(u32,u128)>",
             "id": "u32",
           },
-          "set_vtx_dist_eras": {
-            "endEra": "u32",
+          "set_consider_current_balance": {
+            "value": "bool",
+          },
+          "set_disable_redeem": {
+            "value": "bool",
+          },
+          "set_enable_manual_reward_input": {
+            "value": "bool",
+          },
+          "set_fee_pot_asset_balances": {
+            "assetsBalances": "Vec<(u32,u128)>",
             "id": "u32",
-            "startEra": "u32",
+          },
+          "set_vtx_total_supply": {
+            "id": "u32",
+            "supply": "u128",
+          },
+          "set_vtx_vault_asset_balances": {
+            "assetsBalances": "Vec<(u32,u128)>",
+            "id": "u32",
+          },
+          "set_vtx_vault_redeem_asset_list": {
+            "assetsList": "Vec<u32>",
           },
           "start_vtx_dist": {
             "id": "u32",
@@ -4683,7 +4992,6 @@ exports[`getApiOptions returns expected options 1`] = `
           "VtxDistIdNotAvailable",
           "VtxDistAlreadyEnabled",
           "VtxDistDisabled",
-          "InvalidEndBlock",
           "NoVtxAssetMinted",
           "InvalidAmount",
           "VtxDistIdInUse",
@@ -4694,6 +5002,13 @@ exports[`getApiOptions returns expected options 1`] = `
           "CannotTrigger",
           "CannotRedeem",
           "NotTriggered",
+          "ExceededMaxRewards",
+          "VortexPriceIsZero",
+          "RootPriceIsZero",
+          "VtxRedeemDisabled",
+          "ManualRewardInputDisabled",
+          "VtxRewardPayoutFailed",
+          "RewardPointsNotRegistered",
         ],
       },
       "PalletVortexDistributionEvent": {
@@ -4701,6 +5016,9 @@ exports[`getApiOptions returns expected options 1`] = `
           "AdminAccountChanged": {
             "newKey": "SeedPrimitivesSignatureAccountId20",
             "oldKey": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "PivotStringTooLong": {
+            "id": "u32",
           },
           "RewardRegistered": {
             "id": "u32",
@@ -4710,13 +5028,29 @@ exports[`getApiOptions returns expected options 1`] = `
             "assetPrices": "Vec<(u32,u128)>",
             "id": "u32",
           },
-          "SetVtxDistEras": {
-            "endEra": "u32",
-            "id": "u32",
-            "startEra": "u32",
+          "SetConsiderCurrentBalance": {
+            "value": "bool",
           },
-          "TriggerVtxDistribution": {
+          "SetDisableRedeem": {
+            "value": "bool",
+          },
+          "SetEnableManualRewardInput": {
+            "value": "bool",
+          },
+          "SetFeePotAssetBalances": {
+            "assetsBalances": "Vec<(u32,u128)>",
             "id": "u32",
+          },
+          "SetVtxTotalSupply": {
+            "id": "u32",
+            "totalSupply": "u128",
+          },
+          "SetVtxVaultAssetBalances": {
+            "assetsBalances": "Vec<(u32,u128)>",
+            "id": "u32",
+          },
+          "SetVtxVaultRedeemAssetList": {
+            "assetList": "Vec<u32>",
           },
           "VtxDistCreated": {
             "id": "u32",
@@ -4732,8 +5066,31 @@ exports[`getApiOptions returns expected options 1`] = `
             "id": "u32",
             "who": "SeedPrimitivesSignatureAccountId20",
           },
+          "VtxDistPayFailed": {
+            "amount": "u128",
+            "id": "u32",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
           "VtxDistStarted": {
             "id": "u32",
+          },
+          "VtxDistributionTriggered": {
+            "id": "u32",
+          },
+          "VtxDistributionTriggering": {
+            "id": "u32",
+          },
+          "VtxRedeemed": {
+            "amount": "u128",
+            "who": "SeedPrimitivesSignatureAccountId20",
+          },
+          "VtxRewardPointRegistered": {
+            "id": "u32",
+            "rewardPoints": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
+          },
+          "VtxWorkPointRegistered": {
+            "id": "u32",
+            "workPoints": "Vec<(SeedPrimitivesSignatureAccountId20,u128)>",
           },
         },
       },
@@ -4741,6 +5098,7 @@ exports[`getApiOptions returns expected options 1`] = `
         "_enum": [
           "Disabled",
           "Enabled",
+          "Triggering",
           "Triggered",
           "Paying",
           "Done",
@@ -5130,6 +5488,18 @@ exports[`getApiOptions returns expected options 1`] = `
       "SeedPalletCommonUtilsPublicMintInformation": {
         "enabled": "bool",
         "pricingDetails": "Option<(u32,u128)>",
+      },
+      "SeedPalletCommonUtilsTokenBurnAuthority": {
+        "_enum": [
+          "CollectionOwner",
+          "TokenOwner",
+          "Both",
+          "Neither",
+        ],
+      },
+      "SeedPalletCommonUtilsTokenUtilityFlags": {
+        "burnAuthority": "Option<SeedPalletCommonUtilsTokenBurnAuthority>",
+        "transferable": "bool",
       },
       "SeedPrimitivesEthyCryptoAppCryptoPublic": "SpCoreEcdsaPublic",
       "SeedPrimitivesEthyCryptoAppCryptoSignature": "SpCoreEcdsaSignature",

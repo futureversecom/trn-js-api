@@ -55,6 +55,7 @@ import type {
 	PalletXrplXrplPublicKey,
 	SeedPalletCommonEventRouterError,
 	SeedPalletCommonUtilsCollectionUtilityFlags,
+	SeedPalletCommonUtilsTokenBurnAuthority,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesNftCrossChainCompatibility,
 	SeedPrimitivesNftOriginChain,
@@ -1457,6 +1458,125 @@ declare module "@polkadot/api-base/types/events" {
 			 **/
 			[key: string]: AugmentedEvent<ApiType>;
 		};
+		liquidityPools: {
+			/**
+			 * Pool closed, no more users can join.
+			 **/
+			PoolClosed: AugmentedEvent<
+				ApiType,
+				[
+					poolId: u32,
+					rewardAssetAmount: u128,
+					stakedAssetAmount: u128,
+					receiver: SeedPrimitivesSignatureAccountId20,
+				],
+				{
+					poolId: u32;
+					rewardAssetAmount: u128;
+					stakedAssetAmount: u128;
+					receiver: SeedPrimitivesSignatureAccountId20;
+				}
+			>;
+			/**
+			 * Pool rollover is done and ready for users to claim rewards.
+			 **/
+			PoolMatured: AugmentedEvent<ApiType, [poolId: u32], { poolId: u32 }>;
+			/**
+			 * Reward pool created, user could join pool
+			 **/
+			PoolOpen: AugmentedEvent<
+				ApiType,
+				[
+					poolId: u32,
+					rewardAssetId: u32,
+					stakedAssetId: u32,
+					interestRate: u32,
+					maxTokens: u128,
+					lockStartBlock: u32,
+					lockEndBlock: u32,
+				],
+				{
+					poolId: u32;
+					rewardAssetId: u32;
+					stakedAssetId: u32;
+					interestRate: u32;
+					maxTokens: u128;
+					lockStartBlock: u32;
+					lockEndBlock: u32;
+				}
+			>;
+			/**
+			 * Pool starts to rollover users that want to continue to next pool.
+			 **/
+			PoolRenewing: AugmentedEvent<ApiType, [poolId: u32], { poolId: u32 }>;
+			/**
+			 * Pool starts to lock.
+			 **/
+			PoolStarted: AugmentedEvent<ApiType, [poolId: u32], { poolId: u32 }>;
+			/**
+			 * Rewards claimed.
+			 **/
+			RewardsClaimed: AugmentedEvent<
+				ApiType,
+				[accountId: SeedPrimitivesSignatureAccountId20, poolId: u32, amount: u128],
+				{ accountId: SeedPrimitivesSignatureAccountId20; poolId: u32; amount: u128 }
+			>;
+			/**
+			 * Set pool successor, when predecessor pool is done, users will be rolled over to
+			 * successor pool.
+			 **/
+			SetSuccession: AugmentedEvent<
+				ApiType,
+				[predecessorPoolId: u32, successorPoolId: u32],
+				{ predecessorPoolId: u32; successorPoolId: u32 }
+			>;
+			/**
+			 * User exited pool.
+			 **/
+			UserExited: AugmentedEvent<
+				ApiType,
+				[accountId: SeedPrimitivesSignatureAccountId20, poolId: u32, amount: u128],
+				{ accountId: SeedPrimitivesSignatureAccountId20; poolId: u32; amount: u128 }
+			>;
+			/**
+			 * User info updated, currently only rollover preference is updated.
+			 **/
+			UserInfoUpdated: AugmentedEvent<
+				ApiType,
+				[poolId: u32, accountId: SeedPrimitivesSignatureAccountId20, shouldRollover: bool],
+				{ poolId: u32; accountId: SeedPrimitivesSignatureAccountId20; shouldRollover: bool }
+			>;
+			/**
+			 * User joined pool.
+			 **/
+			UserJoined: AugmentedEvent<
+				ApiType,
+				[accountId: SeedPrimitivesSignatureAccountId20, poolId: u32, amount: u128],
+				{ accountId: SeedPrimitivesSignatureAccountId20; poolId: u32; amount: u128 }
+			>;
+			/**
+			 * User rolled over to its successor pool.
+			 **/
+			UserRolledOver: AugmentedEvent<
+				ApiType,
+				[
+					accountId: SeedPrimitivesSignatureAccountId20,
+					poolId: u32,
+					rolledToPoolId: u32,
+					amount: u128,
+				],
+				{
+					accountId: SeedPrimitivesSignatureAccountId20;
+					poolId: u32;
+					rolledToPoolId: u32;
+					amount: u128;
+				}
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
 		maintenanceMode: {
 			/**
 			 * An account was blocked
@@ -2023,6 +2143,24 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * Soulbound tokens were successfully issued
+			 **/
+			Issued: AugmentedEvent<
+				ApiType,
+				[
+					tokenOwner: SeedPrimitivesSignatureAccountId20,
+					start: u32,
+					end: u32,
+					burnAuthority: SeedPalletCommonUtilsTokenBurnAuthority,
+				],
+				{
+					tokenOwner: SeedPrimitivesSignatureAccountId20;
+					start: u32;
+					end: u32;
+					burnAuthority: SeedPalletCommonUtilsTokenBurnAuthority;
+				}
+			>;
+			/**
 			 * Max issuance was set
 			 **/
 			MaxIssuanceSet: AugmentedEvent<
@@ -2083,6 +2221,26 @@ declare module "@polkadot/api-base/types/events" {
 				{ collectionId: u32; newOwner: SeedPrimitivesSignatureAccountId20 }
 			>;
 			/**
+			 * A pending issuance for a soulbound token has been created
+			 **/
+			PendingIssuanceCreated: AugmentedEvent<
+				ApiType,
+				[
+					collectionId: u32,
+					issuanceId: u32,
+					tokenOwner: SeedPrimitivesSignatureAccountId20,
+					quantity: u32,
+					burnAuthority: SeedPalletCommonUtilsTokenBurnAuthority,
+				],
+				{
+					collectionId: u32;
+					issuanceId: u32;
+					tokenOwner: SeedPrimitivesSignatureAccountId20;
+					quantity: u32;
+					burnAuthority: SeedPalletCommonUtilsTokenBurnAuthority;
+				}
+			>;
+			/**
 			 * Public minting was enabled/disabled for a collection
 			 **/
 			PublicMintToggle: AugmentedEvent<
@@ -2097,6 +2255,14 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[collectionId: u32, royaltiesSchedule: SeedPrimitivesNftRoyaltiesSchedule],
 				{ collectionId: u32; royaltiesSchedule: SeedPrimitivesNftRoyaltiesSchedule }
+			>;
+			/**
+			 * Token transferable flag was set
+			 **/
+			TokenTransferableFlagSet: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>, transferable: bool],
+				{ tokenId: ITuple<[u32, u32]>; transferable: bool }
 			>;
 			/**
 			 * A token was transferred
@@ -2536,6 +2702,22 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * Soulbound tokens were successfully issued
+			 **/
+			Issued: AugmentedEvent<
+				ApiType,
+				[
+					tokenOwner: SeedPrimitivesSignatureAccountId20,
+					serialNumbers: Vec<u32>,
+					balances: Vec<u128>,
+				],
+				{
+					tokenOwner: SeedPrimitivesSignatureAccountId20;
+					serialNumbers: Vec<u32>;
+					balances: Vec<u128>;
+				}
+			>;
+			/**
 			 * Max issuance was set
 			 **/
 			MaxIssuanceSet: AugmentedEvent<
@@ -2606,6 +2788,26 @@ declare module "@polkadot/api-base/types/events" {
 				{ collectionId: u32; newOwner: SeedPrimitivesSignatureAccountId20 }
 			>;
 			/**
+			 * A pending issuance for a soulbound token has been created
+			 **/
+			PendingIssuanceCreated: AugmentedEvent<
+				ApiType,
+				[
+					collectionId: u32,
+					issuanceId: u32,
+					serialNumbers: Vec<u32>,
+					balances: Vec<u128>,
+					tokenOwner: SeedPrimitivesSignatureAccountId20,
+				],
+				{
+					collectionId: u32;
+					issuanceId: u32;
+					serialNumbers: Vec<u32>;
+					balances: Vec<u128>;
+					tokenOwner: SeedPrimitivesSignatureAccountId20;
+				}
+			>;
+			/**
 			 * Public minting was enabled/disabled for a collection
 			 **/
 			PublicMintToggle: AugmentedEvent<
@@ -2620,6 +2822,11 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[collectionId: u32, royaltiesSchedule: SeedPrimitivesNftRoyaltiesSchedule],
 				{ collectionId: u32; royaltiesSchedule: SeedPrimitivesNftRoyaltiesSchedule }
+			>;
+			TokenBurnAuthoritySet: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>, burnAuthority: SeedPalletCommonUtilsTokenBurnAuthority],
+				{ tokenId: ITuple<[u32, u32]>; burnAuthority: SeedPalletCommonUtilsTokenBurnAuthority }
 			>;
 			/**
 			 * A new token was created within a collection
@@ -2648,6 +2855,14 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[tokenId: ITuple<[u32, u32]>, tokenName: Bytes],
 				{ tokenId: ITuple<[u32, u32]>; tokenName: Bytes }
+			>;
+			/**
+			 * Token transferable flag was set
+			 **/
+			TokenTransferableFlagSet: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>, transferable: bool],
+				{ tokenId: ITuple<[u32, u32]>; transferable: bool }
 			>;
 			/**
 			 * A token was transferred
@@ -3040,6 +3255,10 @@ declare module "@polkadot/api-base/types/events" {
 				}
 			>;
 			/**
+			 * Pivot key string is too long and exceeds MaxStringLength
+			 **/
+			PivotStringTooLong: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			/**
 			 * Rewards registered
 			 **/
 			RewardRegistered: AugmentedEvent<
@@ -3056,17 +3275,49 @@ declare module "@polkadot/api-base/types/events" {
 				{ id: u32; assetPrices: Vec<ITuple<[u32, u128]>> }
 			>;
 			/**
-			 * Set distribution eras
+			 * Set ConsiderCurrentBalance
 			 **/
-			SetVtxDistEras: AugmentedEvent<
+			SetConsiderCurrentBalance: AugmentedEvent<ApiType, [value: bool], { value: bool }>;
+			/**
+			 * Set DisableRedeem
+			 **/
+			SetDisableRedeem: AugmentedEvent<ApiType, [value: bool], { value: bool }>;
+			/**
+			 * Set EnableManualRewardInput
+			 **/
+			SetEnableManualRewardInput: AugmentedEvent<ApiType, [value: bool], { value: bool }>;
+			/**
+			 * Set Fee pot asset balances
+			 **/
+			SetFeePotAssetBalances: AugmentedEvent<
 				ApiType,
-				[id: u32, startEra: u32, endEra: u32],
-				{ id: u32; startEra: u32; endEra: u32 }
+				[id: u32, assetsBalances: Vec<ITuple<[u32, u128]>>],
+				{ id: u32; assetsBalances: Vec<ITuple<[u32, u128]>> }
 			>;
 			/**
-			 * Trigger distribution calculation
+			 * Set Vtx total supply
 			 **/
-			TriggerVtxDistribution: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			SetVtxTotalSupply: AugmentedEvent<
+				ApiType,
+				[id: u32, totalSupply: u128],
+				{ id: u32; totalSupply: u128 }
+			>;
+			/**
+			 * Set Vtx vault asset balances
+			 **/
+			SetVtxVaultAssetBalances: AugmentedEvent<
+				ApiType,
+				[id: u32, assetsBalances: Vec<ITuple<[u32, u128]>>],
+				{ id: u32; assetsBalances: Vec<ITuple<[u32, u128]>> }
+			>;
+			/**
+			 * Set VtxVaultRedeemAssetList
+			 **/
+			SetVtxVaultRedeemAssetList: AugmentedEvent<
+				ApiType,
+				[assetList: Vec<u32>],
+				{ assetList: Vec<u32> }
+			>;
 			/**
 			 * Distribution created
 			 **/
@@ -3088,9 +3339,49 @@ declare module "@polkadot/api-base/types/events" {
 				{ id: u32; who: SeedPrimitivesSignatureAccountId20; amount: u128 }
 			>;
 			/**
+			 * Distribution payment failed
+			 **/
+			VtxDistPayFailed: AugmentedEvent<
+				ApiType,
+				[id: u32, who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ id: u32; who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Vtx distribution triggered
+			 **/
+			VtxDistributionTriggered: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			/**
+			 * Vtx distribution triggering
+			 **/
+			VtxDistributionTriggering: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			/**
 			 * Distribution started
 			 **/
 			VtxDistStarted: AugmentedEvent<ApiType, [id: u32], { id: u32 }>;
+			/**
+			 * Vortex redeemed
+			 **/
+			VtxRedeemed: AugmentedEvent<
+				ApiType,
+				[who: SeedPrimitivesSignatureAccountId20, amount: u128],
+				{ who: SeedPrimitivesSignatureAccountId20; amount: u128 }
+			>;
+			/**
+			 * Vtx staker reward points registered
+			 **/
+			VtxRewardPointRegistered: AugmentedEvent<
+				ApiType,
+				[id: u32, rewardPoints: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>],
+				{ id: u32; rewardPoints: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>> }
+			>;
+			/**
+			 * Vtx work points registered
+			 **/
+			VtxWorkPointRegistered: AugmentedEvent<
+				ApiType,
+				[id: u32, workPoints: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>],
+				{ id: u32; workPoints: Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>> }
+			>;
 			/**
 			 * Generic event
 			 **/
