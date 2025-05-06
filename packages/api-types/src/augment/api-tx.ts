@@ -943,9 +943,9 @@ declare module "@polkadot/api-base/types/submittable" {
 					supports:
 						| Vec<ITuple<[SeedPrimitivesSignatureAccountId20, SpNposElectionsSupport]>>
 						| [
-							SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
-							SpNposElectionsSupport | { total?: any; voters?: any } | string | Uint8Array,
-						][]
+								SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+								SpNposElectionsSupport | { total?: any; voters?: any } | string | Uint8Array,
+						  ][]
 				) => SubmittableExtrinsic<ApiType>,
 				[Vec<ITuple<[SeedPrimitivesSignatureAccountId20, SpNposElectionsSupport]>>]
 			>;
@@ -1060,10 +1060,10 @@ declare module "@polkadot/api-base/types/submittable" {
 					details:
 						| Vec<ITuple<[H160, Bytes, u8]>>
 						| [
-							H160 | string | Uint8Array,
-							Bytes | string | Uint8Array,
-							u8 | AnyNumber | Uint8Array,
-						][]
+								H160 | string | Uint8Array,
+								Bytes | string | Uint8Array,
+								u8 | AnyNumber | Uint8Array,
+						  ][]
 				) => SubmittableExtrinsic<ApiType>,
 				[Vec<ITuple<[H160, Bytes, u8]>>]
 			>;
@@ -1187,9 +1187,9 @@ declare module "@polkadot/api-base/types/submittable" {
 					newSigners:
 						| Vec<ITuple<[SeedPrimitivesEthyCryptoAppCryptoPublic, bool]>>
 						| [
-							SeedPrimitivesEthyCryptoAppCryptoPublic | string | Uint8Array,
-							bool | boolean | Uint8Array,
-						][]
+								SeedPrimitivesEthyCryptoAppCryptoPublic | string | Uint8Array,
+								bool | boolean | Uint8Array,
+						  ][]
 				) => SubmittableExtrinsic<ApiType>,
 				[Vec<ITuple<[SeedPrimitivesEthyCryptoAppCryptoPublic, bool]>>]
 			>;
@@ -3443,11 +3443,11 @@ declare module "@polkadot/api-base/types/submittable" {
 					resolvers:
 						| Vec<PalletSyloDataVerificationResolverId>
 						| (
-							| PalletSyloDataVerificationResolverId
-							| { method?: any; identifier?: any }
-							| string
-							| Uint8Array
-						)[],
+								| PalletSyloDataVerificationResolverId
+								| { method?: any; identifier?: any }
+								| string
+								| Uint8Array
+						  )[],
 					dataType: Bytes | string | Uint8Array,
 					tags: Vec<Bytes> | (Bytes | string | Uint8Array)[],
 					checksum: H256 | string | Uint8Array
@@ -3514,11 +3514,11 @@ declare module "@polkadot/api-base/types/submittable" {
 						| Uint8Array
 						| Vec<PalletSyloDataVerificationResolverId>
 						| (
-							| PalletSyloDataVerificationResolverId
-							| { method?: any; identifier?: any }
-							| string
-							| Uint8Array
-						)[],
+								| PalletSyloDataVerificationResolverId
+								| { method?: any; identifier?: any }
+								| string
+								| Uint8Array
+						  )[],
 					dataType: Option<Bytes> | null | Uint8Array | Bytes | string,
 					tags:
 						| Option<Vec<Bytes>>
@@ -3803,9 +3803,9 @@ declare module "@polkadot/api-base/types/submittable" {
 					rewardPoints:
 						| Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>
 						| [
-							SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
-							u128 | AnyNumber | Uint8Array,
-						][]
+								SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+								u128 | AnyNumber | Uint8Array,
+						  ][]
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>]
 			>;
@@ -3818,9 +3818,9 @@ declare module "@polkadot/api-base/types/submittable" {
 					rewards:
 						| Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>
 						| [
-							SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
-							u128 | AnyNumber | Uint8Array,
-						][]
+								SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+								u128 | AnyNumber | Uint8Array,
+						  ][]
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>]
 			>;
@@ -3833,9 +3833,9 @@ declare module "@polkadot/api-base/types/submittable" {
 					workPoints:
 						| Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>
 						| [
-							SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
-							u128 | AnyNumber | Uint8Array,
-						][]
+								SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+								u128 | AnyNumber | Uint8Array,
+						  ][]
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, Vec<ITuple<[SeedPrimitivesSignatureAccountId20, u128]>>]
 			>;
@@ -4003,14 +4003,14 @@ declare module "@polkadot/api-base/types/submittable" {
 					mappings:
 						| Vec<ITuple<[u32, PalletXls20Xls20Collection]>>
 						| [
-							u32 | AnyNumber | Uint8Array,
-							(
-								| PalletXls20Xls20Collection
-								| { issuerAddress?: any; taxon?: any }
-								| string
-								| Uint8Array
-							),
-						][]
+								u32 | AnyNumber | Uint8Array,
+								(
+									| PalletXls20Xls20Collection
+									| { issuerAddress?: any; taxon?: any }
+									| string
+									| Uint8Array
+								),
+						  ][]
 				) => SubmittableExtrinsic<ApiType>,
 				[Vec<ITuple<[u32, PalletXls20Xls20Collection]>>]
 			>;
@@ -4095,30 +4095,30 @@ declare module "@polkadot/api-base/types/submittable" {
 					highestPrunedLedgerIndex: Option<u32> | null | Uint8Array | u32 | AnyNumber,
 					settledTxData:
 						| Option<
-							Vec<
-								ITuple<
-									[H512, u32, PalletXrplBridgeXrpTransaction, SeedPrimitivesSignatureAccountId20]
+								Vec<
+									ITuple<
+										[H512, u32, PalletXrplBridgeXrpTransaction, SeedPrimitivesSignatureAccountId20]
+									>
 								>
-							>
-						>
+						  >
 						| null
 						| Uint8Array
 						| Vec<
-							ITuple<
-								[H512, u32, PalletXrplBridgeXrpTransaction, SeedPrimitivesSignatureAccountId20]
-							>
-						>
+								ITuple<
+									[H512, u32, PalletXrplBridgeXrpTransaction, SeedPrimitivesSignatureAccountId20]
+								>
+						  >
 						| [
-							H512 | string | Uint8Array,
-							u32 | AnyNumber | Uint8Array,
-							(
-								| PalletXrplBridgeXrpTransaction
-								| { transactionHash?: any; transaction?: any; timestamp?: any }
-								| string
-								| Uint8Array
-							),
-							SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
-						][]
+								H512 | string | Uint8Array,
+								u32 | AnyNumber | Uint8Array,
+								(
+									| PalletXrplBridgeXrpTransaction
+									| { transactionHash?: any; transaction?: any; timestamp?: any }
+									| string
+									| Uint8Array
+								),
+								SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+						  ][]
 				) => SubmittableExtrinsic<ApiType>,
 				[
 					u32,
