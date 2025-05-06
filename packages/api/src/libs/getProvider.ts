@@ -16,7 +16,7 @@ export type NetworkName = "root" | "porcini" | "sprout-1" | "sprout-2";
 export function getPublicProvider(
 	network: NetworkName,
 	useWsProvider = true,
-	useArchiveNode = true
+	useArchiveNode = false
 ): ReturnType<typeof getProvider> {
 	return getProvider(getPublicProviderUrl(network, useWsProvider, useArchiveNode));
 }
@@ -24,7 +24,7 @@ export function getPublicProvider(
 export function getPublicProviderUrl(
 	network: NetworkName,
 	useWsProvider = true,
-	useArchiveNode = true
+	useArchiveNode = false
 ): WsProviderUrl | HttpProviderUrl {
 	if (network === "root") {
 		return useWsProvider
