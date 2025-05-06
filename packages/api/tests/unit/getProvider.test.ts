@@ -60,7 +60,7 @@ describe("getPublicProvider", () => {
 	test("creates an instance of HttpProvider for `root` network", async () => {
 		getPublicProvider("root", false);
 		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
-		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://root.rootnet.live");
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://root.rootnet.live/");
 	});
 
 	test("creates an instance of WsProvider for (archive node) `root` network", async () => {
@@ -84,7 +84,7 @@ describe("getPublicProvider", () => {
 	test("creates an instance of HttpProvider for `porcini` network", async () => {
 		getPublicProvider("porcini", false);
 		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
-		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://porcini.rootnet.app");
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://porcini.rootnet.app/");
 	});
 
 	test("creates an instance of WsProvider for `sprout-1` network", async () => {
@@ -96,7 +96,7 @@ describe("getPublicProvider", () => {
 	test("creates an instance of HttpProvider for `sprout-1` network", async () => {
 		getPublicProvider("sprout-1", false);
 		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
-		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://porcini.devnet.rootnet.app");
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://porcini.devnet.rootnet.app/");
 	});
 
 	test("creates an instance of WsProvider for `sprout-2` network", async () => {
@@ -108,7 +108,7 @@ describe("getPublicProvider", () => {
 	test("creates an instance of HttpProvider for `sprout-2` network", async () => {
 		getPublicProvider("sprout-2", false);
 		expect(HttpProviderMock).toHaveBeenCalledTimes(1);
-		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://root.devnet.rootnet.app");
+		expect(HttpProviderMock.mock.calls[0][0]).toBe("https://root.devnet.rootnet.app/");
 	});
 
 	test("creates an instance of WsProvider (archive node) for `porcini` network", async () => {
