@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+## 1.0.12
+
+### Patch Changes
+
+- Update metadata for runtime version 65
+
 ## 1.0.11
 
 ### Patch Changes
