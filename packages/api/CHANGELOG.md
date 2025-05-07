@@ -1,5 +1,9 @@
 # @therootnetwork/api
 
+## 1.0.13
+
+- Add SyloDataPermissions RPC for permissions info
+
 ## 1.0.12
 
 ### Patch Changes
