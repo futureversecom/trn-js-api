@@ -829,6 +829,88 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		liquidityPools: {
+			/**
+			 * Invalid block range
+			 **/
+			InvalidBlockRange: AugmentedError<ApiType>;
+			/**
+			 * Exceeds max pool id
+			 **/
+			NoAvailablePoolId: AugmentedError<ApiType>;
+			/**
+			 * Cannot exit pool, no tokens staked
+			 **/
+			NoTokensStaked: AugmentedError<ApiType>;
+			/**
+			 * Not pool creator
+			 **/
+			NotPoolCreator: AugmentedError<ApiType>;
+			/**
+			 * Reward pool is not ready for reward
+			 **/
+			NotReadyForClaimingReward: AugmentedError<ApiType>;
+			/**
+			 * Offchain error not a validator
+			 **/
+			OffchainErrNotValidator: AugmentedError<ApiType>;
+			/**
+			 * Offchain error on submitting transaction
+			 **/
+			OffchainErrSubmitTransaction: AugmentedError<ApiType>;
+			/**
+			 * Offchain error too early
+			 **/
+			OffchainErrTooEarly: AugmentedError<ApiType>;
+			/**
+			 * Offchain error wrong transaction source
+			 **/
+			OffchainErrWrongTransactionSource: AugmentedError<ApiType>;
+			/**
+			 * Pivot string too long
+			 **/
+			PivotStringTooLong: AugmentedError<ApiType>;
+			/**
+			 * Pool already exists
+			 **/
+			PoolAlreadyExists: AugmentedError<ApiType>;
+			/**
+			 * Pool does not exist
+			 **/
+			PoolDoesNotExist: AugmentedError<ApiType>;
+			/**
+			 * Reward pool is not open
+			 **/
+			PoolNotOpen: AugmentedError<ApiType>;
+			/**
+			 * Predecessor pool does not exist
+			 **/
+			PredecessorPoolDoesNotExist: AugmentedError<ApiType>;
+			/**
+			 * Rollover pools should be the same asset
+			 **/
+			RolloverPoolsShouldBeTheSameAsset: AugmentedError<ApiType>;
+			/**
+			 * Staking limit exceeded
+			 **/
+			StakingLimitExceeded: AugmentedError<ApiType>;
+			/**
+			 * Successor pool does not exist
+			 **/
+			SuccessorPoolDoesNotExist: AugmentedError<ApiType>;
+			/**
+			 * Successor pool size should be greater than predecessor
+			 **/
+			SuccessorPoolSizeShouldBeGreaterThanPredecessor: AugmentedError<ApiType>;
+			/**
+			 * Successor pool size should be locked after predecessor
+			 **/
+			SuccessorPoolSizeShouldBeLockedAfterPredecessor: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		maintenanceMode: {
 			/**
 			 * This account is not authorized to execute this transaction
@@ -1089,6 +1171,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			CannotUpdateMetadata: AugmentedError<ApiType>;
 			/**
+			 * Attempted to update the token utility flags for a soulbound token
+			 **/
+			CannotUpdateTokenUtility: AugmentedError<ApiType>;
+			/**
 			 * Total issuance of collection must be zero to add xls20 compatibility
 			 **/
 			CollectionIssuanceNotZero: AugmentedError<ApiType>;
@@ -1100,6 +1186,11 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Initial issuance on XLS-20 compatible collections must be zero
 			 **/
 			InitialIssuanceNotZero: AugmentedError<ApiType>;
+			/**
+			 * Attempted to burn a token from an account that does not adhere to
+			 * the token's burn authority
+			 **/
+			InvalidBurnAuthority: AugmentedError<ApiType>;
 			/**
 			 * Max issuance needs to be greater than 0 and initial_issuance
 			 * Cannot exceed MaxTokensPerCollection
@@ -1113,6 +1204,11 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The caller can not be the new owner
 			 **/
 			InvalidNewOwner: AugmentedError<ApiType>;
+			/**
+			 * Attempted to accept an issuance that does not exist, or is not
+			 * set for the caller
+			 **/
+			InvalidPendingIssuance: AugmentedError<ApiType>;
 			/**
 			 * The max issuance has already been set and can't be changed
 			 **/
@@ -1149,6 +1245,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Origin does not own the NFT
 			 **/
 			NotTokenOwner: AugmentedError<ApiType>;
+			/**
+			 * The number of pending issuances has exceeded the max for a collection
+			 **/
+			PendingIssuanceLimitExceeded: AugmentedError<ApiType>;
 			/**
 			 * This collection has not allowed public minting
 			 **/
@@ -1450,13 +1550,26 @@ declare module "@polkadot/api-base/types/errors" {
 		};
 		sft: {
 			/**
+			 * The burn authority for has already been and can't be changed
+			 **/
+			BurnAuthorityAlreadySet: AugmentedError<ApiType>;
+			/**
 			 * Burning has been disabled for tokens within this collection
 			 **/
 			BurnUtilityBlocked: AugmentedError<ApiType>;
 			/**
+			 * Attempted to update the token utility flags for a soulbound token
+			 **/
+			CannotUpdateTokenUtility: AugmentedError<ApiType>;
+			/**
 			 * The user does not own enough of this token to perform the operation
 			 **/
 			InsufficientBalance: AugmentedError<ApiType>;
+			/**
+			 * Attempted to burn a token from an account that does not adhere to
+			 * the token's burn authority
+			 **/
+			InvalidBurnAuthority: AugmentedError<ApiType>;
 			/**
 			 * Max issuance needs to be greater than 0 and initial_issuance
 			 * Cannot exceed MaxTokensPerCollection
@@ -1466,6 +1579,11 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Caller can not be the new owner
 			 **/
 			InvalidNewOwner: AugmentedError<ApiType>;
+			/**
+			 * Attempted to accept an issuance that does not exist, or is not
+			 * set for the caller
+			 **/
+			InvalidPendingIssuance: AugmentedError<ApiType>;
 			/**
 			 * The specified quantity must be greater than 0
 			 **/
@@ -1491,6 +1609,11 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			NameInvalid: AugmentedError<ApiType>;
 			/**
+			 * Attempted to issue a soulbound token where the burn authority
+			 * has not been set
+			 **/
+			NoBurnAuthority: AugmentedError<ApiType>;
+			/**
 			 * The collection does not exist
 			 **/
 			NoCollectionFound: AugmentedError<ApiType>;
@@ -1507,6 +1630,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			Overflow: AugmentedError<ApiType>;
 			/**
+			 * The number of pending issuances has exceeded the max for a collection
+			 **/
+			PendingIssuanceLimitExceeded: AugmentedError<ApiType>;
+			/**
 			 * This collection has not allowed public minting
 			 **/
 			PublicMintDisabled: AugmentedError<ApiType>;
@@ -1514,6 +1641,11 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Total royalties would exceed 100% of sale or an empty vec is supplied
 			 **/
 			RoyaltiesInvalid: AugmentedError<ApiType>;
+			/**
+			 * Attempted to set burn authority for a token that has already
+			 * been issued
+			 **/
+			TokenAlreadyIssued: AugmentedError<ApiType>;
 			/**
 			 * The number of tokens have exceeded the max tokens allowed
 			 **/
@@ -1769,13 +1901,17 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			CannotTrigger: AugmentedError<ApiType>;
 			/**
+			 * out of max reward vecotor bound
+			 **/
+			ExceededMaxRewards: AugmentedError<ApiType>;
+			/**
 			 * Invalid amount
 			 **/
 			InvalidAmount: AugmentedError<ApiType>;
 			/**
-			 * Invalid end block
+			 * Manual reward input is disabled
 			 **/
-			InvalidEndBlock: AugmentedError<ApiType>;
+			ManualRewardInputDisabled: AugmentedError<ApiType>;
 			/**
 			 * Not a validator
 			 **/
@@ -1797,9 +1933,21 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			RequireAdmin: AugmentedError<ApiType>;
 			/**
+			 * Reward points not registered
+			 **/
+			RewardPointsNotRegistered: AugmentedError<ApiType>;
+			/**
+			 * root price is zero
+			 **/
+			RootPriceIsZero: AugmentedError<ApiType>;
+			/**
 			 * Vortex period not set
 			 **/
 			VortexPeriodNotSet: AugmentedError<ApiType>;
+			/**
+			 * vortex price is zero
+			 **/
+			VortexPriceIsZero: AugmentedError<ApiType>;
 			/**
 			 * Vortex distribution already enabled
 			 **/
@@ -1816,6 +1964,14 @@ declare module "@polkadot/api-base/types/errors" {
 			 * No available Dist id
 			 **/
 			VtxDistIdNotAvailable: AugmentedError<ApiType>;
+			/**
+			 * Vtx redeem disabled
+			 **/
+			VtxRedeemDisabled: AugmentedError<ApiType>;
+			/**
+			 * Vtx reward payout failed
+			 **/
+			VtxRewardPayoutFailed: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/

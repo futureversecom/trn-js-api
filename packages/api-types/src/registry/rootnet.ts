@@ -159,6 +159,13 @@ import type {
 	PalletImOnlineHeartbeat,
 	PalletImOnlineSr25519AppSr25519Public,
 	PalletImOnlineSr25519AppSr25519Signature,
+	PalletLiquidityPoolsCall,
+	PalletLiquidityPoolsError,
+	PalletLiquidityPoolsEvent,
+	PalletLiquidityPoolsPoolInfo,
+	PalletLiquidityPoolsPoolRelationship,
+	PalletLiquidityPoolsPoolStatus,
+	PalletLiquidityPoolsUserInfo,
 	PalletMaintenanceModeCall,
 	PalletMaintenanceModeError,
 	PalletMaintenanceModeEvent,
@@ -198,12 +205,14 @@ import type {
 	PalletNfiNfiSubType,
 	PalletNftCall,
 	PalletNftCollectionInformation,
+	PalletNftCollectionPendingIssuances,
 	PalletNftError,
 	PalletNftEvent,
 	PalletNftPegBlockedTokenInfo,
 	PalletNftPegCall,
 	PalletNftPegError,
 	PalletNftPegEvent,
+	PalletNftPendingIssuance,
 	PalletNftTokenOwnership,
 	PalletOffencesEvent,
 	PalletPartnerAttributionCall,
@@ -235,6 +244,8 @@ import type {
 	PalletSftError,
 	PalletSftEvent,
 	PalletSftSftCollectionInformation,
+	PalletSftSftCollectionPendingIssuances,
+	PalletSftSftPendingIssuance,
 	PalletSftSftTokenBalance,
 	PalletSftSftTokenInformation,
 	PalletStakingActiveEraInfo,
@@ -307,6 +318,8 @@ import type {
 	SeedPalletCommonEventRouterError,
 	SeedPalletCommonUtilsCollectionUtilityFlags,
 	SeedPalletCommonUtilsPublicMintInformation,
+	SeedPalletCommonUtilsTokenBurnAuthority,
+	SeedPalletCommonUtilsTokenUtilityFlags,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesEthyCryptoAppCryptoSignature,
 	SeedPrimitivesNftCrossChainCompatibility,
@@ -514,6 +527,13 @@ declare module "@polkadot/types/types/registry" {
 		PalletImOnlineHeartbeat: PalletImOnlineHeartbeat;
 		PalletImOnlineSr25519AppSr25519Public: PalletImOnlineSr25519AppSr25519Public;
 		PalletImOnlineSr25519AppSr25519Signature: PalletImOnlineSr25519AppSr25519Signature;
+		PalletLiquidityPoolsCall: PalletLiquidityPoolsCall;
+		PalletLiquidityPoolsError: PalletLiquidityPoolsError;
+		PalletLiquidityPoolsEvent: PalletLiquidityPoolsEvent;
+		PalletLiquidityPoolsPoolInfo: PalletLiquidityPoolsPoolInfo;
+		PalletLiquidityPoolsPoolRelationship: PalletLiquidityPoolsPoolRelationship;
+		PalletLiquidityPoolsPoolStatus: PalletLiquidityPoolsPoolStatus;
+		PalletLiquidityPoolsUserInfo: PalletLiquidityPoolsUserInfo;
 		PalletMaintenanceModeCall: PalletMaintenanceModeCall;
 		PalletMaintenanceModeError: PalletMaintenanceModeError;
 		PalletMaintenanceModeEvent: PalletMaintenanceModeEvent;
@@ -553,12 +573,14 @@ declare module "@polkadot/types/types/registry" {
 		PalletNfiNfiSubType: PalletNfiNfiSubType;
 		PalletNftCall: PalletNftCall;
 		PalletNftCollectionInformation: PalletNftCollectionInformation;
+		PalletNftCollectionPendingIssuances: PalletNftCollectionPendingIssuances;
 		PalletNftError: PalletNftError;
 		PalletNftEvent: PalletNftEvent;
 		PalletNftPegBlockedTokenInfo: PalletNftPegBlockedTokenInfo;
 		PalletNftPegCall: PalletNftPegCall;
 		PalletNftPegError: PalletNftPegError;
 		PalletNftPegEvent: PalletNftPegEvent;
+		PalletNftPendingIssuance: PalletNftPendingIssuance;
 		PalletNftTokenOwnership: PalletNftTokenOwnership;
 		PalletOffencesEvent: PalletOffencesEvent;
 		PalletPartnerAttributionCall: PalletPartnerAttributionCall;
@@ -590,6 +612,8 @@ declare module "@polkadot/types/types/registry" {
 		PalletSftError: PalletSftError;
 		PalletSftEvent: PalletSftEvent;
 		PalletSftSftCollectionInformation: PalletSftSftCollectionInformation;
+		PalletSftSftCollectionPendingIssuances: PalletSftSftCollectionPendingIssuances;
+		PalletSftSftPendingIssuance: PalletSftSftPendingIssuance;
 		PalletSftSftTokenBalance: PalletSftSftTokenBalance;
 		PalletSftSftTokenInformation: PalletSftSftTokenInformation;
 		PalletStakingActiveEraInfo: PalletStakingActiveEraInfo;
@@ -662,6 +686,8 @@ declare module "@polkadot/types/types/registry" {
 		SeedPalletCommonEventRouterError: SeedPalletCommonEventRouterError;
 		SeedPalletCommonUtilsCollectionUtilityFlags: SeedPalletCommonUtilsCollectionUtilityFlags;
 		SeedPalletCommonUtilsPublicMintInformation: SeedPalletCommonUtilsPublicMintInformation;
+		SeedPalletCommonUtilsTokenBurnAuthority: SeedPalletCommonUtilsTokenBurnAuthority;
+		SeedPalletCommonUtilsTokenUtilityFlags: SeedPalletCommonUtilsTokenUtilityFlags;
 		SeedPrimitivesEthyCryptoAppCryptoPublic: SeedPrimitivesEthyCryptoAppCryptoPublic;
 		SeedPrimitivesEthyCryptoAppCryptoSignature: SeedPrimitivesEthyCryptoAppCryptoSignature;
 		SeedPrimitivesNftCrossChainCompatibility: SeedPrimitivesNftCrossChainCompatibility;

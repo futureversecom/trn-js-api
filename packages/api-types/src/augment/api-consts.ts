@@ -432,6 +432,30 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		liquidityPools: {
+			/**
+			 * Interest rate for 100% base point. Use the base point to calculate actual interest rate.
+			 * e.g. when 10000 is base points, and interest rate is 1000 when creating pool, then the
+			 * actual interest rate is 10% (1000 / 10000).
+			 **/
+			interestRateBasePoint: u32 & AugmentedConst<ApiType>;
+			/**
+			 * This pallet's Id, used for deriving a sovereign account ID
+			 **/
+			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
+			/**
+			 * Max number of users to rollover per block
+			 **/
+			rolloverBatchSize: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Unsigned transaction interval
+			 **/
+			unsignedInterval: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		maintenanceMode: {
 			/**
 			 * The maximum length of a pallet or call name, stored on-chain
@@ -869,7 +893,7 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			rootPotId: FrameSupportPalletId & AugmentedConst<ApiType>;
 			/**
-			 * Vortex fee pot id
+			 * Tx fee pot id
 			 **/
 			txFeePotId: FrameSupportPalletId & AugmentedConst<ApiType>;
 			/**
@@ -884,6 +908,10 @@ declare module "@polkadot/api-base/types/consts" {
 			 * Vortex distribution pot id
 			 **/
 			vtxDistPotId: FrameSupportPalletId & AugmentedConst<ApiType>;
+			/**
+			 * Vortex vault pot id that holds fresh minted vortex
+			 **/
+			vtxHeldPotId: FrameSupportPalletId & AugmentedConst<ApiType>;
 			/**
 			 * Generic const
 			 **/

@@ -61,15 +61,23 @@ import type {
 	PalletGrandpaStoredPendingChange,
 	PalletGrandpaStoredState,
 	PalletImOnlineSr25519AppSr25519Public,
+	PalletLiquidityPoolsPoolInfo,
+	PalletLiquidityPoolsPoolRelationship,
+	PalletLiquidityPoolsUserInfo,
 	PalletMarketplaceListing,
 	PalletMarketplaceMarketplace,
 	PalletMarketplaceOfferType,
+	PalletMigrationMigrationStatus,
 	PalletMultisigMultisig,
 	PalletNfiFeeDetails,
+	PalletNfiGenericCollectionId,
+	PalletNfiMultiChainTokenId,
 	PalletNfiNfiDataType,
 	PalletNfiNfiSubType,
 	PalletNftCollectionInformation,
+	PalletNftCollectionPendingIssuances,
 	PalletNftPegBlockedTokenInfo,
+	PalletPartnerAttributionPartnerInformation,
 	PalletPreimageRequestStatus,
 	PalletProxyAnnouncement,
 	PalletProxyProxyDefinition,
@@ -77,6 +85,7 @@ import type {
 	PalletRecoveryRecoveryConfig,
 	PalletSchedulerScheduled,
 	PalletSftSftCollectionInformation,
+	PalletSftSftCollectionPendingIssuances,
 	PalletSftSftTokenInformation,
 	PalletStakingActiveEraInfo,
 	PalletStakingEraRewardPoints,
@@ -89,14 +98,19 @@ import type {
 	PalletStakingStakingLedger,
 	PalletStakingUnappliedSlash,
 	PalletStakingValidatorPrefs,
+	PalletSyloDataVerificationResolver,
+	PalletSyloDataVerificationValidationRecord,
 	PalletTransactionPaymentReleases,
 	PalletVortexDistributionVtxDistStatus,
+	PalletXls20Xls20Collection,
 	PalletXrplBridgeDelayedWithdrawal,
 	PalletXrplBridgeXrpTransaction,
 	PalletXrplBridgeXrplCurrency,
+	PalletXrplBridgeXrplDoorAccount,
 	PalletXrplBridgeXrplTicketSequenceParams,
 	SeedPalletCommonUtilsCollectionUtilityFlags,
 	SeedPalletCommonUtilsPublicMintInformation,
+	SeedPalletCommonUtilsTokenUtilityFlags,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
 	SeedPrimitivesNftTokenLockReason,
 	SeedPrimitivesSignatureAccountId20,
@@ -109,14 +123,6 @@ import type {
 	SpNposElectionsElectionScore,
 	SpRuntimeDigest,
 	SpStakingOffenceOffenceDetails,
-	PalletMigrationMigrationStatus,
-	PalletNfiMultiChainTokenId,
-	PalletNfiGenericCollectionId,
-	PalletPartnerAttributionPartnerInformation,
-	PalletSyloDataVerificationResolver,
-	PalletSyloDataVerificationValidationRecord,
-	PalletXls20Xls20Collection,
-	PalletXrplBridgeXrplDoorAccount,
 } from "@polkadot/types/lookup";
 import type { Observable } from "@polkadot/types/types";
 import type {
@@ -1330,6 +1336,45 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
+		liquidityPools: {
+			nextPoolId: AugmentedQuery<ApiType, () => Observable<u32>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			nextRolloverUnsignedAt: AugmentedQuery<ApiType, () => Observable<u32>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			poolRelationships: AugmentedQuery<
+				ApiType,
+				(
+					arg: u32 | AnyNumber | Uint8Array
+				) => Observable<Option<PalletLiquidityPoolsPoolRelationship>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			pools: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Option<PalletLiquidityPoolsPoolInfo>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			poolUsers: AugmentedQuery<
+				ApiType,
+				(
+					arg1: u32 | AnyNumber | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<Option<PalletLiquidityPoolsUserInfo>>,
+				[u32, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<ApiType, [u32, SeedPrimitivesSignatureAccountId20]>;
+			rolloverPivot: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Bytes>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
 		maintenanceMode: {
 			/**
 			 * Map from account to blocked status
@@ -1622,6 +1667,12 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			nextCollectionId: AugmentedQuery<ApiType, () => Observable<u32>, []> &
 				QueryableStorageEntry<ApiType, []>;
+			pendingIssuances: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<PalletNftCollectionPendingIssuances>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
 			/**
 			 * Map from collection to its public minting information
 			 **/
@@ -1641,6 +1692,17 @@ declare module "@polkadot/api-base/types/storage" {
 				(
 					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
 				) => Observable<Option<SeedPrimitivesNftTokenLockReason>>,
+				[ITuple<[u32, u32]>]
+			> &
+				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
+			/**
+			 * Map from a token_id to transferable and burn authority flags
+			 **/
+			tokenUtilityFlags: AugmentedQuery<
+				ApiType,
+				(
+					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
+				) => Observable<SeedPalletCommonUtilsTokenUtilityFlags>,
 				[ITuple<[u32, u32]>]
 			> &
 				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
@@ -1948,6 +2010,12 @@ declare module "@polkadot/api-base/types/storage" {
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
 		sft: {
+			pendingIssuances: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<PalletSftSftCollectionPendingIssuances>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
 			/**
 			 * Map from collection to its public minting information
 			 **/
@@ -1978,6 +2046,17 @@ declare module "@polkadot/api-base/types/storage" {
 				(
 					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
 				) => Observable<Option<PalletSftSftTokenInformation>>,
+				[ITuple<[u32, u32]>]
+			> &
+				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
+			/**
+			 * Map from a token_id to transferable and burn authority flags
+			 **/
+			tokenUtilityFlags: AugmentedQuery<
+				ApiType,
+				(
+					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
+				) => Observable<SeedPalletCommonUtilsTokenUtilityFlags>,
 				[ITuple<[u32, u32]>]
 			> &
 				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
@@ -2664,6 +2743,30 @@ declare module "@polkadot/api-base/types/storage" {
 			> &
 				QueryableStorageEntry<ApiType, [u32, u32]>;
 			/**
+			 * Stores balance consideration criteria, current or stored
+			 **/
+			considerCurrentBalance: AugmentedQuery<ApiType, () => Observable<bool>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Stores disable redeem
+			 **/
+			disableRedeem: AugmentedQuery<ApiType, () => Observable<bool>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Stores enabling manual reward input
+			 **/
+			enableManualRewardInput: AugmentedQuery<ApiType, () => Observable<bool>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Stores Fee pot asset list for each vortex distribution
+			 **/
+			feePotAssetsList: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Vec<ITuple<[u32, u128]>>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
 			 * Stores next unsigned tx block number
 			 **/
 			nextUnsignedAt: AugmentedQuery<ApiType, () => Observable<u32>, []> &
@@ -2671,19 +2774,46 @@ declare module "@polkadot/api-base/types/storage" {
 			nextVortexId: AugmentedQuery<ApiType, () => Observable<u32>, []> &
 				QueryableStorageEntry<ApiType, []>;
 			/**
-			 * Stores stake and roles reward points for each vortex distribution
+			 * Stores reward points for each account, each vortex distribution
 			 **/
-			stakeRewardsPoints: AugmentedQuery<
+			rewardPoints: AugmentedQuery<
 				ApiType,
 				(
 					arg1: u32 | AnyNumber | Uint8Array,
 					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
-				) => Observable<ITuple<[u128, u32]>>,
+				) => Observable<u128>,
 				[u32, SeedPrimitivesSignatureAccountId20]
 			> &
 				QueryableStorageEntry<ApiType, [u32, SeedPrimitivesSignatureAccountId20]>;
 			/**
-			 * Stores total vortex amount for each distribution
+			 * Stores total bootstrap reward for each distribution, this is in drops multiplied by PRECISION_MULTIPLIER
+			 **/
+			totalBootstrapReward: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<u128>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores total network reward for each distribution, this is in drops multiplied by PRECISION_MULTIPLIER
+			 **/
+			totalNetworkReward: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<u128>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores total Reward points for each cycle when the rewards are registered.
+			 **/
+			totalRewardPoints: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<u128>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores total vortex amount for each distribution, this is in drops multiplied by PRECISION_MULTIPLIER
 			 **/
 			totalVortex: AugmentedQuery<
 				ApiType,
@@ -2692,11 +2822,11 @@ declare module "@polkadot/api-base/types/storage" {
 			> &
 				QueryableStorageEntry<ApiType, [u32]>;
 			/**
-			 * Stores start and end eras of each vortex distribution
+			 * Stores total work points for each cycle when the work points are registered.
 			 **/
-			vtxDistEras: AugmentedQuery<
+			totalWorkPoints: AugmentedQuery<
 				ApiType,
-				(arg: u32 | AnyNumber | Uint8Array) => Observable<ITuple<[u32, u32]>>,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<u128>,
 				[u32]
 			> &
 				QueryableStorageEntry<ApiType, [u32]>;
@@ -2730,6 +2860,59 @@ declare module "@polkadot/api-base/types/storage" {
 				[u32]
 			> &
 				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores Vtx price each vortex distribution
+			 **/
+			vtxPrice: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<u128>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores reward calculation pivot block for each vortex distribution
+			 **/
+			vtxRewardCalculationPivot: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Bytes>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores Vtx total supply for each vortex distribution
+			 **/
+			vtxTotalSupply: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<u128>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores Vortex vault asset list for each vortex distribution
+			 **/
+			vtxVaultAssetsList: AugmentedQuery<
+				ApiType,
+				(arg: u32 | AnyNumber | Uint8Array) => Observable<Vec<ITuple<[u32, u128]>>>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			/**
+			 * Stores VtxVault latest asset id list that can be redeemed.
+			 **/
+			vtxVaultRedeemAssetList: AugmentedQuery<ApiType, () => Observable<Vec<u32>>, []> &
+				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Stores work points for each account, each vortex distribution
+			 **/
+			workPoints: AugmentedQuery<
+				ApiType,
+				(
+					arg1: u32 | AnyNumber | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<u128>,
+				[u32, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<ApiType, [u32, SeedPrimitivesSignatureAccountId20]>;
 			/**
 			 * Generic query
 			 **/

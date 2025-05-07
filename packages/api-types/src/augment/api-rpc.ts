@@ -110,8 +110,8 @@ import type {
 	SignedBlock,
 	StorageData,
 } from "@therootnetwork/api-types/interfaces/runtime";
+import type { GetPermissionsResult } from "@therootnetwork/api-types/interfaces/syloDataPermissions";
 import type { XrplEventProofResponse } from "@therootnetwork/api-types/interfaces/xrplBridge";
-import { SpRuntimeDispatchError } from "@polkadot/types/lookup";
 
 export type __AugmentedRpc = AugmentedRpc<() => unknown>;
 
@@ -886,9 +886,7 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 * Returns the collection info for a NFT collection
 			 **/
 			collectionDetails: AugmentedRpc<
-				(
-					collectionId: u32 | AnyNumber | Uint8Array
-				) => Observable<Result<CollectionDetail, SpRuntimeDispatchError>>
+				(collectionId: u32 | AnyNumber | Uint8Array) => Observable<Result<CollectionDetail, Text>>
 			>;
 			/**
 			 * Get all NFTs owned by an account
@@ -1154,6 +1152,18 @@ declare module "@polkadot/rpc-core/types/jsonrpc" {
 			 **/
 			trieMigrationStatus: AugmentedRpc<
 				(at?: BlockHash | string | Uint8Array) => Observable<MigrationStatusResult>
+			>;
+		};
+		syloDataPermissions: {
+			/**
+			 * Get all permissions granted to a grantee by a data author for a given set of data ids
+			 **/
+			getPermissions: AugmentedRpc<
+				(
+					dataAuthor: AccountId | string | Uint8Array,
+					grantee: AccountId | string | Uint8Array,
+					dataIds: Vec<Text> | (Text | string)[]
+				) => Observable<Result<GetPermissionsResult, Text>>
 			>;
 		};
 		syncstate: {
