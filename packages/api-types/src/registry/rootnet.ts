@@ -271,13 +271,15 @@ import type {
 	PalletSudoCall,
 	PalletSudoError,
 	PalletSudoEvent,
+	PalletSyloDataPermissionsCall,
+	PalletSyloDataPermissionsError,
+	PalletSyloDataPermissionsEvent,
+	PalletSyloDataPermissionsPermissionRecord,
+	PalletSyloDataPermissionsPermissionReference,
+	PalletSyloDataPermissionsTaggedPermissionRecord,
 	PalletSyloDataVerificationCall,
 	PalletSyloDataVerificationError,
 	PalletSyloDataVerificationEvent,
-	PalletSyloDataVerificationResolver,
-	PalletSyloDataVerificationResolverId,
-	PalletSyloDataVerificationValidationEntry,
-	PalletSyloDataVerificationValidationRecord,
 	PalletTimestampCall,
 	PalletTokenApprovalsCall,
 	PalletTokenApprovalsError,
@@ -316,6 +318,11 @@ import type {
 	PalletXrplEvent,
 	PalletXrplXrplPublicKey,
 	SeedPalletCommonEventRouterError,
+	SeedPalletCommonSyloDataPermission,
+	SeedPalletCommonSyloResolver,
+	SeedPalletCommonSyloResolverId,
+	SeedPalletCommonSyloValidationEntry,
+	SeedPalletCommonSyloValidationRecord,
 	SeedPalletCommonUtilsCollectionUtilityFlags,
 	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPalletCommonUtilsTokenBurnAuthority,
@@ -639,13 +646,15 @@ declare module "@polkadot/types/types/registry" {
 		PalletSudoCall: PalletSudoCall;
 		PalletSudoError: PalletSudoError;
 		PalletSudoEvent: PalletSudoEvent;
+		PalletSyloDataPermissionsCall: PalletSyloDataPermissionsCall;
+		PalletSyloDataPermissionsError: PalletSyloDataPermissionsError;
+		PalletSyloDataPermissionsEvent: PalletSyloDataPermissionsEvent;
+		PalletSyloDataPermissionsPermissionRecord: PalletSyloDataPermissionsPermissionRecord;
+		PalletSyloDataPermissionsPermissionReference: PalletSyloDataPermissionsPermissionReference;
+		PalletSyloDataPermissionsTaggedPermissionRecord: PalletSyloDataPermissionsTaggedPermissionRecord;
 		PalletSyloDataVerificationCall: PalletSyloDataVerificationCall;
 		PalletSyloDataVerificationError: PalletSyloDataVerificationError;
 		PalletSyloDataVerificationEvent: PalletSyloDataVerificationEvent;
-		PalletSyloDataVerificationResolver: PalletSyloDataVerificationResolver;
-		PalletSyloDataVerificationResolverId: PalletSyloDataVerificationResolverId;
-		PalletSyloDataVerificationValidationEntry: PalletSyloDataVerificationValidationEntry;
-		PalletSyloDataVerificationValidationRecord: PalletSyloDataVerificationValidationRecord;
 		PalletTimestampCall: PalletTimestampCall;
 		PalletTokenApprovalsCall: PalletTokenApprovalsCall;
 		PalletTokenApprovalsError: PalletTokenApprovalsError;
@@ -684,6 +693,11 @@ declare module "@polkadot/types/types/registry" {
 		PalletXrplEvent: PalletXrplEvent;
 		PalletXrplXrplPublicKey: PalletXrplXrplPublicKey;
 		SeedPalletCommonEventRouterError: SeedPalletCommonEventRouterError;
+		SeedPalletCommonSyloDataPermission: SeedPalletCommonSyloDataPermission;
+		SeedPalletCommonSyloResolver: SeedPalletCommonSyloResolver;
+		SeedPalletCommonSyloResolverId: SeedPalletCommonSyloResolverId;
+		SeedPalletCommonSyloValidationEntry: SeedPalletCommonSyloValidationEntry;
+		SeedPalletCommonSyloValidationRecord: SeedPalletCommonSyloValidationRecord;
 		SeedPalletCommonUtilsCollectionUtilityFlags: SeedPalletCommonUtilsCollectionUtilityFlags;
 		SeedPalletCommonUtilsPublicMintInformation: SeedPalletCommonUtilsPublicMintInformation;
 		SeedPalletCommonUtilsTokenBurnAuthority: SeedPalletCommonUtilsTokenBurnAuthority;

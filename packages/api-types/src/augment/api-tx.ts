@@ -45,12 +45,13 @@ import type {
 	PalletStakingPalletConfigOpU32,
 	PalletStakingRewardDestination,
 	PalletStakingValidatorPrefs,
-	PalletSyloDataVerificationResolverId,
 	PalletXls20Xls20Collection,
 	PalletXrplBridgeXrpTransaction,
 	PalletXrplBridgeXrplCurrency,
 	PalletXrplBridgeXrplDoorAccount,
 	PalletXrplBridgeXrplTxData,
+	SeedPalletCommonSyloDataPermission,
+	SeedPalletCommonSyloResolverId,
 	SeedPalletCommonUtilsCollectionUtilityFlags,
 	SeedPalletCommonUtilsTokenBurnAuthority,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
@@ -3423,16 +3424,116 @@ declare module "@polkadot/api-base/types/submittable" {
 			 **/
 			[key: string]: SubmittableExtrinsicFunction<ApiType>;
 		};
+		syloDataPermissions: {
+			/**
+			 * See [`Pallet::grant_data_permissions`].
+			 **/
+			grantDataPermissions: AugmentedSubmittable<
+				(
+					dataAuthor: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					dataIds: Vec<Bytes> | (Bytes | string | Uint8Array)[],
+					permission:
+						| SeedPalletCommonSyloDataPermission
+						| "VIEW"
+						| "MODIFY"
+						| "DISTRIBUTE"
+						| number
+						| Uint8Array,
+					expiry: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+					irrevocable: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					SeedPrimitivesSignatureAccountId20,
+					SeedPrimitivesSignatureAccountId20,
+					Vec<Bytes>,
+					SeedPalletCommonSyloDataPermission,
+					Option<u32>,
+					bool,
+				]
+			>;
+			/**
+			 * See [`Pallet::grant_permission_reference`].
+			 **/
+			grantPermissionReference: AugmentedSubmittable<
+				(
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					permissionRecordId: Bytes | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20, Bytes]
+			>;
+			/**
+			 * See [`Pallet::grant_tagged_permissions`].
+			 **/
+			grantTaggedPermissions: AugmentedSubmittable<
+				(
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					permission:
+						| SeedPalletCommonSyloDataPermission
+						| "VIEW"
+						| "MODIFY"
+						| "DISTRIBUTE"
+						| number
+						| Uint8Array,
+					tags: Vec<Bytes> | (Bytes | string | Uint8Array)[],
+					expiry: Option<u32> | null | Uint8Array | u32 | AnyNumber,
+					irrevocable: bool | boolean | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					SeedPrimitivesSignatureAccountId20,
+					SeedPalletCommonSyloDataPermission,
+					Vec<Bytes>,
+					Option<u32>,
+					bool,
+				]
+			>;
+			/**
+			 * See [`Pallet::revoke_data_permission`].
+			 **/
+			revokeDataPermission: AugmentedSubmittable<
+				(
+					dataAuthor: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					permissionId: u32 | AnyNumber | Uint8Array,
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					dataId: Bytes | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20, u32, SeedPrimitivesSignatureAccountId20, Bytes]
+			>;
+			/**
+			 * See [`Pallet::revoke_permission_reference`].
+			 **/
+			revokePermissionReference: AugmentedSubmittable<
+				(
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20]
+			>;
+			/**
+			 * See [`Pallet::revoke_tagged_permission`].
+			 **/
+			revokeTaggedPermission: AugmentedSubmittable<
+				(
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					permissionId: u32 | AnyNumber | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20, u32]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
 		syloDataVerification: {
 			/**
 			 * See [`Pallet::add_validation_record_entry`].
 			 **/
 			addValidationRecordEntry: AugmentedSubmittable<
 				(
+					dataAuthor: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					dataId: Bytes | string | Uint8Array,
 					checksum: H256 | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[Bytes, H256]
+				[SeedPrimitivesSignatureAccountId20, Bytes, H256]
 			>;
 			/**
 			 * See [`Pallet::create_validation_record`].
@@ -3441,9 +3542,9 @@ declare module "@polkadot/api-base/types/submittable" {
 				(
 					dataId: Bytes | string | Uint8Array,
 					resolvers:
-						| Vec<PalletSyloDataVerificationResolverId>
+						| Vec<SeedPalletCommonSyloResolverId>
 						| (
-								| PalletSyloDataVerificationResolverId
+								| SeedPalletCommonSyloResolverId
 								| { method?: any; identifier?: any }
 								| string
 								| Uint8Array
@@ -3452,7 +3553,7 @@ declare module "@polkadot/api-base/types/submittable" {
 					tags: Vec<Bytes> | (Bytes | string | Uint8Array)[],
 					checksum: H256 | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[Bytes, Vec<PalletSyloDataVerificationResolverId>, Bytes, Vec<Bytes>, H256]
+				[Bytes, Vec<SeedPalletCommonSyloResolverId>, Bytes, Vec<Bytes>, H256]
 			>;
 			/**
 			 * See [`Pallet::delete_validation_record`].
@@ -3509,12 +3610,12 @@ declare module "@polkadot/api-base/types/submittable" {
 				(
 					dataId: Bytes | string | Uint8Array,
 					resolvers:
-						| Option<Vec<PalletSyloDataVerificationResolverId>>
+						| Option<Vec<SeedPalletCommonSyloResolverId>>
 						| null
 						| Uint8Array
-						| Vec<PalletSyloDataVerificationResolverId>
+						| Vec<SeedPalletCommonSyloResolverId>
 						| (
-								| PalletSyloDataVerificationResolverId
+								| SeedPalletCommonSyloResolverId
 								| { method?: any; identifier?: any }
 								| string
 								| Uint8Array
@@ -3527,12 +3628,7 @@ declare module "@polkadot/api-base/types/submittable" {
 						| Vec<Bytes>
 						| (Bytes | string | Uint8Array)[]
 				) => SubmittableExtrinsic<ApiType>,
-				[
-					Bytes,
-					Option<Vec<PalletSyloDataVerificationResolverId>>,
-					Option<Bytes>,
-					Option<Vec<Bytes>>,
-				]
+				[Bytes, Option<Vec<SeedPalletCommonSyloResolverId>>, Option<Bytes>, Option<Vec<Bytes>>]
 			>;
 			/**
 			 * Generic tx
@@ -3627,59 +3723,54 @@ declare module "@polkadot/api-base/types/submittable" {
 			 **/
 			erc1155ApprovalForAll: AugmentedSubmittable<
 				(
-					caller: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					operatorAccount: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					collectionUuid: u32 | AnyNumber | Uint8Array,
 					approved: bool | boolean | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, u32, bool]
+				[SeedPrimitivesSignatureAccountId20, u32, bool]
 			>;
 			/**
 			 * See [`Pallet::erc20_approval`].
 			 **/
 			erc20Approval: AugmentedSubmittable<
 				(
-					caller: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					spender: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					assetId: u32 | AnyNumber | Uint8Array,
 					amount: u128 | AnyNumber | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, u32, u128]
+				[SeedPrimitivesSignatureAccountId20, u32, u128]
 			>;
 			/**
 			 * See [`Pallet::erc20_update_approval`].
 			 **/
 			erc20UpdateApproval: AugmentedSubmittable<
 				(
-					caller: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					spender: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					assetId: u32 | AnyNumber | Uint8Array,
 					amount: u128 | AnyNumber | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, u32, u128]
+				[SeedPrimitivesSignatureAccountId20, u32, u128]
 			>;
 			/**
 			 * See [`Pallet::erc721_approval`].
 			 **/
 			erc721Approval: AugmentedSubmittable<
 				(
-					caller: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					operatorAccount: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					tokenId: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
 				) => SubmittableExtrinsic<ApiType>,
-				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, ITuple<[u32, u32]>]
+				[SeedPrimitivesSignatureAccountId20, ITuple<[u32, u32]>]
 			>;
 			/**
 			 * See [`Pallet::erc721_approval_for_all`].
 			 **/
 			erc721ApprovalForAll: AugmentedSubmittable<
 				(
-					caller: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					operatorAccount: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					collectionUuid: u32 | AnyNumber | Uint8Array,
 					approved: bool | boolean | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
-				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, u32, bool]
+				[SeedPrimitivesSignatureAccountId20, u32, bool]
 			>;
 			/**
 			 * See [`Pallet::erc721_remove_approval`].

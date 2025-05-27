@@ -98,8 +98,9 @@ import type {
 	PalletStakingStakingLedger,
 	PalletStakingUnappliedSlash,
 	PalletStakingValidatorPrefs,
-	PalletSyloDataVerificationResolver,
-	PalletSyloDataVerificationValidationRecord,
+	PalletSyloDataPermissionsPermissionRecord,
+	PalletSyloDataPermissionsPermissionReference,
+	PalletSyloDataPermissionsTaggedPermissionRecord,
 	PalletTransactionPaymentReleases,
 	PalletVortexDistributionVtxDistStatus,
 	PalletXls20Xls20Collection,
@@ -108,6 +109,8 @@ import type {
 	PalletXrplBridgeXrplCurrency,
 	PalletXrplBridgeXrplDoorAccount,
 	PalletXrplBridgeXrplTicketSequenceParams,
+	SeedPalletCommonSyloResolver,
+	SeedPalletCommonSyloValidationRecord,
 	SeedPalletCommonUtilsCollectionUtilityFlags,
 	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPalletCommonUtilsTokenUtilityFlags,
@@ -2467,12 +2470,83 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
+		syloDataPermissions: {
+			expiringPermissionRecords: AugmentedQuery<
+				ApiType,
+				(
+					arg: u32 | AnyNumber | Uint8Array
+				) => Observable<
+					Vec<
+						ITuple<
+							[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, Bytes, u32]
+						>
+					>
+				>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			expiringTaggedPermissionRecords: AugmentedQuery<
+				ApiType,
+				(
+					arg: u32 | AnyNumber | Uint8Array
+				) => Observable<
+					Vec<ITuple<[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, u32]>>
+				>,
+				[u32]
+			> &
+				QueryableStorageEntry<ApiType, [u32]>;
+			nextPermissionRecordId: AugmentedQuery<
+				ApiType,
+				(arg: SeedPrimitivesSignatureAccountId20 | string | Uint8Array) => Observable<u32>,
+				[SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<ApiType, [SeedPrimitivesSignatureAccountId20]>;
+			permissionRecords: AugmentedQuery<
+				ApiType,
+				(
+					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg3: Bytes | string | Uint8Array
+				) => Observable<Vec<ITuple<[u32, PalletSyloDataPermissionsPermissionRecord]>>>,
+				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, Bytes]
+			> &
+				QueryableStorageEntry<
+					ApiType,
+					[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20, Bytes]
+				>;
+			permissionReferences: AugmentedQuery<
+				ApiType,
+				(
+					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<Option<PalletSyloDataPermissionsPermissionReference>>,
+				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<
+					ApiType,
+					[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20]
+				>;
+			taggedPermissionRecords: AugmentedQuery<
+				ApiType,
+				(
+					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<Vec<ITuple<[u32, PalletSyloDataPermissionsTaggedPermissionRecord]>>>,
+				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<
+					ApiType,
+					[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20]
+				>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
 		syloDataVerification: {
 			resolvers: AugmentedQuery<
 				ApiType,
-				(
-					arg: Bytes | string | Uint8Array
-				) => Observable<Option<PalletSyloDataVerificationResolver>>,
+				(arg: Bytes | string | Uint8Array) => Observable<Option<SeedPalletCommonSyloResolver>>,
 				[Bytes]
 			> &
 				QueryableStorageEntry<ApiType, [Bytes]>;
@@ -2485,7 +2559,7 @@ declare module "@polkadot/api-base/types/storage" {
 				(
 					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
 					arg2: Bytes | string | Uint8Array
-				) => Observable<Option<PalletSyloDataVerificationValidationRecord>>,
+				) => Observable<Option<SeedPalletCommonSyloValidationRecord>>,
 				[SeedPrimitivesSignatureAccountId20, Bytes]
 			> &
 				QueryableStorageEntry<ApiType, [SeedPrimitivesSignatureAccountId20, Bytes]>;

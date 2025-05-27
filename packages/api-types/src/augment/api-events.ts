@@ -54,6 +54,7 @@ import type {
 	PalletXrplBridgeXrplTransaction,
 	PalletXrplXrplPublicKey,
 	SeedPalletCommonEventRouterError,
+	SeedPalletCommonSyloDataPermission,
 	SeedPalletCommonUtilsCollectionUtilityFlags,
 	SeedPalletCommonUtilsTokenBurnAuthority,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
@@ -3046,6 +3047,160 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[sudoResult: Result<Null, SpRuntimeDispatchError>],
 				{ sudoResult: Result<Null, SpRuntimeDispatchError> }
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
+		syloDataPermissions: {
+			/**
+			 * An account has been granted permission for a given data record
+			 **/
+			DataPermissionGranted: AugmentedEvent<
+				ApiType,
+				[
+					dataAuthor: SeedPrimitivesSignatureAccountId20,
+					grantor: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					dataId: Bytes,
+					permission: SeedPalletCommonSyloDataPermission,
+					expiry: Option<u32>,
+					irrevocable: bool,
+				],
+				{
+					dataAuthor: SeedPrimitivesSignatureAccountId20;
+					grantor: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					dataId: Bytes;
+					permission: SeedPalletCommonSyloDataPermission;
+					expiry: Option<u32>;
+					irrevocable: bool;
+				}
+			>;
+			/**
+			 * An account's permission has been revoked for a given data record
+			 **/
+			DataPermissionRevoked: AugmentedEvent<
+				ApiType,
+				[
+					revoker: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					permission: SeedPalletCommonSyloDataPermission,
+					dataId: Bytes,
+				],
+				{
+					revoker: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					permission: SeedPalletCommonSyloDataPermission;
+					dataId: Bytes;
+				}
+			>;
+			/**
+			 * An expired permission has been automatically removed
+			 **/
+			ExpiredDataPermissionRemoved: AugmentedEvent<
+				ApiType,
+				[
+					dataAuthor: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					dataId: Bytes,
+					permissionId: u32,
+				],
+				{
+					dataAuthor: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					dataId: Bytes;
+					permissionId: u32;
+				}
+			>;
+			/**
+			 * An expired tagged permission has been automatically removed
+			 **/
+			ExpiredTaggedPermissionRemoved: AugmentedEvent<
+				ApiType,
+				[
+					dataAuthor: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					permissionId: u32,
+				],
+				{
+					dataAuthor: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					permissionId: u32;
+				}
+			>;
+			/**
+			 * An account has been granted a permission reference
+			 **/
+			PermissionReferenceGranted: AugmentedEvent<
+				ApiType,
+				[
+					grantor: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					permissionRecordId: Bytes,
+				],
+				{
+					grantor: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					permissionRecordId: Bytes;
+				}
+			>;
+			/**
+			 * An account's permission reference has been revoked
+			 **/
+			PermissionReferenceRevoked: AugmentedEvent<
+				ApiType,
+				[
+					grantor: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					permissionRecordId: Bytes,
+				],
+				{
+					grantor: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					permissionRecordId: Bytes;
+				}
+			>;
+			/**
+			 * An account has been granted tagged permissions
+			 **/
+			TaggedDataPermissionsGranted: AugmentedEvent<
+				ApiType,
+				[
+					grantor: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					permission: SeedPalletCommonSyloDataPermission,
+					tags: Vec<Bytes>,
+					expiry: Option<u32>,
+					irrevocable: bool,
+				],
+				{
+					grantor: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					permission: SeedPalletCommonSyloDataPermission;
+					tags: Vec<Bytes>;
+					expiry: Option<u32>;
+					irrevocable: bool;
+				}
+			>;
+			/**
+			 * One of the tagged permissions for an account has been revoked
+			 **/
+			TaggedDataPermissionsRevoked: AugmentedEvent<
+				ApiType,
+				[
+					revoker: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					permission: SeedPalletCommonSyloDataPermission,
+					tags: Vec<Bytes>,
+				],
+				{
+					revoker: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					permission: SeedPalletCommonSyloDataPermission;
+					tags: Vec<Bytes>;
+				}
 			>;
 			/**
 			 * Generic event

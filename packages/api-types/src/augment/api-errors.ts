@@ -1779,7 +1779,81 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			[key: string]: AugmentedError<ApiType>;
 		};
+		syloDataPermissions: {
+			/**
+			 * Distribute permissions can only be granted by the data author
+			 **/
+			CannotGrantDistributePermission: AugmentedError<ApiType>;
+			/**
+			 * Irrevocable permissions can only be granted by the data author
+			 **/
+			CannotGrantIrrevocablePermission: AugmentedError<ApiType>;
+			/**
+			 * Attempted to grant permissions for a data record that does not exist
+			 **/
+			DataRecordDoesNotExist: AugmentedError<ApiType>;
+			/**
+			 * Exceeded the maximum number of permissions that can expired on the same
+			 * block
+			 **/
+			ExceededMaxExpiringPermissions: AugmentedError<ApiType>;
+			/**
+			 * Exceeded the maximum number of record permissions granted to a given
+			 * account
+			 **/
+			ExceededMaxPermissions: AugmentedError<ApiType>;
+			/**
+			 * Expiry value for permission record is invalid
+			 **/
+			InvalidExpiry: AugmentedError<ApiType>;
+			/**
+			 * String values in an RPC call, in either the inputs or outputs are
+			 * invalid
+			 **/
+			InvalidString: AugmentedError<ApiType>;
+			/**
+			 * A permission that is set to irrevocable cannot also set to have an
+			 * expiry
+			 **/
+			IrrevocableCannotBeExpirable: AugmentedError<ApiType>;
+			/**
+			 * Attempted to grant a permission as a delegate without the required
+			 * DISTRIBUTE permission
+			 **/
+			MissingDistributePermission: AugmentedError<ApiType>;
+			/**
+			 * An accompanying verification record for the offchain permission does
+			 * not exist
+			 **/
+			MissingValidationRecord: AugmentedError<ApiType>;
+			/**
+			 * Only the account that granted a permission or the data author
+			 * themselves can revoke a permission
+			 **/
+			NotPermissionGrantor: AugmentedError<ApiType>;
+			/**
+			 * An irrevocable permission can not be revoked
+			 **/
+			PermissionIrrevocable: AugmentedError<ApiType>;
+			/**
+			 * Cannot revoke a permission that does not exist
+			 **/
+			PermissionNotFound: AugmentedError<ApiType>;
+			/**
+			 * An existing permission reference has already been granted
+			 **/
+			PermissionReferenceAlreadyExists: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
 		syloDataVerification: {
+			/**
+			 * The account does not have the permission to update the validation
+			 * record
+			 **/
+			MissingModifyPermission: AugmentedError<ApiType>;
 			/**
 			 * Account is not controller of resolver
 			 **/
