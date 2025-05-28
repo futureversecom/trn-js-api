@@ -2,6 +2,8 @@
 
 ## 1.0.13
 
+### Patch Changes
+
 - Add SyloDataPermissions RPC for permissions info. Change Default node endpoint to full node
 
 ## 1.0.12
