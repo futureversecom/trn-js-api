@@ -1,5 +1,11 @@
 # @therootnetwork/api-types
 
+## 1.0.8
+
+### Patch Changes
+
+- Add SyloDataPermissions RPC for permissions info. Change Default node endpoint to full node
+
 ## 1.0.7
 
 ### Patch Changes
