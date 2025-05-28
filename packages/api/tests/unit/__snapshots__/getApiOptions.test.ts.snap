@@ -4686,17 +4686,143 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
+      "PalletSyloDataPermissionsCall": {
+        "_enum": {
+          "grant_data_permissions": {
+            "dataAuthor": "SeedPrimitivesSignatureAccountId20",
+            "dataIds": "Vec<Bytes>",
+            "expiry": "Option<u32>",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "irrevocable": "bool",
+            "permission": "SeedPalletCommonSyloDataPermission",
+          },
+          "grant_permission_reference": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "permissionRecordId": "Bytes",
+          },
+          "grant_tagged_permissions": {
+            "expiry": "Option<u32>",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "irrevocable": "bool",
+            "permission": "SeedPalletCommonSyloDataPermission",
+            "tags": "Vec<Bytes>",
+          },
+          "revoke_data_permission": {
+            "dataAuthor": "SeedPrimitivesSignatureAccountId20",
+            "dataId": "Bytes",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "permissionId": "u32",
+          },
+          "revoke_permission_reference": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+          },
+          "revoke_tagged_permission": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "permissionId": "u32",
+          },
+        },
+      },
+      "PalletSyloDataPermissionsError": {
+        "_enum": [
+          "DataRecordDoesNotExist",
+          "IrrevocableCannotBeExpirable",
+          "InvalidExpiry",
+          "ExceededMaxPermissions",
+          "MissingDistributePermission",
+          "CannotGrantDistributePermission",
+          "CannotGrantIrrevocablePermission",
+          "PermissionIrrevocable",
+          "NotPermissionGrantor",
+          "PermissionNotFound",
+          "MissingValidationRecord",
+          "PermissionReferenceAlreadyExists",
+          "ExceededMaxExpiringPermissions",
+          "InvalidString",
+        ],
+      },
+      "PalletSyloDataPermissionsEvent": {
+        "_enum": {
+          "DataPermissionGranted": {
+            "dataAuthor": "SeedPrimitivesSignatureAccountId20",
+            "dataId": "Bytes",
+            "expiry": "Option<u32>",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+            "irrevocable": "bool",
+            "permission": "SeedPalletCommonSyloDataPermission",
+          },
+          "DataPermissionRevoked": {
+            "dataId": "Bytes",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "permission": "SeedPalletCommonSyloDataPermission",
+            "revoker": "SeedPrimitivesSignatureAccountId20",
+          },
+          "ExpiredDataPermissionRemoved": {
+            "dataAuthor": "SeedPrimitivesSignatureAccountId20",
+            "dataId": "Bytes",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "permissionId": "u32",
+          },
+          "ExpiredTaggedPermissionRemoved": {
+            "dataAuthor": "SeedPrimitivesSignatureAccountId20",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "permissionId": "u32",
+          },
+          "PermissionReferenceGranted": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+            "permissionRecordId": "Bytes",
+          },
+          "PermissionReferenceRevoked": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+            "permissionRecordId": "Bytes",
+          },
+          "TaggedDataPermissionsGranted": {
+            "expiry": "Option<u32>",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+            "irrevocable": "bool",
+            "permission": "SeedPalletCommonSyloDataPermission",
+            "tags": "Vec<Bytes>",
+          },
+          "TaggedDataPermissionsRevoked": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "permission": "SeedPalletCommonSyloDataPermission",
+            "revoker": "SeedPrimitivesSignatureAccountId20",
+            "tags": "Vec<Bytes>",
+          },
+        },
+      },
+      "PalletSyloDataPermissionsPermissionRecord": {
+        "block": "u32",
+        "expiry": "Option<u32>",
+        "grantor": "SeedPrimitivesSignatureAccountId20",
+        "irrevocable": "bool",
+        "permission": "SeedPalletCommonSyloDataPermission",
+      },
+      "PalletSyloDataPermissionsPermissionReference": {
+        "permissionRecordId": "Bytes",
+      },
+      "PalletSyloDataPermissionsTaggedPermissionRecord": {
+        "block": "u32",
+        "expiry": "Option<u32>",
+        "irrevocable": "bool",
+        "permission": "SeedPalletCommonSyloDataPermission",
+        "tags": "Vec<Bytes>",
+      },
       "PalletSyloDataVerificationCall": {
         "_enum": {
           "add_validation_record_entry": {
             "checksum": "H256",
+            "dataAuthor": "SeedPrimitivesSignatureAccountId20",
             "dataId": "Bytes",
           },
           "create_validation_record": {
             "checksum": "H256",
             "dataId": "Bytes",
             "dataType": "Bytes",
-            "resolvers": "Vec<PalletSyloDataVerificationResolverId>",
+            "resolvers": "Vec<SeedPalletCommonSyloResolverId>",
             "tags": "Vec<Bytes>",
           },
           "delete_validation_record": {
@@ -4722,7 +4848,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "update_validation_record": {
             "dataId": "Bytes",
             "dataType": "Option<Bytes>",
-            "resolvers": "Option<Vec<PalletSyloDataVerificationResolverId>>",
+            "resolvers": "Option<Vec<SeedPalletCommonSyloResolverId>>",
             "tags": "Option<Vec<Bytes>>",
           },
         },
@@ -4734,6 +4860,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "NotController",
           "RecordAlreadyCreated",
           "NoValidationRecord",
+          "MissingModifyPermission",
         ],
       },
       "PalletSyloDataVerificationEvent": {
@@ -4779,28 +4906,6 @@ exports[`getApiOptions returns expected options 1`] = `
           },
         },
       },
-      "PalletSyloDataVerificationResolver": {
-        "controller": "SeedPrimitivesSignatureAccountId20",
-        "serviceEndpoints": "Vec<Bytes>",
-      },
-      "PalletSyloDataVerificationResolverId": {
-        "identifier": "Bytes",
-        "method": "Bytes",
-      },
-      "PalletSyloDataVerificationValidationEntry": {
-        "block": "u32",
-        "checksum": "H256",
-      },
-      "PalletSyloDataVerificationValidationRecord": {
-        "_alias": {
-          "entries_": "entries",
-        },
-        "author": "SeedPrimitivesSignatureAccountId20",
-        "dataType": "Bytes",
-        "entries_": "Vec<PalletSyloDataVerificationValidationEntry>",
-        "resolvers": "Vec<PalletSyloDataVerificationResolverId>",
-        "tags": "Vec<Bytes>",
-      },
       "PalletTimestampCall": {
         "_enum": {
           "set": {
@@ -4812,30 +4917,25 @@ exports[`getApiOptions returns expected options 1`] = `
         "_enum": {
           "erc1155_approval_for_all": {
             "approved": "bool",
-            "caller": "SeedPrimitivesSignatureAccountId20",
             "collectionUuid": "u32",
             "operatorAccount": "SeedPrimitivesSignatureAccountId20",
           },
           "erc20_approval": {
             "amount": "u128",
             "assetId": "u32",
-            "caller": "SeedPrimitivesSignatureAccountId20",
             "spender": "SeedPrimitivesSignatureAccountId20",
           },
           "erc20_update_approval": {
             "amount": "u128",
             "assetId": "u32",
-            "caller": "SeedPrimitivesSignatureAccountId20",
             "spender": "SeedPrimitivesSignatureAccountId20",
           },
           "erc721_approval": {
-            "caller": "SeedPrimitivesSignatureAccountId20",
             "operatorAccount": "SeedPrimitivesSignatureAccountId20",
             "tokenId": "(u32,u32)",
           },
           "erc721_approval_for_all": {
             "approved": "bool",
-            "caller": "SeedPrimitivesSignatureAccountId20",
             "collectionUuid": "u32",
             "operatorAccount": "SeedPrimitivesSignatureAccountId20",
           },
@@ -5479,6 +5579,35 @@ exports[`getApiOptions returns expected options 1`] = `
           "FailedProcessing": "SpRuntimeDispatchError",
           "NoReceiver": "Null",
         },
+      },
+      "SeedPalletCommonSyloDataPermission": {
+        "_enum": [
+          "VIEW",
+          "MODIFY",
+          "DISTRIBUTE",
+        ],
+      },
+      "SeedPalletCommonSyloResolver": {
+        "controller": "SeedPrimitivesSignatureAccountId20",
+        "serviceEndpoints": "Vec<Bytes>",
+      },
+      "SeedPalletCommonSyloResolverId": {
+        "identifier": "Bytes",
+        "method": "Bytes",
+      },
+      "SeedPalletCommonSyloValidationEntry": {
+        "block": "u32",
+        "checksum": "H256",
+      },
+      "SeedPalletCommonSyloValidationRecord": {
+        "_alias": {
+          "entries_": "entries",
+        },
+        "author": "SeedPrimitivesSignatureAccountId20",
+        "dataType": "Bytes",
+        "entries_": "Vec<SeedPalletCommonSyloValidationEntry>",
+        "resolvers": "Vec<SeedPalletCommonSyloResolverId>",
+        "tags": "Vec<Bytes>",
       },
       "SeedPalletCommonUtilsCollectionUtilityFlags": {
         "burnable": "bool",

@@ -753,6 +753,51 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		syloDataPermissions: {
+			/**
+			 * The maximum number of entries in a validation record.
+			 **/
+			maxEntries: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Limits the number of permissions that can expire on the same block
+			 **/
+			maxExpiringPermissions: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of tagged permission records that can be granted
+			 * to an account
+			 **/
+			maxPermissionRecords: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Limit on the number of permissions that can be granted at once
+			 **/
+			maxPermissions: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximim number of resolvers in a validation record.
+			 **/
+			maxResolvers: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of service endpoints for a registered resolver.
+			 **/
+			maxServiceEndpoints: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of tags that can be used in a tagged permission
+			 * record
+			 **/
+			maxTags: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The number of blocks an expired permission will persist on-chain
+			 * before being automatically removed
+			 **/
+			permissionRemovalDelay: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The max length used for data ids
+			 **/
+			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		syloDataVerification: {
 			/**
 			 * The maximum number of validation entries in a record.
