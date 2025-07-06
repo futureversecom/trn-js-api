@@ -12,6 +12,7 @@ import type {
 	SubmittableExtrinsicFunction,
 } from "@polkadot/api-base/types";
 import type {
+	BTreeSet,
 	Bytes,
 	Compact,
 	Option,
@@ -45,6 +46,9 @@ import type {
 	PalletStakingPalletConfigOpU32,
 	PalletStakingRewardDestination,
 	PalletStakingValidatorPrefs,
+	PalletSyloActionPermissionsSpender,
+	PalletSyloActionPermissionsTransactPermissionToken,
+	PalletSyloActionPermissionsTransactPermissionTokenSignature,
 	PalletXls20Xls20Collection,
 	PalletXrplBridgeXrpTransaction,
 	PalletXrplBridgeXrplCurrency,
@@ -3418,6 +3422,116 @@ declare module "@polkadot/api-base/types/submittable" {
 					weight: SpWeightsWeightV2Weight | { refTime?: any; proofSize?: any } | string | Uint8Array
 				) => SubmittableExtrinsic<ApiType>,
 				[Call, SpWeightsWeightV2Weight]
+			>;
+			/**
+			 * Generic tx
+			 **/
+			[key: string]: SubmittableExtrinsicFunction<ApiType>;
+		};
+		syloActionPermissions: {
+			/**
+			 * See [`Pallet::accept_transact_permission`].
+			 **/
+			acceptTransactPermission: AugmentedSubmittable<
+				(
+					permissionToken:
+						| PalletSyloActionPermissionsTransactPermissionToken
+						| {
+								grantee?: any;
+								useFuturepass?: any;
+								spender?: any;
+								spendingBalance?: any;
+								allowedCalls?: any;
+								expiry?: any;
+								nonce?: any;
+						  }
+						| string
+						| Uint8Array,
+					tokenSignature:
+						| PalletSyloActionPermissionsTransactPermissionTokenSignature
+						| { EIP191: any }
+						| { XRPL: any }
+						| string
+						| Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					PalletSyloActionPermissionsTransactPermissionToken,
+					PalletSyloActionPermissionsTransactPermissionTokenSignature,
+				]
+			>;
+			/**
+			 * See [`Pallet::grant_transact_permission`].
+			 **/
+			grantTransactPermission: AugmentedSubmittable<
+				(
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					spender: PalletSyloActionPermissionsSpender | "GRANTOR" | "GRANTEE" | number | Uint8Array,
+					spendingBalance: Option<u128> | null | Uint8Array | u128 | AnyNumber,
+					allowedCalls: BTreeSet<ITuple<[Bytes, Bytes]>>,
+					expiry: Option<u32> | null | Uint8Array | u32 | AnyNumber
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					SeedPrimitivesSignatureAccountId20,
+					PalletSyloActionPermissionsSpender,
+					Option<u128>,
+					BTreeSet<ITuple<[Bytes, Bytes]>>,
+					Option<u32>,
+				]
+			>;
+			/**
+			 * See [`Pallet::revoke_transact_permission`].
+			 **/
+			revokeTransactPermission: AugmentedSubmittable<
+				(
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20]
+			>;
+			/**
+			 * See [`Pallet::transact`].
+			 **/
+			transact: AugmentedSubmittable<
+				(
+					grantor: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					call: Call | IMethod | string | Uint8Array
+				) => SubmittableExtrinsic<ApiType>,
+				[SeedPrimitivesSignatureAccountId20, Call]
+			>;
+			/**
+			 * See [`Pallet::update_transact_permission`].
+			 **/
+			updateTransactPermission: AugmentedSubmittable<
+				(
+					grantee: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					spender:
+						| Option<PalletSyloActionPermissionsSpender>
+						| null
+						| Uint8Array
+						| PalletSyloActionPermissionsSpender
+						| "GRANTOR"
+						| "GRANTEE"
+						| number,
+					spendingBalance:
+						| Option<Option<u128>>
+						| null
+						| Uint8Array
+						| Option<u128>
+						| u128
+						| AnyNumber,
+					allowedCalls:
+						| Option<BTreeSet<ITuple<[Bytes, Bytes]>>>
+						| null
+						| Uint8Array
+						| BTreeSet<ITuple<[Bytes, Bytes]>>,
+					expiry: Option<Option<u32>> | null | Uint8Array | Option<u32> | u32 | AnyNumber
+				) => SubmittableExtrinsic<ApiType>,
+				[
+					SeedPrimitivesSignatureAccountId20,
+					Option<PalletSyloActionPermissionsSpender>,
+					Option<Option<u128>>,
+					Option<BTreeSet<ITuple<[Bytes, Bytes]>>>,
+					Option<Option<u32>>,
+				]
 			>;
 			/**
 			 * Generic tx

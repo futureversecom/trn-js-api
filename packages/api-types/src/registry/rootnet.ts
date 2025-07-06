@@ -271,6 +271,14 @@ import type {
 	PalletSudoCall,
 	PalletSudoError,
 	PalletSudoEvent,
+	PalletSyloActionPermissionsCall,
+	PalletSyloActionPermissionsError,
+	PalletSyloActionPermissionsEvent,
+	PalletSyloActionPermissionsSpender,
+	PalletSyloActionPermissionsTransactPermission,
+	PalletSyloActionPermissionsTransactPermissionToken,
+	PalletSyloActionPermissionsTransactPermissionTokenSignature,
+	PalletSyloActionPermissionsXrplTokenSignature,
 	PalletSyloDataPermissionsCall,
 	PalletSyloDataPermissionsError,
 	PalletSyloDataPermissionsEvent,
@@ -646,6 +654,14 @@ declare module "@polkadot/types/types/registry" {
 		PalletSudoCall: PalletSudoCall;
 		PalletSudoError: PalletSudoError;
 		PalletSudoEvent: PalletSudoEvent;
+		PalletSyloActionPermissionsCall: PalletSyloActionPermissionsCall;
+		PalletSyloActionPermissionsError: PalletSyloActionPermissionsError;
+		PalletSyloActionPermissionsEvent: PalletSyloActionPermissionsEvent;
+		PalletSyloActionPermissionsSpender: PalletSyloActionPermissionsSpender;
+		PalletSyloActionPermissionsTransactPermission: PalletSyloActionPermissionsTransactPermission;
+		PalletSyloActionPermissionsTransactPermissionToken: PalletSyloActionPermissionsTransactPermissionToken;
+		PalletSyloActionPermissionsTransactPermissionTokenSignature: PalletSyloActionPermissionsTransactPermissionTokenSignature;
+		PalletSyloActionPermissionsXrplTokenSignature: PalletSyloActionPermissionsXrplTokenSignature;
 		PalletSyloDataPermissionsCall: PalletSyloDataPermissionsCall;
 		PalletSyloDataPermissionsError: PalletSyloDataPermissionsError;
 		PalletSyloDataPermissionsEvent: PalletSyloDataPermissionsEvent;
