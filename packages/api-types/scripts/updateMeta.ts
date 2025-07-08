@@ -3,7 +3,7 @@ import path from "path";
 import { w3cwebsocket as WebSocket } from "websocket";
 
 const main = (): void => {
-	const ws = new WebSocket("wss://porcini.rootnet.app/ws");
+	const ws = new WebSocket("wss://root.rootnet.live/ws");
 
 	ws.onopen = (): void => {
 		ws.send('{"id":"1","jsonrpc":"2.0","method":"state_getMetadata","params":[]}');
