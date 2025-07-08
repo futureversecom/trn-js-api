@@ -943,6 +943,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			BidTooLow: AugmentedError<ApiType>;
 			/**
+			 * The listing contains duplicate tokens
+			 **/
+			DuplicateTokens: AugmentedError<ApiType>;
+			/**
 			 * The listing duration is too short
 			 **/
 			DurationTooShort: AugmentedError<ApiType>;
@@ -1257,6 +1261,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Total royalties would exceed 100% of sale or an empty vec is supplied
 			 **/
 			RoyaltiesInvalid: AugmentedError<ApiType>;
+			/**
+			 * The SerialNumbers attempting to be transferred are not unique
+			 **/
+			SerialNumbersNotUnique: AugmentedError<ApiType>;
 			/**
 			 * The number of tokens have exceeded the max tokens allowed
 			 **/
@@ -1642,6 +1650,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			RoyaltiesInvalid: AugmentedError<ApiType>;
 			/**
+			 * The SerialNumbers attempting to be transferred are not unique
+			 **/
+			SerialNumbersNotUnique: AugmentedError<ApiType>;
+			/**
 			 * Attempted to set burn authority for a token that has already
 			 * been issued
 			 **/
@@ -1774,6 +1786,56 @@ declare module "@polkadot/api-base/types/errors" {
 			 * Sender must be the Sudo account
 			 **/
 			RequireSudo: AugmentedError<ApiType>;
+			/**
+			 * Generic error
+			 **/
+			[key: string]: AugmentedError<ApiType>;
+		};
+		syloActionPermissions: {
+			/**
+			 * The grantee in the token does not match the caller.
+			 **/
+			GranteeDoesNotMatch: AugmentedError<ApiType>;
+			/**
+			 * The spending balance is insufficient to cover the transaction fee.
+			 **/
+			InsufficientSpendingBalance: AugmentedError<ApiType>;
+			/**
+			 * The provided expiry block is in the past.
+			 **/
+			InvalidExpiry: AugmentedError<ApiType>;
+			/**
+			 * The futurepass in the token is not owned by the grantor.
+			 **/
+			InvalidFuturepassInToken: AugmentedError<ApiType>;
+			/**
+			 * The specified spending balance is not allowed.
+			 **/
+			InvalidSpendingBalance: AugmentedError<ApiType>;
+			/**
+			 * The provided token signature is invalid or cannot be verified.
+			 **/
+			InvalidTokenSignature: AugmentedError<ApiType>;
+			/**
+			 * The nonce provided in the token has already been used.
+			 **/
+			NonceAlreadyUsed: AugmentedError<ApiType>;
+			/**
+			 * The call is not authorized under the granted permission.
+			 **/
+			NotAuthorizedCall: AugmentedError<ApiType>;
+			/**
+			 * A permission already exists and has not yet expired.
+			 **/
+			PermissionAlreadyExists: AugmentedError<ApiType>;
+			/**
+			 * The permission has expired and is no longer valid.
+			 **/
+			PermissionExpired: AugmentedError<ApiType>;
+			/**
+			 * The permission does not exist or has not been granted.
+			 **/
+			PermissionNotGranted: AugmentedError<ApiType>;
 			/**
 			 * Generic error
 			 **/

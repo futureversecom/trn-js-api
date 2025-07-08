@@ -98,6 +98,7 @@ import type {
 	PalletStakingStakingLedger,
 	PalletStakingUnappliedSlash,
 	PalletStakingValidatorPrefs,
+	PalletSyloActionPermissionsTransactPermission,
 	PalletSyloDataPermissionsPermissionRecord,
 	PalletSyloDataPermissionsPermissionReference,
 	PalletSyloDataPermissionsTaggedPermissionRecord,
@@ -2465,6 +2466,36 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			key: AugmentedQuery<ApiType, () => Observable<Option<U8aFixed>>, []> &
 				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * Generic query
+			 **/
+			[key: string]: QueryableStorageEntry<ApiType>;
+		};
+		syloActionPermissions: {
+			/**
+			 * Nonces that have already been used for token signatures.
+			 **/
+			tokenSignatureNonces: AugmentedQuery<
+				ApiType,
+				(arg: U256 | AnyNumber | Uint8Array) => Observable<bool>,
+				[U256]
+			> &
+				QueryableStorageEntry<ApiType, [U256]>;
+			/**
+			 * Holds transact permission records.
+			 **/
+			transactPermissions: AugmentedQuery<
+				ApiType,
+				(
+					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg2: SeedPrimitivesSignatureAccountId20 | string | Uint8Array
+				) => Observable<Option<PalletSyloActionPermissionsTransactPermission>>,
+				[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20]
+			> &
+				QueryableStorageEntry<
+					ApiType,
+					[SeedPrimitivesSignatureAccountId20, SeedPrimitivesSignatureAccountId20]
+				>;
 			/**
 			 * Generic query
 			 **/

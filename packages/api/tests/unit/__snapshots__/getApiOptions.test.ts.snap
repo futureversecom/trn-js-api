@@ -2988,6 +2988,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "EmptyTokens",
           "NoToken",
           "DurationTooShort",
+          "DuplicateTokens",
         ],
       },
       "PalletMarketplaceEvent": {
@@ -3510,6 +3511,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "InvalidPendingIssuance",
           "CannotUpdateTokenUtility",
           "InvalidBurnAuthority",
+          "SerialNumbersNotUnique",
         ],
       },
       "PalletNftEvent": {
@@ -4244,6 +4246,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "InvalidPendingIssuance",
           "CannotUpdateTokenUtility",
           "InvalidBurnAuthority",
+          "SerialNumbersNotUnique",
         ],
       },
       "PalletSftEvent": {
@@ -4685,6 +4688,114 @@ exports[`getApiOptions returns expected options 1`] = `
             "sudoResult": "Result<Null, SpRuntimeDispatchError>",
           },
         },
+      },
+      "PalletSyloActionPermissionsCall": {
+        "_enum": {
+          "accept_transact_permission": {
+            "permissionToken": "PalletSyloActionPermissionsTransactPermissionToken",
+            "tokenSignature": "PalletSyloActionPermissionsTransactPermissionTokenSignature",
+          },
+          "grant_transact_permission": {
+            "allowedCalls": "BTreeSet<(Bytes,Bytes)>",
+            "expiry": "Option<u32>",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "spender": "PalletSyloActionPermissionsSpender",
+            "spendingBalance": "Option<u128>",
+          },
+          "revoke_transact_permission": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+          },
+          "transact": {
+            "call": "Call",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+          },
+          "update_transact_permission": {
+            "allowedCalls": "Option<BTreeSet<(Bytes,Bytes)>>",
+            "expiry": "Option<Option<u32>>",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "spender": "Option<PalletSyloActionPermissionsSpender>",
+            "spendingBalance": "Option<Option<u128>>",
+          },
+        },
+      },
+      "PalletSyloActionPermissionsError": {
+        "_enum": [
+          "PermissionNotGranted",
+          "NotAuthorizedCall",
+          "PermissionExpired",
+          "InvalidExpiry",
+          "PermissionAlreadyExists",
+          "InvalidSpendingBalance",
+          "InvalidTokenSignature",
+          "GranteeDoesNotMatch",
+          "NonceAlreadyUsed",
+          "InvalidFuturepassInToken",
+          "InsufficientSpendingBalance",
+        ],
+      },
+      "PalletSyloActionPermissionsEvent": {
+        "_enum": {
+          "PermissionTransactExecuted": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+          },
+          "TransactPermissionAccepted": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+          },
+          "TransactPermissionGranted": {
+            "allowedCalls": "Vec<(Bytes,Bytes)>",
+            "expiry": "Option<u32>",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+            "spender": "PalletSyloActionPermissionsSpender",
+            "spendingBalance": "Option<u128>",
+          },
+          "TransactPermissionRevoked": {
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+          },
+          "TransactPermissionUpdated": {
+            "allowedCalls": "Vec<(Bytes,Bytes)>",
+            "expiry": "Option<u32>",
+            "grantee": "SeedPrimitivesSignatureAccountId20",
+            "grantor": "SeedPrimitivesSignatureAccountId20",
+            "spender": "PalletSyloActionPermissionsSpender",
+            "spendingBalance": "Option<u128>",
+          },
+        },
+      },
+      "PalletSyloActionPermissionsSpender": {
+        "_enum": [
+          "GRANTOR",
+          "GRANTEE",
+        ],
+      },
+      "PalletSyloActionPermissionsTransactPermission": {
+        "allowedCalls": "BTreeSet<(Bytes,Bytes)>",
+        "block": "u32",
+        "expiry": "Option<u32>",
+        "spender": "PalletSyloActionPermissionsSpender",
+        "spendingBalance": "Option<u128>",
+      },
+      "PalletSyloActionPermissionsTransactPermissionToken": {
+        "allowedCalls": "BTreeSet<(Bytes,Bytes)>",
+        "expiry": "Option<u32>",
+        "grantee": "SeedPrimitivesSignatureAccountId20",
+        "nonce": "U256",
+        "spender": "PalletSyloActionPermissionsSpender",
+        "spendingBalance": "Option<u128>",
+        "useFuturepass": "bool",
+      },
+      "PalletSyloActionPermissionsTransactPermissionTokenSignature": {
+        "_enum": {
+          "EIP191": "[u8;65]",
+          "XRPL": "PalletSyloActionPermissionsXrplTokenSignature",
+        },
+      },
+      "PalletSyloActionPermissionsXrplTokenSignature": {
+        "encodedMsg": "Bytes",
+        "signature": "Bytes",
       },
       "PalletSyloDataPermissionsCall": {
         "_enum": {

@@ -48,6 +48,7 @@ import type {
 	PalletStakingExposure,
 	PalletStakingForcing,
 	PalletStakingValidatorPrefs,
+	PalletSyloActionPermissionsSpender,
 	PalletXls20Xls20Collection,
 	PalletXrplBridgeXrplCurrency,
 	PalletXrplBridgeXrplDoorAccount,
@@ -3047,6 +3048,80 @@ declare module "@polkadot/api-base/types/events" {
 				ApiType,
 				[sudoResult: Result<Null, SpRuntimeDispatchError>],
 				{ sudoResult: Result<Null, SpRuntimeDispatchError> }
+			>;
+			/**
+			 * Generic event
+			 **/
+			[key: string]: AugmentedEvent<ApiType>;
+		};
+		syloActionPermissions: {
+			/**
+			 * A permissioned transaction was executed.
+			 **/
+			PermissionTransactExecuted: AugmentedEvent<
+				ApiType,
+				[grantor: SeedPrimitivesSignatureAccountId20, grantee: SeedPrimitivesSignatureAccountId20],
+				{ grantor: SeedPrimitivesSignatureAccountId20; grantee: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * A transact permission was accepted.
+			 **/
+			TransactPermissionAccepted: AugmentedEvent<
+				ApiType,
+				[grantor: SeedPrimitivesSignatureAccountId20, grantee: SeedPrimitivesSignatureAccountId20],
+				{ grantor: SeedPrimitivesSignatureAccountId20; grantee: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * A transact permission was granted.
+			 **/
+			TransactPermissionGranted: AugmentedEvent<
+				ApiType,
+				[
+					grantor: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					spender: PalletSyloActionPermissionsSpender,
+					spendingBalance: Option<u128>,
+					allowedCalls: Vec<ITuple<[Bytes, Bytes]>>,
+					expiry: Option<u32>,
+				],
+				{
+					grantor: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					spender: PalletSyloActionPermissionsSpender;
+					spendingBalance: Option<u128>;
+					allowedCalls: Vec<ITuple<[Bytes, Bytes]>>;
+					expiry: Option<u32>;
+				}
+			>;
+			/**
+			 * A transact permission was revoked.
+			 **/
+			TransactPermissionRevoked: AugmentedEvent<
+				ApiType,
+				[grantor: SeedPrimitivesSignatureAccountId20, grantee: SeedPrimitivesSignatureAccountId20],
+				{ grantor: SeedPrimitivesSignatureAccountId20; grantee: SeedPrimitivesSignatureAccountId20 }
+			>;
+			/**
+			 * A transact permission was updated.
+			 **/
+			TransactPermissionUpdated: AugmentedEvent<
+				ApiType,
+				[
+					grantor: SeedPrimitivesSignatureAccountId20,
+					grantee: SeedPrimitivesSignatureAccountId20,
+					spender: PalletSyloActionPermissionsSpender,
+					spendingBalance: Option<u128>,
+					allowedCalls: Vec<ITuple<[Bytes, Bytes]>>,
+					expiry: Option<u32>,
+				],
+				{
+					grantor: SeedPrimitivesSignatureAccountId20;
+					grantee: SeedPrimitivesSignatureAccountId20;
+					spender: PalletSyloActionPermissionsSpender;
+					spendingBalance: Option<u128>;
+					allowedCalls: Vec<ITuple<[Bytes, Bytes]>>;
+					expiry: Option<u32>;
+				}
 			>;
 			/**
 			 * Generic event

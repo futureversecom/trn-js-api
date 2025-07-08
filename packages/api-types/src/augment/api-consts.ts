@@ -753,6 +753,28 @@ declare module "@polkadot/api-base/types/consts" {
 			 **/
 			[key: string]: Codec;
 		};
+		syloActionPermissions: {
+			/**
+			 * The maximum number of modules allowed in a transact permission.
+			 **/
+			maxCallIds: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum number of modules allowed in a transact permission.
+			 **/
+			stringLimit: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum bounded length for the XRPL signed message/transaction.
+			 **/
+			xrplMaxMessageLength: u32 & AugmentedConst<ApiType>;
+			/**
+			 * The maximum bounded length for the XRPL signature.
+			 **/
+			xrplMaxSignatureLength: u32 & AugmentedConst<ApiType>;
+			/**
+			 * Generic const
+			 **/
+			[key: string]: Codec;
+		};
 		syloDataPermissions: {
 			/**
 			 * The maximum number of entries in a validation record.
