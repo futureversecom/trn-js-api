@@ -1205,6 +1205,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InvalidMetadataPath: AugmentedError<ApiType>;
 			/**
+			 * The additional data provided is invalid
+			 **/
+			InvalidAdditionalData: AugmentedError<ApiType>;
+			/**
 			 * The caller can not be the new owner
 			 **/
 			InvalidNewOwner: AugmentedError<ApiType>;
@@ -1573,6 +1577,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The user does not own enough of this token to perform the operation
 			 **/
 			InsufficientBalance: AugmentedError<ApiType>;
+			/**
+			 * The additional data provided is invalid
+			 **/
+			InvalidAdditionalData: AugmentedError<ApiType>;
 			/**
 			 * Attempted to burn a token from an account that does not adhere to
 			 * the token's burn authority
