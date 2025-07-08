@@ -1191,6 +1191,10 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InitialIssuanceNotZero: AugmentedError<ApiType>;
 			/**
+			 * The additional data cannot be an empty vec
+			 **/
+			InvalidAdditionalData: AugmentedError<ApiType>;
+			/**
 			 * Attempted to burn a token from an account that does not adhere to
 			 * the token's burn authority
 			 **/
@@ -1204,10 +1208,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The metadata path is invalid (non-utf8 or empty)
 			 **/
 			InvalidMetadataPath: AugmentedError<ApiType>;
-			/**
-			 * The additional data provided is invalid
-			 **/
-			InvalidAdditionalData: AugmentedError<ApiType>;
 			/**
 			 * The caller can not be the new owner
 			 **/
@@ -1578,7 +1578,7 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InsufficientBalance: AugmentedError<ApiType>;
 			/**
-			 * The additional data provided is invalid
+			 * The additional data cannot be an empty vec
 			 **/
 			InvalidAdditionalData: AugmentedError<ApiType>;
 			/**
