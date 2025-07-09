@@ -1,7 +1,7 @@
 name: Update TRN Types and Create PR
 
 on:
-  workflow_dispatch:  # Manual trigger from GitHub UI
+  workflow_dispatch: # Manual trigger from GitHub UI
     inputs:
       network:
         description: 'Network to use for metadata update, "porcini" or "mainnet"'
@@ -20,13 +20,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Needed to create a new branch
+          fetch-depth: 0 # Needed to create a new branch
 
       - name: Set up Node.js and install pnpm
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'pnpm'
+          node-version: "18"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: |
@@ -47,7 +47,7 @@ jobs:
 
           BRANCH_NAME="chore/update-api-types-${{ github.event.inputs.network }}-$(date +%Y%m%d-%H%M%S)"
           git checkout -b "$BRANCH_NAME"
-          
+
           git add .
           git commit -m "chore: update API types for ${{ github.event.inputs.network }}"
           git push origin "$BRANCH_NAME"
