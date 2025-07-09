@@ -54,10 +54,10 @@ jobs:
           git add -A
           if git diff --cached --quiet; then
             echo "No changes"
-            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "changed=false" >> $DEV_TEAM_USED_PAT
           else
             echo "Changes detected"
-            echo "changed=true" >> $GITHUB_OUTPUT
+            echo "changed=true" >> $DEV_TEAM_USED_PAT
           fi
 
       - name: Create Pull Request
