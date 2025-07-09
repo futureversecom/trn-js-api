@@ -49,3 +49,14 @@ Returns a `provider` instance of either `WsProvider` or `HttpProvider` that conn
 ### `function getPublicProviderUrl(network: NetworkName, useWsProvider?: boolean, useArchiveNode?: boolean)`
 
 Used by `getPublicProvider`, simply returns public URL for the provider
+
+## Updating Metadata
+To update the metadata for a newer version of the TRN runtime, run:
+```bash
+pnpm --filter=@therootnetwork/api-types update:meta
+pnpm --filter=@therootnetwork/api-types generate:types
+```
+Then to update the test snapshot run:
+```bash
+pnpm test:snapshot
+```
