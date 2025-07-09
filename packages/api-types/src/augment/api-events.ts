@@ -2085,6 +2085,14 @@ declare module "@polkadot/api-base/types/events" {
 		};
 		nft: {
 			/**
+			 * Some additional data has been set for a token
+			 **/
+			AdditionalDataSet: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>, additionalData: Option<Bytes>],
+				{ tokenId: ITuple<[u32, u32]>; additionalData: Option<Bytes> }
+			>;
+			/**
 			 * Base URI was set
 			 **/
 			BaseUriSet: AugmentedEvent<
@@ -2655,6 +2663,14 @@ declare module "@polkadot/api-base/types/events" {
 			[key: string]: AugmentedEvent<ApiType>;
 		};
 		sft: {
+			/**
+			 * Some additional data has been set for a token
+			 **/
+			AdditionalDataSet: AugmentedEvent<
+				ApiType,
+				[tokenId: ITuple<[u32, u32]>, additionalData: Option<Bytes>],
+				{ tokenId: ITuple<[u32, u32]>; additionalData: Option<Bytes> }
+			>;
 			/**
 			 * Base URI was set
 			 **/

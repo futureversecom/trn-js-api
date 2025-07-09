@@ -3421,6 +3421,15 @@ exports[`getApiOptions returns expected options 1`] = `
             "quantity": "u32",
             "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
           },
+          "mint_with_additional_data": {
+            "additionalData": "Bytes",
+            "collectionId": "u32",
+            "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "set_additional_data": {
+            "additionalData": "Option<Bytes>",
+            "tokenId": "(u32,u32)",
+          },
           "set_base_uri": {
             "baseUri": "Bytes",
             "collectionId": "u32",
@@ -3493,6 +3502,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "NoCollectionFound",
           "InvalidMetadataPath",
           "InvalidNewOwner",
+          "InvalidAdditionalData",
           "TokenLimitExceeded",
           "MintLimitExceeded",
           "InvalidMaxIssuance",
@@ -3516,6 +3526,10 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletNftEvent": {
         "_enum": {
+          "AdditionalDataSet": {
+            "additionalData": "Option<Bytes>",
+            "tokenId": "(u32,u32)",
+          },
           "BaseUriSet": {
             "baseUri": "Bytes",
             "collectionId": "u32",
@@ -4158,6 +4172,14 @@ exports[`getApiOptions returns expected options 1`] = `
             "tokenName": "Bytes",
             "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
           },
+          "create_token_with_additional_data": {
+            "additionalData": "Bytes",
+            "collectionId": "u32",
+            "initialIssuance": "u128",
+            "maxIssuance": "Option<u128>",
+            "tokenName": "Bytes",
+            "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
           "issue_soulbound": {
             "collectionId": "u32",
             "serialNumbers": "Vec<(u32,u128)>",
@@ -4167,6 +4189,10 @@ exports[`getApiOptions returns expected options 1`] = `
             "collectionId": "u32",
             "serialNumbers": "Vec<(u32,u128)>",
             "tokenOwner": "Option<SeedPrimitivesSignatureAccountId20>",
+          },
+          "set_additional_data": {
+            "additionalData": "Option<Bytes>",
+            "tokenId": "(u32,u32)",
           },
           "set_base_uri": {
             "collectionId": "u32",
@@ -4230,6 +4256,7 @@ exports[`getApiOptions returns expected options 1`] = `
           "InvalidQuantity",
           "InvalidMaxIssuance",
           "InvalidNewOwner",
+          "InvalidAdditionalData",
           "MaxIssuanceAlreadySet",
           "MaxIssuanceReached",
           "MaxOwnersReached",
@@ -4251,6 +4278,10 @@ exports[`getApiOptions returns expected options 1`] = `
       },
       "PalletSftEvent": {
         "_enum": {
+          "AdditionalDataSet": {
+            "additionalData": "Option<Bytes>",
+            "tokenId": "(u32,u32)",
+          },
           "BaseUriSet": {
             "collectionId": "u32",
             "metadataScheme": "Bytes",
