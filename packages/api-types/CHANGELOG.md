@@ -1,5 +1,11 @@
 # @therootnetwork/api-types
 
+## 1.1.0
+
+### Minor Changes
+
+- dc75771: Add types for NFT and SFT additional data changes
+
 ## 1.0.8
 
 ### Patch Changes

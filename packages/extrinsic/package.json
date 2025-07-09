@@ -1,6 +1,6 @@
 {
   "name": "@therootnetwork/extrinsic",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "license": "Apache-2.0",
@@ -12,7 +12,7 @@
     "@polkadot/util": "^12.6.2",
     "@polkadot/util-crypto": "^12.6.2",
     "@therootnetwork/api": "^1.0.8",
-    "@therootnetwork/api-types": "^1.0.4",
+    "@therootnetwork/api-types": "^1.1.0",
     "xrpl": "^3.0.0"
   },
   "dependencies": {
