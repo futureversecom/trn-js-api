@@ -54,16 +54,17 @@ jobs:
           git add -A
           if git diff --cached --quiet; then
             echo "No changes"
-            echo "changed=false" >> $DEV_TEAM_USED_PAT
+            echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "Changes detected"
-            echo "changed=true" >> $DEV_TEAM_USED_PAT
+            echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
       - name: Create Pull Request
         if: steps.check_changes.outputs.changed == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
+          token: ${{ secrets.DEV_TEAM_USED_PAT }}
           commit-message: "Update API types from ${{ github.event.inputs.network }}"
           title: "Update API types from ${{ github.event.inputs.network }}"
           body: "This PR was automatically generated based on metadata from `${{ github.event.inputs.network }}`."
