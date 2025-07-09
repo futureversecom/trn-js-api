@@ -2211,34 +2211,6 @@ declare module "@polkadot/api-base/types/submittable" {
 				[u32, u32, Option<SeedPrimitivesSignatureAccountId20>]
 			>;
 			/**
-			 * See [`Pallet::mint_with_additional_data`].
-			 **/
-			mintWithAdditionalData: AugmentedSubmittable<
-				(
-					collectionId: u32 | AnyNumber | Uint8Array,
-					tokenOwner:
-						| Option<SeedPrimitivesSignatureAccountId20>
-						| null
-						| Uint8Array
-						| SeedPrimitivesSignatureAccountId20
-						| string,
-					additionalData: Bytes | string | Uint8Array
-				) => SubmittableExtrinsic<ApiType>,
-				[u32, Option<SeedPrimitivesSignatureAccountId20>, Bytes]
-			>;
-			/**
-			 * See [`Pallet::set_additional_data`].
-			 **/
-			setAdditionalData: AugmentedSubmittable<
-				(
-					tokenId:
-						| ITuple<[u32, u32]>
-						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
-					additionalData: Option<Bytes> | null | Uint8Array | Bytes | string
-				) => SubmittableExtrinsic<ApiType>,
-				[ITuple<[u32, u32]>, Option<Bytes>]
-			>;
-			/**
 			 * See [`Pallet::set_base_uri`].
 			 **/
 			setBaseUri: AugmentedSubmittable<
@@ -2946,25 +2918,6 @@ declare module "@polkadot/api-base/types/submittable" {
 				[u32, Bytes, u128, Option<u128>, Option<SeedPrimitivesSignatureAccountId20>]
 			>;
 			/**
-			 * See [`Pallet::create_token_with_additional_data`].
-			 **/
-			createTokenWithAdditionalData: AugmentedSubmittable<
-				(
-					collectionId: u32 | AnyNumber | Uint8Array,
-					tokenName: Bytes | string | Uint8Array,
-					initialIssuance: u128 | AnyNumber | Uint8Array,
-					maxIssuance: Option<u128> | null | Uint8Array | u128 | AnyNumber,
-					tokenOwner:
-						| Option<SeedPrimitivesSignatureAccountId20>
-						| null
-						| Uint8Array
-						| SeedPrimitivesSignatureAccountId20
-						| string,
-					additionalData: Bytes | string | Uint8Array
-				) => SubmittableExtrinsic<ApiType>,
-				[u32, Bytes, u128, Option<u128>, Option<SeedPrimitivesSignatureAccountId20>, Bytes]
-			>;
-			/**
 			 * See [`Pallet::issue_soulbound`].
 			 **/
 			issueSoulbound: AugmentedSubmittable<
@@ -2994,18 +2947,6 @@ declare module "@polkadot/api-base/types/submittable" {
 						| string
 				) => SubmittableExtrinsic<ApiType>,
 				[u32, Vec<ITuple<[u32, u128]>>, Option<SeedPrimitivesSignatureAccountId20>]
-			>;
-			/**
-			 * See [`Pallet::set_additional_data`].
-			 **/
-			setAdditionalData: AugmentedSubmittable<
-				(
-					tokenId:
-						| ITuple<[u32, u32]>
-						| [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array],
-					additionalData: Option<Bytes> | null | Uint8Array | Bytes | string
-				) => SubmittableExtrinsic<ApiType>,
-				[ITuple<[u32, u32]>, Option<Bytes>]
 			>;
 			/**
 			 * See [`Pallet::set_base_uri`].

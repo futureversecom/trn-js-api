@@ -539,10 +539,6 @@ declare module "@polkadot/api-base/types/consts" {
 		};
 		nft: {
 			/**
-			 * The maximum length of the stored additional data for a token
-			 **/
-			maxDataLength: u32 & AugmentedConst<ApiType>;
-			/**
 			 * This pallet's Id, used for deriving a sovereign account ID
 			 **/
 			palletId: FrameSupportPalletId & AugmentedConst<ApiType>;
@@ -664,10 +660,6 @@ declare module "@polkadot/api-base/types/consts" {
 			[key: string]: Codec;
 		};
 		sft: {
-			/**
-			 * The maximum length of the stored additional data for a token
-			 **/
-			maxDataLength: u32 & AugmentedConst<ApiType>;
 			/**
 			 * Max unique owners that can own an SFT token
 			 **/

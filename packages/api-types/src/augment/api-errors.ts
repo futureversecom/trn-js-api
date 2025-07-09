@@ -1191,10 +1191,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 **/
 			InitialIssuanceNotZero: AugmentedError<ApiType>;
 			/**
-			 * The additional data cannot be an empty vec
-			 **/
-			InvalidAdditionalData: AugmentedError<ApiType>;
-			/**
 			 * Attempted to burn a token from an account that does not adhere to
 			 * the token's burn authority
 			 **/
@@ -1577,10 +1573,6 @@ declare module "@polkadot/api-base/types/errors" {
 			 * The user does not own enough of this token to perform the operation
 			 **/
 			InsufficientBalance: AugmentedError<ApiType>;
-			/**
-			 * The additional data cannot be an empty vec
-			 **/
-			InvalidAdditionalData: AugmentedError<ApiType>;
 			/**
 			 * Attempted to burn a token from an account that does not adhere to
 			 * the token's burn authority

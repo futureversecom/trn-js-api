@@ -1658,18 +1658,6 @@ declare module "@polkadot/api-base/types/storage" {
 		};
 		nft: {
 			/**
-			 * Map from a token_id to additional token data. Useful for assigning extra information
-			 * to a token outside the collection metadata.
-			 **/
-			additionalTokenData: AugmentedQuery<
-				ApiType,
-				(
-					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
-				) => Observable<Bytes>,
-				[ITuple<[u32, u32]>]
-			> &
-				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
-			/**
 			 * Map from collection to its information
 			 **/
 			collectionInfo: AugmentedQuery<
@@ -2026,18 +2014,6 @@ declare module "@polkadot/api-base/types/storage" {
 			[key: string]: QueryableStorageEntry<ApiType>;
 		};
 		sft: {
-			/**
-			 * Map from a token_id to additional token data. Useful for assigning extra information
-			 * to a token outside the collection metadata.
-			 **/
-			additionalTokenData: AugmentedQuery<
-				ApiType,
-				(
-					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
-				) => Observable<Bytes>,
-				[ITuple<[u32, u32]>]
-			> &
-				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
 			pendingIssuances: AugmentedQuery<
 				ApiType,
 				(arg: u32 | AnyNumber | Uint8Array) => Observable<PalletSftSftCollectionPendingIssuances>,
