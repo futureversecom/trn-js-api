@@ -1,5 +1,11 @@
 # @therootnetwork/api
 
+## 1.0.14
+
+### Patch Changes
+
+- Fix types to include new sylo-data-permissions pallet
+
 ## 1.0.13
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @therootnetwork/api-types
 
+## 1.0.9
+
+### Patch Changes
+
+- Fix types to include new sylo-data-permissions pallet
+
 ## 1.0.8
 
 ### Patch Changes
