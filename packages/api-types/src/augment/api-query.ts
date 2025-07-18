@@ -77,6 +77,7 @@ import type {
 	PalletNftCollectionInformation,
 	PalletNftCollectionPendingIssuances,
 	PalletNftPegBlockedTokenInfo,
+	PalletNftTokenInformation,
 	PalletPartnerAttributionPartnerInformation,
 	PalletPreimageRequestStatus,
 	PalletProxyAnnouncement,
