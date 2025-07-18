@@ -3168,7 +3168,8 @@ exports[`getApiOptions returns expected options 1`] = `
           },
           "MigrationDisabled": "Null",
           "MigrationEnabled": "Null",
-          "MigrationStarted": "Null",
+          "MigrationRuntimeUpgrade": "Null",
+          "MigrationSet": "Null",
         },
       },
       "PalletMigrationMigrationStatus": {
@@ -3481,7 +3482,6 @@ exports[`getApiOptions returns expected options 1`] = `
         "name": "Bytes",
         "nextSerialNumber": "u32",
         "originChain": "SeedPrimitivesNftOriginChain",
-        "ownedTokens": "Vec<PalletNftTokenOwnership>",
         "owner": "SeedPrimitivesSignatureAccountId20",
         "royaltiesSchedule": "Option<SeedPrimitivesNftRoyaltiesSchedule>",
       },
@@ -3695,9 +3695,10 @@ exports[`getApiOptions returns expected options 1`] = `
         "issuanceId": "u32",
         "quantity": "u32",
       },
-      "PalletNftTokenOwnership": {
-        "ownedSerials": "Vec<u32>",
+      "PalletNftTokenInformation": {
+        "lockStatus": "Option<SeedPrimitivesNftTokenLockReason>",
         "owner": "SeedPrimitivesSignatureAccountId20",
+        "utilityFlags": "SeedPalletCommonUtilsTokenUtilityFlags",
       },
       "PalletOffencesEvent": {
         "_enum": {

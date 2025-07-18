@@ -213,7 +213,7 @@ import type {
 	PalletNftPegError,
 	PalletNftPegEvent,
 	PalletNftPendingIssuance,
-	PalletNftTokenOwnership,
+	PalletNftTokenInformation,
 	PalletOffencesEvent,
 	PalletPartnerAttributionCall,
 	PalletPartnerAttributionError,
@@ -596,7 +596,7 @@ declare module "@polkadot/types/types/registry" {
 		PalletNftPegError: PalletNftPegError;
 		PalletNftPegEvent: PalletNftPegEvent;
 		PalletNftPendingIssuance: PalletNftPendingIssuance;
-		PalletNftTokenOwnership: PalletNftTokenOwnership;
+		PalletNftTokenInformation: PalletNftTokenInformation;
 		PalletOffencesEvent: PalletOffencesEvent;
 		PalletPartnerAttributionCall: PalletPartnerAttributionCall;
 		PalletPartnerAttributionError: PalletPartnerAttributionError;
