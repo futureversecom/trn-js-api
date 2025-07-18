@@ -77,6 +77,7 @@ import type {
 	PalletNftCollectionInformation,
 	PalletNftCollectionPendingIssuances,
 	PalletNftPegBlockedTokenInfo,
+	PalletNftTokenInformation,
 	PalletPartnerAttributionPartnerInformation,
 	PalletPreimageRequestStatus,
 	PalletProxyAnnouncement,
@@ -116,7 +117,6 @@ import type {
 	SeedPalletCommonUtilsPublicMintInformation,
 	SeedPalletCommonUtilsTokenUtilityFlags,
 	SeedPrimitivesEthyCryptoAppCryptoPublic,
-	SeedPrimitivesNftTokenLockReason,
 	SeedPrimitivesSignatureAccountId20,
 	SeedRuntimeSessionKeys,
 	SpConsensusBabeAppPublic,
@@ -1683,6 +1683,18 @@ declare module "@polkadot/api-base/types/storage" {
 			 **/
 			nextCollectionId: AugmentedQuery<ApiType, () => Observable<u32>, []> &
 				QueryableStorageEntry<ApiType, []>;
+			/**
+			 * All tokens owned by a single account
+			 **/
+			ownedTokens: AugmentedQuery<
+				ApiType,
+				(
+					arg1: SeedPrimitivesSignatureAccountId20 | string | Uint8Array,
+					arg2: u32 | AnyNumber | Uint8Array
+				) => Observable<Option<Vec<u32>>>,
+				[SeedPrimitivesSignatureAccountId20, u32]
+			> &
+				QueryableStorageEntry<ApiType, [SeedPrimitivesSignatureAccountId20, u32]>;
 			pendingIssuances: AugmentedQuery<
 				ApiType,
 				(arg: u32 | AnyNumber | Uint8Array) => Observable<PalletNftCollectionPendingIssuances>,
@@ -1701,27 +1713,17 @@ declare module "@polkadot/api-base/types/storage" {
 			> &
 				QueryableStorageEntry<ApiType, [u32]>;
 			/**
-			 * Map from a token to lock status if any
+			 * Map from a token to its information, including owner, lock_status and utility_flags
 			 **/
-			tokenLocks: AugmentedQuery<
+			tokenInfo: AugmentedQuery<
 				ApiType,
 				(
-					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
-				) => Observable<Option<SeedPrimitivesNftTokenLockReason>>,
-				[ITuple<[u32, u32]>]
+					arg1: u32 | AnyNumber | Uint8Array,
+					arg2: u32 | AnyNumber | Uint8Array
+				) => Observable<Option<PalletNftTokenInformation>>,
+				[u32, u32]
 			> &
-				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
-			/**
-			 * Map from a token_id to transferable and burn authority flags
-			 **/
-			tokenUtilityFlags: AugmentedQuery<
-				ApiType,
-				(
-					arg: ITuple<[u32, u32]> | [u32 | AnyNumber | Uint8Array, u32 | AnyNumber | Uint8Array]
-				) => Observable<SeedPalletCommonUtilsTokenUtilityFlags>,
-				[ITuple<[u32, u32]>]
-			> &
-				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
+				QueryableStorageEntry<ApiType, [u32, u32]>;
 			/**
 			 * Map from a collection to additional utility flags
 			 **/
@@ -2038,6 +2040,11 @@ declare module "@polkadot/api-base/types/storage" {
 				[ITuple<[u32, u32]>]
 			> &
 				QueryableStorageEntry<ApiType, [ITuple<[u32, u32]>]>;
+			/**
+			 * The next available incrementing issuance ID, unique across all pending issuances
+			 **/
+			nextIssuanceId: AugmentedQuery<ApiType, () => Observable<u32>, []> &
+				QueryableStorageEntry<ApiType, []>;
 			pendingIssuances: AugmentedQuery<
 				ApiType,
 				(arg: u32 | AnyNumber | Uint8Array) => Observable<PalletSftSftCollectionPendingIssuances>,

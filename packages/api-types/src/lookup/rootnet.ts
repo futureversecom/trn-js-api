@@ -4358,12 +4358,13 @@ export default {
 	 **/
 	PalletMigrationEvent: {
 		_enum: {
+			MigrationRuntimeUpgrade: "Null",
 			MigrationEnabled: "Null",
 			MigrationDisabled: "Null",
 			MigrationComplete: {
 				itemsMigrated: "u32",
 			},
-			MigrationStarted: "Null",
+			MigrationSet: "Null",
 			BlockDelaySet: {
 				blockDelay: "Option<u32>",
 			},
@@ -5667,7 +5668,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup539: pallet_nft::types::CollectionInformation<seed_primitives::signature::AccountId20, MaxTokensPerCollection, StringLimit>
+	 * Lookup539: pallet_nft::types::CollectionInformation<seed_primitives::signature::AccountId20, StringLimit>
 	 **/
 	PalletNftCollectionInformation: {
 		owner: "SeedPrimitivesSignatureAccountId20",
@@ -5679,24 +5680,17 @@ export default {
 		nextSerialNumber: "u32",
 		collectionIssuance: "u32",
 		crossChainCompatibility: "SeedPrimitivesNftCrossChainCompatibility",
-		ownedTokens: "Vec<PalletNftTokenOwnership>",
 	},
 	/**
-	 * Lookup541: pallet_nft::types::TokenOwnership<seed_primitives::signature::AccountId20, MaxTokensPerCollection>
+	 * Lookup540: pallet_nft::types::TokenInformation<seed_primitives::signature::AccountId20>
 	 **/
-	PalletNftTokenOwnership: {
+	PalletNftTokenInformation: {
 		owner: "SeedPrimitivesSignatureAccountId20",
-		ownedSerials: "Vec<u32>",
+		lockStatus: "Option<SeedPrimitivesNftTokenLockReason>",
+		utilityFlags: "SeedPalletCommonUtilsTokenUtilityFlags",
 	},
 	/**
-	 * Lookup543: seed_pallet_common::utils::PublicMintInformation
-	 **/
-	SeedPalletCommonUtilsPublicMintInformation: {
-		enabled: "bool",
-		pricingDetails: "Option<(u32,u128)>",
-	},
-	/**
-	 * Lookup544: seed_primitives::nft::TokenLockReason
+	 * Lookup542: seed_primitives::nft::TokenLockReason
 	 **/
 	SeedPrimitivesNftTokenLockReason: {
 		_enum: {
@@ -5704,21 +5698,28 @@ export default {
 		},
 	},
 	/**
-	 * Lookup545: seed_pallet_common::utils::TokenUtilityFlags
+	 * Lookup543: seed_pallet_common::utils::TokenUtilityFlags
 	 **/
 	SeedPalletCommonUtilsTokenUtilityFlags: {
 		transferable: "bool",
 		burnAuthority: "Option<SeedPalletCommonUtilsTokenBurnAuthority>",
 	},
 	/**
-	 * Lookup547: pallet_nft::types::CollectionPendingIssuances<seed_primitives::signature::AccountId20, MaxPendingIssuances>
+	 * Lookup545: seed_pallet_common::utils::PublicMintInformation
+	 **/
+	SeedPalletCommonUtilsPublicMintInformation: {
+		enabled: "bool",
+		pricingDetails: "Option<(u32,u128)>",
+	},
+	/**
+	 * Lookup546: pallet_nft::types::CollectionPendingIssuances<seed_primitives::signature::AccountId20, MaxPendingIssuances>
 	 **/
 	PalletNftCollectionPendingIssuances: {
 		nextIssuanceId: "u32",
 		pendingIssuances: "Vec<(SeedPrimitivesSignatureAccountId20,Vec<PalletNftPendingIssuance>)>",
 	},
 	/**
-	 * Lookup551: pallet_nft::types::PendingIssuance
+	 * Lookup550: pallet_nft::types::PendingIssuance
 	 **/
 	PalletNftPendingIssuance: {
 		issuanceId: "u32",
@@ -5726,7 +5727,7 @@ export default {
 		burnAuthority: "SeedPalletCommonUtilsTokenBurnAuthority",
 	},
 	/**
-	 * Lookup554: pallet_nft::pallet::Error<T>
+	 * Lookup553: pallet_nft::pallet::Error<T>
 	 **/
 	PalletNftError: {
 		_enum: [
@@ -5764,7 +5765,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup555: pallet_sft::types::SftCollectionInformation<seed_primitives::signature::AccountId20, StringLimit>
+	 * Lookup554: pallet_sft::types::SftCollectionInformation<seed_primitives::signature::AccountId20, StringLimit>
 	 **/
 	PalletSftSftCollectionInformation: {
 		collectionOwner: "SeedPrimitivesSignatureAccountId20",
@@ -5775,7 +5776,7 @@ export default {
 		nextSerialNumber: "u32",
 	},
 	/**
-	 * Lookup556: pallet_sft::types::SftTokenInformation<seed_primitives::signature::AccountId20, StringLimit, MaxOwnersPerSftToken>
+	 * Lookup555: pallet_sft::types::SftTokenInformation<seed_primitives::signature::AccountId20, StringLimit, MaxOwnersPerSftToken>
 	 **/
 	PalletSftSftTokenInformation: {
 		tokenName: "Bytes",
@@ -5784,28 +5785,28 @@ export default {
 		ownedTokens: "Vec<(SeedPrimitivesSignatureAccountId20,PalletSftSftTokenBalance)>",
 	},
 	/**
-	 * Lookup559: pallet_sft::types::SftTokenBalance
+	 * Lookup558: pallet_sft::types::SftTokenBalance
 	 **/
 	PalletSftSftTokenBalance: {
 		freeBalance: "u128",
 		reservedBalance: "u128",
 	},
 	/**
-	 * Lookup561: pallet_sft::types::SftCollectionPendingIssuances<seed_primitives::signature::AccountId20, MaxSerialsPerMint, MaxPendingIssuances>
+	 * Lookup560: pallet_sft::types::SftCollectionPendingIssuances<seed_primitives::signature::AccountId20, MaxSerialsPerMint, MaxPendingIssuances>
 	 **/
 	PalletSftSftCollectionPendingIssuances: {
 		nextIssuanceId: "u32",
 		pendingIssuances: "Vec<(SeedPrimitivesSignatureAccountId20,Vec<PalletSftSftPendingIssuance>)>",
 	},
 	/**
-	 * Lookup565: pallet_sft::types::SftPendingIssuance<MaxSerialsPerMint>
+	 * Lookup564: pallet_sft::types::SftPendingIssuance<MaxSerialsPerMint>
 	 **/
 	PalletSftSftPendingIssuance: {
 		issuanceId: "u32",
 		serialNumbers: "Vec<(u32,u128)>",
 	},
 	/**
-	 * Lookup568: pallet_sft::pallet::Error<T>
+	 * Lookup567: pallet_sft::pallet::Error<T>
 	 **/
 	PalletSftError: {
 		_enum: [
@@ -5839,7 +5840,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup573: pallet_xrpl_bridge::types::DelayedWithdrawal<seed_primitives::signature::AccountId20>
+	 * Lookup572: pallet_xrpl_bridge::types::DelayedWithdrawal<seed_primitives::signature::AccountId20>
 	 **/
 	PalletXrplBridgeDelayedWithdrawal: {
 		sender: "SeedPrimitivesSignatureAccountId20",
@@ -5847,7 +5848,7 @@ export default {
 		withdrawTx: "PalletXrplBridgeWithdrawTransaction",
 	},
 	/**
-	 * Lookup574: pallet_xrpl_bridge::types::WithdrawTransaction
+	 * Lookup573: pallet_xrpl_bridge::types::WithdrawTransaction
 	 **/
 	PalletXrplBridgeWithdrawTransaction: {
 		_enum: {
@@ -5856,7 +5857,7 @@ export default {
 		},
 	},
 	/**
-	 * Lookup575: pallet_xrpl_bridge::types::XrpWithdrawTransaction
+	 * Lookup574: pallet_xrpl_bridge::types::XrpWithdrawTransaction
 	 **/
 	PalletXrplBridgeXrpWithdrawTransaction: {
 		txFee: "u64",
@@ -5866,7 +5867,7 @@ export default {
 		destination: "H160",
 	},
 	/**
-	 * Lookup576: pallet_xrpl_bridge::types::AssetWithdrawTransaction
+	 * Lookup575: pallet_xrpl_bridge::types::AssetWithdrawTransaction
 	 **/
 	PalletXrplBridgeAssetWithdrawTransaction: {
 		txFee: "u64",
@@ -5879,14 +5880,14 @@ export default {
 		issuer: "H160",
 	},
 	/**
-	 * Lookup578: pallet_xrpl_bridge::types::XrplTicketSequenceParams
+	 * Lookup577: pallet_xrpl_bridge::types::XrplTicketSequenceParams
 	 **/
 	PalletXrplBridgeXrplTicketSequenceParams: {
 		startSequence: "u32",
 		bucketSize: "u32",
 	},
 	/**
-	 * Lookup579: pallet_xrpl_bridge::pallet::Error<T>
+	 * Lookup578: pallet_xrpl_bridge::pallet::Error<T>
 	 **/
 	PalletXrplBridgeError: {
 		_enum: [
@@ -5920,13 +5921,13 @@ export default {
 		],
 	},
 	/**
-	 * Lookup580: pallet_xrpl::pallet::Error<T>
+	 * Lookup579: pallet_xrpl::pallet::Error<T>
 	 **/
 	PalletXrplError: {
 		_enum: ["XRPLTransaction", "XRPLTransactionAccount", "CallFiltered"],
 	},
 	/**
-	 * Lookup583: pallet_token_approvals::pallet::Error<T>
+	 * Lookup582: pallet_token_approvals::pallet::Error<T>
 	 **/
 	PalletTokenApprovalsError: {
 		_enum: [
@@ -5941,20 +5942,20 @@ export default {
 		],
 	},
 	/**
-	 * Lookup585: pallet_echo::pallet::Error<T>
+	 * Lookup584: pallet_echo::pallet::Error<T>
 	 **/
 	PalletEchoError: {
 		_enum: ["NoAvailableIds", "InvalidParameter", "InvalidAbiEncoding"],
 	},
 	/**
-	 * Lookup586: pallet_marketplace::types::Marketplace<seed_primitives::signature::AccountId20>
+	 * Lookup585: pallet_marketplace::types::Marketplace<seed_primitives::signature::AccountId20>
 	 **/
 	PalletMarketplaceMarketplace: {
 		account: "SeedPrimitivesSignatureAccountId20",
 		entitlement: "Permill",
 	},
 	/**
-	 * Lookup587: pallet_marketplace::types::Listing<T>
+	 * Lookup586: pallet_marketplace::types::Listing<T>
 	 **/
 	PalletMarketplaceListing: {
 		_enum: {
@@ -5963,7 +5964,7 @@ export default {
 		},
 	},
 	/**
-	 * Lookup588: pallet_marketplace::types::FixedPriceListing<T>
+	 * Lookup587: pallet_marketplace::types::FixedPriceListing<T>
 	 **/
 	PalletMarketplaceFixedPriceListing: {
 		paymentAsset: "u32",
@@ -5976,7 +5977,7 @@ export default {
 		marketplaceId: "Option<u32>",
 	},
 	/**
-	 * Lookup589: pallet_marketplace::types::AuctionListing<T>
+	 * Lookup588: pallet_marketplace::types::AuctionListing<T>
 	 **/
 	PalletMarketplaceAuctionListing: {
 		paymentAsset: "u32",
@@ -5988,7 +5989,7 @@ export default {
 		marketplaceId: "Option<u32>",
 	},
 	/**
-	 * Lookup590: pallet_marketplace::types::OfferType<seed_primitives::signature::AccountId20>
+	 * Lookup589: pallet_marketplace::types::OfferType<seed_primitives::signature::AccountId20>
 	 **/
 	PalletMarketplaceOfferType: {
 		_enum: {
@@ -5996,7 +5997,7 @@ export default {
 		},
 	},
 	/**
-	 * Lookup591: pallet_marketplace::types::SimpleOffer<seed_primitives::signature::AccountId20>
+	 * Lookup590: pallet_marketplace::types::SimpleOffer<seed_primitives::signature::AccountId20>
 	 **/
 	PalletMarketplaceSimpleOffer: {
 		tokenId: "(u32,u32)",
@@ -6006,7 +6007,7 @@ export default {
 		marketplaceId: "Option<u32>",
 	},
 	/**
-	 * Lookup593: pallet_marketplace::pallet::Error<T>
+	 * Lookup592: pallet_marketplace::pallet::Error<T>
 	 **/
 	PalletMarketplaceError: {
 		_enum: [
@@ -6037,7 +6038,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup594: pallet_preimage::RequestStatus<seed_primitives::signature::AccountId20, Balance>
+	 * Lookup593: pallet_preimage::RequestStatus<seed_primitives::signature::AccountId20, Balance>
 	 **/
 	PalletPreimageRequestStatus: {
 		_enum: {
@@ -6053,19 +6054,19 @@ export default {
 		},
 	},
 	/**
-	 * Lookup597: pallet_preimage::pallet::Error<T>
+	 * Lookup596: pallet_preimage::pallet::Error<T>
 	 **/
 	PalletPreimageError: {
 		_enum: ["TooBig", "AlreadyNoted", "NotAuthorized", "NotNoted", "Requested", "NotRequested"],
 	},
 	/**
-	 * Lookup598: pallet_vortex_distribution::VtxDistStatus
+	 * Lookup597: pallet_vortex_distribution::VtxDistStatus
 	 **/
 	PalletVortexDistributionVtxDistStatus: {
 		_enum: ["Disabled", "Enabled", "Triggering", "Triggered", "Paying", "Done"],
 	},
 	/**
-	 * Lookup601: pallet_vortex_distribution::pallet::Error<T>
+	 * Lookup600: pallet_vortex_distribution::pallet::Error<T>
 	 **/
 	PalletVortexDistributionError: {
 		_enum: [
@@ -6093,7 +6094,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup602: pallet_partner_attribution::pallet::Error<T>
+	 * Lookup601: pallet_partner_attribution::pallet::Error<T>
 	 **/
 	PalletPartnerAttributionError: {
 		_enum: [
@@ -6106,13 +6107,13 @@ export default {
 		],
 	},
 	/**
-	 * Lookup603: pallet_fee_proxy::pallet::Error<T>
+	 * Lookup602: pallet_fee_proxy::pallet::Error<T>
 	 **/
 	PalletFeeProxyError: {
 		_enum: ["NestedFeePreferenceCall", "FeeTokenIsGasToken"],
 	},
 	/**
-	 * Lookup604: pallet_fee_control::FeeControlFeeConfig
+	 * Lookup603: pallet_fee_control::FeeControlFeeConfig
 	 **/
 	PalletFeeControlFeeControlFeeConfig: {
 		evmBaseFeePerGas: "U256",
@@ -6120,7 +6121,7 @@ export default {
 		lengthMultiplier: "u128",
 	},
 	/**
-	 * Lookup605: pallet_xls20::pallet::Error<T>
+	 * Lookup604: pallet_xls20::pallet::Error<T>
 	 **/
 	PalletXls20Error: {
 		_enum: [
@@ -6135,7 +6136,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup606: pallet_doughnut::pallet::Error<T>
+	 * Lookup605: pallet_doughnut::pallet::Error<T>
 	 **/
 	PalletDoughnutError: {
 		_enum: [
@@ -6154,7 +6155,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup608: pallet_maintenance_mode::pallet::Error<T>
+	 * Lookup607: pallet_maintenance_mode::pallet::Error<T>
 	 **/
 	PalletMaintenanceModeError: {
 		_enum: [
@@ -6166,7 +6167,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup612: pallet_crowdsale::pallet::Error<T>
+	 * Lookup611: pallet_crowdsale::pallet::Error<T>
 	 **/
 	PalletCrowdsaleError: {
 		_enum: [
@@ -6193,7 +6194,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup616: pallet_nfi::pallet::Error<T>
+	 * Lookup615: pallet_nfi::pallet::Error<T>
 	 **/
 	PalletNfiError: {
 		_enum: [
@@ -6207,7 +6208,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup617: pallet_migration::MigrationStatus
+	 * Lookup616: pallet_migration::MigrationStatus
 	 **/
 	PalletMigrationMigrationStatus: {
 		_enum: {
@@ -6219,20 +6220,20 @@ export default {
 		},
 	},
 	/**
-	 * Lookup618: pallet_migration::pallet::Error<T>
+	 * Lookup617: pallet_migration::pallet::Error<T>
 	 **/
 	PalletMigrationError: {
 		_enum: ["MigrationInProgress", "InvalidBlockDelay", "InvalidBlockLimit"],
 	},
 	/**
-	 * Lookup619: seed_pallet_common::sylo::Resolver<seed_primitives::signature::AccountId20, MaxServiceEndpoints, StringLimit>
+	 * Lookup618: seed_pallet_common::sylo::Resolver<seed_primitives::signature::AccountId20, MaxServiceEndpoints, StringLimit>
 	 **/
 	SeedPalletCommonSyloResolver: {
 		controller: "SeedPrimitivesSignatureAccountId20",
 		serviceEndpoints: "Vec<Bytes>",
 	},
 	/**
-	 * Lookup621: seed_pallet_common::sylo::ValidationRecord<seed_primitives::signature::AccountId20, BlockNumber, MaxResolvers, MaxTags, MaxEntries, StringLimit>
+	 * Lookup620: seed_pallet_common::sylo::ValidationRecord<seed_primitives::signature::AccountId20, BlockNumber, MaxResolvers, MaxTags, MaxEntries, StringLimit>
 	 **/
 	SeedPalletCommonSyloValidationRecord: {
 		_alias: {
@@ -6245,14 +6246,14 @@ export default {
 		entries_: "Vec<SeedPalletCommonSyloValidationEntry>",
 	},
 	/**
-	 * Lookup623: seed_pallet_common::sylo::ValidationEntry<BlockNumber>
+	 * Lookup622: seed_pallet_common::sylo::ValidationEntry<BlockNumber>
 	 **/
 	SeedPalletCommonSyloValidationEntry: {
 		checksum: "H256",
 		block: "u32",
 	},
 	/**
-	 * Lookup625: pallet_sylo_data_verification::pallet::Error<T>
+	 * Lookup624: pallet_sylo_data_verification::pallet::Error<T>
 	 **/
 	PalletSyloDataVerificationError: {
 		_enum: [
@@ -6265,7 +6266,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup626: pallet_liquidity_pools::types::PoolInfo<PoolId, AssetId, Balance, BlockNumber>
+	 * Lookup625: pallet_liquidity_pools::types::PoolInfo<PoolId, AssetId, Balance, BlockNumber>
 	 **/
 	PalletLiquidityPoolsPoolInfo: {
 		id: "u32",
@@ -6281,13 +6282,13 @@ export default {
 		poolStatus: "PalletLiquidityPoolsPoolStatus",
 	},
 	/**
-	 * Lookup627: pallet_liquidity_pools::types::PoolStatus
+	 * Lookup626: pallet_liquidity_pools::types::PoolStatus
 	 **/
 	PalletLiquidityPoolsPoolStatus: {
 		_enum: ["Closed", "Open", "Started", "Renewing", "Matured"],
 	},
 	/**
-	 * Lookup628: pallet_liquidity_pools::types::UserInfo<Balance>
+	 * Lookup627: pallet_liquidity_pools::types::UserInfo<Balance>
 	 **/
 	PalletLiquidityPoolsUserInfo: {
 		amount: "u128",
@@ -6296,13 +6297,13 @@ export default {
 		rolledOver: "bool",
 	},
 	/**
-	 * Lookup629: pallet_liquidity_pools::types::PoolRelationship<PoolId>
+	 * Lookup628: pallet_liquidity_pools::types::PoolRelationship<PoolId>
 	 **/
 	PalletLiquidityPoolsPoolRelationship: {
 		successorId: "Option<u32>",
 	},
 	/**
-	 * Lookup630: pallet_liquidity_pools::pallet::Error<T>
+	 * Lookup629: pallet_liquidity_pools::pallet::Error<T>
 	 **/
 	PalletLiquidityPoolsError: {
 		_enum: [
@@ -6328,7 +6329,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup634: pallet_sylo_data_permissions::types::PermissionRecord<seed_primitives::signature::AccountId20, BlockNumber>
+	 * Lookup633: pallet_sylo_data_permissions::types::PermissionRecord<seed_primitives::signature::AccountId20, BlockNumber>
 	 **/
 	PalletSyloDataPermissionsPermissionRecord: {
 		grantor: "SeedPrimitivesSignatureAccountId20",
@@ -6338,7 +6339,7 @@ export default {
 		irrevocable: "bool",
 	},
 	/**
-	 * Lookup641: pallet_sylo_data_permissions::types::TaggedPermissionRecord<BlockNumber, MaxTags, StringLimit>
+	 * Lookup640: pallet_sylo_data_permissions::types::TaggedPermissionRecord<BlockNumber, MaxTags, StringLimit>
 	 **/
 	PalletSyloDataPermissionsTaggedPermissionRecord: {
 		permission: "SeedPalletCommonSyloDataPermission",
@@ -6348,13 +6349,13 @@ export default {
 		irrevocable: "bool",
 	},
 	/**
-	 * Lookup646: pallet_sylo_data_permissions::types::PermissionReference<StringLimit>
+	 * Lookup645: pallet_sylo_data_permissions::types::PermissionReference<StringLimit>
 	 **/
 	PalletSyloDataPermissionsPermissionReference: {
 		permissionRecordId: "Bytes",
 	},
 	/**
-	 * Lookup647: pallet_sylo_data_permissions::pallet::Error<T>
+	 * Lookup646: pallet_sylo_data_permissions::pallet::Error<T>
 	 **/
 	PalletSyloDataPermissionsError: {
 		_enum: [
@@ -6375,7 +6376,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup648: pallet_sylo_action_permissions::types::TransactPermission<BlockNumber, MaxCallIds, StringLimit>
+	 * Lookup647: pallet_sylo_action_permissions::types::TransactPermission<BlockNumber, MaxCallIds, StringLimit>
 	 **/
 	PalletSyloActionPermissionsTransactPermission: {
 		spender: "PalletSyloActionPermissionsSpender",
@@ -6385,7 +6386,7 @@ export default {
 		expiry: "Option<u32>",
 	},
 	/**
-	 * Lookup649: pallet_sylo_action_permissions::pallet::Error<T>
+	 * Lookup648: pallet_sylo_action_permissions::pallet::Error<T>
 	 **/
 	PalletSyloActionPermissionsError: {
 		_enum: [
@@ -6403,7 +6404,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup650: pallet_election_provider_multi_phase::ReadySolution<AccountId, MaxWinners>
+	 * Lookup649: pallet_election_provider_multi_phase::ReadySolution<AccountId, MaxWinners>
 	 **/
 	PalletElectionProviderMultiPhaseReadySolution: {
 		supports: "Vec<(SeedPrimitivesSignatureAccountId20,SpNposElectionsSupport)>",
@@ -6411,14 +6412,14 @@ export default {
 		compute: "PalletElectionProviderMultiPhaseElectionCompute",
 	},
 	/**
-	 * Lookup652: pallet_election_provider_multi_phase::RoundSnapshot<seed_primitives::signature::AccountId20, DataProvider>
+	 * Lookup651: pallet_election_provider_multi_phase::RoundSnapshot<seed_primitives::signature::AccountId20, DataProvider>
 	 **/
 	PalletElectionProviderMultiPhaseRoundSnapshot: {
 		voters: "Vec<(SeedPrimitivesSignatureAccountId20,u64,Vec<SeedPrimitivesSignatureAccountId20>)>",
 		targets: "Vec<SeedPrimitivesSignatureAccountId20>",
 	},
 	/**
-	 * Lookup658: pallet_election_provider_multi_phase::signed::SignedSubmission<seed_primitives::signature::AccountId20, Balance, seed_runtime::NposCompactSolution16>
+	 * Lookup657: pallet_election_provider_multi_phase::signed::SignedSubmission<seed_primitives::signature::AccountId20, Balance, seed_runtime::NposCompactSolution16>
 	 **/
 	PalletElectionProviderMultiPhaseSignedSignedSubmission: {
 		who: "SeedPrimitivesSignatureAccountId20",
@@ -6427,7 +6428,7 @@ export default {
 		callFee: "u128",
 	},
 	/**
-	 * Lookup659: pallet_election_provider_multi_phase::pallet::Error<T>
+	 * Lookup658: pallet_election_provider_multi_phase::pallet::Error<T>
 	 **/
 	PalletElectionProviderMultiPhaseError: {
 		_enum: [
@@ -6448,7 +6449,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup660: pallet_bags_list::list::Node<T, I>
+	 * Lookup659: pallet_bags_list::list::Node<T, I>
 	 **/
 	PalletBagsListListNode: {
 		id: "SeedPrimitivesSignatureAccountId20",
@@ -6458,14 +6459,14 @@ export default {
 		score: "u64",
 	},
 	/**
-	 * Lookup661: pallet_bags_list::list::Bag<T, I>
+	 * Lookup660: pallet_bags_list::list::Bag<T, I>
 	 **/
 	PalletBagsListListBag: {
 		head: "Option<SeedPrimitivesSignatureAccountId20>",
 		tail: "Option<SeedPrimitivesSignatureAccountId20>",
 	},
 	/**
-	 * Lookup662: pallet_bags_list::pallet::Error<T, I>
+	 * Lookup661: pallet_bags_list::pallet::Error<T, I>
 	 **/
 	PalletBagsListError: {
 		_enum: {
@@ -6473,13 +6474,13 @@ export default {
 		},
 	},
 	/**
-	 * Lookup663: pallet_bags_list::list::ListError
+	 * Lookup662: pallet_bags_list::list::ListError
 	 **/
 	PalletBagsListListListError: {
 		_enum: ["Duplicate", "NotHeavier", "NotInSameBag", "NodeNotFound"],
 	},
 	/**
-	 * Lookup666: fp_rpc::TransactionStatus
+	 * Lookup665: fp_rpc::TransactionStatus
 	 **/
 	FpRpcTransactionStatus: {
 		transactionHash: "H256",
@@ -6491,11 +6492,11 @@ export default {
 		logsBloom: "EthbloomBloom",
 	},
 	/**
-	 * Lookup668: ethbloom::Bloom
+	 * Lookup667: ethbloom::Bloom
 	 **/
 	EthbloomBloom: "[u8;256]",
 	/**
-	 * Lookup670: ethereum::receipt::ReceiptV3
+	 * Lookup669: ethereum::receipt::ReceiptV3
 	 **/
 	EthereumReceiptReceiptV3: {
 		_enum: {
@@ -6505,7 +6506,7 @@ export default {
 		},
 	},
 	/**
-	 * Lookup671: ethereum::receipt::EIP658ReceiptData
+	 * Lookup670: ethereum::receipt::EIP658ReceiptData
 	 **/
 	EthereumReceiptEip658ReceiptData: {
 		statusCode: "u8",
@@ -6514,7 +6515,7 @@ export default {
 		logs: "Vec<EthereumLog>",
 	},
 	/**
-	 * Lookup672: ethereum::block::Block<ethereum::transaction::TransactionV2>
+	 * Lookup671: ethereum::block::Block<ethereum::transaction::TransactionV2>
 	 **/
 	EthereumBlock: {
 		header: "EthereumHeader",
@@ -6522,7 +6523,7 @@ export default {
 		ommers: "Vec<EthereumHeader>",
 	},
 	/**
-	 * Lookup673: ethereum::header::Header
+	 * Lookup672: ethereum::header::Header
 	 **/
 	EthereumHeader: {
 		parentHash: "H256",
@@ -6542,11 +6543,11 @@ export default {
 		nonce: "EthereumTypesHashH64",
 	},
 	/**
-	 * Lookup674: ethereum_types::hash::H64
+	 * Lookup673: ethereum_types::hash::H64
 	 **/
 	EthereumTypesHashH64: "[u8;8]",
 	/**
-	 * Lookup679: pallet_ethereum::pallet::Error<T>
+	 * Lookup678: pallet_ethereum::pallet::Error<T>
 	 **/
 	PalletEthereumError: {
 		_enum: [
@@ -6561,7 +6562,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup680: pallet_evm::CodeMetadata
+	 * Lookup679: pallet_evm::CodeMetadata
 	 **/
 	PalletEvmCodeMetadata: {
 		_alias: {
@@ -6572,7 +6573,7 @@ export default {
 		hash_: "H256",
 	},
 	/**
-	 * Lookup682: pallet_evm::pallet::Error<T>
+	 * Lookup681: pallet_evm::pallet::Error<T>
 	 **/
 	PalletEvmError: {
 		_enum: [
@@ -6590,20 +6591,20 @@ export default {
 		],
 	},
 	/**
-	 * Lookup683: pallet_ethy::types::BridgePauseStatus
+	 * Lookup682: pallet_ethy::types::BridgePauseStatus
 	 **/
 	PalletEthyBridgePauseStatus: {
 		manualPause: "bool",
 		authoritiesChange: "bool",
 	},
 	/**
-	 * Lookup686: pallet_ethy::types::EventClaimStatus
+	 * Lookup685: pallet_ethy::types::EventClaimStatus
 	 **/
 	PalletEthyEventClaimStatus: {
 		_enum: ["Pending", "Challenged", "ProvenValid"],
 	},
 	/**
-	 * Lookup693: pallet_ethy::types::CheckedEthCallRequest<MaxEthData>
+	 * Lookup692: pallet_ethy::types::CheckedEthCallRequest<MaxEthData>
 	 **/
 	PalletEthyCheckedEthCallRequest: {
 		input: "Bytes",
@@ -6614,7 +6615,7 @@ export default {
 		checkTimestamp: "u64",
 	},
 	/**
-	 * Lookup694: pallet_ethy::pallet::Error<T>
+	 * Lookup693: pallet_ethy::pallet::Error<T>
 	 **/
 	PalletEthyError: {
 		_enum: [
@@ -6640,7 +6641,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup696: pallet_erc20_peg::types::PendingPayment<seed_primitives::signature::AccountId20>
+	 * Lookup695: pallet_erc20_peg::types::PendingPayment<seed_primitives::signature::AccountId20>
 	 **/
 	PalletErc20PegPendingPayment: {
 		_enum: {
@@ -6649,7 +6650,7 @@ export default {
 		},
 	},
 	/**
-	 * Lookup697: pallet_erc20_peg::types::Erc20DepositEvent
+	 * Lookup696: pallet_erc20_peg::types::Erc20DepositEvent
 	 **/
 	PalletErc20PegErc20DepositEvent: {
 		tokenAddress: "H160",
@@ -6657,7 +6658,7 @@ export default {
 		beneficiary: "H160",
 	},
 	/**
-	 * Lookup699: pallet_erc20_peg::types::WithdrawMessage
+	 * Lookup698: pallet_erc20_peg::types::WithdrawMessage
 	 **/
 	PalletErc20PegWithdrawMessage: {
 		tokenAddress: "H160",
@@ -6665,7 +6666,7 @@ export default {
 		beneficiary: "H160",
 	},
 	/**
-	 * Lookup702: pallet_erc20_peg::pallet::Error<T>
+	 * Lookup701: pallet_erc20_peg::pallet::Error<T>
 	 **/
 	PalletErc20PegError: {
 		_enum: [
@@ -6682,7 +6683,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup703: pallet_nft_peg::types::BlockedTokenInfo<T>
+	 * Lookup702: pallet_nft_peg::types::BlockedTokenInfo<T>
 	 **/
 	PalletNftPegBlockedTokenInfo: {
 		collectionId: "u32",
@@ -6690,7 +6691,7 @@ export default {
 		serialNumbers: "Vec<u32>",
 	},
 	/**
-	 * Lookup704: pallet_nft_peg::pallet::Error<T>
+	 * Lookup703: pallet_nft_peg::pallet::Error<T>
 	 **/
 	PalletNftPegError: {
 		_enum: [
@@ -6709,7 +6710,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup707: pallet_proxy::ProxyDefinition<seed_primitives::signature::AccountId20, seed_runtime::impls::ProxyType, BlockNumber>
+	 * Lookup706: pallet_proxy::ProxyDefinition<seed_primitives::signature::AccountId20, seed_runtime::impls::ProxyType, BlockNumber>
 	 **/
 	PalletProxyProxyDefinition: {
 		delegate: "SeedPrimitivesSignatureAccountId20",
@@ -6717,7 +6718,7 @@ export default {
 		delay: "u32",
 	},
 	/**
-	 * Lookup711: pallet_proxy::Announcement<seed_primitives::signature::AccountId20, primitive_types::H256, BlockNumber>
+	 * Lookup710: pallet_proxy::Announcement<seed_primitives::signature::AccountId20, primitive_types::H256, BlockNumber>
 	 **/
 	PalletProxyAnnouncement: {
 		real: "SeedPrimitivesSignatureAccountId20",
@@ -6725,7 +6726,7 @@ export default {
 		height: "u32",
 	},
 	/**
-	 * Lookup713: pallet_proxy::pallet::Error<T>
+	 * Lookup712: pallet_proxy::pallet::Error<T>
 	 **/
 	PalletProxyError: {
 		_enum: [
@@ -6740,7 +6741,7 @@ export default {
 		],
 	},
 	/**
-	 * Lookup714: pallet_futurepass::pallet::Error<T>
+	 * Lookup713: pallet_futurepass::pallet::Error<T>
 	 **/
 	PalletFuturepassError: {
 		_enum: [
@@ -6759,43 +6760,43 @@ export default {
 		],
 	},
 	/**
-	 * Lookup716: seed_primitives::signature::EthereumSignature
+	 * Lookup715: seed_primitives::signature::EthereumSignature
 	 **/
 	SeedPrimitivesSignatureEthereumSignature: "SpCoreEcdsaSignature",
 	/**
-	 * Lookup718: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
+	 * Lookup717: frame_system::extensions::check_non_zero_sender::CheckNonZeroSender<T>
 	 **/
 	FrameSystemExtensionsCheckNonZeroSender: "Null",
 	/**
-	 * Lookup719: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
+	 * Lookup718: frame_system::extensions::check_spec_version::CheckSpecVersion<T>
 	 **/
 	FrameSystemExtensionsCheckSpecVersion: "Null",
 	/**
-	 * Lookup720: frame_system::extensions::check_tx_version::CheckTxVersion<T>
+	 * Lookup719: frame_system::extensions::check_tx_version::CheckTxVersion<T>
 	 **/
 	FrameSystemExtensionsCheckTxVersion: "Null",
 	/**
-	 * Lookup721: frame_system::extensions::check_genesis::CheckGenesis<T>
+	 * Lookup720: frame_system::extensions::check_genesis::CheckGenesis<T>
 	 **/
 	FrameSystemExtensionsCheckGenesis: "Null",
 	/**
-	 * Lookup724: frame_system::extensions::check_nonce::CheckNonce<T>
+	 * Lookup723: frame_system::extensions::check_nonce::CheckNonce<T>
 	 **/
 	FrameSystemExtensionsCheckNonce: "Compact<u32>",
 	/**
-	 * Lookup725: frame_system::extensions::check_weight::CheckWeight<T>
+	 * Lookup724: frame_system::extensions::check_weight::CheckWeight<T>
 	 **/
 	FrameSystemExtensionsCheckWeight: "Null",
 	/**
-	 * Lookup726: pallet_maintenance_mode::MaintenanceChecker<T>
+	 * Lookup725: pallet_maintenance_mode::MaintenanceChecker<T>
 	 **/
 	PalletMaintenanceModeMaintenanceChecker: "Null",
 	/**
-	 * Lookup727: pallet_transaction_payment::ChargeTransactionPayment<T>
+	 * Lookup726: pallet_transaction_payment::ChargeTransactionPayment<T>
 	 **/
 	PalletTransactionPaymentChargeTransactionPayment: "Compact<u128>",
 	/**
-	 * Lookup729: seed_runtime::Runtime
+	 * Lookup728: seed_runtime::Runtime
 	 **/
 	SeedRuntimeRuntime: "Null",
 };

@@ -1884,10 +1884,11 @@ declare module "@polkadot/api-base/types/events" {
 			 * Multi-Block migration has been enabled
 			 **/
 			MigrationEnabled: AugmentedEvent<ApiType, []>;
+			MigrationRuntimeUpgrade: AugmentedEvent<ApiType, []>;
 			/**
-			 * A Migration has started
+			 * A Migration has been set
 			 **/
-			MigrationStarted: AugmentedEvent<ApiType, []>;
+			MigrationSet: AugmentedEvent<ApiType, []>;
 			/**
 			 * Generic event
 			 **/
